@@ -1,0 +1,34 @@
+# Prefácio {.unnumbered}
+
+```{=html}
+<div class="hero">
+  <div class="hero-badge">UTAD · MEEC · 2026/2027</div>
+  <h1>Criptografia</h1>
+  <h2>Módulo de Cibersegurança</h2>
+  <p>Universidade de Trás-os-Montes e Alto Douro</p>
+</div>
+```
+
+Esta sebenta é um documento de estudo autónomo para o módulo de
+**Criptografia**, integrado na Unidade Curricular de Cibersegurança do
+Mestrado em Engenharia Eletrotécnica e de Computadores da Universidade de
+Trás-os-Montes e Alto Douro.
+
+## Organização da sebenta {.unnumbered}
+
+Os capítulos correspondem às 10 aulas teóricas do módulo:
+
+1. Criptografia Clássica — substituição, polialfabética e transposição
+2. Cifras de Bloco — fundamentos, Feistel, DES e 3DES
+3. AES — estágios e modos de operação
+4. Cifras de Fluxo — RC4, Salsa20, ChaCha20 e padding
+5. Hashing — propriedades, ataques, SHA e HMAC
+6. Criptografia Assimétrica — fundamentos e RSA
+7. Diffie-Hellman e Assinaturas Digitais
+8. Criptografia de Curva Elíptica (ECC)
+9. Infraestrutura de Chave Pública (PKI)
+10. TLS e PGP — esquemas criptográficos aplicados
+
+## Autor {.unnumbered}
+
+**João Pavão** — UTAD

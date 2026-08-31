@@ -1,0 +1,8 @@
+---
+title: "Criptografia de Curva Elíptica (ECC)"
+author: "João Pavão"
+date: 2026-09-14
+lang: pt-PT
+---
+
+> Conteúdo por desenvolver.

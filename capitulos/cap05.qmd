@@ -1,0 +1,8 @@
+---
+title: "Hashing — Propriedades, Ataques, SHA e HMAC"
+author: "João Pavão"
+date: 2026-09-14
+lang: pt-PT
+---
+
+> Conteúdo por desenvolver.

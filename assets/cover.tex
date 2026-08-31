@@ -1,0 +1,81 @@
+%% Capa — Sebenta Cripto (cores: carmesim)
+\newgeometry{top=0mm,bottom=0mm,left=0mm,right=0mm}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+
+  %% Fundo completo
+  \fill[coverDark]
+    (current page.south west) rectangle (current page.north east);
+
+  %% Círculo grande — canto superior direito
+  \fill[coverAccent,opacity=0.22]
+    ([xshift=17cm,yshift=25cm]current page.south west) circle (9cm);
+
+  %% Círculo médio — canto inferior esquerdo
+  \fill[coverAccent,opacity=0.11]
+    ([xshift=1.5cm,yshift=5cm]current page.south west) circle (5.5cm);
+
+  %% Círculo pequeno — zona superior central
+  \fill[coverLight,opacity=0.07]
+    ([xshift=9.5cm,yshift=28cm]current page.south west) circle (2.8cm);
+
+  %% Título
+  \node[anchor=north west,
+        text=white,
+        font=\fontsize{36}{44}\selectfont\bfseries,
+        text width=14cm, align=left]
+    (TITLE)
+    at ([xshift=2cm,yshift=17.5cm]current page.south west)
+    {Criptografia};
+
+  %% Subtítulo
+  \node[anchor=north west,
+        text=white, text opacity=0.73,
+        font=\fontsize{14}{18}\selectfont,
+        text width=14cm]
+    at ([yshift=-0.8cm]TITLE.south west)
+    {Módulo de Cibersegurança — MEEC};
+
+  %% Barra de acento
+  \fill[coverAccent]
+    ([yshift=-1.6cm]TITLE.south west)
+    rectangle ([xshift=5cm,yshift=-2.05cm]TITLE.south west);
+
+  %% Autor
+  \node[anchor=north west,
+        text=white, text opacity=0.88,
+        font=\fontsize{12}{15}\selectfont\bfseries,
+        text width=14cm]
+    at ([yshift=-2.4cm]TITLE.south west)
+    {João Pavão};
+
+  %% Instituição
+  \node[anchor=north west,
+        text=white, text opacity=0.52,
+        font=\fontsize{10}{12}\selectfont,
+        text width=14cm]
+    at ([yshift=-3.6cm]TITLE.south west)
+    {Universidade de Trás-os-Montes e Alto Douro};
+
+  %% Faixa inferior
+  \fill[coverAccent,opacity=0.28]
+    (current page.south west)
+    rectangle ([xshift=21cm,yshift=3.5cm]current page.south west);
+
+  %% Editora
+  \node[anchor=west,
+        text=white, text opacity=0.90,
+        font=\fontsize{14}{17}\selectfont\bfseries]
+    at ([xshift=2cm,yshift=1.75cm]current page.south west)
+    {Druidas};
+
+  %% Ano
+  \node[anchor=east,
+        text=white, text opacity=0.55,
+        font=\fontsize{11}{14}\selectfont]
+    at ([xshift=-2cm,yshift=1.75cm]current page.south east)
+    {2026};
+
+\end{tikzpicture}
+\vfill\clearpage
+\restoregeometry
