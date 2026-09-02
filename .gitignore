@@ -14,3 +14,8 @@ __pycache__/
 .Rdata
 
 /.quarto/
+
+# Material de referência extraído de fontes com copyright (deck do
+# professor, Stallings, etc.) — só para preparação do deck Gamma,
+# nunca para o repositório público.
+assets/slides-fonte/

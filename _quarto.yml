@@ -3,6 +3,9 @@ project:
   output-dir: docs
 
 lang: pt-PT
+bibliography: referencias.bib
+filters:
+  - filters/httpmsg-latex.lua
 
 book:
   title: "Criptografia"
@@ -74,8 +77,29 @@ format:
         \usepackage{amsmath}
         \usepackage{caption}
         \captionsetup{font=small, labelfont=bf}
+        \everydisplay\expandafter{\the\everydisplay\small}
+        \makeatletter
+        \let\Pandoc@MathOpen\(
+        \let\Pandoc@MathClose\)
+        \def\({\begingroup\small\Pandoc@MathOpen}
+        \def\){\Pandoc@MathClose\endgroup}
+        \makeatother
+        \usepackage{etoolbox}
+        \AtBeginEnvironment{longtable}{\footnotesize\renewcommand{\arraystretch}{0.65}\setlength{\tabcolsep}{5pt}}
         \usepackage{xcolor}
         \usepackage{tikz}
+        \usepackage{framed}
+        \definecolor{httpmsgbg}{HTML}{f2f3f4}
+        \definecolor{httpmsgborder}{HTML}{c3cacd}
+        \makeatletter
+        \def\FrameCommand{\fboxsep=8pt\fcolorbox{httpmsgborder}{httpmsgbg}}
+        \makeatother
+        \newenvironment{httpmsg}{%
+          \footnotesize\ttfamily
+          \begin{framed}
+        }{%
+          \end{framed}
+        }
         \definecolor{coverDark}{HTML}{1a0505}
         \definecolor{coverAccent}{HTML}{b0202a}
         \definecolor{coverLight}{HTML}{e2434f}

@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-PT" xml:lang="pt-PT"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="João Pavão">
+
+<title>4&nbsp; Cifras de Fluxo — RC4, Salsa20, ChaCha20 e Padding – Criptografia</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../capitulos/cap05.html" rel="next">
+<link href="../capitulos/cap03.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de84f8d6bb715db06a919283c2d1e787.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-9a023c9ade86a60361e96e3e3f11bc54.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-61bc4ac84974e0785b3107ee93e74bfb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-bc9f1d3aef906c45e091843ae87821a0.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap04.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Cifras de Fluxo — RC4, Salsa20, ChaCha20 e Padding</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Criptografia</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Prefácio</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Criptografia Clássica — Substituição, Polialfabética e Transposição</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Cifras de Bloco — Fundamentos, Feistel, DES e 3DES</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">AES — Estágios e Modos de Operação</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Cifras de Fluxo — RC4, Salsa20, ChaCha20 e Padding</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA e HMAC</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica — Fundamentos e RSA</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Diffie-Hellman e Assinaturas Digitais</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Criptografia de Curva Elíptica (ECC)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Infraestrutura de Chave Pública (PKI)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP — Esquemas Criptográficos Aplicados</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#sec-04-intro" id="toc-sec-04-intro" class="nav-link active" data-scroll-target="#sec-04-intro">Introdução</a></li>
+  <li><a href="#sec-04-conceito" id="toc-sec-04-conceito" class="nav-link" data-scroll-target="#sec-04-conceito"><span class="header-section-number">4.1</span> Cifras de Fluxo: o Conceito Geral</a></li>
+  <li><a href="#sec-04-rc4" id="toc-sec-04-rc4" class="nav-link" data-scroll-target="#sec-04-rc4"><span class="header-section-number">4.2</span> RC4</a></li>
+  <li><a href="#sec-04-arquitecturas" id="toc-sec-04-arquitecturas" class="nav-link" data-scroll-target="#sec-04-arquitecturas"><span class="header-section-number">4.3</span> Duas Arquitecturas: Stateful vs.&nbsp;por Contador</a></li>
+  <li><a href="#sec-04-salsa20" id="toc-sec-04-salsa20" class="nav-link" data-scroll-target="#sec-04-salsa20"><span class="header-section-number">4.4</span> Salsa20</a></li>
+  <li><a href="#sec-04-chacha20" id="toc-sec-04-chacha20" class="nav-link" data-scroll-target="#sec-04-chacha20"><span class="header-section-number">4.5</span> ChaCha20</a></li>
+  <li><a href="#sec-04-padding" id="toc-sec-04-padding" class="nav-link" data-scroll-target="#sec-04-padding"><span class="header-section-number">4.6</span> Padding</a></li>
+  <li><a href="#sec-04-sintese" id="toc-sec-04-sintese" class="nav-link" data-scroll-target="#sec-04-sintese"><span class="header-section-number">4.7</span> Síntese do Capítulo</a></li>
+  <li><a href="#sec-04-reflexao" id="toc-sec-04-reflexao" class="nav-link" data-scroll-target="#sec-04-reflexao"><span class="header-section-number">4.8</span> Para Pensar</a></li>
+  <li><a href="#sec-04-referencias" id="toc-sec-04-referencias" class="nav-link" data-scroll-target="#sec-04-referencias">Referências</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Cifras de Fluxo — RC4, Salsa20, ChaCha20 e Padding</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autor</div>
+    <div class="quarto-title-meta-contents">
+             <p>João Pavão </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">14 de setembro de 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-04-intro" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-04-intro">Introdução</h2>
+<p>Os capítulos anteriores trataram sempre de <strong>cifras de bloco</strong>: DES e AES processam a mensagem em fragmentos de tamanho fixo, 64 ou 128 bits de cada vez, e precisaram de um modo de operação para lidar com mensagens de qualquer comprimento. Este capítulo apresenta a outra grande família de cifras simétricas, as <strong>cifras de fluxo</strong>, que dispensam essa mecânica: geram uma sequência pseudo-aleatória de bits, byte a byte, tão longa quanto a mensagem, e combinam-na com o texto claro por XOR, sem qualquer noção de bloco. As cifras de fluxo têm ganho renovada relevância nos últimos anos, precisamente por serem rápidas a processar fluxos contínuos de dados e por funcionarem bem em dispositivos com poucos recursos, como sensores sem fios ou etiquetas RFID em sistemas <em>Internet of Things</em> <span class="citation" data-cites="Martin2017">(<a href="cap01.html#ref-Martin2017" role="doc-biblioref">Martin 2017</a>)</span>. Há ainda uma segunda razão, menos técnica: o descrédito generalizado das cifras de bloco em modo CBC, precisamente por causa dos ataques de oráculo de <em>padding</em> já referidos no capítulo anterior, empurrou muitos sistemas modernos na direcção das cifras de fluxo (e das construções AEAD baseadas nelas) <span class="citation" data-cites="Aumasson2017">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span>.</p>
+</section>
+<section id="sec-04-conceito" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="sec-04-conceito"><span class="header-section-number">4.1</span> Cifras de Fluxo: o Conceito Geral</h2>
+<p>O modo CTR, apresentado no capítulo anterior, já antecipava esta ideia: usar uma cifra de bloco para gerar uma sequência de valores pseudo-aleatórios, e combiná-la com o texto claro por XOR, tal como uma cifra de fluxo genuína. Uma <strong>cifra de fluxo</strong> pode ser vista como um caso particular de <strong>gerador determinístico de bits aleatórios</strong> (<em>deterministic random bit generator</em>, DRBG): a diferença é que um DRBG genérico só recebe um valor de entrada (uma semente), enquanto uma cifra de fluxo recebe sempre dois, a chave <span class="math inline">\(K\)</span> (secreta, tipicamente de 128 ou 256 bits) e o <em>nonce</em> <span class="math inline">\(N\)</span> (não precisa de ser secreto, mas tem de ser único para cada chave, tipicamente entre 64 e 128 bits) <span class="citation" data-cites="Aumasson2017">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span>. A partir destes dois valores, um <strong>gerador de fluxo de chave</strong> (<em>keystream generator</em>) produz uma sequência de bits <span class="math inline">\(k_1, k_2, k_3, \dots\)</span>, o <strong>fluxo de chave</strong> (<em>keystream</em>), tão longa quanto necessário, e a cifragem é uma simples combinação por XOR, bit a bit ou byte a byte:</p>
+<p><span class="math display">\[C_i = P_i \oplus k_i\]</span></p>
+<div id="fig-04-cifra-fluxo" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-04-cifra-fluxo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-cifra-fluxo.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-04-cifra-fluxo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4.1: Uma cifra de fluxo genérica: a chave e o nonce alimentam um gerador pseudo-aleatório que produz o fluxo de chave <span class="math inline">\(k_1, k_2, k_3, \dots\)</span>, combinado por XOR com o texto claro, byte a byte, produzindo o texto cifrado.
+</figcaption>
+</figure>
+</div>
+<p>Esta construção devia parecer familiar: é exactamente a estrutura do <strong>One-Time Pad</strong>, já referido no capítulo 1 e retomado no capítulo 2 como o único sistema com segredo perfeito demonstrado por Shannon. Uma cifra de fluxo pode, por isso, ser vista como o <strong>equivalente pseudo-aleatório de um One-Time Pad</strong> <span class="citation" data-cites="Martin2017 Aumasson2017">(<a href="cap01.html#ref-Martin2017" role="doc-biblioref">Martin 2017</a>; <a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span>: a diferença, e é uma diferença crucial, é que o One-Time Pad exige uma chave genuinamente aleatória, tão longa quanto a mensagem, e nunca reutilizada, enquanto uma cifra de fluxo troca essa exigência impraticável por uma chave curta e reutilizável, à custa de perder o segredo perfeito: a segurança passa a depender inteiramente da <strong>imprevisibilidade computacional</strong> do gerador, isto é, de ser inviável distinguir o seu fluxo de saída de uma sequência genuinamente aleatória sem conhecer a chave.</p>
+<p><strong>Esta troca tem uma consequência que não perdoa erros</strong>: o par (chave, <em>nonce</em>) nunca pode ser reutilizado. Note-se que isto é mais permissivo do que possa parecer à primeira vista: cifrar uma mensagem com <span class="math inline">\((K_1, N_1)\)</span> e outra com o mesmo <span class="math inline">\(K_1\)</span> mas um <span class="math inline">\(N_1\)</span> diferente é seguro, tal como cifrar com um <span class="math inline">\(K_2\)</span> diferente e o mesmo <span class="math inline">\(N_1\)</span>; o que nunca pode acontecer é voltar a cifrar com exactamente o mesmo par <span class="math inline">\((K_1, N_1)\)</span> já usado antes <span class="citation" data-cites="Aumasson2017">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span>. Se isso acontecer, o gerador produz exactamente o mesmo fluxo de chave para duas mensagens diferentes. Um atacante que intercepte ambos os textos cifrados pode combiná-los por XOR entre si, e o fluxo de chave cancela-se completamente:</p>
+<p><span class="math display">\[C_1 \oplus C_2 = (P_1 \oplus k) \oplus (P_2 \oplus k) = P_1 \oplus P_2\]</span></p>
+<p>O resultado, o XOR dos dois textos claros, já não depende da chave, e é frequentemente suficiente para recuperar ambas as mensagens através de análise estatística da língua, tal como se fez com o método de Kasiski no capítulo 1. Este é o chamado <strong>ataque do two-time pad</strong>, e foi exactamente o tipo de falha, na reutilização de valores de inicialização, que tornou o protocolo WEP (a primeira norma de segurança Wi-Fi) praticamente inútil.</p>
+</section>
+<section id="sec-04-rc4" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="sec-04-rc4"><span class="header-section-number">4.2</span> RC4</h2>
+<p>O <strong>RC4</strong>, desenhado por Ron Rivest na RSA Security em 1987, foi mantido como segredo comercial até ser divulgado, sem autorização, em 1994. Aceita chaves de comprimento variável, entre 40 e 2048 bits, e mantém um estado interno de 256 bytes (um <em>array</em> <span class="math inline">\(S\)</span>, com dois ponteiros auxiliares <span class="math inline">\(i\)</span> e <span class="math inline">\(j\)</span>). É orientado a byte (não a bit), e organiza-se em duas fases:</p>
+<ul>
+<li><strong>KSA</strong> (<em>Key Scheduling Algorithm</em>): a partir da chave, constrói e permuta o <em>array</em> <span class="math inline">\(S\)</span> de 256 valores (inicialmente <span class="math inline">\(S[i]=i\)</span>), misturando-o repetidamente com os bytes da chave.</li>
+<li><strong>PRGA</strong> (<em>Pseudo-Random Generation Algorithm</em>): a cada iteração, actualiza os dois ponteiros <span class="math inline">\(i\)</span> e <span class="math inline">\(j\)</span>, troca <span class="math inline">\(S[i]\)</span> com <span class="math inline">\(S[j]\)</span>, e produz um byte do fluxo de chave.</li>
+</ul>
+<div id="fig-04-rc4-prga" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-04-rc4-prga-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-rc4-prga.png" class="img-fluid figure-img" style="width:95.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-04-rc4-prga-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4.2: O mecanismo interno do RC4: a KSA permuta o array <span class="math inline">\(S\)</span> de 256 bytes a partir da chave; a PRGA, a cada iteração, actualiza os índices <span class="math inline">\(i\)</span> e <span class="math inline">\(j\)</span>, troca <span class="math inline">\(S[i]\)</span> com <span class="math inline">\(S[j]\)</span>, e extrai um byte do fluxo de chave, combinado por XOR com o texto claro.
+</figcaption>
+</figure>
+</div>
+<p>Um detalhe do desenho do RC4 vale a pena assinalar: <strong>não existe nenhum mecanismo de <em>nonce</em> incorporado no algoritmo</strong> — “como não acontece numa cifra de fluxo decente”, nas palavras do criptógrafo Jean-Philippe Aumasson <span class="citation" data-cites="Aumasson2017">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span>. Qualquer <em>nonce</em> tem de ser adicionado externamente, por quem implementa o protocolo, e foi precisamente aqui que o WEP falhou: prefixava a chave com um <em>nonce</em> curto e previsível antes de cada KSA, tornando o sistema vulnerável ao <strong>ataque de Fluhrer, Mantin e Shamir</strong> (2001) <span class="citation" data-cites="FMS2001">(<a href="cap01.html#ref-FMS2001" role="doc-biblioref">Fluhrer, Mantin, e Shamir 2001</a>)</span>, que explora o facto de os primeiros bytes do fluxo de chave do RC4 não serem estatisticamente uniformes. O caso mais conhecido: o <strong>segundo byte</strong> do fluxo de chave vale zero com uma probabilidade de <span class="math inline">\(1/128\)</span>, o dobro do que seria de esperar (<span class="math inline">\(1/256\)</span>) num byte verdadeiramente aleatório <span class="citation" data-cites="Aumasson2017">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span> — um desvio pequeno, mas suficiente para, com milhões de mensagens interceptadas, distinguir estatisticamente o RC4 de uma fonte aleatória e, em certas condições, recuperar bytes do texto claro sem nunca descobrir a chave. A mitigação proposta, descartar os primeiros 3072 bytes do fluxo antes de o usar (RC4-drop3072), reduz mas não elimina o problema. Um segundo ataque prático, contra o próprio TLS, foi publicado em 2013 <span class="citation" data-cites="AlFardan2013">(<a href="cap01.html#ref-AlFardan2013" role="doc-biblioref">AlFardan et al. 2013</a>)</span>. Confrontado com estas fragilidades acumuladas, o RC4 foi formalmente banido do TLS pela <em>Internet Engineering Task Force</em> em 2015 <span class="citation" data-cites="RFC7465">(<a href="cap01.html#ref-RFC7465" role="doc-biblioref">Popov 2015</a>)</span>, e não deve ser usado em nenhum sistema novo.</p>
+</section>
+<section id="sec-04-arquitecturas" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="sec-04-arquitecturas"><span class="header-section-number">4.3</span> Duas Arquitecturas: Stateful vs.&nbsp;por Contador</h2>
+<p>Antes de avançar para o Salsa20 e o ChaCha20, vale a pena situar o RC4 numa classificação mais geral. As cifras de fluxo organizam-se em duas grandes arquitecturas, consoante a forma como produzem o fluxo de chave <span class="citation" data-cites="Aumasson2017">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span>.</p>
+<p>Uma <strong>cifra de fluxo com estado</strong> (<em>stateful</em>) inicializa um estado interno a partir da chave e do <em>nonce</em> (a fase <code>Init</code>), e depois vai <strong>actualizando esse estado</strong> a cada novo bloco do fluxo de chave (a fase <code>Update</code>, repetida), de forma sequencial: cada actualização depende da anterior. O RC4, já apresentado, é exactamente disto: a KSA inicializa o <em>array</em> <span class="math inline">\(S\)</span>, e cada iteração da PRGA actualiza <span class="math inline">\(S\)</span> antes de produzir o byte seguinte do fluxo.</p>
+<div id="fig-04-fluxo-stateful" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-04-fluxo-stateful-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-cifra-fluxo-stateful.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-04-fluxo-stateful-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4.3: Uma cifra de fluxo com estado: a fase Init prepara um estado interno a partir da chave e do nonce; cada fase Update seguinte modifica esse estado e produz um novo troço do fluxo de chave, de forma sequencial.
+</figcaption>
+</figure>
+</div>
+<p>Uma <strong>cifra de fluxo por contador</strong> (<em>counter-based</em>) segue uma lógica diferente: não mantém nenhum estado secreto entre blocos, para além do valor de um contador público. Cada bloco do fluxo de chave calcula-se de novo, directamente a partir da chave, do <em>nonce</em> e do valor do contador nesse bloco — sem depender do resultado do bloco anterior.</p>
+<div id="fig-04-fluxo-contador" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-04-fluxo-contador-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-cifra-fluxo-contador.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-04-fluxo-contador-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4.4: Uma cifra de fluxo por contador: cada bloco do fluxo de chave é calculado independentemente, a partir da chave, do nonce e do valor do contador nesse bloco.
+</figcaption>
+</figure>
+</div>
+<p>Esta diferença arquitectural tem uma consequência prática directa, já referida a propósito do modo CTR no capítulo anterior: como cada bloco de uma cifra por contador é independente dos restantes, pode calcular-se <strong>em paralelo</strong>, ao contrário de uma cifra com estado, em que cada actualização tem de esperar pela anterior. O Salsa20 e o ChaCha20, apresentados de seguida, seguem exactamente esta segunda arquitectura.</p>
+</section>
+<section id="sec-04-salsa20" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="sec-04-salsa20"><span class="header-section-number">4.4</span> Salsa20</h2>
+<p>Em resposta às fragilidades do RC4, Daniel J. Bernstein desenhou o <strong>Salsa20</strong> em 2005, submetido ao concurso <em>eSTREAM</em> (o projecto europeu ECRYPT para cifras de fluxo), onde foi seleccionado para o portefólio final de algoritmos recomendados para software.</p>
+<p>Ao contrário do RC4, o Salsa20 não mantém um estado que evolui byte a byte, nem usa S-boxes ou tabelas de substituição. Baseia-se exclusivamente em três operações, <strong>soma, rotação de bits e XOR</strong> — por isso chamada uma construção <strong>ARX</strong> (<em>Add-Rotate-XOR</em>). O seu estado interno é uma matriz <span class="math inline">\(4\times4\)</span> de palavras de 32 bits (512 bits, 64 bytes no total), organizada em quatro grupos: constantes fixas, a chave (128 ou 256 bits), o <em>nonce</em> (64 bits) e um contador (64 bits). Para gerar cada bloco de 64 bytes de fluxo de chave, aplicam-se 20 rondas de uma <strong>função de quarto de ronda</strong>, <span class="math inline">\(QR(a,b,c,d)\)</span>:</p>
+<p><span class="math display">\[b \mathrel{\oplus}= (a+d) \lll 7 \qquad c \mathrel{\oplus}= (b+a) \lll 9\]</span> <span class="math display">\[d \mathrel{\oplus}= (c+b) \lll 13 \qquad a \mathrel{\oplus}= (d+c) \lll 18\]</span></p>
+<p>e o resultado final soma-se (módulo <span class="math inline">\(2^{32}\)</span>, palavra a palavra) ao estado inicial.</p>
+<div id="fig-04-salsa20-esquema" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-04-salsa20-esquema-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-salsa20-esquema.png" class="img-fluid figure-img" style="width:45.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-04-salsa20-esquema-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4.5: O esquema de cifragem do Salsa20 para um bloco de texto claro: o núcleo Salsa20 transforma <span class="math inline">\(K \Vert N \Vert \mathrm{Ctr}\)</span>, o resultado soma-se (módulo <span class="math inline">\(2^{32}\)</span>, quadrado com “+”) ao estado inicial para formar o bloco de fluxo de chave, que finalmente se combina por XOR (círculo com “+”) com o texto claro.
+</figcaption>
+</figure>
+</div>
+<p>Repare-se na distinção entre as duas operações da figura: a soma final ao estado inicial (quadrado) é <strong>adição modular</strong>, não XOR, e é precisamente o que torna a transformação impossível de inverter sem conhecer a chave — se o Salsa20 devolvesse directamente a permutação do núcleo, sem esta soma, seria trivialmente invertível. Só depois desta soma é que o resultado se combina por XOR (círculo) com o texto claro. Como cada bloco de 64 bytes é gerado de forma independente dos restantes (a partir da chave, do <em>nonce</em> e do valor do contador nesse bloco), o Salsa20 é inteiramente <strong>paralelizável</strong>, tanto na cifragem como na decifragem.</p>
+<p>O melhor ataque conhecido contra o Salsa20 reduz-se a 15 das 20 rondas <span class="citation" data-cites="Aumasson2017">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span>; a versão completa, de 20 rondas, não tem, até hoje, nenhum ataque prático conhecido, e é considerada segura.</p>
+</section>
+<section id="sec-04-chacha20" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="sec-04-chacha20"><span class="header-section-number">4.5</span> ChaCha20</h2>
+<p>O <strong>ChaCha20</strong>, também desenhado por Bernstein, em 2008, é uma variante do Salsa20 com uma função de quarto de ronda modificada, que alcança melhor difusão por ronda: cada palavra de 32 bits participa tanto numa soma como numa rotação em cada um dos quatro passos, o que faz o efeito de cada bit espalhar-se mais depressa pelo resto do estado. É hoje a cifra de fluxo de referência, usada, entre outros, no TLS 1.3, no QUIC, no WireGuard, no SSH e por omissão no OpenSSH desde 2014.</p>
+<p><span class="math display">\[a \mathrel{+}= b;\ d \mathrel{\oplus}= a;\ d \lll 16 \qquad c \mathrel{+}= d;\ b \mathrel{\oplus}= c;\ b \lll 12\]</span> <span class="math display">\[a \mathrel{+}= b;\ d \mathrel{\oplus}= a;\ d \lll 8 \qquad c \mathrel{+}= d;\ b \mathrel{\oplus}= c;\ b \lll 7\]</span></p>
+<p>As constantes de rotação (16, 12, 8, 7) e a ordem das operações são diferentes das do Salsa20 (7, 9, 13, 18), precisamente para conseguir essa difusão mais rápida. Em relação ao Salsa20, o ChaCha20 normalizado pelo IETF usa ainda um <em>nonce</em> maior, de 96 bits (em vez de 64), e um contador mais pequeno, de 32 bits — suficiente para gerar até 256 GB de fluxo de chave a partir de um único <em>nonce</em>.</p>
+<p>O ChaCha20 é frequentemente combinado com um mecanismo de autenticação de mensagem, o Poly1305, na construção <strong>ChaCha20-Poly1305</strong>, normalizada no RFC 8439 <span class="citation" data-cites="RFC8439">(<a href="cap01.html#ref-RFC8439" role="doc-biblioref">Nir e Langley 2018</a>)</span>: o primeiro bloco gerado pelo ChaCha20 (bloco 0) deriva a chave do Poly1305; os blocos seguintes (1 a <span class="math inline">\(N\)</span>) fornecem o fluxo de chave que cifra a mensagem por XOR; e o Poly1305 calcula, sobre o texto cifrado e sobre eventuais dados associados não cifrados (<em>additional authenticated data</em>, AAD, como cabeçalhos de rede), uma marca de autenticação (<em>tag</em>) de 128 bits, que acompanha o texto cifrado.</p>
+<div id="fig-04-chacha20-poly1305" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-04-chacha20-poly1305-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-chacha20-poly1305.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-04-chacha20-poly1305-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4.6: A construção ChaCha20-Poly1305: o bloco 0 do ChaCha20 deriva a chave do Poly1305; os blocos seguintes fornecem o fluxo de chave que cifra a mensagem por XOR; o Poly1305 autentica os dados associados (AAD) e o texto cifrado, produzindo uma marca de 128 bits.
+</figcaption>
+</figure>
+</div>
+<p>Esta é uma <strong>cifra autenticada</strong> (<em>AEAD</em>, <em>Authenticated Encryption with Associated Data</em>), o mesmo conceito já introduzido a propósito do modo GCM no capítulo anterior: garante simultaneamente confidencialidade e integridade, numa única construção. O ChaCha20, tal como o Salsa20, não tem, até hoje, nenhuma fragilidade estatística conhecida que o torne distinguível de uma fonte aleatória.</p>
+</section>
+<section id="sec-04-padding" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="sec-04-padding"><span class="header-section-number">4.6</span> Padding</h2>
+<p>Uma cifra de fluxo, como se viu, dispensa qualquer noção de bloco: processa a mensagem byte a byte, seja qual for o seu comprimento. As cifras de bloco em modos como o CBC ou o ECB não têm essa liberdade: exigem que a mensagem seja um múltiplo exacto do tamanho do bloco antes de a cifrar. Quando o último bloco de uma mensagem não está completo, o algoritmo de cifragem não tem bytes suficientes para o processar.</p>
+<p>O <strong>padding</strong> resolve isto acrescentando bytes extra ao fim da mensagem, antes da cifragem, até completar o bloco. O esquema mais comum é o <strong>PKCS#7</strong>: se faltam <span class="math inline">\(n\)</span> bytes para completar o último bloco, preenchem-se esses <span class="math inline">\(n\)</span> bytes com o valor <span class="math inline">\(n\)</span> (em hexadecimal, <code>0xN</code>). Por exemplo, se faltam 10 bytes para completar o bloco, acrescentam-se dez bytes, todos com o valor <code>0xA</code>. Do lado da decifragem, basta ler o valor do último byte recebido para saber exactamente quantos bytes de <em>padding</em> remover, sem qualquer ambiguidade.</p>
+<p>Vale a pena recordar, como já ficou registado na tabela de modos de operação do capítulo anterior, que o <strong>CBC</strong> é precisamente um dos modos que depende deste mecanismo — e que uma validação de <em>padding</em> mal implementada, que revele a um atacante, através de uma mensagem de erro ou de uma diferença de tempo de resposta, se o <em>padding</em> recebido era ou não válido, pode ser explorada para decifrar mensagens inteiras sem nunca conhecer a chave, byte a byte, através do chamado <strong>ataque de oráculo de padding</strong> (<em>padding oracle attack</em>). A lição de fundo é a mesma que já apareceu antes neste livro: um mecanismo matematicamente correcto pode ainda assim falhar por causa de como é implementado.</p>
+</section>
+<section id="sec-04-sintese" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="sec-04-sintese"><span class="header-section-number">4.7</span> Síntese do Capítulo</h2>
+<p>Este capítulo apresentou a segunda grande família de cifras simétricas:</p>
+<ol type="1">
+<li>Uma <strong>cifra de fluxo</strong> gera um fluxo de chave pseudo-aleatório, combinado com o texto claro por XOR, byte a byte, sem noção de bloco — o equivalente pseudo-aleatório do One-Time Pad</li>
+<li><strong>Nunca reutilizar o mesmo par (chave, <em>nonce</em>)</strong>: fazê-lo permite o ataque do <em>two-time pad</em>, que cancela o fluxo de chave e expõe o XOR dos dois textos claros</li>
+<li>O <strong>RC4</strong>, sem <em>nonce</em> incorporado e com um fluxo de chave estatisticamente enviesado nos primeiros bytes, acumulou fragilidades (Fluhrer–Mantin–Shamir, 2001; AlFardan et al., 2013) que o tornaram inseguro, e está hoje banido de normas como o TLS</li>
+<li>O <strong>Salsa20</strong> e o <strong>ChaCha20</strong>, construções ARX (soma, rotação, XOR) desenhadas por Bernstein, não têm fragilidades práticas conhecidas; o ChaCha20, com melhor difusão por ronda, é hoje a cifra de fluxo de referência, frequentemente usada em conjunto com o Poly1305 numa construção AEAD</li>
+<li>O <strong>padding</strong> (nomeadamente o esquema PKCS#7) permite às cifras de bloco em modos como o CBC processar mensagens de qualquer comprimento, mas a sua implementação incorrecta pode originar ataques de oráculo de <em>padding</em></li>
+</ol>
+</section>
+<section id="sec-04-reflexao" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="sec-04-reflexao"><span class="header-section-number">4.8</span> Para Pensar</h2>
+<p>O RC4 não tem nenhum mecanismo de <em>nonce</em> incorporado; o ChaCha20 exige um <em>nonce</em> de 96 bits para cada mensagem. Tendo em conta o ataque do <em>two-time pad</em> apresentado neste capítulo, que consequência prática tem esta diferença de desenho para quem implementa um protocolo de comunicação com qualquer uma destas duas cifras?</p>
+</section>
+<section id="sec-04-referencias" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-04-referencias">Referências</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-AlFardan2013" class="csl-entry" role="listitem">
+AlFardan, Nadhem J., Daniel J. Bernstein, Kenneth G. Paterson, Bertram Poettering, e Jacob C. N. Schuldt. 2013. <span>«On the Security of <span>RC4</span> in <span>TLS</span>»</span>. Em <em>22nd USENIX Security Symposium</em>.
+</div>
+<div id="ref-Aumasson2017" class="csl-entry" role="listitem">
+Aumasson, Jean-Philippe. 2017. <em>Serious Cryptography: A Practical Introduction to Modern Encryption</em>. No Starch Press.
+</div>
+<div id="ref-FMS2001" class="csl-entry" role="listitem">
+Fluhrer, Scott, Itsik Mantin, e Adi Shamir. 2001. <span>«Weaknesses in the Key Scheduling Algorithm of <span>RC4</span>»</span>. Em <em>Selected Areas in Cryptography (SAC 2001)</em>.
+</div>
+<div id="ref-Martin2017" class="csl-entry" role="listitem">
+Martin, Keith. 2017. <em>Everyday Cryptography</em>. 2.ª ed. Oxford University Press.
+</div>
+<div id="ref-RFC8439" class="csl-entry" role="listitem">
+Nir, Yoav, e Adam Langley. 2018. <span>«<span>ChaCha20</span> and <span>Poly1305</span> for <span>IETF</span> Protocols»</span>. RFC 8439. IETF.
+</div>
+<div id="ref-RFC7465" class="csl-entry" role="listitem">
+Popov, Andrei. 2015. <span>«Prohibiting <span>RC4</span> Cipher Suites»</span>. RFC 7465. IETF.
+</div>
+</div>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../capitulos/cap03.html" class="pagination-link" aria-label="AES — Estágios e Modos de Operação">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">AES — Estágios e Modos de Operação</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../capitulos/cap05.html" class="pagination-link" aria-label="Hashing — Propriedades, Ataques, SHA e HMAC">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA e HMAC</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Código fonte</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Cifras de Fluxo — RC4, Salsa20, ChaCha20 e Padding"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "João Pavão"</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-09-14</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-PT</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução {#sec-04-intro .unnumbered}</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Os capítulos anteriores trataram sempre de **cifras de bloco**: DES e AES processam a mensagem em fragmentos de tamanho fixo, 64 ou 128 bits de cada vez, e precisaram de um modo de operação para lidar com mensagens de qualquer comprimento. Este capítulo apresenta a outra grande família de cifras simétricas, as **cifras de fluxo**, que dispensam essa mecânica: geram uma sequência pseudo-aleatória de bits, byte a byte, tão longa quanto a mensagem, e combinam-na com o texto claro por XOR, sem qualquer noção de bloco. As cifras de fluxo têm ganho renovada relevância nos últimos anos, precisamente por serem rápidas a processar fluxos contínuos de dados e por funcionarem bem em dispositivos com poucos recursos, como sensores sem fios ou etiquetas RFID em sistemas *Internet of Things* [@Martin2017]. Há ainda uma segunda razão, menos técnica: o descrédito generalizado das cifras de bloco em modo CBC, precisamente por causa dos ataques de oráculo de *padding* já referidos no capítulo anterior, empurrou muitos sistemas modernos na direcção das cifras de fluxo (e das construções AEAD baseadas nelas) <span class="co">[</span><span class="ot">@Aumasson2017</span><span class="co">]</span>.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cifras de Fluxo: o Conceito Geral {#sec-04-conceito}</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>O modo CTR, apresentado no capítulo anterior, já antecipava esta ideia: usar uma cifra de bloco para gerar uma sequência de valores pseudo-aleatórios, e combiná-la com o texto claro por XOR, tal como uma cifra de fluxo genuína. Uma **cifra de fluxo** pode ser vista como um caso particular de **gerador determinístico de bits aleatórios** (*deterministic random bit generator*, DRBG): a diferença é que um DRBG genérico só recebe um valor de entrada (uma semente), enquanto uma cifra de fluxo recebe sempre dois, a chave $K$ (secreta, tipicamente de 128 ou 256 bits) e o *nonce* $N$ (não precisa de ser secreto, mas tem de ser único para cada chave, tipicamente entre 64 e 128 bits) [@Aumasson2017]. A partir destes dois valores, um **gerador de fluxo de chave** (*keystream generator*) produz uma sequência de bits $k_1, k_2, k_3, \dots$, o **fluxo de chave** (*keystream*), tão longa quanto necessário, e a cifragem é uma simples combinação por XOR, bit a bit ou byte a byte:</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>$$C_i = P_i \oplus k_i$$</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="al">![Uma cifra de fluxo genérica: a chave e o nonce alimentam um gerador pseudo-aleatório que produz o fluxo de chave $k_1, k_2, k_3, \dots$, combinado por XOR com o texto claro, byte a byte, produzindo o texto cifrado.](../assets/images/fig-cifra-fluxo.png)</span>{#fig-04-cifra-fluxo width=85%}</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>Esta construção devia parecer familiar: é exactamente a estrutura do **One-Time Pad**, já referido no capítulo 1 e retomado no capítulo 2 como o único sistema com segredo perfeito demonstrado por Shannon. Uma cifra de fluxo pode, por isso, ser vista como o **equivalente pseudo-aleatório de um One-Time Pad** [@Martin2017; @Aumasson2017]: a diferença, e é uma diferença crucial, é que o One-Time Pad exige uma chave genuinamente aleatória, tão longa quanto a mensagem, e nunca reutilizada, enquanto uma cifra de fluxo troca essa exigência impraticável por uma chave curta e reutilizável, à custa de perder o segredo perfeito: a segurança passa a depender inteiramente da **imprevisibilidade computacional** do gerador, isto é, de ser inviável distinguir o seu fluxo de saída de uma sequência genuinamente aleatória sem conhecer a chave.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>**Esta troca tem uma consequência que não perdoa erros**: o par (chave, *nonce*) nunca pode ser reutilizado. Note-se que isto é mais permissivo do que possa parecer à primeira vista: cifrar uma mensagem com $(K_1, N_1)$ e outra com o mesmo $K_1$ mas um $N_1$ diferente é seguro, tal como cifrar com um $K_2$ diferente e o mesmo $N_1$; o que nunca pode acontecer é voltar a cifrar com exactamente o mesmo par $(K_1, N_1)$ já usado antes <span class="co">[</span><span class="ot">@Aumasson2017</span><span class="co">]</span>. Se isso acontecer, o gerador produz exactamente o mesmo fluxo de chave para duas mensagens diferentes. Um atacante que intercepte ambos os textos cifrados pode combiná-los por XOR entre si, e o fluxo de chave cancela-se completamente:</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>$$C_1 \oplus C_2 = (P_1 \oplus k) \oplus (P_2 \oplus k) = P_1 \oplus P_2$$</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>O resultado, o XOR dos dois textos claros, já não depende da chave, e é frequentemente suficiente para recuperar ambas as mensagens através de análise estatística da língua, tal como se fez com o método de Kasiski no capítulo 1. Este é o chamado **ataque do two-time pad**, e foi exactamente o tipo de falha, na reutilização de valores de inicialização, que tornou o protocolo WEP (a primeira norma de segurança Wi-Fi) praticamente inútil.</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## RC4 {#sec-04-rc4}</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>O **RC4**, desenhado por Ron Rivest na RSA Security em 1987, foi mantido como segredo comercial até ser divulgado, sem autorização, em 1994. Aceita chaves de comprimento variável, entre 40 e 2048 bits, e mantém um estado interno de 256 bytes (um *array* $S$, com dois ponteiros auxiliares $i$ e $j$). É orientado a byte (não a bit), e organiza-se em duas fases:</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**KSA** (*Key Scheduling Algorithm*): a partir da chave, constrói e permuta o *array* $S$ de 256 valores (inicialmente $S<span class="co">[</span><span class="ot">i</span><span class="co">]</span>=i$), misturando-o repetidamente com os bytes da chave.</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**PRGA** (*Pseudo-Random Generation Algorithm*): a cada iteração, actualiza os dois ponteiros $i$ e $j$, troca $S<span class="co">[</span><span class="ot">i</span><span class="co">]</span>$ com $S<span class="co">[</span><span class="ot">j</span><span class="co">]</span>$, e produz um byte do fluxo de chave.</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>!<span class="co">[</span><span class="ot">O mecanismo interno do RC4: a KSA permuta o array $S$ de 256 bytes a partir da chave; a PRGA, a cada iteração, actualiza os índices $i$ e $j$, troca $S[i]$ com $S[j]$, e extrai um byte do fluxo de chave, combinado por XOR com o texto claro.</span><span class="co">](../assets/images/fig-rc4-prga.png)</span>{#fig-04-rc4-prga width=95%}</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>Um detalhe do desenho do RC4 vale a pena assinalar: **não existe nenhum mecanismo de *nonce* incorporado no algoritmo** — "como não acontece numa cifra de fluxo decente", nas palavras do criptógrafo Jean-Philippe Aumasson [@Aumasson2017]. Qualquer *nonce* tem de ser adicionado externamente, por quem implementa o protocolo, e foi precisamente aqui que o WEP falhou: prefixava a chave com um *nonce* curto e previsível antes de cada KSA, tornando o sistema vulnerável ao **ataque de Fluhrer, Mantin e Shamir** (2001) [@FMS2001], que explora o facto de os primeiros bytes do fluxo de chave do RC4 não serem estatisticamente uniformes. O caso mais conhecido: o **segundo byte** do fluxo de chave vale zero com uma probabilidade de $1/128$, o dobro do que seria de esperar ($1/256$) num byte verdadeiramente aleatório <span class="co">[</span><span class="ot">@Aumasson2017</span><span class="co">]</span> — um desvio pequeno, mas suficiente para, com milhões de mensagens interceptadas, distinguir estatisticamente o RC4 de uma fonte aleatória e, em certas condições, recuperar bytes do texto claro sem nunca descobrir a chave. A mitigação proposta, descartar os primeiros 3072 bytes do fluxo antes de o usar (RC4-drop3072), reduz mas não elimina o problema. Um segundo ataque prático, contra o próprio TLS, foi publicado em 2013 <span class="co">[</span><span class="ot">@AlFardan2013</span><span class="co">]</span>. Confrontado com estas fragilidades acumuladas, o RC4 foi formalmente banido do TLS pela *Internet Engineering Task Force* em 2015 <span class="co">[</span><span class="ot">@RFC7465</span><span class="co">]</span>, e não deve ser usado em nenhum sistema novo.</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## Duas Arquitecturas: Stateful vs. por Contador {#sec-04-arquitecturas}</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>Antes de avançar para o Salsa20 e o ChaCha20, vale a pena situar o RC4 numa classificação mais geral. As cifras de fluxo organizam-se em duas grandes arquitecturas, consoante a forma como produzem o fluxo de chave <span class="co">[</span><span class="ot">@Aumasson2017</span><span class="co">]</span>.</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>Uma **cifra de fluxo com estado** (*stateful*) inicializa um estado interno a partir da chave e do *nonce* (a fase `Init`), e depois vai **actualizando esse estado** a cada novo bloco do fluxo de chave (a fase <span class="in">`Update`</span>, repetida), de forma sequencial: cada actualização depende da anterior. O RC4, já apresentado, é exactamente disto: a KSA inicializa o *array* $S$, e cada iteração da PRGA actualiza $S$ antes de produzir o byte seguinte do fluxo.</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="al">![Uma cifra de fluxo com estado: a fase Init prepara um estado interno a partir da chave e do nonce; cada fase Update seguinte modifica esse estado e produz um novo troço do fluxo de chave, de forma sequencial.](../assets/images/fig-cifra-fluxo-stateful.png)</span>{#fig-04-fluxo-stateful width=90%}</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>Uma **cifra de fluxo por contador** (*counter-based*) segue uma lógica diferente: não mantém nenhum estado secreto entre blocos, para além do valor de um contador público. Cada bloco do fluxo de chave calcula-se de novo, directamente a partir da chave, do *nonce* e do valor do contador nesse bloco — sem depender do resultado do bloco anterior.</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="al">![Uma cifra de fluxo por contador: cada bloco do fluxo de chave é calculado independentemente, a partir da chave, do nonce e do valor do contador nesse bloco.](../assets/images/fig-cifra-fluxo-contador.png)</span>{#fig-04-fluxo-contador width=90%}</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>Esta diferença arquitectural tem uma consequência prática directa, já referida a propósito do modo CTR no capítulo anterior: como cada bloco de uma cifra por contador é independente dos restantes, pode calcular-se **em paralelo**, ao contrário de uma cifra com estado, em que cada actualização tem de esperar pela anterior. O Salsa20 e o ChaCha20, apresentados de seguida, seguem exactamente esta segunda arquitectura.</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="fu">## Salsa20 {#sec-04-salsa20}</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>Em resposta às fragilidades do RC4, Daniel J. Bernstein desenhou o **Salsa20** em 2005, submetido ao concurso *eSTREAM* (o projecto europeu ECRYPT para cifras de fluxo), onde foi seleccionado para o portefólio final de algoritmos recomendados para software.</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>Ao contrário do RC4, o Salsa20 não mantém um estado que evolui byte a byte, nem usa S-boxes ou tabelas de substituição. Baseia-se exclusivamente em três operações, **soma, rotação de bits e XOR** — por isso chamada uma construção **ARX** (*Add-Rotate-XOR*). O seu estado interno é uma matriz $4\times4$ de palavras de 32 bits (512 bits, 64 bytes no total), organizada em quatro grupos: constantes fixas, a chave (128 ou 256 bits), o *nonce* (64 bits) e um contador (64 bits). Para gerar cada bloco de 64 bytes de fluxo de chave, aplicam-se 20 rondas de uma **função de quarto de ronda**, $QR(a,b,c,d)$:</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>$$b \mathrel{\oplus}= (a+d) \lll 7 \qquad c \mathrel{\oplus}= (b+a) \lll 9$$</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>$$d \mathrel{\oplus}= (c+b) \lll 13 \qquad a \mathrel{\oplus}= (d+c) \lll 18$$</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>e o resultado final soma-se (módulo $2^{32}$, palavra a palavra) ao estado inicial.</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="al">![O esquema de cifragem do Salsa20 para um bloco de texto claro: o núcleo Salsa20 transforma $K \Vert N \Vert \mathrm{Ctr}$, o resultado soma-se (módulo $2^{32}$, quadrado com "+") ao estado inicial para formar o bloco de fluxo de chave, que finalmente se combina por XOR (círculo com "+") com o texto claro.](../assets/images/fig-salsa20-esquema.png)</span>{#fig-04-salsa20-esquema width=45%}</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a>Repare-se na distinção entre as duas operações da figura: a soma final ao estado inicial (quadrado) é **adição modular**, não XOR, e é precisamente o que torna a transformação impossível de inverter sem conhecer a chave — se o Salsa20 devolvesse directamente a permutação do núcleo, sem esta soma, seria trivialmente invertível. Só depois desta soma é que o resultado se combina por XOR (círculo) com o texto claro. Como cada bloco de 64 bytes é gerado de forma independente dos restantes (a partir da chave, do *nonce* e do valor do contador nesse bloco), o Salsa20 é inteiramente **paralelizável**, tanto na cifragem como na decifragem.</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>O melhor ataque conhecido contra o Salsa20 reduz-se a 15 das 20 rondas <span class="co">[</span><span class="ot">@Aumasson2017</span><span class="co">]</span>; a versão completa, de 20 rondas, não tem, até hoje, nenhum ataque prático conhecido, e é considerada segura.</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a><span class="fu">## ChaCha20 {#sec-04-chacha20}</span></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a>O **ChaCha20**, também desenhado por Bernstein, em 2008, é uma variante do Salsa20 com uma função de quarto de ronda modificada, que alcança melhor difusão por ronda: cada palavra de 32 bits participa tanto numa soma como numa rotação em cada um dos quatro passos, o que faz o efeito de cada bit espalhar-se mais depressa pelo resto do estado. É hoje a cifra de fluxo de referência, usada, entre outros, no TLS 1.3, no QUIC, no WireGuard, no SSH e por omissão no OpenSSH desde 2014.</span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>$$a \mathrel{+}= b;\ d \mathrel{\oplus}= a;\ d \lll 16 \qquad c \mathrel{+}= d;\ b \mathrel{\oplus}= c;\ b \lll 12$$</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>$$a \mathrel{+}= b;\ d \mathrel{\oplus}= a;\ d \lll 8 \qquad c \mathrel{+}= d;\ b \mathrel{\oplus}= c;\ b \lll 7$$</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>As constantes de rotação (16, 12, 8, 7) e a ordem das operações são diferentes das do Salsa20 (7, 9, 13, 18), precisamente para conseguir essa difusão mais rápida. Em relação ao Salsa20, o ChaCha20 normalizado pelo IETF usa ainda um *nonce* maior, de 96 bits (em vez de 64), e um contador mais pequeno, de 32 bits — suficiente para gerar até 256 GB de fluxo de chave a partir de um único *nonce*.</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>O ChaCha20 é frequentemente combinado com um mecanismo de autenticação de mensagem, o Poly1305, na construção **ChaCha20-Poly1305**, normalizada no RFC 8439 <span class="co">[</span><span class="ot">@RFC8439</span><span class="co">]</span>: o primeiro bloco gerado pelo ChaCha20 (bloco 0) deriva a chave do Poly1305; os blocos seguintes (1 a $N$) fornecem o fluxo de chave que cifra a mensagem por XOR; e o Poly1305 calcula, sobre o texto cifrado e sobre eventuais dados associados não cifrados (*additional authenticated data*, AAD, como cabeçalhos de rede), uma marca de autenticação (*tag*) de 128 bits, que acompanha o texto cifrado.</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="al">![A construção ChaCha20-Poly1305: o bloco 0 do ChaCha20 deriva a chave do Poly1305; os blocos seguintes fornecem o fluxo de chave que cifra a mensagem por XOR; o Poly1305 autentica os dados associados (AAD) e o texto cifrado, produzindo uma marca de 128 bits.](../assets/images/fig-chacha20-poly1305.png)</span>{#fig-04-chacha20-poly1305 width=90%}</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>Esta é uma **cifra autenticada** (*AEAD*, *Authenticated Encryption with Associated Data*), o mesmo conceito já introduzido a propósito do modo GCM no capítulo anterior: garante simultaneamente confidencialidade e integridade, numa única construção. O ChaCha20, tal como o Salsa20, não tem, até hoje, nenhuma fragilidade estatística conhecida que o torne distinguível de uma fonte aleatória.</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="fu">## Padding {#sec-04-padding}</span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>Uma cifra de fluxo, como se viu, dispensa qualquer noção de bloco: processa a mensagem byte a byte, seja qual for o seu comprimento. As cifras de bloco em modos como o CBC ou o ECB não têm essa liberdade: exigem que a mensagem seja um múltiplo exacto do tamanho do bloco antes de a cifrar. Quando o último bloco de uma mensagem não está completo, o algoritmo de cifragem não tem bytes suficientes para o processar.</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>O **padding** resolve isto acrescentando bytes extra ao fim da mensagem, antes da cifragem, até completar o bloco. O esquema mais comum é o **PKCS#7**: se faltam $n$ bytes para completar o último bloco, preenchem-se esses $n$ bytes com o valor $n$ (em hexadecimal, <span class="in">`0xN`</span>). Por exemplo, se faltam 10 bytes para completar o bloco, acrescentam-se dez bytes, todos com o valor <span class="in">`0xA`</span>. Do lado da decifragem, basta ler o valor do último byte recebido para saber exactamente quantos bytes de *padding* remover, sem qualquer ambiguidade.</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>Vale a pena recordar, como já ficou registado na tabela de modos de operação do capítulo anterior, que o **CBC** é precisamente um dos modos que depende deste mecanismo — e que uma validação de *padding* mal implementada, que revele a um atacante, através de uma mensagem de erro ou de uma diferença de tempo de resposta, se o *padding* recebido era ou não válido, pode ser explorada para decifrar mensagens inteiras sem nunca conhecer a chave, byte a byte, através do chamado **ataque de oráculo de padding** (*padding oracle attack*). A lição de fundo é a mesma que já apareceu antes neste livro: um mecanismo matematicamente correcto pode ainda assim falhar por causa de como é implementado.</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-04-sintese}</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>Este capítulo apresentou a segunda grande família de cifras simétricas:</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Uma **cifra de fluxo** gera um fluxo de chave pseudo-aleatório, combinado com o texto claro por XOR, byte a byte, sem noção de bloco — o equivalente pseudo-aleatório do One-Time Pad</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Nunca reutilizar o mesmo par (chave, *nonce*)**: fazê-lo permite o ataque do *two-time pad*, que cancela o fluxo de chave e expõe o XOR dos dois textos claros</span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>O **RC4**, sem *nonce* incorporado e com um fluxo de chave estatisticamente enviesado nos primeiros bytes, acumulou fragilidades (Fluhrer–Mantin–Shamir, 2001; AlFardan et al., 2013) que o tornaram inseguro, e está hoje banido de normas como o TLS</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>O **Salsa20** e o **ChaCha20**, construções ARX (soma, rotação, XOR) desenhadas por Bernstein, não têm fragilidades práticas conhecidas; o ChaCha20, com melhor difusão por ronda, é hoje a cifra de fluxo de referência, frequentemente usada em conjunto com o Poly1305 numa construção AEAD</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>O **padding** (nomeadamente o esquema PKCS#7) permite às cifras de bloco em modos como o CBC processar mensagens de qualquer comprimento, mas a sua implementação incorrecta pode originar ataques de oráculo de *padding*</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-04-reflexao}</span></span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>O RC4 não tem nenhum mecanismo de *nonce* incorporado; o ChaCha20 exige um *nonce* de 96 bits para cada mensagem. Tendo em conta o ataque do *two-time pad* apresentado neste capítulo, que consequência prática tem esta diferença de desenho para quem implementa um protocolo de comunicação com qualquer uma destas duas cifras?</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-04-referencias .unnumbered}</span></span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Criptografia — Cibersegurança, UTAD</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
