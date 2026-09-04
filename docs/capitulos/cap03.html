@@ -294,8 +294,9 @@ window.Quarto = {
   <li><a href="#sec-03-gcm" id="toc-sec-03-gcm" class="nav-link" data-scroll-target="#sec-03-gcm"><span class="header-section-number">3.6.5</span> GCM — Galois/Counter Mode</a></li>
   <li><a href="#sec-03-modos-comparacao" id="toc-sec-03-modos-comparacao" class="nav-link" data-scroll-target="#sec-03-modos-comparacao"><span class="header-section-number">3.6.6</span> Comparação dos modos de operação</a></li>
   </ul></li>
-  <li><a href="#sec-03-sintese" id="toc-sec-03-sintese" class="nav-link" data-scroll-target="#sec-03-sintese"><span class="header-section-number">3.7</span> Síntese do Capítulo</a></li>
-  <li><a href="#sec-03-reflexao" id="toc-sec-03-reflexao" class="nav-link" data-scroll-target="#sec-03-reflexao"><span class="header-section-number">3.8</span> Para Pensar</a></li>
+  <li><a href="#sec-03-padding" id="toc-sec-03-padding" class="nav-link" data-scroll-target="#sec-03-padding"><span class="header-section-number">3.7</span> Padding</a></li>
+  <li><a href="#sec-03-sintese" id="toc-sec-03-sintese" class="nav-link" data-scroll-target="#sec-03-sintese"><span class="header-section-number">3.8</span> Síntese do Capítulo</a></li>
+  <li><a href="#sec-03-reflexao" id="toc-sec-03-reflexao" class="nav-link" data-scroll-target="#sec-03-reflexao"><span class="header-section-number">3.9</span> Para Pensar</a></li>
   <li><a href="#sec-03-referencias" id="toc-sec-03-referencias" class="nav-link" data-scroll-target="#sec-03-referencias">Referências</a></li>
   </ul>
 </nav>
@@ -452,13 +453,23 @@ Figura&nbsp;3.6: A estrutura completa do AES: um <code>AddRoundKey</code> inicia
 <section id="sec-03-ecb" class="level3" data-number="3.6.1">
 <h3 data-number="3.6.1" class="anchored" data-anchor-id="sec-03-ecb"><span class="header-section-number">3.6.1</span> ECB — Electronic Codebook</h3>
 <p>O modo mais simples divide a mensagem em blocos e cifra cada um independentemente, com a mesma chave: <span class="math inline">\(C_i = E_K(P_i)\)</span>. É simples e paralelizável, mas tem um defeito grave: <strong>blocos de texto claro idênticos produzem sempre blocos de texto cifrado idênticos</strong>. Isto é exactamente o mesmo problema de fundo já visto na cifra monoalfabética, só que ao nível de blocos de 128 bits em vez de letras individuais: qualquer padrão ou repetição estrutural da mensagem original permanece visível no texto cifrado, mesmo sem se decifrar nada.</p>
+<div id="fig-03-modo-ecb" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-03-modo-ecb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-modo-ecb.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-03-modo-ecb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3.7: O modo ECB: cada bloco de texto claro é cifrado (ou decifrado) de forma completamente independente dos restantes, sempre com a mesma chave <span class="math inline">\(K\)</span> — daí a ausência de qualquer ligação entre blocos consecutivos.
+</figcaption>
+</figure>
+</div>
 <div id="fig-03-ecb-cbc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-03-ecb-cbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="../assets/images/fig-ecb-vs-cbc.png" class="img-fluid figure-img" style="width:95.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-03-ecb-cbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;3.7: Um texto claro organizado em blocos, com um padrão estrutural óbvio (moldura, cruz), cifrado em modo ECB e em modo CBC. Sob ECB, blocos de texto claro idênticos geram blocos de texto cifrado idênticos: o padrão original mantém-se perfeitamente visível, apenas com cores (valores) diferentes. Sob CBC, o mesmo padrão desaparece por completo.
+Figura&nbsp;3.8: Um texto claro organizado em blocos, com um padrão estrutural óbvio (moldura, cruz), cifrado em modo ECB e em modo CBC. Sob ECB, blocos de texto claro idênticos geram blocos de texto cifrado idênticos: o padrão original mantém-se perfeitamente visível, apenas com cores (valores) diferentes. Sob CBC, o mesmo padrão desaparece por completo.
 </figcaption>
 </figure>
 </div>
@@ -468,7 +479,17 @@ Figura&nbsp;3.7: Um texto claro organizado em blocos, com um padrão estrutural 
 <p>O <strong>CBC</strong> resolve este problema encadeando os blocos: antes de cifrar cada bloco de texto claro, combina-se por XOR com o bloco de texto cifrado anterior.</p>
 <p><span class="math display">\[C_i = E_K(P_i \oplus C_{i-1})\]</span></p>
 <p>Como não existe um “bloco anterior” para o primeiro bloco da mensagem, usa-se um <strong>vector de inicialização</strong> (<em>initialization vector</em>, IV): um bloco aleatório, gerado de novo em cada mensagem, que substitui <span class="math inline">\(C_0\)</span>. O IV não precisa de ser secreto, apenas único e imprevisível, e é normalmente transmitido em claro junto com o texto cifrado.</p>
-<p>Como cada bloco cifrado depende de todos os blocos de texto claro anteriores (através da cadeia de XORs), blocos de texto claro idênticos deixam de produzir blocos de texto cifrado idênticos, como se vê na Figura <a href="#fig-03-ecb-cbc" class="quarto-xref"><span>3.7</span></a>: o padrão original desaparece completamente. A decifragem inverte exactamente este processo:</p>
+<div id="fig-03-modo-cbc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-03-modo-cbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-modo-cbc.png" class="img-fluid figure-img" style="width:95.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-03-modo-cbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3.9: O modo CBC: na cifragem (topo), cada bloco de texto claro combina-se por XOR com o bloco de texto cifrado anterior antes de entrar na cifra de bloco, com o IV a substituir esse bloco anterior para o primeiro bloco da mensagem. Na decifragem (baixo), o processo inverte-se: cada bloco de texto cifrado é decifrado e o resultado combina-se por XOR com o bloco de texto cifrado anterior (ou o IV) para recuperar o texto claro.
+</figcaption>
+</figure>
+</div>
+<p>Como cada bloco cifrado depende de todos os blocos de texto claro anteriores (através da cadeia de XORs), blocos de texto claro idênticos deixam de produzir blocos de texto cifrado idênticos, como se vê na Figura <a href="#fig-03-ecb-cbc" class="quarto-xref"><span>3.8</span></a>: o padrão original desaparece completamente. A decifragem inverte exactamente este processo:</p>
 <p><span class="math display">\[P_i = D_K(C_i) \oplus C_{i-1}\]</span></p>
 <p>Note-se uma assimetria entre as duas direcções: a <strong>decifragem</strong> em CBC é paralelizável, porque cada bloco decifrado só depende do bloco de texto cifrado anterior, já disponível na totalidade; a <strong>cifragem</strong>, pelo contrário, não é, porque cada bloco só pode ser cifrado depois de o anterior estar pronto, uma vez que é o seu resultado que entra na cadeia seguinte.</p>
 </section>
@@ -476,12 +497,23 @@ Figura&nbsp;3.7: Um texto claro organizado em blocos, com um padrão estrutural 
 <h3 data-number="3.6.3" class="anchored" data-anchor-id="sec-03-cfb"><span class="header-section-number">3.6.3</span> CFB — Cipher Feedback Mode</h3>
 <p>O <strong>CFB</strong> consegue um efeito semelhante ao CBC, eliminar o padrão do ECB, mas por um caminho diferente: em vez de cifrar o texto claro directamente, cifra-se o bloco de texto cifrado anterior, e o resultado combina-se por XOR com o texto claro para produzir o bloco seguinte.</p>
 <p><span class="math display">\[C_i = P_i \oplus E_K(C_{i-1})\]</span></p>
-<p>com <span class="math inline">\(C_0 = \text{IV}\)</span>. Tal como no CBC, o IV não pode ser reutilizado, mas pode ser público. O CFB comporta-se, na prática, como uma <strong>cifra de pseudo-fluxo</strong>: em vez de cifrar blocos completos, pode operar sobre segmentos mais pequenos (por exemplo, byte a byte), o que o torna útil para fluxos de dados de comprimento variável. Tal como no CBC, a cifragem não é paralelizável, mas a decifragem é.</p>
+<p>com <span class="math inline">\(C_0 = \text{IV}\)</span>. Tal como no CBC, o IV não pode ser reutilizado, mas pode ser público.</p>
+<p><img src="../assets/images/fig-modo-cfb.png" id="fig-03-modo-cfb" class="img-fluid" style="width:95.0%" alt="O modo CFB: em cada passo, cifra-se o bloco de texto cifrado anterior (ou o IV, no primeiro passo) — nunca o texto claro directamente — e o resultado combina-se por XOR com o texto claro (topo) ou o texto cifrado (baixo, na decifragem) para produzir o bloco seguinte."> O CFB comporta-se, na prática, como uma <strong>cifra de pseudo-fluxo</strong>: em vez de cifrar blocos completos, pode operar sobre segmentos mais pequenos (por exemplo, byte a byte), o que o torna útil para fluxos de dados de comprimento variável. Tal como no CBC, a cifragem não é paralelizável, mas a decifragem é.</p>
 </section>
 <section id="sec-03-ctr" class="level3" data-number="3.6.4">
 <h3 data-number="3.6.4" class="anchored" data-anchor-id="sec-03-ctr"><span class="header-section-number">3.6.4</span> CTR — Counter Mode</h3>
 <p>O <strong>CTR</strong> segue uma abordagem diferente: em vez de cifrar o texto claro directamente, cifra-se um contador (combinado com um valor único por mensagem, o <em>nonce</em>), e o resultado combina-se por XOR com o texto claro:</p>
 <p><span class="math display">\[C_i = P_i \oplus E_K(\text{nonce} \mathbin\Vert i)\]</span></p>
+<div id="fig-03-modo-ctr" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-03-modo-ctr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-modo-ctr.png" class="img-fluid figure-img" style="width:95.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-03-modo-ctr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3.10: O modo CTR: cada contador <span class="math inline">\(T_i = \text{nonce} \Vert i\)</span> é cifrado independentemente dos restantes, e o resultado combina-se por XOR com o bloco de texto claro (topo) ou de texto cifrado (baixo) correspondente — cifragem e decifragem usam exactamente a mesma operação, <code>Block Cipher Encryption</code>.
+</figcaption>
+</figure>
+</div>
 <p>Isto transforma, na prática, uma cifra de bloco numa cifra de fluxo, tema do próximo capítulo: cada bloco de saída de <span class="math inline">\(E_K\)</span> funciona como uma sequência de bits pseudo-aleatória, gerada independentemente do texto claro. A vantagem prática mais relevante é que, ao contrário do CBC e do CFB, tanto a cifragem como a decifragem em CTR são inteiramente <strong>paralelizáveis</strong>: o bloco <span class="math inline">\(i\)</span> não depende do bloco <span class="math inline">\(i-1\)</span>, apenas do próprio contador, o que se traduz em desempenho significativamente superior em hardware moderno com múltiplos núcleos.</p>
 <p>Este ganho de desempenho tem duas contrapartidas importantes. Primeiro, <strong>reutilizar o mesmo nonce é catastrófico</strong>: tal como numa cifra de fluxo genuína (capítulo seguinte), reutilizá-lo produz o mesmo fluxo pseudo-aleatório para duas mensagens diferentes, expondo-as ao ataque do <em>two-time pad</em>. Segundo, o CTR é <strong>maleável</strong>: como a cifragem actua sobre o contador, não sobre o texto claro, a propriedade de difusão do AES nunca chega a actuar sobre a relação entre texto cifrado e texto claro. Um atacante que altere um bit do texto cifrado altera exactamente o bit correspondente do texto claro decifrado, de forma previsível, sem que nada no CTR o detecte.</p>
 </section>
@@ -559,8 +591,15 @@ Tabela&nbsp;3.1: Comparação dos modos de operação apresentados neste capítu
 </div>
 </section>
 </section>
-<section id="sec-03-sintese" class="level2" data-number="3.7">
-<h2 data-number="3.7" class="anchored" data-anchor-id="sec-03-sintese"><span class="header-section-number">3.7</span> Síntese do Capítulo</h2>
+<section id="sec-03-padding" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="sec-03-padding"><span class="header-section-number">3.7</span> Padding</h2>
+<p>Uma cifra de bloco, como o AES, cifra sempre um bloco de tamanho fixo, 128 bits (16 bytes). Nem todas as mensagens têm um comprimento múltiplo exacto desse tamanho: quando o último bloco de uma mensagem não está completo, o algoritmo de cifragem não tem bytes suficientes para o processar.</p>
+<p>O <strong>padding</strong> resolve isto acrescentando bytes extra ao fim da mensagem, antes da cifragem, até completar esse último bloco. O esquema mais comum é o <strong>PKCS#7</strong>: se faltam <span class="math inline">\(n\)</span> bytes para completar o bloco, preenchem-se esses <span class="math inline">\(n\)</span> bytes com o valor <span class="math inline">\(n\)</span> (em hexadecimal, <code>0xN</code>). Por exemplo, se faltam 10 bytes para completar o bloco, acrescentam-se dez bytes, todos com o valor <code>0xA</code>. Do lado da decifragem, basta ler o valor do último byte recebido para saber exactamente quantos bytes de <em>padding</em> remover, sem qualquer ambiguidade.</p>
+<p>Nem todos os modos apresentados neste capítulo precisam de <em>padding</em>: só os que cifram o texto claro directamente, bloco a bloco, como o <strong>ECB</strong> e o <strong>CBC</strong> (Tabela <a href="#tbl-03-modos" class="quarto-xref"><span>3.1</span></a>). O <strong>CTR</strong> e o <strong>GCM</strong>, por transformarem a cifra de bloco numa espécie de cifra de fluxo, combinando-a com o texto claro por XOR em vez de a aplicar directamente, dispensam-no inteiramente: podem cifrar mensagens de qualquer comprimento, byte a byte, sem nunca precisar de completar um bloco final.</p>
+<p>Vale a pena assinalar desde já uma consequência de segurança importante: uma validação de <em>padding</em> mal implementada, que revele a um atacante, através de uma mensagem de erro ou de uma diferença de tempo de resposta, se o <em>padding</em> recebido era ou não válido, pode ser explorada para decifrar mensagens inteiras sem nunca conhecer a chave, byte a byte, através do chamado <strong>ataque de oráculo de padding</strong> (<em>padding oracle attack</em>). A lição de fundo é uma que se repete ao longo deste livro: um mecanismo matematicamente correcto pode ainda assim falhar por causa de como é implementado.</p>
+</section>
+<section id="sec-03-sintese" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="sec-03-sintese"><span class="header-section-number">3.8</span> Síntese do Capítulo</h2>
 <p>Este capítulo apresentou o algoritmo que hoje ocupa o lugar do DES, e a forma como se aplica a mensagens de qualquer tamanho:</p>
 <ol type="1">
 <li>O <strong>AES</strong> resultou de um concurso público do NIST, vencido pelo algoritmo <strong>Rijndael</strong>, e normalizado em 2001</li>
@@ -570,10 +609,11 @@ Tabela&nbsp;3.1: Comparação dos modos de operação apresentados neste capítu
 <li>Não existe, até hoje, nenhum ataque criptanalítico prático contra o AES; as vulnerabilidades reais são de implementação (ataques de canal lateral), não do algoritmo em si</li>
 <li>Um <strong>modo de operação</strong> define como aplicar uma cifra de bloco a mensagens maiores do que um bloco: o <strong>ECB</strong> é simples mas revela padrões estruturais; o <strong>CBC</strong> e o <strong>CFB</strong> encadeiam os blocos e eliminam-os, à custa da cifragem não ser paralelizável; o <strong>CTR</strong> transforma a cifra de bloco numa cifra de fluxo, totalmente paralelizável, mas maleável</li>
 <li>Nenhum destes modos protege a integridade da mensagem; o <strong>GCM</strong> resolve isto combinando o CTR com autenticação (GHASH), numa construção <strong>AEAD</strong> que é hoje o modo recomendado para a generalidade das aplicações novas</li>
+<li>O <strong>padding</strong> (nomeadamente o esquema PKCS#7) permite aos modos que cifram directamente bloco a bloco, como o ECB e o CBC, processar mensagens de qualquer comprimento; o CTR e o GCM dispensam-no. Uma implementação incorrecta da validação de <em>padding</em> pode originar ataques de oráculo de <em>padding</em></li>
 </ol>
 </section>
-<section id="sec-03-reflexao" class="level2" data-number="3.8">
-<h2 data-number="3.8" class="anchored" data-anchor-id="sec-03-reflexao"><span class="header-section-number">3.8</span> Para Pensar</h2>
+<section id="sec-03-reflexao" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="sec-03-reflexao"><span class="header-section-number">3.9</span> Para Pensar</h2>
 <p>O DES combina confusão e difusão através de uma única função <span class="math inline">\(F\)</span>, aplicada apenas a metade do bloco por ronda. O AES separa estas duas propriedades em transformações distintas (<code>SubBytes</code> para a confusão, <code>ShiftRows</code>/<code>MixColumns</code> para a difusão), aplicadas ao bloco inteiro. Que vantagens pode trazer esta separação explícita, tanto para a análise de segurança do algoritmo como para o seu desempenho em hardware?</p>
 </section>
 <section id="sec-03-referencias" class="level2 unnumbered">
@@ -1308,80 +1348,100 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a>O modo mais simples divide a mensagem em blocos e cifra cada um independentemente, com a mesma chave: $C_i = E_K(P_i)$. É simples e paralelizável, mas tem um defeito grave: **blocos de texto claro idênticos produzem sempre blocos de texto cifrado idênticos**. Isto é exactamente o mesmo problema de fundo já visto na cifra monoalfabética, só que ao nível de blocos de 128 bits em vez de letras individuais: qualquer padrão ou repetição estrutural da mensagem original permanece visível no texto cifrado, mesmo sem se decifrar nada.</span>
 <span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="al">![Um texto claro organizado em blocos, com um padrão estrutural óbvio (moldura, cruz), cifrado em modo ECB e em modo CBC. Sob ECB, blocos de texto claro idênticos geram blocos de texto cifrado idênticos: o padrão original mantém-se perfeitamente visível, apenas com cores (valores) diferentes. Sob CBC, o mesmo padrão desaparece por completo.](../assets/images/fig-ecb-vs-cbc.png)</span>{#fig-03-ecb-cbc width=95%}</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="al">![O modo ECB: cada bloco de texto claro é cifrado (ou decifrado) de forma completamente independente dos restantes, sempre com a mesma chave $K$ — daí a ausência de qualquer ligação entre blocos consecutivos.](../assets/images/fig-modo-ecb.png)</span>{#fig-03-modo-ecb width=90%}</span>
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="fu">### CBC — Cipher Block Chaining {#sec-03-cbc}</span></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="al">![Um texto claro organizado em blocos, com um padrão estrutural óbvio (moldura, cruz), cifrado em modo ECB e em modo CBC. Sob ECB, blocos de texto claro idênticos geram blocos de texto cifrado idênticos: o padrão original mantém-se perfeitamente visível, apenas com cores (valores) diferentes. Sob CBC, o mesmo padrão desaparece por completo.](../assets/images/fig-ecb-vs-cbc.png)</span>{#fig-03-ecb-cbc width=95%}</span>
 <span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>O **CBC** resolve este problema encadeando os blocos: antes de cifrar cada bloco de texto claro, combina-se por XOR com o bloco de texto cifrado anterior.</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="fu">### CBC — Cipher Block Chaining {#sec-03-cbc}</span></span>
 <span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>$$C_i = E_K(P_i \oplus C_{i-1})$$</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>O **CBC** resolve este problema encadeando os blocos: antes de cifrar cada bloco de texto claro, combina-se por XOR com o bloco de texto cifrado anterior.</span>
 <span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>Como não existe um "bloco anterior" para o primeiro bloco da mensagem, usa-se um **vector de inicialização** (*initialization vector*, IV): um bloco aleatório, gerado de novo em cada mensagem, que substitui $C_0$. O IV não precisa de ser secreto, apenas único e imprevisível, e é normalmente transmitido em claro junto com o texto cifrado.</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a>$$C_i = E_K(P_i \oplus C_{i-1})$$</span>
 <span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>Como cada bloco cifrado depende de todos os blocos de texto claro anteriores (através da cadeia de XORs), blocos de texto claro idênticos deixam de produzir blocos de texto cifrado idênticos, como se vê na Figura <span class="co">[</span><span class="ot">-@fig-03-ecb-cbc</span><span class="co">]</span>: o padrão original desaparece completamente. A decifragem inverte exactamente este processo:</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>Como não existe um "bloco anterior" para o primeiro bloco da mensagem, usa-se um **vector de inicialização** (*initialization vector*, IV): um bloco aleatório, gerado de novo em cada mensagem, que substitui $C_0$. O IV não precisa de ser secreto, apenas único e imprevisível, e é normalmente transmitido em claro junto com o texto cifrado.</span>
 <span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a>$$P_i = D_K(C_i) \oplus C_{i-1}$$</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="al">![O modo CBC: na cifragem (topo), cada bloco de texto claro combina-se por XOR com o bloco de texto cifrado anterior antes de entrar na cifra de bloco, com o IV a substituir esse bloco anterior para o primeiro bloco da mensagem. Na decifragem (baixo), o processo inverte-se: cada bloco de texto cifrado é decifrado e o resultado combina-se por XOR com o bloco de texto cifrado anterior (ou o IV) para recuperar o texto claro.](../assets/images/fig-modo-cbc.png)</span>{#fig-03-modo-cbc width=95%}</span>
 <span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>Note-se uma assimetria entre as duas direcções: a **decifragem** em CBC é paralelizável, porque cada bloco decifrado só depende do bloco de texto cifrado anterior, já disponível na totalidade; a **cifragem**, pelo contrário, não é, porque cada bloco só pode ser cifrado depois de o anterior estar pronto, uma vez que é o seu resultado que entra na cadeia seguinte.</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>Como cada bloco cifrado depende de todos os blocos de texto claro anteriores (através da cadeia de XORs), blocos de texto claro idênticos deixam de produzir blocos de texto cifrado idênticos, como se vê na Figura <span class="co">[</span><span class="ot">-@fig-03-ecb-cbc</span><span class="co">]</span>: o padrão original desaparece completamente. A decifragem inverte exactamente este processo:</span>
 <span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="fu">### CFB — Cipher Feedback Mode {#sec-03-cfb}</span></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a>$$P_i = D_K(C_i) \oplus C_{i-1}$$</span>
 <span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>O **CFB** consegue um efeito semelhante ao CBC, eliminar o padrão do ECB, mas por um caminho diferente: em vez de cifrar o texto claro directamente, cifra-se o bloco de texto cifrado anterior, e o resultado combina-se por XOR com o texto claro para produzir o bloco seguinte.</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a>Note-se uma assimetria entre as duas direcções: a **decifragem** em CBC é paralelizável, porque cada bloco decifrado só depende do bloco de texto cifrado anterior, já disponível na totalidade; a **cifragem**, pelo contrário, não é, porque cada bloco só pode ser cifrado depois de o anterior estar pronto, uma vez que é o seu resultado que entra na cadeia seguinte.</span>
 <span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a>$$C_i = P_i \oplus E_K(C_{i-1})$$</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="fu">### CFB — Cipher Feedback Mode {#sec-03-cfb}</span></span>
 <span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>com $C_0 = \text{IV}$. Tal como no CBC, o IV não pode ser reutilizado, mas pode ser público. O CFB comporta-se, na prática, como uma **cifra de pseudo-fluxo**: em vez de cifrar blocos completos, pode operar sobre segmentos mais pequenos (por exemplo, byte a byte), o que o torna útil para fluxos de dados de comprimento variável. Tal como no CBC, a cifragem não é paralelizável, mas a decifragem é.</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>O **CFB** consegue um efeito semelhante ao CBC, eliminar o padrão do ECB, mas por um caminho diferente: em vez de cifrar o texto claro directamente, cifra-se o bloco de texto cifrado anterior, e o resultado combina-se por XOR com o texto claro para produzir o bloco seguinte.</span>
 <span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="fu">### CTR — Counter Mode {#sec-03-ctr}</span></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a>$$C_i = P_i \oplus E_K(C_{i-1})$$</span>
 <span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>O **CTR** segue uma abordagem diferente: em vez de cifrar o texto claro directamente, cifra-se um contador (combinado com um valor único por mensagem, o *nonce*), e o resultado combina-se por XOR com o texto claro:</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>com $C_0 = \text{IV}$. Tal como no CBC, o IV não pode ser reutilizado, mas pode ser público.</span>
 <span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a>$$C_i = P_i \oplus E_K(\text{nonce} \mathbin\Vert i)$$</span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>Isto transforma, na prática, uma cifra de bloco numa cifra de fluxo, tema do próximo capítulo: cada bloco de saída de $E_K$ funciona como uma sequência de bits pseudo-aleatória, gerada independentemente do texto claro. A vantagem prática mais relevante é que, ao contrário do CBC e do CFB, tanto a cifragem como a decifragem em CTR são inteiramente **paralelizáveis**: o bloco $i$ não depende do bloco $i-1$, apenas do próprio contador, o que se traduz em desempenho significativamente superior em hardware moderno com múltiplos núcleos.</span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a>Este ganho de desempenho tem duas contrapartidas importantes. Primeiro, **reutilizar o mesmo nonce é catastrófico**: tal como numa cifra de fluxo genuína (capítulo seguinte), reutilizá-lo produz o mesmo fluxo pseudo-aleatório para duas mensagens diferentes, expondo-as ao ataque do *two-time pad*. Segundo, o CTR é **maleável**: como a cifragem actua sobre o contador, não sobre o texto claro, a propriedade de difusão do AES nunca chega a actuar sobre a relação entre texto cifrado e texto claro. Um atacante que altere um bit do texto cifrado altera exactamente o bit correspondente do texto claro decifrado, de forma previsível, sem que nada no CTR o detecte.</span>
-<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a><span class="fu">### GCM — Galois/Counter Mode {#sec-03-gcm}</span></span>
-<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a>Nenhum dos modos apresentados até aqui, ECB, CBC, CFB ou CTR, protege a **integridade** da mensagem: um atacante que intercepte o texto cifrado pode alterá-lo (o CTR, como se viu, é particularmente vulnerável a isto), e nenhum destes modos detecta a alteração — só garantem que o atacante não consegue ler o conteúdo original, não que não o consiga adulterar.</span>
-<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a>O **GCM** (*Galois/Counter Mode*) resolve isto: estende o modo CTR (do qual herda a confidencialidade e a total paralelização) com um mecanismo de autenticação baseado numa função de hash sobre um corpo finito, o **GHASH**. O resultado é uma **cifra autenticada** (*AEAD*, *Authenticated Encryption with Associated Data*): produz, além do texto cifrado, uma marca de autenticação (*tag*) de 128 bits, calculada não só sobre o texto cifrado mas também sobre eventuais **dados associados** não cifrados (*additional authenticated data*, AAD), como cabeçalhos de rede ou metadados que precisam de ser autenticados mas não escondidos. Qualquer alteração, ao texto cifrado ou ao AAD, invalida a marca.</span>
-<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a>Tal como no CTR, a reutilização do *nonce* (recomendado a 96 bits) em GCM é catastrófica, e já foi explorada em ataques práticos de falsificação contra implementações reais de TLS [@Bock2016]. Por combinar confidencialidade, integridade e paralelização total, o GCM é hoje o modo **recomendado** para a generalidade das aplicações novas, usado, entre outros, no TLS 1.3, no SSH, no IPsec e no QUIC.</span>
-<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a><span class="fu">### Comparação dos modos de operação {#sec-03-modos-comparacao}</span></span>
-<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a>| Modo | IV / nonce | Paralelizável (cifra / decifra) | Autenticação nativa | Uso recomendado |</span>
-<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>|---|---|---|---|---|</span>
-<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a>| ECB | Nenhum | Sim / Sim | Não | Nunca (revela padrões) |</span>
-<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>| CBC | IV aleatório | Não / Sim | Não | Uso legado; substituir por AEAD |</span>
-<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a>| CFB | IV aleatório | Não / Sim | Não | Fluxos de dados de comprimento variável |</span>
-<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>| CTR | Nonce único | Sim / Sim | Não | Alto débito, sem necessidade de autenticação |</span>
-<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a>| GCM | Nonce único (96 bits) | Sim / Sim | Sim (GHASH, 128 bits) | Recomendado (TLS 1.3, SSH, IPsec, QUIC) |</span>
-<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a>: Comparação dos modos de operação apresentados neste capítulo <span class="co">[</span><span class="ot">@NIST80038A; @NIST80038D</span><span class="co">]</span> {#tbl-03-modos}</span>
-<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-03-sintese}</span></span>
-<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>Este capítulo apresentou o algoritmo que hoje ocupa o lugar do DES, e a forma como se aplica a mensagens de qualquer tamanho:</span>
-<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>O **AES** resultou de um concurso público do NIST, vencido pelo algoritmo **Rijndael**, e normalizado em 2001</span>
-<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Ao contrário do DES, o AES **não é uma rede de Feistel**: é uma **rede de substituição-permutação** (SPN), em que cada ronda transforma o bloco inteiro</span>
-<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>O bloco é sempre de **128 bits**; a chave pode ser de **128, 192 ou 256 bits**, com **10, 12 ou 14 rondas**, respectivamente</span>
-<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Cada ronda aplica quatro transformações: **SubBytes** (confusão, via S-box não linear), **ShiftRows** e **MixColumns** (difusão, entre e dentro de colunas), e **AddRoundKey** (mistura com a subchave)</span>
-<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Não existe, até hoje, nenhum ataque criptanalítico prático contra o AES; as vulnerabilidades reais são de implementação (ataques de canal lateral), não do algoritmo em si</span>
-<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Um **modo de operação** define como aplicar uma cifra de bloco a mensagens maiores do que um bloco: o **ECB** é simples mas revela padrões estruturais; o **CBC** e o **CFB** encadeiam os blocos e eliminam-os, à custa da cifragem não ser paralelizável; o **CTR** transforma a cifra de bloco numa cifra de fluxo, totalmente paralelizável, mas maleável</span>
-<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Nenhum destes modos protege a integridade da mensagem; o **GCM** resolve isto combinando o CTR com autenticação (GHASH), numa construção **AEAD** que é hoje o modo recomendado para a generalidade das aplicações novas</span>
-<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-03-reflexao}</span></span>
-<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a>O DES combina confusão e difusão através de uma única função $F$, aplicada apenas a metade do bloco por ronda. O AES separa estas duas propriedades em transformações distintas (<span class="in">`SubBytes`</span> para a confusão, <span class="in">`ShiftRows`</span>/<span class="in">`MixColumns`</span> para a difusão), aplicadas ao bloco inteiro. Que vantagens pode trazer esta separação explícita, tanto para a análise de segurança do algoritmo como para o seu desempenho em hardware?</span>
-<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-03-referencias .unnumbered}</span></span>
-<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a><span class="al">![O modo CFB: em cada passo, cifra-se o bloco de texto cifrado anterior (ou o IV, no primeiro passo) — nunca o texto claro directamente — e o resultado combina-se por XOR com o texto claro (topo) ou o texto cifrado (baixo, na decifragem) para produzir o bloco seguinte.](../assets/images/fig-modo-cfb.png)</span>{#fig-03-modo-cfb width=95%}</span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a> O CFB comporta-se, na prática, como uma **cifra de pseudo-fluxo**: em vez de cifrar blocos completos, pode operar sobre segmentos mais pequenos (por exemplo, byte a byte), o que o torna útil para fluxos de dados de comprimento variável. Tal como no CBC, a cifragem não é paralelizável, mas a decifragem é.</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a><span class="fu">### CTR — Counter Mode {#sec-03-ctr}</span></span>
+<span id="cb1-118"><a href="#cb1-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-119"><a href="#cb1-119" aria-hidden="true" tabindex="-1"></a>O **CTR** segue uma abordagem diferente: em vez de cifrar o texto claro directamente, cifra-se um contador (combinado com um valor único por mensagem, o *nonce*), e o resultado combina-se por XOR com o texto claro:</span>
+<span id="cb1-120"><a href="#cb1-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-121"><a href="#cb1-121" aria-hidden="true" tabindex="-1"></a>$$C_i = P_i \oplus E_K(\text{nonce} \mathbin\Vert i)$$</span>
+<span id="cb1-122"><a href="#cb1-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-123"><a href="#cb1-123" aria-hidden="true" tabindex="-1"></a><span class="al">![O modo CTR: cada contador $T_i = \text{nonce} \Vert i$ é cifrado independentemente dos restantes, e o resultado combina-se por XOR com o bloco de texto claro (topo) ou de texto cifrado (baixo) correspondente — cifragem e decifragem usam exactamente a mesma operação, `Block Cipher Encryption`.](../assets/images/fig-modo-ctr.png)</span>{#fig-03-modo-ctr width=95%}</span>
+<span id="cb1-124"><a href="#cb1-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-125"><a href="#cb1-125" aria-hidden="true" tabindex="-1"></a>Isto transforma, na prática, uma cifra de bloco numa cifra de fluxo, tema do próximo capítulo: cada bloco de saída de $E_K$ funciona como uma sequência de bits pseudo-aleatória, gerada independentemente do texto claro. A vantagem prática mais relevante é que, ao contrário do CBC e do CFB, tanto a cifragem como a decifragem em CTR são inteiramente **paralelizáveis**: o bloco $i$ não depende do bloco $i-1$, apenas do próprio contador, o que se traduz em desempenho significativamente superior em hardware moderno com múltiplos núcleos.</span>
+<span id="cb1-126"><a href="#cb1-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-127"><a href="#cb1-127" aria-hidden="true" tabindex="-1"></a>Este ganho de desempenho tem duas contrapartidas importantes. Primeiro, **reutilizar o mesmo nonce é catastrófico**: tal como numa cifra de fluxo genuína (capítulo seguinte), reutilizá-lo produz o mesmo fluxo pseudo-aleatório para duas mensagens diferentes, expondo-as ao ataque do *two-time pad*. Segundo, o CTR é **maleável**: como a cifragem actua sobre o contador, não sobre o texto claro, a propriedade de difusão do AES nunca chega a actuar sobre a relação entre texto cifrado e texto claro. Um atacante que altere um bit do texto cifrado altera exactamente o bit correspondente do texto claro decifrado, de forma previsível, sem que nada no CTR o detecte.</span>
+<span id="cb1-128"><a href="#cb1-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-129"><a href="#cb1-129" aria-hidden="true" tabindex="-1"></a><span class="fu">### GCM — Galois/Counter Mode {#sec-03-gcm}</span></span>
+<span id="cb1-130"><a href="#cb1-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-131"><a href="#cb1-131" aria-hidden="true" tabindex="-1"></a>Nenhum dos modos apresentados até aqui, ECB, CBC, CFB ou CTR, protege a **integridade** da mensagem: um atacante que intercepte o texto cifrado pode alterá-lo (o CTR, como se viu, é particularmente vulnerável a isto), e nenhum destes modos detecta a alteração — só garantem que o atacante não consegue ler o conteúdo original, não que não o consiga adulterar.</span>
+<span id="cb1-132"><a href="#cb1-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-133"><a href="#cb1-133" aria-hidden="true" tabindex="-1"></a>O **GCM** (*Galois/Counter Mode*) resolve isto: estende o modo CTR (do qual herda a confidencialidade e a total paralelização) com um mecanismo de autenticação baseado numa função de hash sobre um corpo finito, o **GHASH**. O resultado é uma **cifra autenticada** (*AEAD*, *Authenticated Encryption with Associated Data*): produz, além do texto cifrado, uma marca de autenticação (*tag*) de 128 bits, calculada não só sobre o texto cifrado mas também sobre eventuais **dados associados** não cifrados (*additional authenticated data*, AAD), como cabeçalhos de rede ou metadados que precisam de ser autenticados mas não escondidos. Qualquer alteração, ao texto cifrado ou ao AAD, invalida a marca.</span>
+<span id="cb1-134"><a href="#cb1-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-135"><a href="#cb1-135" aria-hidden="true" tabindex="-1"></a>Tal como no CTR, a reutilização do *nonce* (recomendado a 96 bits) em GCM é catastrófica, e já foi explorada em ataques práticos de falsificação contra implementações reais de TLS [@Bock2016]. Por combinar confidencialidade, integridade e paralelização total, o GCM é hoje o modo **recomendado** para a generalidade das aplicações novas, usado, entre outros, no TLS 1.3, no SSH, no IPsec e no QUIC.</span>
+<span id="cb1-136"><a href="#cb1-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-137"><a href="#cb1-137" aria-hidden="true" tabindex="-1"></a><span class="fu">### Comparação dos modos de operação {#sec-03-modos-comparacao}</span></span>
+<span id="cb1-138"><a href="#cb1-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-139"><a href="#cb1-139" aria-hidden="true" tabindex="-1"></a>| Modo | IV / nonce | Paralelizável (cifra / decifra) | Autenticação nativa | Uso recomendado |</span>
+<span id="cb1-140"><a href="#cb1-140" aria-hidden="true" tabindex="-1"></a>|---|---|---|---|---|</span>
+<span id="cb1-141"><a href="#cb1-141" aria-hidden="true" tabindex="-1"></a>| ECB | Nenhum | Sim / Sim | Não | Nunca (revela padrões) |</span>
+<span id="cb1-142"><a href="#cb1-142" aria-hidden="true" tabindex="-1"></a>| CBC | IV aleatório | Não / Sim | Não | Uso legado; substituir por AEAD |</span>
+<span id="cb1-143"><a href="#cb1-143" aria-hidden="true" tabindex="-1"></a>| CFB | IV aleatório | Não / Sim | Não | Fluxos de dados de comprimento variável |</span>
+<span id="cb1-144"><a href="#cb1-144" aria-hidden="true" tabindex="-1"></a>| CTR | Nonce único | Sim / Sim | Não | Alto débito, sem necessidade de autenticação |</span>
+<span id="cb1-145"><a href="#cb1-145" aria-hidden="true" tabindex="-1"></a>| GCM | Nonce único (96 bits) | Sim / Sim | Sim (GHASH, 128 bits) | Recomendado (TLS 1.3, SSH, IPsec, QUIC) |</span>
+<span id="cb1-146"><a href="#cb1-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-147"><a href="#cb1-147" aria-hidden="true" tabindex="-1"></a>: Comparação dos modos de operação apresentados neste capítulo <span class="co">[</span><span class="ot">@NIST80038A; @NIST80038D</span><span class="co">]</span> {#tbl-03-modos}</span>
+<span id="cb1-148"><a href="#cb1-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-149"><a href="#cb1-149" aria-hidden="true" tabindex="-1"></a><span class="fu">## Padding {#sec-03-padding}</span></span>
+<span id="cb1-150"><a href="#cb1-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-151"><a href="#cb1-151" aria-hidden="true" tabindex="-1"></a>Uma cifra de bloco, como o AES, cifra sempre um bloco de tamanho fixo, 128 bits (16 bytes). Nem todas as mensagens têm um comprimento múltiplo exacto desse tamanho: quando o último bloco de uma mensagem não está completo, o algoritmo de cifragem não tem bytes suficientes para o processar.</span>
+<span id="cb1-152"><a href="#cb1-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-153"><a href="#cb1-153" aria-hidden="true" tabindex="-1"></a>O **padding** resolve isto acrescentando bytes extra ao fim da mensagem, antes da cifragem, até completar esse último bloco. O esquema mais comum é o **PKCS#7**: se faltam $n$ bytes para completar o bloco, preenchem-se esses $n$ bytes com o valor $n$ (em hexadecimal, <span class="in">`0xN`</span>). Por exemplo, se faltam 10 bytes para completar o bloco, acrescentam-se dez bytes, todos com o valor <span class="in">`0xA`</span>. Do lado da decifragem, basta ler o valor do último byte recebido para saber exactamente quantos bytes de *padding* remover, sem qualquer ambiguidade.</span>
+<span id="cb1-154"><a href="#cb1-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-155"><a href="#cb1-155" aria-hidden="true" tabindex="-1"></a>Nem todos os modos apresentados neste capítulo precisam de *padding*: só os que cifram o texto claro directamente, bloco a bloco, como o **ECB** e o **CBC** (Tabela [-@tbl-03-modos]). O **CTR** e o **GCM**, por transformarem a cifra de bloco numa espécie de cifra de fluxo, combinando-a com o texto claro por XOR em vez de a aplicar directamente, dispensam-no inteiramente: podem cifrar mensagens de qualquer comprimento, byte a byte, sem nunca precisar de completar um bloco final.</span>
+<span id="cb1-156"><a href="#cb1-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-157"><a href="#cb1-157" aria-hidden="true" tabindex="-1"></a>Vale a pena assinalar desde já uma consequência de segurança importante: uma validação de *padding* mal implementada, que revele a um atacante, através de uma mensagem de erro ou de uma diferença de tempo de resposta, se o *padding* recebido era ou não válido, pode ser explorada para decifrar mensagens inteiras sem nunca conhecer a chave, byte a byte, através do chamado **ataque de oráculo de padding** (*padding oracle attack*). A lição de fundo é uma que se repete ao longo deste livro: um mecanismo matematicamente correcto pode ainda assim falhar por causa de como é implementado.</span>
+<span id="cb1-158"><a href="#cb1-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-159"><a href="#cb1-159" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-03-sintese}</span></span>
+<span id="cb1-160"><a href="#cb1-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-161"><a href="#cb1-161" aria-hidden="true" tabindex="-1"></a>Este capítulo apresentou o algoritmo que hoje ocupa o lugar do DES, e a forma como se aplica a mensagens de qualquer tamanho:</span>
+<span id="cb1-162"><a href="#cb1-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-163"><a href="#cb1-163" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>O **AES** resultou de um concurso público do NIST, vencido pelo algoritmo **Rijndael**, e normalizado em 2001</span>
+<span id="cb1-164"><a href="#cb1-164" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Ao contrário do DES, o AES **não é uma rede de Feistel**: é uma **rede de substituição-permutação** (SPN), em que cada ronda transforma o bloco inteiro</span>
+<span id="cb1-165"><a href="#cb1-165" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>O bloco é sempre de **128 bits**; a chave pode ser de **128, 192 ou 256 bits**, com **10, 12 ou 14 rondas**, respectivamente</span>
+<span id="cb1-166"><a href="#cb1-166" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Cada ronda aplica quatro transformações: **SubBytes** (confusão, via S-box não linear), **ShiftRows** e **MixColumns** (difusão, entre e dentro de colunas), e **AddRoundKey** (mistura com a subchave)</span>
+<span id="cb1-167"><a href="#cb1-167" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Não existe, até hoje, nenhum ataque criptanalítico prático contra o AES; as vulnerabilidades reais são de implementação (ataques de canal lateral), não do algoritmo em si</span>
+<span id="cb1-168"><a href="#cb1-168" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Um **modo de operação** define como aplicar uma cifra de bloco a mensagens maiores do que um bloco: o **ECB** é simples mas revela padrões estruturais; o **CBC** e o **CFB** encadeiam os blocos e eliminam-os, à custa da cifragem não ser paralelizável; o **CTR** transforma a cifra de bloco numa cifra de fluxo, totalmente paralelizável, mas maleável</span>
+<span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Nenhum destes modos protege a integridade da mensagem; o **GCM** resolve isto combinando o CTR com autenticação (GHASH), numa construção **AEAD** que é hoje o modo recomendado para a generalidade das aplicações novas</span>
+<span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>O **padding** (nomeadamente o esquema PKCS#7) permite aos modos que cifram directamente bloco a bloco, como o ECB e o CBC, processar mensagens de qualquer comprimento; o CTR e o GCM dispensam-no. Uma implementação incorrecta da validação de *padding* pode originar ataques de oráculo de *padding*</span>
+<span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-03-reflexao}</span></span>
+<span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>O DES combina confusão e difusão através de uma única função $F$, aplicada apenas a metade do bloco por ronda. O AES separa estas duas propriedades em transformações distintas (<span class="in">`SubBytes`</span> para a confusão, <span class="in">`ShiftRows`</span>/<span class="in">`MixColumns`</span> para a difusão), aplicadas ao bloco inteiro. Que vantagens pode trazer esta separação explícita, tanto para a análise de segurança do algoritmo como para o seu desempenho em hardware?</span>
+<span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-176"><a href="#cb1-176" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-03-referencias .unnumbered}</span></span>
+<span id="cb1-177"><a href="#cb1-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-178"><a href="#cb1-178" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb1-179"><a href="#cb1-179" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

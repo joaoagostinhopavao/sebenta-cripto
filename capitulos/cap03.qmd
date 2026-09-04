@@ -83,6 +83,8 @@ Uma cifra de bloco, seja o AES ou o DES, cifra exactamente um bloco de cada vez.
 
 O modo mais simples divide a mensagem em blocos e cifra cada um independentemente, com a mesma chave: $C_i = E_K(P_i)$. É simples e paralelizável, mas tem um defeito grave: **blocos de texto claro idênticos produzem sempre blocos de texto cifrado idênticos**. Isto é exactamente o mesmo problema de fundo já visto na cifra monoalfabética, só que ao nível de blocos de 128 bits em vez de letras individuais: qualquer padrão ou repetição estrutural da mensagem original permanece visível no texto cifrado, mesmo sem se decifrar nada.
 
+![O modo ECB: cada bloco de texto claro é cifrado (ou decifrado) de forma completamente independente dos restantes, sempre com a mesma chave $K$ — daí a ausência de qualquer ligação entre blocos consecutivos.](../assets/images/fig-modo-ecb.png){#fig-03-modo-ecb width=90%}
+
 ![Um texto claro organizado em blocos, com um padrão estrutural óbvio (moldura, cruz), cifrado em modo ECB e em modo CBC. Sob ECB, blocos de texto claro idênticos geram blocos de texto cifrado idênticos: o padrão original mantém-se perfeitamente visível, apenas com cores (valores) diferentes. Sob CBC, o mesmo padrão desaparece por completo.](../assets/images/fig-ecb-vs-cbc.png){#fig-03-ecb-cbc width=95%}
 
 ### CBC — Cipher Block Chaining {#sec-03-cbc}
@@ -92,6 +94,8 @@ O **CBC** resolve este problema encadeando os blocos: antes de cifrar cada bloco
 $$C_i = E_K(P_i \oplus C_{i-1})$$
 
 Como não existe um "bloco anterior" para o primeiro bloco da mensagem, usa-se um **vector de inicialização** (*initialization vector*, IV): um bloco aleatório, gerado de novo em cada mensagem, que substitui $C_0$. O IV não precisa de ser secreto, apenas único e imprevisível, e é normalmente transmitido em claro junto com o texto cifrado.
+
+![O modo CBC: na cifragem (topo), cada bloco de texto claro combina-se por XOR com o bloco de texto cifrado anterior antes de entrar na cifra de bloco, com o IV a substituir esse bloco anterior para o primeiro bloco da mensagem. Na decifragem (baixo), o processo inverte-se: cada bloco de texto cifrado é decifrado e o resultado combina-se por XOR com o bloco de texto cifrado anterior (ou o IV) para recuperar o texto claro.](../assets/images/fig-modo-cbc.png){#fig-03-modo-cbc width=95%}
 
 Como cada bloco cifrado depende de todos os blocos de texto claro anteriores (através da cadeia de XORs), blocos de texto claro idênticos deixam de produzir blocos de texto cifrado idênticos, como se vê na Figura [-@fig-03-ecb-cbc]: o padrão original desaparece completamente. A decifragem inverte exactamente este processo:
 
@@ -105,13 +109,18 @@ O **CFB** consegue um efeito semelhante ao CBC, eliminar o padrão do ECB, mas p
 
 $$C_i = P_i \oplus E_K(C_{i-1})$$
 
-com $C_0 = \text{IV}$. Tal como no CBC, o IV não pode ser reutilizado, mas pode ser público. O CFB comporta-se, na prática, como uma **cifra de pseudo-fluxo**: em vez de cifrar blocos completos, pode operar sobre segmentos mais pequenos (por exemplo, byte a byte), o que o torna útil para fluxos de dados de comprimento variável. Tal como no CBC, a cifragem não é paralelizável, mas a decifragem é.
+com $C_0 = \text{IV}$. Tal como no CBC, o IV não pode ser reutilizado, mas pode ser público.
+
+![O modo CFB: em cada passo, cifra-se o bloco de texto cifrado anterior (ou o IV, no primeiro passo) — nunca o texto claro directamente — e o resultado combina-se por XOR com o texto claro (topo) ou o texto cifrado (baixo, na decifragem) para produzir o bloco seguinte.](../assets/images/fig-modo-cfb.png){#fig-03-modo-cfb width=95%}
+ O CFB comporta-se, na prática, como uma **cifra de pseudo-fluxo**: em vez de cifrar blocos completos, pode operar sobre segmentos mais pequenos (por exemplo, byte a byte), o que o torna útil para fluxos de dados de comprimento variável. Tal como no CBC, a cifragem não é paralelizável, mas a decifragem é.
 
 ### CTR — Counter Mode {#sec-03-ctr}
 
 O **CTR** segue uma abordagem diferente: em vez de cifrar o texto claro directamente, cifra-se um contador (combinado com um valor único por mensagem, o *nonce*), e o resultado combina-se por XOR com o texto claro:
 
 $$C_i = P_i \oplus E_K(\text{nonce} \mathbin\Vert i)$$
+
+![O modo CTR: cada contador $T_i = \text{nonce} \Vert i$ é cifrado independentemente dos restantes, e o resultado combina-se por XOR com o bloco de texto claro (topo) ou de texto cifrado (baixo) correspondente — cifragem e decifragem usam exactamente a mesma operação, `Block Cipher Encryption`.](../assets/images/fig-modo-ctr.png){#fig-03-modo-ctr width=95%}
 
 Isto transforma, na prática, uma cifra de bloco numa cifra de fluxo, tema do próximo capítulo: cada bloco de saída de $E_K$ funciona como uma sequência de bits pseudo-aleatória, gerada independentemente do texto claro. A vantagem prática mais relevante é que, ao contrário do CBC e do CFB, tanto a cifragem como a decifragem em CTR são inteiramente **paralelizáveis**: o bloco $i$ não depende do bloco $i-1$, apenas do próprio contador, o que se traduz em desempenho significativamente superior em hardware moderno com múltiplos núcleos.
 
@@ -137,6 +146,16 @@ Tal como no CTR, a reutilização do *nonce* (recomendado a 96 bits) em GCM é c
 
 : Comparação dos modos de operação apresentados neste capítulo [@NIST80038A; @NIST80038D] {#tbl-03-modos}
 
+## Padding {#sec-03-padding}
+
+Uma cifra de bloco, como o AES, cifra sempre um bloco de tamanho fixo, 128 bits (16 bytes). Nem todas as mensagens têm um comprimento múltiplo exacto desse tamanho: quando o último bloco de uma mensagem não está completo, o algoritmo de cifragem não tem bytes suficientes para o processar.
+
+O **padding** resolve isto acrescentando bytes extra ao fim da mensagem, antes da cifragem, até completar esse último bloco. O esquema mais comum é o **PKCS#7**: se faltam $n$ bytes para completar o bloco, preenchem-se esses $n$ bytes com o valor $n$ (em hexadecimal, `0xN`). Por exemplo, se faltam 10 bytes para completar o bloco, acrescentam-se dez bytes, todos com o valor `0xA`. Do lado da decifragem, basta ler o valor do último byte recebido para saber exactamente quantos bytes de *padding* remover, sem qualquer ambiguidade.
+
+Nem todos os modos apresentados neste capítulo precisam de *padding*: só os que cifram o texto claro directamente, bloco a bloco, como o **ECB** e o **CBC** (Tabela [-@tbl-03-modos]). O **CTR** e o **GCM**, por transformarem a cifra de bloco numa espécie de cifra de fluxo, combinando-a com o texto claro por XOR em vez de a aplicar directamente, dispensam-no inteiramente: podem cifrar mensagens de qualquer comprimento, byte a byte, sem nunca precisar de completar um bloco final.
+
+Vale a pena assinalar desde já uma consequência de segurança importante: uma validação de *padding* mal implementada, que revele a um atacante, através de uma mensagem de erro ou de uma diferença de tempo de resposta, se o *padding* recebido era ou não válido, pode ser explorada para decifrar mensagens inteiras sem nunca conhecer a chave, byte a byte, através do chamado **ataque de oráculo de padding** (*padding oracle attack*). A lição de fundo é uma que se repete ao longo deste livro: um mecanismo matematicamente correcto pode ainda assim falhar por causa de como é implementado.
+
 ## Síntese do Capítulo {#sec-03-sintese}
 
 Este capítulo apresentou o algoritmo que hoje ocupa o lugar do DES, e a forma como se aplica a mensagens de qualquer tamanho:
@@ -148,6 +167,7 @@ Este capítulo apresentou o algoritmo que hoje ocupa o lugar do DES, e a forma c
 5. Não existe, até hoje, nenhum ataque criptanalítico prático contra o AES; as vulnerabilidades reais são de implementação (ataques de canal lateral), não do algoritmo em si
 6. Um **modo de operação** define como aplicar uma cifra de bloco a mensagens maiores do que um bloco: o **ECB** é simples mas revela padrões estruturais; o **CBC** e o **CFB** encadeiam os blocos e eliminam-os, à custa da cifragem não ser paralelizável; o **CTR** transforma a cifra de bloco numa cifra de fluxo, totalmente paralelizável, mas maleável
 7. Nenhum destes modos protege a integridade da mensagem; o **GCM** resolve isto combinando o CTR com autenticação (GHASH), numa construção **AEAD** que é hoje o modo recomendado para a generalidade das aplicações novas
+8. O **padding** (nomeadamente o esquema PKCS#7) permite aos modos que cifram directamente bloco a bloco, como o ECB e o CBC, processar mensagens de qualquer comprimento; o CTR e o GCM dispensam-no. Uma implementação incorrecta da validação de *padding* pode originar ataques de oráculo de *padding*
 
 ## Para Pensar {#sec-03-reflexao}
 
