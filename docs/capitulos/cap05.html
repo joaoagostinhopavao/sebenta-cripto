@@ -8,7 +8,7 @@
 
 <meta name="author" content="João Pavão">
 
-<title>5&nbsp; Hashing — Propriedades, Ataques, SHA e HMAC – Criptografia</title>
+<title>5&nbsp; Hashing — Propriedades, Ataques, SHA, MAC e HMAC – Criptografia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -107,6 +127,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../assets/css/custom.css">
 </head>
@@ -120,7 +169,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap05.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA e HMAC</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap05.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA, MAC e HMAC</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
@@ -181,7 +230,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA e HMAC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA, MAC e HMAC</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -219,15 +268,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#sec-05-intro" id="toc-sec-05-intro" class="nav-link active" data-scroll-target="#sec-05-intro">Introdução</a></li>
+  <li><a href="#sec-05-conceito" id="toc-sec-05-conceito" class="nav-link" data-scroll-target="#sec-05-conceito"><span class="header-section-number">5.1</span> O Que é uma Função de Hash</a></li>
+  <li><a href="#sec-05-propriedades" id="toc-sec-05-propriedades" class="nav-link" data-scroll-target="#sec-05-propriedades"><span class="header-section-number">5.2</span> Propriedades de uma Função de Hash</a></li>
+  <li><a href="#sec-05-sha" id="toc-sec-05-sha" class="nav-link" data-scroll-target="#sec-05-sha"><span class="header-section-number">5.3</span> A Família SHA</a></li>
+  <li><a href="#sec-05-integridade" id="toc-sec-05-integridade" class="nav-link" data-scroll-target="#sec-05-integridade"><span class="header-section-number">5.4</span> Verificar a Integridade — e os Seus Limites</a></li>
+  <li><a href="#sec-05-mac" id="toc-sec-05-mac" class="nav-link" data-scroll-target="#sec-05-mac"><span class="header-section-number">5.5</span> Autenticação de Mensagens: o MAC</a></li>
+  <li><a href="#sec-05-hmac" id="toc-sec-05-hmac" class="nav-link" data-scroll-target="#sec-05-hmac"><span class="header-section-number">5.6</span> HMAC</a></li>
+  <li><a href="#sec-05-sintese" id="toc-sec-05-sintese" class="nav-link" data-scroll-target="#sec-05-sintese"><span class="header-section-number">5.7</span> Síntese do Capítulo</a></li>
+  <li><a href="#sec-05-reflexao" id="toc-sec-05-reflexao" class="nav-link" data-scroll-target="#sec-05-reflexao"><span class="header-section-number">5.8</span> Para Pensar</a></li>
+  <li><a href="#sec-05-referencias" id="toc-sec-05-referencias" class="nav-link" data-scroll-target="#sec-05-referencias">Referências</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA e HMAC</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA, MAC e HMAC</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
 </div>
 
 
@@ -256,13 +320,279 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<blockquote class="blockquote">
-<p>Conteúdo por desenvolver.</p>
-</blockquote>
+<section id="sec-05-intro" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-05-intro">Introdução</h2>
+<p>Os capítulos anteriores trataram sempre de <strong>confidencialidade</strong>: como transformar uma mensagem de forma que só quem possui a chave certa a consiga ler. Mas confidencialidade não é a única propriedade que uma comunicação segura precisa de garantir. Uma mensagem pode viajar perfeitamente cifrada e, ainda assim, ser alterada a meio do caminho, ou não vir de quem diz vir. Este capítulo muda de problema: trata da <strong>integridade</strong> (a garantia de que os dados não foram alterados) e da <strong>autenticação</strong> (a garantia de que os dados vêm de quem se espera), e da ferramenta que serve de base a ambas, a <strong>função de hash</strong>.</p>
+</section>
+<section id="sec-05-conceito" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="sec-05-conceito"><span class="header-section-number">5.1</span> O Que é uma Função de Hash</h2>
+<p>Uma <strong>função de hash</strong> transforma uma entrada de tamanho arbitrário numa saída de tamanho fixo, geralmente muito mais curta:</p>
+<p><span class="math display">\[h = H(x)\]</span></p>
+<p>onde <span class="math inline">\(x\)</span> é o valor (ou mensagem) a ser resumido, <span class="math inline">\(H\)</span> é a função de hash, e <span class="math inline">\(h\)</span> é o <strong>valor de hash</strong> (também chamado <em>digest</em> ou resumo criptográfico). <span class="math inline">\(x\)</span> é conhecido como a <strong>pré-imagem</strong> de <span class="math inline">\(h\)</span>.</p>
+<p>Duas características, à partida simples, definem o essencial de uma função de hash: é <strong>determinística</strong> (a mesma entrada produz sempre a mesma saída) e é uma <strong>função de compressão</strong> (entradas de qualquer tamanho, potencialmente enormes, produzem sempre uma saída do mesmo tamanho fixo, tipicamente entre 128 e 512 bits). Esta segunda característica tem uma consequência matemática inevitável: como o conjunto de entradas possíveis é infinito e o conjunto de saídas é finito, <strong>têm de existir colisões</strong>, pares de entradas diferentes que produzem o mesmo valor de hash. A segurança de uma função de hash nunca pode assentar em evitá-las por completo, isso é impossível, mas sim em torná-las computacionalmente impossíveis de encontrar deliberadamente. É exactamente isso que a secção seguinte formaliza.</p>
+</section>
+<section id="sec-05-propriedades" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="sec-05-propriedades"><span class="header-section-number">5.2</span> Propriedades de uma Função de Hash</h2>
+<p>Nem toda a função que comprime dados é útil em criptografia. As propriedades seguintes <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span> distinguem uma função de hash <strong>fraca</strong> de uma <strong>forte</strong>:</p>
+<div id="tbl-05-propriedades" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-05-propriedades-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;5.1: Propriedades de uma função de hash <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>
+</figcaption>
+<div aria-describedby="tbl-05-propriedades-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Requisito</th>
+<th>Descrição</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tamanho de entrada variável</td>
+<td><span class="math inline">\(H\)</span> pode ser aplicada a um bloco de dados de qualquer tamanho</td>
+</tr>
+<tr class="even">
+<td>Tamanho de saída fixo</td>
+<td><span class="math inline">\(H\)</span> produz sempre uma saída de comprimento fixo</td>
+</tr>
+<tr class="odd">
+<td>Eficiência</td>
+<td><span class="math inline">\(H(x)\)</span> é fácil de calcular para qualquer <span class="math inline">\(x\)</span>, tornando praticáveis implementações em hardware e em software</td>
+</tr>
+<tr class="even">
+<td>Resistência a pré-imagem (<em>one-way</em>)</td>
+<td>Dado um valor de hash <span class="math inline">\(h\)</span>, é computacionalmente inviável encontrar <span class="math inline">\(y\)</span> tal que <span class="math inline">\(H(y) = h\)</span></td>
+</tr>
+<tr class="odd">
+<td>Resistência a segunda pré-imagem (colisão fraca)</td>
+<td>Dado um bloco <span class="math inline">\(x\)</span>, é computacionalmente inviável encontrar <span class="math inline">\(y \neq x\)</span> com <span class="math inline">\(H(y) = H(x)\)</span></td>
+</tr>
+<tr class="even">
+<td>Resistência a colisões (colisão forte)</td>
+<td>É computacionalmente inviável encontrar qualquer par <span class="math inline">\((x,y)\)</span>, com <span class="math inline">\(x \neq y\)</span>, tal que <span class="math inline">\(H(x) = H(y)\)</span></td>
+</tr>
+<tr class="odd">
+<td>Pseudoaleatoriedade</td>
+<td>A saída de <span class="math inline">\(H\)</span> cumpre os testes estatísticos padrão de aleatoriedade</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>As quatro primeiras propriedades definem um <strong>hash fraco</strong>: suficiente para detectar erros acidentais de transmissão, mas não para resistir a um atacante. As três últimas, acrescentadas, definem um <strong>hash forte</strong>, o único adequado a usos criptográficos. Vale a pena não confundir as duas últimas propriedades de resistência a colisões, que são fáceis de trocar:</p>
+<ul>
+<li><strong>Segunda pré-imagem</strong>: o atacante já tem um <span class="math inline">\(x\)</span> específico (por exemplo, um contrato original) e quer encontrar outro documento <span class="math inline">\(y\)</span> com o mesmo hash, para o substituir sem que a substituição seja detectada.</li>
+<li><strong>Colisão</strong>: o atacante não tem nenhum documento de partida fixo, só quer encontrar <strong>um par qualquer</strong> <span class="math inline">\((x,y)\)</span> que colida, o que é estruturalmente mais fácil de conseguir.</li>
+</ul>
+<p>Esta diferença tem uma consequência prática importante, conhecida como o <strong>paradoxo do aniversário</strong>: encontrar uma colisão qualquer para uma função de hash de <span class="math inline">\(n\)</span> bits de saída custa, em média, apenas cerca de <span class="math inline">\(2^{n/2}\)</span> tentativas, muito menos do que os <span class="math inline">\(2^n\)</span> que a intuição sugeriria, e muitíssimo menos do que os <span class="math inline">\(2^n\)</span> necessários para quebrar a resistência a pré-imagem ou a segunda pré-imagem. É por esta razão que o tamanho da saída de uma função de hash tem de ser aproximadamente o dobro do nível de segurança pretendido: um hash de 256 bits dá apenas <span class="math inline">\(2^{128}\)</span> de segurança contra colisões, não <span class="math inline">\(2^{256}\)</span>.</p>
+</section>
+<section id="sec-05-sha" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="sec-05-sha"><span class="header-section-number">5.3</span> A Família SHA</h2>
+<p>Ao longo das últimas três décadas, várias famílias de funções de hash disputaram o lugar de norma de facto. As primeiras, o <strong>MD4</strong> e o <strong>MD5</strong> (<em>Message Digest</em>, Ron Rivest, 1990 e 1992), com saídas de apenas 128 bits, acabaram formalmente quebradas: Wang e Yu apresentaram um método prático para gerar colisões em MD5 em 2005 <span class="citation" data-cites="Wang2005">(<a href="cap01.html#ref-Wang2005" role="doc-biblioref">Wang e Yu 2005</a>)</span>, e hoje o MD5 não deve ser usado para nenhum fim criptográfico, apenas para verificações de integridade não adversariais (por exemplo, confirmar que uma transferência de ficheiro não foi corrompida por erro).</p>
+<p>O <strong>SHA</strong> (<em>Secure Hash Algorithm</em>), normalizado pelo NIST, tornou-se a família de referência <span class="citation" data-cites="FIPS1804">(<a href="cap01.html#ref-FIPS1804" role="doc-biblioref">National Institute of Standards and Technology 2015</a>)</span>. O <strong>SHA-1</strong> (160 bits, 1995) manteve-se em uso generalizado durante duas décadas, apesar de fragilidades teóricas conhecidas desde 2005, até a Google e o CWI Amsterdam publicarem, em 2017, a primeira colisão prática (o ataque <strong>SHAttered</strong>), dois PDFs distintos com o mesmo hash SHA-1 <span class="citation" data-cites="Stevens2017">(<a href="cap01.html#ref-Stevens2017" role="doc-biblioref">Stevens et al. 2017</a>)</span>. Desde então, o SHA-1 está formalmente desaconselhado para qualquer uso que dependa de resistência a colisões, incluindo certificados digitais e assinaturas.</p>
+<p>A família actualmente recomendada é o <strong>SHA-2</strong>, que agrupa várias variantes consoante o tamanho da saída e da estrutura interna:</p>
+<div id="tbl-05-sha" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-05-sha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;5.2: Parâmetros das variantes da família SHA (todos os tamanhos em bits) <span class="citation" data-cites="FIPS1804">(<a href="cap01.html#ref-FIPS1804" role="doc-biblioref">National Institute of Standards and Technology 2015</a>)</span>
+</figcaption>
+<div aria-describedby="tbl-05-sha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Algoritmo</th>
+<th>Tamanho da mensagem</th>
+<th>Tamanho do bloco</th>
+<th>Tamanho da palavra</th>
+<th>Tamanho do resumo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SHA-1</td>
+<td><span class="math inline">\(&lt; 2^{64}\)</span></td>
+<td>512</td>
+<td>32</td>
+<td>160</td>
+</tr>
+<tr class="even">
+<td>SHA-224</td>
+<td><span class="math inline">\(&lt; 2^{64}\)</span></td>
+<td>512</td>
+<td>32</td>
+<td>224</td>
+</tr>
+<tr class="odd">
+<td>SHA-256</td>
+<td><span class="math inline">\(&lt; 2^{64}\)</span></td>
+<td>512</td>
+<td>32</td>
+<td>256</td>
+</tr>
+<tr class="even">
+<td>SHA-384</td>
+<td><span class="math inline">\(&lt; 2^{128}\)</span></td>
+<td>1024</td>
+<td>64</td>
+<td>384</td>
+</tr>
+<tr class="odd">
+<td>SHA-512</td>
+<td><span class="math inline">\(&lt; 2^{128}\)</span></td>
+<td>1024</td>
+<td>64</td>
+<td>512</td>
+</tr>
+<tr class="even">
+<td>SHA-512/224</td>
+<td><span class="math inline">\(&lt; 2^{128}\)</span></td>
+<td>1024</td>
+<td>64</td>
+<td>224</td>
+</tr>
+<tr class="odd">
+<td>SHA-512/256</td>
+<td><span class="math inline">\(&lt; 2^{128}\)</span></td>
+<td>1024</td>
+<td>64</td>
+<td>256</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>O <strong>SHA-256</strong> é hoje a escolha por omissão para a generalidade das aplicações novas, usado, entre outros, no TLS, no Git e no Bitcoin. Na prática, calcular um resumo é uma operação trivial em qualquer sistema Unix:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">"Olá Mundo! João Pavão"</span> <span class="op">&gt;</span> hashtext.txt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl md5 hashtext.txt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">MD5</span><span class="er">(</span><span class="ex">hashtext.txt</span><span class="kw">)</span><span class="ex">=</span> dafa6ed4f172ed103c577334bdfa375d</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl sha1 hashtext.txt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">SHA1</span><span class="er">(</span><span class="ex">hashtext.txt</span><span class="kw">)</span><span class="ex">=</span> f8372d55ba7ae3655ec0f886ef658f94879646c1</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note-se que os dois resumos, apesar de calculados sobre o mesmo ficheiro, não têm nenhuma relação visível entre si, precisamente o comportamento pseudoaleatório exigido na Tabela <a href="#tbl-05-propriedades" class="quarto-xref"><span>5.1</span></a>.</p>
+</section>
+<section id="sec-05-integridade" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="sec-05-integridade"><span class="header-section-number">5.4</span> Verificar a Integridade — e os Seus Limites</h2>
+<p>O uso mais directo de uma função de hash é verificar se um dado se manteve íntegro: o emissor calcula <span class="math inline">\(h = H(\text{dados})\)</span> e envia os dois juntos; o receptor recalcula o hash sobre os dados recebidos e compara com o valor recebido. Qualquer alteração aos dados, ainda que de um único bit, muda o valor de hash de forma imprevisível (propriedade de pseudoaleatoriedade), tornando a alteração detectável.</p>
+<p>Mas este esquema tem uma falha grave, que só se torna visível quando se considera um atacante activo, capaz de intervir no canal de comunicação, e não apenas um erro acidental de transmissão:</p>
+<div id="fig-05-integridade-ataque" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-05-integridade-ataque-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-05-hash-integridade-ataque.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-05-integridade-ataque-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.1: Uma função de hash sem chave detecta erros acidentais, mas não resiste a um atacante activo: como qualquer pessoa consegue calcular <span class="math inline">\(H\)</span>, um atacante que altere os dados recalcula também um novo hash válido, e o receptor não tem forma de distinguir esta situação de uma comunicação legítima.
+</figcaption>
+</figure>
+</div>
+<p>A raiz do problema: <span class="math inline">\(H\)</span> é <strong>pública</strong>. Não há nenhum segredo envolvido no cálculo do hash, por isso um atacante capaz de alterar os dados em trânsito é igualmente capaz de recalcular o hash correspondente aos dados alterados. O valor de hash, sozinho, prova que os dados não sofreram um erro acidental, mas não prova nem que os dados vêm de quem diz vir, nem que não foram deliberadamente adulterados por alguém no meio do caminho. Falta um ingrediente que só o emissor e o receptor legítimos possuam, e que um atacante não consiga reproduzir: um <strong>segredo partilhado</strong>.</p>
+</section>
+<section id="sec-05-mac" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="sec-05-mac"><span class="header-section-number">5.5</span> Autenticação de Mensagens: o MAC</h2>
+<p>A solução mais simples para o problema identificado na secção anterior é introduzir uma chave secreta <span class="math inline">\(K\)</span>, partilhada apenas entre emissor e receptor, no próprio cálculo do resumo. Um <strong>MAC</strong> (<em>Message Authentication Code</em>) é exactamente isto: uma função que recebe a mensagem <strong>e</strong> uma chave secreta, e produz uma marca (<em>tag</em>) curta que só quem conhece a chave consegue calcular ou verificar corretamente.</p>
+<p><span class="math display">\[T = \text{MAC}_K(\text{dados})\]</span></p>
+<div id="fig-05-mac-generico" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-05-mac-generico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-05-mac-generico.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-05-mac-generico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.2: Com uma chave secreta <span class="math inline">\(K\)</span>, partilhada apenas entre emissor e receptor, o mesmo ataque da Figura <a href="#fig-05-integridade-ataque" class="quarto-xref"><span>5.1</span></a> falha: o atacante consegue alterar os dados, mas não consegue calcular a marca correspondente sem conhecer <span class="math inline">\(K\)</span>, e o receptor rejeita a mensagem adulterada.
+</figcaption>
+</figure>
+</div>
+<p>Um exemplo concreto ajuda a fixar a ideia. Suponha-se uma ordem de transferência bancária, “Transferir 100€ para o IBAN PT50…”, protegida com <span class="math inline">\(\text{MAC}_K\)</span>. O banco recebe a mensagem e a marca, recalcula <span class="math inline">\(\text{MAC}_K\)</span> sobre a mensagem recebida com a mesma chave <span class="math inline">\(K\)</span> (combinada previamente com o cliente, por exemplo ao activar o cartão) e compara. Se um atacante intercepta a mensagem e altera “100€” para “10000€”, a marca antiga deixa de corresponder à mensagem alterada, e calcular a marca correcta para a nova mensagem exigiria conhecer <span class="math inline">\(K\)</span>, exactamente o que faltava ao atacante na Figura <a href="#fig-05-integridade-ataque" class="quarto-xref"><span>5.1</span></a>.</p>
+<p>Note-se a diferença fundamental em relação a um hash simples: um MAC garante <strong>duas</strong> propriedades de uma só vez, integridade (os dados não foram alterados) e <strong>autenticidade</strong> (os dados só podem ter vindo de alguém que conhece <span class="math inline">\(K\)</span>, ou seja, do emissor legítimo). É por isto que os MAC partilham o mesmo modelo de confiança das cifras simétricas: exigem uma chave previamente combinada entre as duas partes, através de um canal seguro.</p>
+<p>A ideia mais directa para construir um MAC a partir de uma função de hash já existente é combinar a mensagem com a chave secreta antes de a passar por <span class="math inline">\(H\)</span>. Não é por acaso que esta é exactamente a lógica de vários desenhos clássicos: cifrar o hash da mensagem com uma chave simétrica, cifrar só o hash em vez da mensagem inteira, ou, na sua forma mais simples, calcular <span class="math inline">\(H(\text{dados} \Vert S)\)</span> usando apenas um valor secreto <span class="math inline">\(S\)</span> partilhado, sem qualquer cifra envolvida, o suficiente para autenticação e integridade, ainda que sem confidencialidade. Esta última construção, um hash simples com um segredo concatenado à mensagem, parece resolver o problema, mas esconde uma armadilha que a secção seguinte desmonta.</p>
+</section>
+<section id="sec-05-hmac" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="sec-05-hmac"><span class="header-section-number">5.6</span> HMAC</h2>
+<p>Concatenar ingenuamente uma chave a uma mensagem antes de a passar por uma função de hash parece razoável, mas as duas formas óbvias de o fazer têm problemas distintos <span class="citation" data-cites="PreneelOorschot1995">(<a href="cap01.html#ref-PreneelOorschot1995" role="doc-biblioref">Preneel e Oorschot 1995</a>)</span>.</p>
+<p><strong>Prefixo, <span class="math inline">\(H(K \Vert M)\)</span>.</strong> As funções da família MD5/SHA (SHA-1 e SHA-2 incluídos) processam a entrada em blocos, actualizando um estado interno bloco a bloco, e o valor de hash final <strong>é</strong> literalmente esse estado interno, sem qualquer passo final de fecho. Isto permite um <strong>ataque de extensão de comprimento</strong> (<em>length-extension attack</em>): conhecendo apenas <span class="math inline">\(H(K \Vert M)\)</span> (não <span class="math inline">\(K\)</span>), um atacante consegue calcular <span class="math inline">\(H(K \Vert M \Vert M')\)</span>, uma marca válida para uma mensagem estendida, para qualquer <span class="math inline">\(M'\)</span> à sua escolha.</p>
+<p>Um exemplo simplificado torna isto concreto (não é assim que o SHA-256 funciona por dentro, mas ilustra exactamente a estrutura do problema). Imagine-se uma função de hash de brinquedo que processa a mensagem bloco a bloco, actualizando um estado que começa em 0, e devolve esse estado directamente como resultado final:</p>
+<p><span class="math display">\[\text{estado} \leftarrow (\text{estado} + \text{bloco}) \bmod 100\]</span></p>
+<p>Seja a chave secreta <span class="math inline">\(K=7\)</span> (um bloco) e a mensagem <span class="math inline">\(M=42\)</span> (outro bloco). A marca calculada pelo emissor é:</p>
+<p><span class="math display">\[H(K \Vert M) = (0 + 7 + 42) \bmod 100 = 49\]</span></p>
+<p>Um atacante que intercepte a mensagem e a marca <span class="math inline">\(49\)</span> não precisa de conhecer <span class="math inline">\(K\)</span> para forjar uma marca válida para a mensagem estendida <span class="math inline">\(M \Vert M'\)</span>, com <span class="math inline">\(M'=13\)</span> à sua escolha: basta continuar o mesmo cálculo a partir do estado que já conhece, <span class="math inline">\(49\)</span>:</p>
+<p><span class="math display">\[(49 + 13) \bmod 100 = 62\]</span></p>
+<p>que é exactamente o valor que o receptor obteria ao calcular <span class="math inline">\(H(K \Vert M \Vert M')\)</span> do zero, com a chave verdadeira (<span class="math inline">\(0+7+42+13=62\)</span>). O atacante nunca soube que <span class="math inline">\(K=7\)</span>: só precisou de saber que a marca antiga <strong>era</strong> o estado interno, e que continuar o cálculo a partir dela é tão fácil como calculá-lo da primeira vez. É exactamente esta propriedade, o valor de hash final ser reutilizável como ponto de partida para continuar o cálculo, que o MD5, o SHA-1 e o SHA-256 partilham genuinamente (a única complicação real nestes algoritmos é um bloco extra de <em>padding</em>, que o atacante também consegue reconstruir a partir do comprimento conhecido de <span class="math inline">\(K \Vert M\)</span>), e que torna este ataque prático, não apenas um exercício académico.</p>
+<p><strong>Sufixo, <span class="math inline">\(H(M \Vert K)\)</span>.</strong> Colocar a chave no fim, em vez de no início, evita o ataque anterior, porque o atacante deixa de conseguir continuar o cálculo a partir de um estado que já inclui a chave. Mas troca-o por outro problema: encontrar duas mensagens <span class="math inline">\(M_1 \neq M_2\)</span> que colidam <strong>antes</strong> de <span class="math inline">\(K\)</span> ser processado já basta para forjar uma marca válida para <span class="math inline">\(M_2\)</span> a partir da marca de <span class="math inline">\(M_1\)</span> (a chave, aplicada depois, produz o mesmo resultado para ambas), um ataque prático contra hashes com resistência a colisões fraca, como o MD5 (Secção 5.3).</p>
+<p>A construção <strong>HMAC</strong> (<em>Hash-based MAC</em>), proposta por Bellare, Canetti e Krawczyk <span class="citation" data-cites="BellareCanettiKrawczyk1996">(<a href="cap01.html#ref-BellareCanettiKrawczyk1996" role="doc-biblioref">Bellare, Canetti, e Krawczyk 1996</a>)</span> e normalizada no RFC 2104 <span class="citation" data-cites="RFC2104">(<a href="cap01.html#ref-RFC2104" role="doc-biblioref">Krawczyk, Bellare, e Canetti 1997</a>)</span>, evita os dois problemas ao aplicar <span class="math inline">\(H\)</span> <strong>duas vezes</strong>, numa estrutura aninhada, em vez de concatenar a chave uma única vez:</p>
+<p><span class="math display">\[\text{HMAC}(K, M) = H\big((K' \oplus \text{opad}) \,\Vert\, H((K' \oplus \text{ipad}) \,\Vert\, M)\big)\]</span></p>
+<p>onde <span class="math inline">\(K'\)</span> é a chave ajustada ao tamanho do bloco de <span class="math inline">\(H\)</span> (completada com zeros se for mais curta, ou ela própria resumida por <span class="math inline">\(H\)</span> se for mais comprida), e <code>ipad</code> e <code>opad</code> são duas constantes fixas e públicas (o byte <code>0x36</code> e o byte <code>0x5C</code>, repetidos até ao tamanho do bloco), escolhidas apenas por terem uma distância de Hamming grande entre si, de forma a que as duas chaves internas, <span class="math inline">\(K' \oplus \text{ipad}\)</span> e <span class="math inline">\(K' \oplus \text{opad}\)</span>, se comportem como duas chaves independentes:</p>
+<div id="fig-05-hmac-construcao" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-05-hmac-construcao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-05-hmac-construcao.png" class="img-fluid figure-img" style="width:95.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-05-hmac-construcao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5.3: A construção do HMAC: a mensagem é primeiro combinada com uma versão da chave (<span class="math inline">\(K \oplus \text{ipad}\)</span>) e passada por <span class="math inline">\(H\)</span>, produzindo um hash interno; esse resultado é depois combinado com uma segunda versão da chave (<span class="math inline">\(K \oplus \text{opad}\)</span>) e passado por <span class="math inline">\(H\)</span> uma segunda vez, produzindo a marca final. As duas invocações de <span class="math inline">\(H\)</span> nunca processam a chave original directamente.
+</figcaption>
+</figure>
+</div>
+<p>Esta estrutura em duas camadas resolve os dois ataques da lista anterior: o hash exterior nunca expõe o seu estado interno a partir de dados conhecidos do atacante (o hash interior já consumiu a chave antes disso), o que elimina a extensão de comprimento, e uma eventual colisão no hash interior deixa de ser suficiente para forjar uma marca, porque o resultado ainda tem de passar pelo segundo <span class="math inline">\(H\)</span>, protegido pela segunda chave.</p>
+<p>Um resultado notável do trabalho original de Bellare, Canetti e Krawczyk é que a segurança do HMAC <strong>não depende da resistência a colisões</strong> de <span class="math inline">\(H\)</span>, depende de uma propriedade mais fraca e mais robusta da sua função de compressão interna. É por isto que o <strong>HMAC-MD5</strong> e o <strong>HMAC-SHA1</strong> continuam, na prática, a não ter nenhum ataque conhecido, apesar de o MD5 e o SHA-1 estarem formalmente quebrados como funções de hash de uso geral (Secção 5.3): quebrar o HMAC exigiria um tipo de ataque bastante diferente, e mais difícil, do que simplesmente encontrar colisões em <span class="math inline">\(H\)</span>. Ainda assim, a recomendação prática é usar sempre <strong>HMAC-SHA256</strong> ou superior em sistemas novos, por prudência e para evitar depender de subtilezas desta natureza.</p>
+<p>O HMAC é hoje um dos mecanismos de autenticação mais usados na prática: protege registos do TLS em versões anteriores à 1.3, autentica pacotes no IPsec, assina <em>tokens</em> <strong>JWT</strong> (<em>JSON Web Tokens</em>, no algoritmo <code>HS256</code>), e é a base da assinatura de pedidos em APIs como as da AWS.</p>
+</section>
+<section id="sec-05-sintese" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="sec-05-sintese"><span class="header-section-number">5.7</span> Síntese do Capítulo</h2>
+<p>Este capítulo mudou de confidencialidade para integridade e autenticação:</p>
+<ol type="1">
+<li>Uma <strong>função de hash</strong> comprime uma entrada de qualquer tamanho numa saída fixa, de forma determinística; como o domínio é infinito e o contradomínio finito, colisões existem sempre, o objectivo é torná-las difíceis de encontrar</li>
+<li>Um hash <strong>forte</strong> exige, além da eficiência e do tamanho fixo de saída, resistência a <strong>pré-imagem</strong>, a <strong>segunda pré-imagem</strong>, e a <strong>colisões</strong>; esta última é a mais fraca das três, e cai ao fim de apenas <span class="math inline">\(2^{n/2}\)</span> tentativas (paradoxo do aniversário), não <span class="math inline">\(2^n\)</span></li>
+<li>A família <strong>SHA</strong> é a referência actual; o <strong>MD5</strong> e o <strong>SHA-1</strong> têm colisões práticas conhecidas (Wang e Yu, 2005; SHAttered, 2017) e estão desaconselhados; o <strong>SHA-256</strong> é hoje a escolha recomendada</li>
+<li>Uma função de hash <strong>sem chave</strong> não resiste a um atacante activo: qualquer pessoa consegue recalculá-la, por isso não prova nem integridade nem autenticidade contra um adversário capaz de intervir no canal</li>
+<li>Um <strong>MAC</strong> resolve isto introduzindo uma chave secreta partilhada no cálculo da marca, dando simultaneamente integridade e autenticidade</li>
+<li>Concatenar ingenuamente a chave à mensagem (<code>H(K‖M)</code> ou <code>H(M‖K)</code>) tem problemas conhecidos, extensão de comprimento no primeiro caso, dependência total da resistência a colisões no segundo</li>
+<li>O <strong>HMAC</strong> resolve ambos aplicando <span class="math inline">\(H\)</span> duas vezes, numa estrutura aninhada com duas chaves derivadas (<code>ipad</code>/<code>opad</code>); a sua segurança não depende da resistência a colisões de <span class="math inline">\(H\)</span>, o que explica porque o HMAC-SHA1 continua sem ataques práticos conhecidos, apesar de o SHA-1 já não ser seguro como hash de uso geral</li>
+</ol>
+</section>
+<section id="sec-05-reflexao" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="sec-05-reflexao"><span class="header-section-number">5.8</span> Para Pensar</h2>
+<p>O SHA-1 já não é seguro contra colisões, e está formalmente desaconselhado para assinaturas digitais e certificados. Ainda assim, o HMAC-SHA1 continua em uso em vários sistemas legados sem ser considerado uma falha crítica. Tendo em conta a distinção entre as propriedades de um hash (Secção 5.2) e o que a demonstração de segurança do HMAC efectivamente exige (Secção 5.6), porque é que a quebra da resistência a colisões de uma função de hash não implica automaticamente a quebra do MAC construído sobre ela?</p>
+</section>
+<section id="sec-05-referencias" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-05-referencias">Referências</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-BellareCanettiKrawczyk1996" class="csl-entry" role="listitem">
+Bellare, Mihir, Ran Canetti, e Hugo Krawczyk. 1996. <span>«Keying Hash Functions for Message Authentication»</span>. Em <em>Advances in Cryptology (CRYPTO ’96)</em>.
+</div>
+<div id="ref-RFC2104" class="csl-entry" role="listitem">
+Krawczyk, Hugo, Mihir Bellare, e Ran Canetti. 1997. <span>«<span>HMAC</span>: Keyed-Hashing for Message Authentication»</span>. RFC 2104. IETF.
+</div>
+<div id="ref-FIPS1804" class="csl-entry" role="listitem">
+National Institute of Standards and Technology. 2015. <span>«Secure Hash Standard (SHS)»</span>. FIPS PUB 180-4. NIST.
+</div>
+<div id="ref-PreneelOorschot1995" class="csl-entry" role="listitem">
+Preneel, Bart, e Paul C. van Oorschot. 1995. <span>«<span>MDx-MAC</span> and Building Fast <span>MAC</span>s from Hash Functions»</span>. Em <em>Advances in Cryptology (CRYPTO ’95)</em>.
+</div>
+<div id="ref-Stallings2020" class="csl-entry" role="listitem">
+Stallings, William. 2020. <em>Cryptography and Network Security: Principles and Practice</em>. 8.ª ed. Pearson.
+</div>
+<div id="ref-Stevens2017" class="csl-entry" role="listitem">
+Stevens, Marc, Elie Bursztein, Pierre Karpman, Ange Albertini, e Yarik Markov. 2017. <span>«The First Collision for Full <span>SHA-1</span>»</span>. Em <em>Advances in Cryptology (CRYPTO 2017)</em>.
+</div>
+<div id="ref-Wang2005" class="csl-entry" role="listitem">
+Wang, Xiaoyun, e Hongbo Yu. 2005. <span>«How to Break <span>MD5</span> and Other Hash Functions»</span>. Em <em>Advances in Cryptology (EUROCRYPT 2005)</em>.
+</div>
+</div>
 
 
 <!-- -->
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -889,14 +1219,162 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Código fonte</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Hashing — Propriedades, Ataques, SHA e HMAC"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "João Pavão"</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-09-14</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-PT</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Conteúdo por desenvolver.</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Hashing — Propriedades, Ataques, SHA, MAC e HMAC"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "João Pavão"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-09-14</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-PT</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução {#sec-05-intro .unnumbered}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>Os capítulos anteriores trataram sempre de **confidencialidade**: como transformar uma mensagem de forma que só quem possui a chave certa a consiga ler. Mas confidencialidade não é a única propriedade que uma comunicação segura precisa de garantir. Uma mensagem pode viajar perfeitamente cifrada e, ainda assim, ser alterada a meio do caminho, ou não vir de quem diz vir. Este capítulo muda de problema: trata da **integridade** (a garantia de que os dados não foram alterados) e da **autenticação** (a garantia de que os dados vêm de quem se espera), e da ferramenta que serve de base a ambas, a **função de hash**.</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## O Que é uma Função de Hash {#sec-05-conceito}</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>Uma **função de hash** transforma uma entrada de tamanho arbitrário numa saída de tamanho fixo, geralmente muito mais curta:</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>$$h = H(x)$$</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>onde $x$ é o valor (ou mensagem) a ser resumido, $H$ é a função de hash, e $h$ é o **valor de hash** (também chamado *digest* ou resumo criptográfico). $x$ é conhecido como a **pré-imagem** de $h$.</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>Duas características, à partida simples, definem o essencial de uma função de hash: é **determinística** (a mesma entrada produz sempre a mesma saída) e é uma **função de compressão** (entradas de qualquer tamanho, potencialmente enormes, produzem sempre uma saída do mesmo tamanho fixo, tipicamente entre 128 e 512 bits). Esta segunda característica tem uma consequência matemática inevitável: como o conjunto de entradas possíveis é infinito e o conjunto de saídas é finito, **têm de existir colisões**, pares de entradas diferentes que produzem o mesmo valor de hash. A segurança de uma função de hash nunca pode assentar em evitá-las por completo, isso é impossível, mas sim em torná-las computacionalmente impossíveis de encontrar deliberadamente. É exactamente isso que a secção seguinte formaliza.</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Propriedades de uma Função de Hash {#sec-05-propriedades}</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>Nem toda a função que comprime dados é útil em criptografia. As propriedades seguintes <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span> distinguem uma função de hash **fraca** de uma **forte**:</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>| Requisito | Descrição |</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>|---|---|</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>| Tamanho de entrada variável | $H$ pode ser aplicada a um bloco de dados de qualquer tamanho |</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>| Tamanho de saída fixo | $H$ produz sempre uma saída de comprimento fixo |</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>| Eficiência | $H(x)$ é fácil de calcular para qualquer $x$, tornando praticáveis implementações em hardware e em software |</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>| Resistência a pré-imagem (*one-way*) | Dado um valor de hash $h$, é computacionalmente inviável encontrar $y$ tal que $H(y) = h$ |</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>| Resistência a segunda pré-imagem (colisão fraca) | Dado um bloco $x$, é computacionalmente inviável encontrar $y \neq x$ com $H(y) = H(x)$ |</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>| Resistência a colisões (colisão forte) | É computacionalmente inviável encontrar qualquer par $(x,y)$, com $x \neq y$, tal que $H(x) = H(y)$ |</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>| Pseudoaleatoriedade | A saída de $H$ cumpre os testes estatísticos padrão de aleatoriedade |</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>: Propriedades de uma função de hash <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span> {#tbl-05-propriedades}</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>As quatro primeiras propriedades definem um **hash fraco**: suficiente para detectar erros acidentais de transmissão, mas não para resistir a um atacante. As três últimas, acrescentadas, definem um **hash forte**, o único adequado a usos criptográficos. Vale a pena não confundir as duas últimas propriedades de resistência a colisões, que são fáceis de trocar:</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Segunda pré-imagem**: o atacante já tem um $x$ específico (por exemplo, um contrato original) e quer encontrar outro documento $y$ com o mesmo hash, para o substituir sem que a substituição seja detectada.</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Colisão**: o atacante não tem nenhum documento de partida fixo, só quer encontrar **um par qualquer** $(x,y)$ que colida, o que é estruturalmente mais fácil de conseguir.</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>Esta diferença tem uma consequência prática importante, conhecida como o **paradoxo do aniversário**: encontrar uma colisão qualquer para uma função de hash de $n$ bits de saída custa, em média, apenas cerca de $2^{n/2}$ tentativas, muito menos do que os $2^n$ que a intuição sugeriria, e muitíssimo menos do que os $2^n$ necessários para quebrar a resistência a pré-imagem ou a segunda pré-imagem. É por esta razão que o tamanho da saída de uma função de hash tem de ser aproximadamente o dobro do nível de segurança pretendido: um hash de 256 bits dá apenas $2^{128}$ de segurança contra colisões, não $2^{256}$.</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## A Família SHA {#sec-05-sha}</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>Ao longo das últimas três décadas, várias famílias de funções de hash disputaram o lugar de norma de facto. As primeiras, o **MD4** e o **MD5** (*Message Digest*, Ron Rivest, 1990 e 1992), com saídas de apenas 128 bits, acabaram formalmente quebradas: Wang e Yu apresentaram um método prático para gerar colisões em MD5 em 2005 <span class="co">[</span><span class="ot">@Wang2005</span><span class="co">]</span>, e hoje o MD5 não deve ser usado para nenhum fim criptográfico, apenas para verificações de integridade não adversariais (por exemplo, confirmar que uma transferência de ficheiro não foi corrompida por erro).</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>O **SHA** (*Secure Hash Algorithm*), normalizado pelo NIST, tornou-se a família de referência [@FIPS1804]. O **SHA-1** (160 bits, 1995) manteve-se em uso generalizado durante duas décadas, apesar de fragilidades teóricas conhecidas desde 2005, até a Google e o CWI Amsterdam publicarem, em 2017, a primeira colisão prática (o ataque **SHAttered**), dois PDFs distintos com o mesmo hash SHA-1 <span class="co">[</span><span class="ot">@Stevens2017</span><span class="co">]</span>. Desde então, o SHA-1 está formalmente desaconselhado para qualquer uso que dependa de resistência a colisões, incluindo certificados digitais e assinaturas.</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>A família actualmente recomendada é o **SHA-2**, que agrupa várias variantes consoante o tamanho da saída e da estrutura interna:</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>| Algoritmo | Tamanho da mensagem | Tamanho do bloco | Tamanho da palavra | Tamanho do resumo |</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>|---|---|---|---|---|</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>| SHA-1 | $&lt; 2^{64}$ | 512 | 32 | 160 |</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>| SHA-224 | $&lt; 2^{64}$ | 512 | 32 | 224 |</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>| SHA-256 | $&lt; 2^{64}$ | 512 | 32 | 256 |</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>| SHA-384 | $&lt; 2^{128}$ | 1024 | 64 | 384 |</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>| SHA-512 | $&lt; 2^{128}$ | 1024 | 64 | 512 |</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>| SHA-512/224 | $&lt; 2^{128}$ | 1024 | 64 | 224 |</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>| SHA-512/256 | $&lt; 2^{128}$ | 1024 | 64 | 256 |</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>: Parâmetros das variantes da família SHA (todos os tamanhos em bits) <span class="co">[</span><span class="ot">@FIPS1804</span><span class="co">]</span> {#tbl-05-sha}</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>O **SHA-256** é hoje a escolha por omissão para a generalidade das aplicações novas, usado, entre outros, no TLS, no Git e no Bitcoin. Na prática, calcular um resumo é uma operação trivial em qualquer sistema Unix:</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">"Olá Mundo! João Pavão"</span> <span class="op">&gt;</span> hashtext.txt</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl md5 hashtext.txt</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="ex">MD5</span><span class="er">(</span><span class="ex">hashtext.txt</span><span class="kw">)</span><span class="ex">=</span> dafa6ed4f172ed103c577334bdfa375d</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl sha1 hashtext.txt</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="ex">SHA1</span><span class="er">(</span><span class="ex">hashtext.txt</span><span class="kw">)</span><span class="ex">=</span> f8372d55ba7ae3655ec0f886ef658f94879646c1</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>Note-se que os dois resumos, apesar de calculados sobre o mesmo ficheiro, não têm nenhuma relação visível entre si, precisamente o comportamento pseudoaleatório exigido na Tabela <span class="co">[</span><span class="ot">-@tbl-05-propriedades</span><span class="co">]</span>.</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="fu">## Verificar a Integridade — e os Seus Limites {#sec-05-integridade}</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>O uso mais directo de uma função de hash é verificar se um dado se manteve íntegro: o emissor calcula $h = H(\text{dados})$ e envia os dois juntos; o receptor recalcula o hash sobre os dados recebidos e compara com o valor recebido. Qualquer alteração aos dados, ainda que de um único bit, muda o valor de hash de forma imprevisível (propriedade de pseudoaleatoriedade), tornando a alteração detectável.</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>Mas este esquema tem uma falha grave, que só se torna visível quando se considera um atacante activo, capaz de intervir no canal de comunicação, e não apenas um erro acidental de transmissão:</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="al">![Uma função de hash sem chave detecta erros acidentais, mas não resiste a um atacante activo: como qualquer pessoa consegue calcular $H$, um atacante que altere os dados recalcula também um novo hash válido, e o receptor não tem forma de distinguir esta situação de uma comunicação legítima.](../assets/images/fig-05-hash-integridade-ataque.png)</span>{#fig-05-integridade-ataque width=100%}</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>A raiz do problema: $H$ é **pública**. Não há nenhum segredo envolvido no cálculo do hash, por isso um atacante capaz de alterar os dados em trânsito é igualmente capaz de recalcular o hash correspondente aos dados alterados. O valor de hash, sozinho, prova que os dados não sofreram um erro acidental, mas não prova nem que os dados vêm de quem diz vir, nem que não foram deliberadamente adulterados por alguém no meio do caminho. Falta um ingrediente que só o emissor e o receptor legítimos possuam, e que um atacante não consiga reproduzir: um **segredo partilhado**.</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="fu">## Autenticação de Mensagens: o MAC {#sec-05-mac}</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>A solução mais simples para o problema identificado na secção anterior é introduzir uma chave secreta $K$, partilhada apenas entre emissor e receptor, no próprio cálculo do resumo. Um **MAC** (*Message Authentication Code*) é exactamente isto: uma função que recebe a mensagem **e** uma chave secreta, e produz uma marca (*tag*) curta que só quem conhece a chave consegue calcular ou verificar corretamente.</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>$$T = \text{MAC}_K(\text{dados})$$</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>!<span class="co">[</span><span class="ot">Com uma chave secreta $K$, partilhada apenas entre emissor e receptor, o mesmo ataque da Figura [-@fig-05-integridade-ataque] falha: o atacante consegue alterar os dados, mas não consegue calcular a marca correspondente sem conhecer $K$, e o receptor rejeita a mensagem adulterada.</span><span class="co">](../assets/images/fig-05-mac-generico.png)</span>{#fig-05-mac-generico width=100%}</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>Um exemplo concreto ajuda a fixar a ideia. Suponha-se uma ordem de transferência bancária, "Transferir 100€ para o IBAN PT50...", protegida com $\text{MAC}_K$. O banco recebe a mensagem e a marca, recalcula $\text{MAC}_K$ sobre a mensagem recebida com a mesma chave $K$ (combinada previamente com o cliente, por exemplo ao activar o cartão) e compara. Se um atacante intercepta a mensagem e altera "100€" para "10000€", a marca antiga deixa de corresponder à mensagem alterada, e calcular a marca correcta para a nova mensagem exigiria conhecer $K$, exactamente o que faltava ao atacante na Figura <span class="co">[</span><span class="ot">-@fig-05-integridade-ataque</span><span class="co">]</span>.</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>Note-se a diferença fundamental em relação a um hash simples: um MAC garante **duas** propriedades de uma só vez, integridade (os dados não foram alterados) e **autenticidade** (os dados só podem ter vindo de alguém que conhece $K$, ou seja, do emissor legítimo). É por isto que os MAC partilham o mesmo modelo de confiança das cifras simétricas: exigem uma chave previamente combinada entre as duas partes, através de um canal seguro.</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>A ideia mais directa para construir um MAC a partir de uma função de hash já existente é combinar a mensagem com a chave secreta antes de a passar por $H$. Não é por acaso que esta é exactamente a lógica de vários desenhos clássicos: cifrar o hash da mensagem com uma chave simétrica, cifrar só o hash em vez da mensagem inteira, ou, na sua forma mais simples, calcular $H(\text{dados} \Vert S)$ usando apenas um valor secreto $S$ partilhado, sem qualquer cifra envolvida, o suficiente para autenticação e integridade, ainda que sem confidencialidade. Esta última construção, um hash simples com um segredo concatenado à mensagem, parece resolver o problema, mas esconde uma armadilha que a secção seguinte desmonta.</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## HMAC {#sec-05-hmac}</span></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>Concatenar ingenuamente uma chave a uma mensagem antes de a passar por uma função de hash parece razoável, mas as duas formas óbvias de o fazer têm problemas distintos <span class="co">[</span><span class="ot">@PreneelOorschot1995</span><span class="co">]</span>.</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>**Prefixo, $H(K \Vert M)$.** As funções da família MD5/SHA (SHA-1 e SHA-2 incluídos) processam a entrada em blocos, actualizando um estado interno bloco a bloco, e o valor de hash final **é** literalmente esse estado interno, sem qualquer passo final de fecho. Isto permite um **ataque de extensão de comprimento** (*length-extension attack*): conhecendo apenas $H(K \Vert M)$ (não $K$), um atacante consegue calcular $H(K \Vert M \Vert M')$, uma marca válida para uma mensagem estendida, para qualquer $M'$ à sua escolha.</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>Um exemplo simplificado torna isto concreto (não é assim que o SHA-256 funciona por dentro, mas ilustra exactamente a estrutura do problema). Imagine-se uma função de hash de brinquedo que processa a mensagem bloco a bloco, actualizando um estado que começa em 0, e devolve esse estado directamente como resultado final:</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>$$\text{estado} \leftarrow (\text{estado} + \text{bloco}) \bmod 100$$</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>Seja a chave secreta $K=7$ (um bloco) e a mensagem $M=42$ (outro bloco). A marca calculada pelo emissor é:</span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>$$H(K \Vert M) = (0 + 7 + 42) \bmod 100 = 49$$</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>Um atacante que intercepte a mensagem e a marca $49$ não precisa de conhecer $K$ para forjar uma marca válida para a mensagem estendida $M \Vert M'$, com $M'=13$ à sua escolha: basta continuar o mesmo cálculo a partir do estado que já conhece, $49$:</span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>$$(49 + 13) \bmod 100 = 62$$</span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>que é exactamente o valor que o receptor obteria ao calcular $H(K \Vert M \Vert M')$ do zero, com a chave verdadeira ($0+7+42+13=62$). O atacante nunca soube que $K=7$: só precisou de saber que a marca antiga **era** o estado interno, e que continuar o cálculo a partir dela é tão fácil como calculá-lo da primeira vez. É exactamente esta propriedade, o valor de hash final ser reutilizável como ponto de partida para continuar o cálculo, que o MD5, o SHA-1 e o SHA-256 partilham genuinamente (a única complicação real nestes algoritmos é um bloco extra de *padding*, que o atacante também consegue reconstruir a partir do comprimento conhecido de $K \Vert M$), e que torna este ataque prático, não apenas um exercício académico.</span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>**Sufixo, $H(M \Vert K)$.** Colocar a chave no fim, em vez de no início, evita o ataque anterior, porque o atacante deixa de conseguir continuar o cálculo a partir de um estado que já inclui a chave. Mas troca-o por outro problema: encontrar duas mensagens $M_1 \neq M_2$ que colidam **antes** de $K$ ser processado já basta para forjar uma marca válida para $M_2$ a partir da marca de $M_1$ (a chave, aplicada depois, produz o mesmo resultado para ambas), um ataque prático contra hashes com resistência a colisões fraca, como o MD5 (Secção 5.3).</span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>A construção **HMAC** (*Hash-based MAC*), proposta por Bellare, Canetti e Krawczyk [@BellareCanettiKrawczyk1996] e normalizada no RFC 2104 [@RFC2104], evita os dois problemas ao aplicar $H$ **duas vezes**, numa estrutura aninhada, em vez de concatenar a chave uma única vez:</span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>$$\text{HMAC}(K, M) = H\big((K' \oplus \text{opad}) \,\Vert\, H((K' \oplus \text{ipad}) \,\Vert\, M)\big)$$</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>onde $K'$ é a chave ajustada ao tamanho do bloco de $H$ (completada com zeros se for mais curta, ou ela própria resumida por $H$ se for mais comprida), e <span class="in">`ipad`</span> e <span class="in">`opad`</span> são duas constantes fixas e públicas (o byte <span class="in">`0x36`</span> e o byte <span class="in">`0x5C`</span>, repetidos até ao tamanho do bloco), escolhidas apenas por terem uma distância de Hamming grande entre si, de forma a que as duas chaves internas, $K' \oplus \text{ipad}$ e $K' \oplus \text{opad}$, se comportem como duas chaves independentes:</span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a><span class="al">![A construção do HMAC: a mensagem é primeiro combinada com uma versão da chave ($K \oplus \text{ipad}$) e passada por $H$, produzindo um hash interno; esse resultado é depois combinado com uma segunda versão da chave ($K \oplus \text{opad}$) e passado por $H$ uma segunda vez, produzindo a marca final. As duas invocações de $H$ nunca processam a chave original directamente.](../assets/images/fig-05-hmac-construcao.png)</span>{#fig-05-hmac-construcao width=95%}</span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>Esta estrutura em duas camadas resolve os dois ataques da lista anterior: o hash exterior nunca expõe o seu estado interno a partir de dados conhecidos do atacante (o hash interior já consumiu a chave antes disso), o que elimina a extensão de comprimento, e uma eventual colisão no hash interior deixa de ser suficiente para forjar uma marca, porque o resultado ainda tem de passar pelo segundo $H$, protegido pela segunda chave.</span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>Um resultado notável do trabalho original de Bellare, Canetti e Krawczyk é que a segurança do HMAC **não depende da resistência a colisões** de $H$, depende de uma propriedade mais fraca e mais robusta da sua função de compressão interna. É por isto que o **HMAC-MD5** e o **HMAC-SHA1** continuam, na prática, a não ter nenhum ataque conhecido, apesar de o MD5 e o SHA-1 estarem formalmente quebrados como funções de hash de uso geral (Secção 5.3): quebrar o HMAC exigiria um tipo de ataque bastante diferente, e mais difícil, do que simplesmente encontrar colisões em $H$. Ainda assim, a recomendação prática é usar sempre **HMAC-SHA256** ou superior em sistemas novos, por prudência e para evitar depender de subtilezas desta natureza.</span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>O HMAC é hoje um dos mecanismos de autenticação mais usados na prática: protege registos do TLS em versões anteriores à 1.3, autentica pacotes no IPsec, assina *tokens* **JWT** (*JSON Web Tokens*, no algoritmo <span class="in">`HS256`</span>), e é a base da assinatura de pedidos em APIs como as da AWS.</span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-05-sintese}</span></span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>Este capítulo mudou de confidencialidade para integridade e autenticação:</span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Uma **função de hash** comprime uma entrada de qualquer tamanho numa saída fixa, de forma determinística; como o domínio é infinito e o contradomínio finito, colisões existem sempre, o objectivo é torná-las difíceis de encontrar</span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Um hash **forte** exige, além da eficiência e do tamanho fixo de saída, resistência a **pré-imagem**, a **segunda pré-imagem**, e a **colisões**; esta última é a mais fraca das três, e cai ao fim de apenas $2^{n/2}$ tentativas (paradoxo do aniversário), não $2^n$</span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>A família **SHA** é a referência actual; o **MD5** e o **SHA-1** têm colisões práticas conhecidas (Wang e Yu, 2005; SHAttered, 2017) e estão desaconselhados; o **SHA-256** é hoje a escolha recomendada</span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Uma função de hash **sem chave** não resiste a um atacante activo: qualquer pessoa consegue recalculá-la, por isso não prova nem integridade nem autenticidade contra um adversário capaz de intervir no canal</span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Um **MAC** resolve isto introduzindo uma chave secreta partilhada no cálculo da marca, dando simultaneamente integridade e autenticidade</span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Concatenar ingenuamente a chave à mensagem (<span class="in">`H(K‖M)`</span> ou <span class="in">`H(M‖K)`</span>) tem problemas conhecidos, extensão de comprimento no primeiro caso, dependência total da resistência a colisões no segundo</span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>O **HMAC** resolve ambos aplicando $H$ duas vezes, numa estrutura aninhada com duas chaves derivadas (<span class="in">`ipad`</span>/<span class="in">`opad`</span>); a sua segurança não depende da resistência a colisões de $H$, o que explica porque o HMAC-SHA1 continua sem ataques práticos conhecidos, apesar de o SHA-1 já não ser seguro como hash de uso geral</span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-05-reflexao}</span></span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>O SHA-1 já não é seguro contra colisões, e está formalmente desaconselhado para assinaturas digitais e certificados. Ainda assim, o HMAC-SHA1 continua em uso em vários sistemas legados sem ser considerado uma falha crítica. Tendo em conta a distinção entre as propriedades de um hash (Secção 5.2) e o que a demonstração de segurança do HMAC efectivamente exige (Secção 5.6), porque é que a quebra da resistência a colisões de uma função de hash não implica automaticamente a quebra do MAC construído sobre ela?</span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-05-referencias .unnumbered}</span></span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
