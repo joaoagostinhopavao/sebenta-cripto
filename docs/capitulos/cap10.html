@@ -8,7 +8,7 @@
 
 <meta name="author" content="João Pavão">
 
-<title>10&nbsp; TLS e PGP — Esquemas Criptográficos Aplicados – Criptografia</title>
+<title>10&nbsp; TLS e PGP – Criptografia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -65,6 +85,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../capitulos/cap11.html" rel="next">
 <link href="../capitulos/cap09.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -106,6 +127,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../assets/css/custom.css">
 </head>
@@ -119,7 +169,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap10.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP — Esquemas Criptográficos Aplicados</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap10.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
@@ -180,13 +230,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA e HMAC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA, MAC e HMAC</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica — Fundamentos e RSA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica e RSA</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -198,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Criptografia de Curva Elíptica (ECC)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Criptografia de Curva Elíptica</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -210,7 +260,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP — Esquemas Criptográficos Aplicados</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Eficiência Algorítmica e Criptografia Pós-Quântica</span></span></a>
   </div>
 </li>
     </ul>
@@ -218,15 +274,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#sec-10-intro" id="toc-sec-10-intro" class="nav-link active" data-scroll-target="#sec-10-intro">Introdução</a></li>
+  <li><a href="#sec-10-tls-objetivos" id="toc-sec-10-tls-objetivos" class="nav-link" data-scroll-target="#sec-10-tls-objetivos"><span class="header-section-number">10.1</span> TLS: Objectivos e Camadas</a></li>
+  <li><a href="#sec-10-tls-handshake" id="toc-sec-10-tls-handshake" class="nav-link" data-scroll-target="#sec-10-tls-handshake"><span class="header-section-number">10.2</span> O Handshake do TLS 1.3</a></li>
+  <li><a href="#sec-10-tls-cifras" id="toc-sec-10-tls-cifras" class="nav-link" data-scroll-target="#sec-10-tls-cifras"><span class="header-section-number">10.3</span> Cifras Modernas em TLS</a></li>
+  <li><a href="#sec-10-pgp" id="toc-sec-10-pgp" class="nav-link" data-scroll-target="#sec-10-pgp"><span class="header-section-number">10.4</span> PGP: Cifra Híbrida para Correio Electrónico</a></li>
+  <li><a href="#sec-10-sintese" id="toc-sec-10-sintese" class="nav-link" data-scroll-target="#sec-10-sintese"><span class="header-section-number">10.5</span> Síntese do Capítulo</a></li>
+  <li><a href="#sec-10-reflexao" id="toc-sec-10-reflexao" class="nav-link" data-scroll-target="#sec-10-reflexao"><span class="header-section-number">10.6</span> Para Pensar</a></li>
+  <li><a href="#sec-10-referencias" id="toc-sec-10-referencias" class="nav-link" data-scroll-target="#sec-10-referencias">Referências</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP — Esquemas Criptográficos Aplicados</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
 </div>
 
 
@@ -255,13 +324,89 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<blockquote class="blockquote">
-<p>Conteúdo por desenvolver.</p>
-</blockquote>
+<section id="sec-10-intro" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-10-intro">Introdução</h2>
+<p>Este capítulo mostra como as ferramentas apresentadas ao longo do livro, cifras simétricas, funções de hash, MACs, RSA, Diffie-Hellman, curva elíptica e certificados X.509, se combinam em dois protocolos reais de largo uso: o <strong>TLS</strong>, que protege praticamente todo o tráfego web actual, e o <strong>PGP</strong>, um dos primeiros sistemas de criptografia de utilização generalizada para correio electrónico. Outros esquemas de interesse prático, à medida que forem sendo incorporados no programa da UC, terão naturalmente lugar aqui.</p>
+</section>
+<section id="sec-10-tls-objetivos" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="sec-10-tls-objetivos"><span class="header-section-number">10.1</span> TLS: Objectivos e Camadas</h2>
+<p>O <strong>TLS</strong> (<em>Transport Layer Security</em>), sucessor do SSL, protege uma ligação de rede em três frentes: confidencialidade (os dados trocados não podem ser lidos por terceiros), integridade (não podem ser alterados sem detecção) e autenticação (pelo menos o servidor, tipicamente através de um certificado X.509, prova a sua identidade) <span class="citation" data-cites="Stallings2020 RFC8446">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>; <a href="cap01.html#ref-RFC8446" role="doc-biblioref">Rescorla 2018</a>)</span>. O protocolo organiza-se em duas camadas: o <strong>protocolo de acordo</strong> (<em>handshake</em>), que negoceia os parâmetros da sessão e estabelece uma chave partilhada, e o <strong>protocolo de registo</strong> (<em>record protocol</em>), que usa essa chave para cifrar e autenticar todo o tráfego subsequente com uma construção AEAD, como o AES-GCM ou o ChaCha20-Poly1305 (capítulos 3 e 4).</p>
+</section>
+<section id="sec-10-tls-handshake" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="sec-10-tls-handshake"><span class="header-section-number">10.2</span> O Handshake do TLS 1.3</h2>
+<p>O TLS 1.3 <span class="citation" data-cites="RFC8446">(<a href="cap01.html#ref-RFC8446" role="doc-biblioref">Rescorla 2018</a>)</span> simplificou significativamente o processo de acordo em relação a versões anteriores, reduzindo-o a uma única volta de ida e volta (<em>1-RTT</em>) na generalidade dos casos:</p>
+<div id="fig-10-tls-handshake" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-10-tls-handshake-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-10-tls-handshake.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-10-tls-handshake-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.1: O handshake do TLS 1.3: cliente e servidor trocam um valor de troca de chaves (<em>key_share</em>, tipicamente ECDH sobre a Curve25519) logo no primeiro par de mensagens; o servidor prova a sua identidade com um certificado X.509 e a respectiva assinatura; ambos confirmam ter derivado a mesma chave de sessão antes de trocar dados de aplicação.
+</figcaption>
+</figure>
+</div>
+<p>O cliente inicia com um <code>ClientHello</code>, que já inclui um valor de troca de chaves (<em>key_share</em>), tipicamente um ponto de curva elíptica para ECDH (Secção 8.5). O servidor responde com o seu próprio <code>ServerHello</code> e <em>key_share</em>, permitindo que ambos os lados derivem imediatamente uma chave de sessão comum, exactamente como na Secção 8.5. O servidor envia ainda o seu certificado X.509 (Secção 9.3) e uma assinatura sobre o histórico do <em>handshake</em>, provando que possui a chave privada correspondente; ambos os lados terminam confirmando, através de uma mensagem <code>Finished</code> autenticada, que chegaram à mesma chave. A partir daqui, toda a comunicação segue cifrada e autenticada pela camada de registo.</p>
+<p>Um detalhe do desenho do TLS 1.3 vale a pena assinalar: o valor <em>key_share</em> de cada lado é gerado de novo, <strong>efemeramente</strong>, em cada <em>handshake</em>, e nunca reutilizado de uma sessão para a seguinte. Esta propriedade chama-se <strong>sigilo perspectivo</strong> (<em>forward secrecy</em>): mesmo que a chave privada de longo prazo do servidor (a que assina o <code>CertificateVerify</code>) seja comprometida no futuro, essa chave nunca participou directamente na derivação da chave de sessão, apenas autenticou o valor efémero trocado nesse <em>handshake</em> específico. Comprometer a chave de longo prazo permite fazer-se passar pelo servidor daí em diante, mas não decifrar sessões passadas já terminadas e descartadas.</p>
+</section>
+<section id="sec-10-tls-cifras" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="sec-10-tls-cifras"><span class="header-section-number">10.3</span> Cifras Modernas em TLS</h2>
+<p>Uma <strong>cifra combinada</strong> (<em>cipher suite</em>) do TLS 1.3 especifica o algoritmo AEAD e a função de hash usada para derivar chaves e autenticar o <em>handshake</em>. As duas combinações dominantes na prática actual já foram ambas apresentadas neste livro:</p>
+<ul>
+<li><code>TLS_AES_128_GCM_SHA256</code>: AES em modo GCM (Secção 3.6) com SHA-256 (Secção 5.3), beneficia de aceleração de hardware (AES-NI) na generalidade dos processadores modernos.</li>
+<li><code>TLS_CHACHA20_POLY1305_SHA256</code>: ChaCha20-Poly1305 (Secção 4.5) com SHA-256, preferido em dispositivos sem aceleração de hardware para AES, como muitos telemóveis, exactamente pela razão de desempenho já discutida no Capítulo 4.</li>
+</ul>
+</section>
+<section id="sec-10-pgp" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="sec-10-pgp"><span class="header-section-number">10.4</span> PGP: Cifra Híbrida para Correio Electrónico</h2>
+<p>O <strong>PGP</strong> (<em>Pretty Good Privacy</em>), e o seu sucessor normalizado, o OpenPGP <span class="citation" data-cites="RFC4880">(<a href="cap01.html#ref-RFC4880" role="doc-biblioref">Callas et al. 2007</a>)</span>, resolve um problema diferente do TLS: proteger uma mensagem que não segue uma ligação em tempo real, como um correio electrónico, entre um emissor e um destinatário cujas chaves públicas já são conhecidas <span class="citation" data-cites="Martin2017">(<a href="cap01.html#ref-Martin2017" role="doc-biblioref">Martin 2017</a>)</span>. A construção combina cifra simétrica e assimétrica, aproveitando a velocidade da primeira e a conveniência da segunda:</p>
+<div id="fig-10-pgp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-10-pgp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-10-pgp.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-10-pgp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.2: O esquema híbrido do PGP: a mensagem é assinada com a chave privada do emissor e cifrada com uma chave de sessão gerada ao acaso; essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário. Só quem tiver a chave privada correspondente consegue recuperar a chave de sessão, e por essa via a mensagem.
+</figcaption>
+</figure>
+</div>
+<p>Do lado do emissor: a mensagem <span class="math inline">\(M\)</span> é primeiro assinada (hash mais cifra com a chave privada do emissor, tal como na Secção 7.4); o resultado é cifrado com uma <strong>chave de sessão</strong> <span class="math inline">\(K_s\)</span>, gerada ao acaso e usada uma única vez, através de uma cifra simétrica rápida; e essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário, usando RSA. O que é transmitido é o par (texto cifrado, chave de sessão cifrada). Do lado do receptor, o processo inverte-se: a chave privada do destinatário decifra <span class="math inline">\(K_s\)</span>, que decifra o texto, revelando a mensagem e a assinatura, que se verifica por fim com a chave pública do emissor.</p>
+<p>Uma diferença de fundo em relação ao modelo do Capítulo 9 é o modelo de confiança: em vez de uma hierarquia de CAs, o PGP assenta numa <strong>rede de confiança</strong> (<em>Web of Trust</em>), em que cada utilizador assina as chaves públicas de outros em quem confia directamente, e a confiança propaga-se de forma descentralizada através dessa rede de assinaturas <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>.</p>
+</section>
+<section id="sec-10-sintese" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="sec-10-sintese"><span class="header-section-number">10.5</span> Síntese do Capítulo</h2>
+<p>Este capítulo combinou as ferramentas dos capítulos anteriores em dois sistemas reais:</p>
+<ol type="1">
+<li>O <strong>TLS</strong> protege uma ligação de rede combinando um <em>handshake</em>, que negoceia uma chave de sessão (tipicamente por ECDH), com um protocolo de registo, que cifra o tráfego com uma construção AEAD</li>
+<li>O TLS 1.3 reduziu o <em>handshake</em> a uma volta (1-RTT), autenticando o servidor através de um certificado X.509 e a respectiva assinatura; o valor de troca de chaves é gerado de forma efémera em cada sessão, garantindo sigilo perspectivo</li>
+<li>As cifras combinadas modernas usam AES-GCM ou ChaCha20-Poly1305, consoante haja ou não aceleração de hardware disponível</li>
+<li>O <strong>PGP</strong> protege mensagens assíncronas, como o correio electrónico, com uma cifra <strong>híbrida</strong>: a mensagem cifra-se com uma chave de sessão simétrica, e só essa chave se cifra com RSA; a confiança organiza-se numa rede descentralizada, não numa hierarquia de CAs</li>
+</ol>
+</section>
+<section id="sec-10-reflexao" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="sec-10-reflexao"><span class="header-section-number">10.6</span> Para Pensar</h2>
+<p>O sigilo perspectivo do TLS 1.3 (Secção 10.2) garante que comprometer a chave privada de longo prazo do servidor não permite decifrar sessões passadas, porque a chave de sessão nunca dependeu directamente dela. O PGP (Secção 10.4) funciona de forma bastante diferente: a chave pública do destinatário cifra directamente a chave de sessão <span class="math inline">\(K_s\)</span> de cada mensagem, usando sempre o mesmo par de chaves RSA de longo prazo. Tendo isto em conta, que consequência tem, para as mensagens PGP já enviadas no passado, a eventual futura descoberta da chave privada de longo prazo de um destinatário, e em que é que essa situação se distingue precisamente da garantia oferecida pelo TLS 1.3?</p>
+</section>
+<section id="sec-10-referencias" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-10-referencias">Referências</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-RFC4880" class="csl-entry" role="listitem">
+Callas, Jon, Lutz Donnerhacke, Hal Finney, David Shaw, e Rodney Thayer. 2007. <span>«<span>OpenPGP</span> Message Format»</span>. RFC 4880. IETF.
+</div>
+<div id="ref-Martin2017" class="csl-entry" role="listitem">
+Martin, Keith. 2017. <em>Everyday Cryptography</em>. 2.ª ed. Oxford University Press.
+</div>
+<div id="ref-RFC8446" class="csl-entry" role="listitem">
+Rescorla, Eric. 2018. <span>«The Transport Layer Security (<span>TLS</span>) Protocol Version 1.3»</span>. RFC 8446. IETF.
+</div>
+<div id="ref-Stallings2020" class="csl-entry" role="listitem">
+Stallings, William. 2020. <em>Cryptography and Network Security: Principles and Practice</em>. 8.ª ed. Pearson.
+</div>
+</div>
 
 
 <!-- -->
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -883,16 +1028,70 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../capitulos/cap11.html" class="pagination-link" aria-label="Eficiência Algorítmica e Criptografia Pós-Quântica">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Eficiência Algorítmica e Criptografia Pós-Quântica</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Código fonte</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "TLS e PGP — Esquemas Criptográficos Aplicados"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "TLS e PGP"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "João Pavão"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-09-14</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-PT</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Conteúdo por desenvolver.</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução {#sec-10-intro .unnumbered}</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Este capítulo mostra como as ferramentas apresentadas ao longo do livro, cifras simétricas, funções de hash, MACs, RSA, Diffie-Hellman, curva elíptica e certificados X.509, se combinam em dois protocolos reais de largo uso: o **TLS**, que protege praticamente todo o tráfego web actual, e o **PGP**, um dos primeiros sistemas de criptografia de utilização generalizada para correio electrónico. Outros esquemas de interesse prático, à medida que forem sendo incorporados no programa da UC, terão naturalmente lugar aqui.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## TLS: Objectivos e Camadas {#sec-10-tls-objetivos}</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>O **TLS** (*Transport Layer Security*), sucessor do SSL, protege uma ligação de rede em três frentes: confidencialidade (os dados trocados não podem ser lidos por terceiros), integridade (não podem ser alterados sem detecção) e autenticação (pelo menos o servidor, tipicamente através de um certificado X.509, prova a sua identidade) [@Stallings2020; @RFC8446]. O protocolo organiza-se em duas camadas: o **protocolo de acordo** (*handshake*), que negoceia os parâmetros da sessão e estabelece uma chave partilhada, e o **protocolo de registo** (*record protocol*), que usa essa chave para cifrar e autenticar todo o tráfego subsequente com uma construção AEAD, como o AES-GCM ou o ChaCha20-Poly1305 (capítulos 3 e 4).</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## O Handshake do TLS 1.3 {#sec-10-tls-handshake}</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>O TLS 1.3 <span class="co">[</span><span class="ot">@RFC8446</span><span class="co">]</span> simplificou significativamente o processo de acordo em relação a versões anteriores, reduzindo-o a uma única volta de ida e volta (*1-RTT*) na generalidade dos casos:</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="al">![O handshake do TLS 1.3: cliente e servidor trocam um valor de troca de chaves (*key_share*, tipicamente ECDH sobre a Curve25519) logo no primeiro par de mensagens; o servidor prova a sua identidade com um certificado X.509 e a respectiva assinatura; ambos confirmam ter derivado a mesma chave de sessão antes de trocar dados de aplicação.](../assets/images/fig-10-tls-handshake.png)</span>{#fig-10-tls-handshake width=75%}</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>O cliente inicia com um <span class="in">`ClientHello`</span>, que já inclui um valor de troca de chaves (*key_share*), tipicamente um ponto de curva elíptica para ECDH (Secção 8.5). O servidor responde com o seu próprio `ServerHello` e *key_share*, permitindo que ambos os lados derivem imediatamente uma chave de sessão comum, exactamente como na Secção 8.5. O servidor envia ainda o seu certificado X.509 (Secção 9.3) e uma assinatura sobre o histórico do *handshake*, provando que possui a chave privada correspondente; ambos os lados terminam confirmando, através de uma mensagem <span class="in">`Finished`</span> autenticada, que chegaram à mesma chave. A partir daqui, toda a comunicação segue cifrada e autenticada pela camada de registo.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Um detalhe do desenho do TLS 1.3 vale a pena assinalar: o valor *key_share* de cada lado é gerado de novo, **efemeramente**, em cada *handshake*, e nunca reutilizado de uma sessão para a seguinte. Esta propriedade chama-se **sigilo perspectivo** (*forward secrecy*): mesmo que a chave privada de longo prazo do servidor (a que assina o `CertificateVerify`) seja comprometida no futuro, essa chave nunca participou directamente na derivação da chave de sessão, apenas autenticou o valor efémero trocado nesse *handshake* específico. Comprometer a chave de longo prazo permite fazer-se passar pelo servidor daí em diante, mas não decifrar sessões passadas já terminadas e descartadas.</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cifras Modernas em TLS {#sec-10-tls-cifras}</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Uma **cifra combinada** (*cipher suite*) do TLS 1.3 especifica o algoritmo AEAD e a função de hash usada para derivar chaves e autenticar o *handshake*. As duas combinações dominantes na prática actual já foram ambas apresentadas neste livro:</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`TLS_AES_128_GCM_SHA256`</span>: AES em modo GCM (Secção 3.6) com SHA-256 (Secção 5.3), beneficia de aceleração de hardware (AES-NI) na generalidade dos processadores modernos.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`TLS_CHACHA20_POLY1305_SHA256`</span>: ChaCha20-Poly1305 (Secção 4.5) com SHA-256, preferido em dispositivos sem aceleração de hardware para AES, como muitos telemóveis, exactamente pela razão de desempenho já discutida no Capítulo 4.</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## PGP: Cifra Híbrida para Correio Electrónico {#sec-10-pgp}</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>O **PGP** (*Pretty Good Privacy*), e o seu sucessor normalizado, o OpenPGP <span class="co">[</span><span class="ot">@RFC4880</span><span class="co">]</span>, resolve um problema diferente do TLS: proteger uma mensagem que não segue uma ligação em tempo real, como um correio electrónico, entre um emissor e um destinatário cujas chaves públicas já são conhecidas <span class="co">[</span><span class="ot">@Martin2017</span><span class="co">]</span>. A construção combina cifra simétrica e assimétrica, aproveitando a velocidade da primeira e a conveniência da segunda:</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="al">![O esquema híbrido do PGP: a mensagem é assinada com a chave privada do emissor e cifrada com uma chave de sessão gerada ao acaso; essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário. Só quem tiver a chave privada correspondente consegue recuperar a chave de sessão, e por essa via a mensagem.](../assets/images/fig-10-pgp.png)</span>{#fig-10-pgp width=100%}</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>Do lado do emissor: a mensagem $M$ é primeiro assinada (hash mais cifra com a chave privada do emissor, tal como na Secção 7.4); o resultado é cifrado com uma **chave de sessão** $K_s$, gerada ao acaso e usada uma única vez, através de uma cifra simétrica rápida; e essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário, usando RSA. O que é transmitido é o par (texto cifrado, chave de sessão cifrada). Do lado do receptor, o processo inverte-se: a chave privada do destinatário decifra $K_s$, que decifra o texto, revelando a mensagem e a assinatura, que se verifica por fim com a chave pública do emissor.</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>Uma diferença de fundo em relação ao modelo do Capítulo 9 é o modelo de confiança: em vez de uma hierarquia de CAs, o PGP assenta numa **rede de confiança** (*Web of Trust*), em que cada utilizador assina as chaves públicas de outros em quem confia directamente, e a confiança propaga-se de forma descentralizada através dessa rede de assinaturas <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>.</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-10-sintese}</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>Este capítulo combinou as ferramentas dos capítulos anteriores em dois sistemas reais:</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>O **TLS** protege uma ligação de rede combinando um *handshake*, que negoceia uma chave de sessão (tipicamente por ECDH), com um protocolo de registo, que cifra o tráfego com uma construção AEAD</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>O TLS 1.3 reduziu o *handshake* a uma volta (1-RTT), autenticando o servidor através de um certificado X.509 e a respectiva assinatura; o valor de troca de chaves é gerado de forma efémera em cada sessão, garantindo sigilo perspectivo</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>As cifras combinadas modernas usam AES-GCM ou ChaCha20-Poly1305, consoante haja ou não aceleração de hardware disponível</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>O **PGP** protege mensagens assíncronas, como o correio electrónico, com uma cifra **híbrida**: a mensagem cifra-se com uma chave de sessão simétrica, e só essa chave se cifra com RSA; a confiança organiza-se numa rede descentralizada, não numa hierarquia de CAs</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-10-reflexao}</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>O sigilo perspectivo do TLS 1.3 (Secção 10.2) garante que comprometer a chave privada de longo prazo do servidor não permite decifrar sessões passadas, porque a chave de sessão nunca dependeu directamente dela. O PGP (Secção 10.4) funciona de forma bastante diferente: a chave pública do destinatário cifra directamente a chave de sessão $K_s$ de cada mensagem, usando sempre o mesmo par de chaves RSA de longo prazo. Tendo isto em conta, que consequência tem, para as mensagens PGP já enviadas no passado, a eventual futura descoberta da chave privada de longo prazo de um destinatário, e em que é que essa situação se distingue precisamente da garantia oferecida pelo TLS 1.3?</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-10-referencias .unnumbered}</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

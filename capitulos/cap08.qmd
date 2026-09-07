@@ -1,8 +1,96 @@
 ---
-title: "Criptografia de Curva Elíptica (ECC)"
+title: "Criptografia de Curva Elíptica"
 author: "João Pavão"
 date: 2026-09-14
 lang: pt-PT
 ---
 
-> Conteúdo por desenvolver.
+## Introdução {#sec-08-intro .unnumbered}
+
+O RSA e o Diffie-Hellman assentam em dois problemas matemáticos, a factorização de inteiros e o logaritmo discreto módulo um primo, para os quais existem algoritmos de ataque **subexponenciais**, mais rápidos do que a força bruta pura, ainda que continuem impraticáveis para módulos suficientemente grandes [@Stallings2020]. Isto obriga a chaves cada vez maiores à medida que o poder de computação cresce, hoje tipicamente 2048 a 4096 bits (Secção 6.5). A **criptografia de curva elíptica** (*Elliptic Curve Cryptography*, ECC), proposta de forma independente por Koblitz [@Koblitz1987] e Miller [@Miller1985], resolve o mesmo tipo de problema, a troca de chaves e a assinatura digital, assente num problema matemático diferente, para o qual não é conhecido nenhum ataque subexponencial. O resultado prático é uma segurança equivalente com chaves ordens de grandeza mais pequenas, uma vantagem decisiva em dispositivos com poucos recursos computacionais, como telemóveis, cartões inteligentes ou sensores *Internet of Things* [@Aumasson2017].
+
+## Curvas Elípticas sobre Corpos Finitos {#sec-08-curvas}
+
+Uma **curva elíptica** é o conjunto de pontos $(x,y)$ que satisfazem uma equação da forma:
+
+$$y^2 = x^3 + ax + b$$
+
+com $a$ e $b$ constantes que definem a curva, sujeitas à condição $4a^3 + 27b^2 \neq 0$, que garante que a curva não tem singularidades (auto-intersecções ou cúspides) [@Stallings2020]. Para uso criptográfico, a equação não é resolvida sobre os números reais, mas sobre um **corpo finito** $\mathbb{Z}_p$, com $p$ um primo grande: os valores de $x$ e $y$ são inteiros entre $0$ e $p-1$, e toda a aritmética (soma, produto, potência) é feita módulo $p$. O conjunto resultante de pontos é finito, e junta-se-lhe ainda um elemento especial, o **ponto no infinito** $\mathcal{O}$, que funciona como elemento neutro.
+
+## A Soma de Pontos: uma Lei de Grupo {#sec-08-soma}
+
+O que torna uma curva elíptica útil em criptografia é que os seus pontos, com uma operação de soma definida de forma apropriada, formam um **grupo abeliano**. A definição mais intuitiva desta soma é geométrica, e vale a pena visualizá-la sobre os números reais antes de a transportar para um corpo finito [@Martin2017]:
+
+![Somar dois pontos $P$ e $Q$ de uma curva elíptica: traça-se a recta que passa por ambos, que intersecta a curva num terceiro ponto; reflectindo esse ponto em torno do eixo dos $x$ obtém-se $R = P+Q$. Para somar um ponto a si próprio ($P+P$), usa-se em vez disso a tangente à curva em $P$.](../assets/images/fig-08-curva-soma-pontos.png){#fig-08-soma width=70%}
+
+Algebricamente, para somar $P=(x_1,y_1)$ e $Q=(x_2,y_2)$, com $P \neq Q$, calcula-se primeiro o declive $\lambda$ da recta que passa por ambos:
+
+$$\lambda = \frac{y_2 - y_1}{x_2 - x_1} \pmod p$$
+
+e depois as coordenadas da soma $R=(x_3,y_3)$:
+
+$$x_3 = \lambda^2 - x_1 - x_2 \pmod p \qquad\qquad y_3 = \lambda(x_1 - x_3) - y_1 \pmod p$$
+
+Para somar um ponto a si próprio (**duplicar** $P$), usa-se em vez disso o declive da tangente à curva em $P$, $\lambda = \frac{3x_1^2+a}{2y_1} \pmod p$, e as mesmas fórmulas para $x_3$ e $y_3$. O ponto no infinito $\mathcal{O}$ comporta-se como o zero desta soma, $P + \mathcal{O} = P$, e o simétrico de $P=(x_1,y_1)$ é $-P=(x_1,-y_1)$, com $P + (-P) = \mathcal{O}$.
+
+**Porque importa ser um grupo abeliano.** Dizer que $(E(\mathbb{Z}_p), +)$ é um grupo abeliano significa que a soma de pontos é **fechada** (a soma de dois pontos da curva é sempre outro ponto da curva, nunca sai do conjunto), **associativa** ($(P+Q)+R = P+(Q+R)$), tem **elemento neutro** ($\mathcal{O}$) e **inverso** para cada ponto, e é **comutativa** ($P+Q=Q+P$). Isto não é uma curiosidade algébrica, é a condição estrutural que torna toda a Secção 8.5 possível: o protocolo Diffie-Hellman (Secção 7.3) não depende de nada específico da exponenciação modular, depende apenas de existir um grupo abeliano onde multiplicar um elemento por um escalar seja fácil, mas inverter essa operação seja difícil [@Stallings2020]. A comutatividade, em particular, é o que garante directamente a igualdade central do ECDH, $d_A(d_B G) = d_B(d_A G)$: sem ela, Alice e Bob simplesmente não chegariam ao mesmo segredo. A associatividade, por sua vez, é o que permite calcular $kP$ eficientemente por duplicações sucessivas (Secção 8.4), agrupando as somas por qualquer ordem conveniente sem alterar o resultado final.
+
+## Multiplicação Escalar e o Problema do Logaritmo Discreto em Curvas Elípticas {#sec-08-ecdlp}
+
+A operação fundamental da criptografia de curva elíptica não é a soma de dois pontos quaisquer, mas a **multiplicação escalar**: somar um mesmo ponto $P$ a si próprio $k$ vezes, $kP = P + P + \dots + P$. Tal como a exponenciação modular do RSA e do Diffie-Hellman se calcula eficientemente por quadrados sucessivos (Secção 6.4), a multiplicação escalar calcula-se de forma análoga, por duplicações e somas sucessivas, sem nunca precisar de $k$ somas individuais.
+
+A segurança de toda a construção assenta no **problema do logaritmo discreto em curvas elípticas** (*Elliptic Curve Discrete Logarithm Problem*, ECDLP): dados $P$ e $Q=kP$, recuperar $k$.
+
+**Porque é difícil inverter esta operação.** No sentido directo, calcular $Q=kP$ é rápido: o método de duplicação e soma (Secção 8.4) obtém $kP$ em cerca de $\log_2 k$ operações, tirando partido da associatividade da soma de pontos. No sentido inverso, porém, não existe nenhum equivalente de "dividir" $Q$ por $P$: a multiplicação escalar não é uma multiplicação no sentido algébrico usual, é uma soma repetida dentro de um grupo, e um grupo, por definição, só garante soma e inverso aditivo, nunca uma operação de divisão entre os seus elementos. Não há, portanto, nenhuma manipulação algébrica directa capaz de "desfazer" $kP$ e devolver $k$, ao contrário do que aconteceria, por exemplo, ao inverter uma multiplicação normal.
+
+Um atacante fica reduzido a métodos de **pesquisa dentro do grupo**. O melhor ataque genérico conhecido, o algoritmo rho de Pollard, tem complexidade $O(\sqrt{n})$, em que $n$ é a ordem do grupo de pontos [@Stallings2020; @Aumasson2017], essencialmente uma pesquisa aleatória inteligente que detecta colisões entre sequências de pontos gerados a partir de $P$ e de $Q$. Mas há um método bem mais rápido, o **cálculo de índice** (*index calculus*), que quebra o logaritmo discreto módulo um primo e a factorização de inteiros em tempo subexponencial (o *general number field sieve*), precisamente porque explora o facto de os inteiros se decomporem em factores primos pequenos: qualquer elemento de $\mathbb{Z}_p^*$ pode reexprimir-se, com boa probabilidade, como produto de primos de uma pequena "base de factores", o que permite montar e resolver um sistema de equações muito mais rápido do que uma pesquisa exaustiva [@Aumasson2017]. Os pontos de uma curva elíptica **não têm nenhuma noção equivalente de decomposição em factores pequenos**: não há uma "base de pontos primos" natural em que expressar $P$ e $Q$, por isso o cálculo de índice simplesmente não se aplica ao ECDLP. É esta ausência de estrutura extra, e não qualquer propriedade misteriosa das curvas, que deixa o atacante sem alternativa melhor do que a pesquisa genérica $O(\sqrt{n})$, e é precisamente essa ausência de atalhos matemáticos que permite à ECC oferecer o mesmo nível de segurança do RSA/DH com chaves muito mais pequenas.
+
+## Comparação de Tamanhos de Chave {#sec-08-tamanhos}
+
+A tabela seguinte, com base nas recomendações do NIST [@NIST80057; @Stallings2020], compara o tamanho de chave necessário em RSA/Diffie-Hellman e em ECC para atingir o mesmo nível de segurança (medido em bits, o equivalente a uma pesquisa exaustiva sobre uma chave simétrica desse comprimento):
+
+| Nível de segurança (bits) | RSA / Diffie-Hellman | ECC |
+|---|---|---|
+| 80 | 1024 | 160 |
+| 112 | 2048 | 224 |
+| 128 | 3072 | 256 |
+| 192 | 7680 | 384 |
+| 256 | 15360 | 521 |
+
+: Tamanhos de chave equivalentes para vários níveis de segurança [@NIST80057] {#tbl-08-tamanhos}
+
+A diferença amplia-se rapidamente: para um nível de segurança de 256 bits, o RSA exigiria uma chave 30 vezes maior do que a ECC. Chaves mais pequenas significam não só menos dados a transmitir e armazenar, mas também operações de assinatura e troca de chaves significativamente mais rápidas, uma vantagem decisiva em ligações TLS de alto débito ou em dispositivos com pouca capacidade de computação.
+
+## ECDH: Diffie-Hellman em Curva Elíptica {#sec-08-ecdh}
+
+O **ECDH** (*Elliptic Curve Diffie-Hellman*) aplica exactamente a mesma lógica do Diffie-Hellman clássico (Secção 7.1-7.3), substituindo a exponenciação modular por multiplicação escalar de pontos. Alice e Bob combinam publicamente uma curva e um ponto gerador $G$, de ordem $n$ grande. Alice escolhe um inteiro secreto $d_A$ e calcula $Q_A = d_A \cdot G$; Bob escolhe $d_B$ e calcula $Q_B = d_B \cdot G$. Trocam $Q_A$ e $Q_B$ publicamente, e cada um calcula o segredo comum:
+
+$$K = d_A \cdot Q_B = d_A \cdot (d_B \cdot G) = (d_A d_B) \cdot G = d_B \cdot (d_A \cdot G) = d_B \cdot Q_A$$
+
+A estrutura é idêntica à da Figura [-@fig-07-dh] do capítulo anterior: só a operação matemática interna muda, exponenciação modular num caso, multiplicação escalar de pontos no outro. A dificuldade de recuperar $d_A$ ou $d_B$ a partir de $Q_A$, $Q_B$ e $G$ é exactamente o ECDLP da Secção 8.3.
+
+## ECDSA e Curvas Usadas na Prática {#sec-08-ecdsa}
+
+O **ECDSA** (*Elliptic Curve Digital Signature Algorithm*) é, de forma equivalente, a versão em curva elíptica do DSA (Secção 7.4-7.6): a assinatura continua a ser um par $(r,s)$, calculado a partir de uma chave privada e de um valor efémero de utilização única, mas $r$ deriva agora da coordenada $x$ de um múltiplo escalar de $G$, em vez de uma exponenciação modular [@Stallings2020].
+
+Na prática, poucas curvas são usadas na generalidade dos sistemas. A **P-256** (também chamada *secp256r1*), normalizada pelo NIST, é a mais usada em certificados TLS e assinaturas ECDSA. A **Curve25519**, desenhada por Daniel J. Bernstein [@Bernstein2006Curve25519], o mesmo autor do Salsa20, do ChaCha20 e do Poly1305 (Capítulo 4), e normalizada no RFC 7748 [@RFC7748], foi construída especificamente para evitar classes inteiras de erros de implementação, como ataques de curva inválida ou fugas por canal lateral relacionadas com tempo de execução, e é hoje a curva de referência para troca de chaves (**X25519**) em sistemas como o TLS 1.3, o Signal e o SSH.
+
+## Síntese do Capítulo {#sec-08-sintese}
+
+Este capítulo apresentou uma alternativa estrutural ao RSA e ao Diffie-Hellman:
+
+1. Uma **curva elíptica** é o conjunto de pontos que satisfazem $y^2=x^3+ax+b$ sobre um corpo finito $\mathbb{Z}_p$, mais um ponto no infinito $\mathcal{O}$, que serve de elemento neutro
+2. Os pontos de uma curva elíptica formam um **grupo abeliano** sob uma operação de soma definida geometricamente (recta e reflexão, ou tangente e reflexão para duplicar um ponto)
+3. A segurança da ECC assenta no **ECDLP**: dados $P$ e $kP$, recuperar $k$ é difícil, e o melhor ataque genérico conhecido é $O(\sqrt{n})$, sem nenhum atalho subexponencial conhecido, ao contrário da factorização ou do logaritmo discreto módulo um primo
+4. Por isso, a ECC atinge o mesmo nível de segurança do RSA/DH com chaves muito mais pequenas (256 bits em ECC ≈ 3072 bits em RSA, para 128 bits de segurança)
+5. O **ECDH** e o **ECDSA** replicam directamente o Diffie-Hellman e o DSA dos capítulos anteriores, substituindo a exponenciação modular pela multiplicação escalar de pontos
+6. Na prática, predominam a curva **P-256** e a **Curve25519**, esta última desenhada por Bernstein para evitar classes de erros de implementação comuns noutras curvas
+
+## Para Pensar {#sec-08-reflexao}
+
+O melhor ataque genérico conhecido contra o ECDLP, o algoritmo rho de Pollard, tem complexidade $O(\sqrt{n})$, em que $n$ é a ordem do grupo de pontos da curva. Sabendo isto, e olhando para a Tabela [-@tbl-08-tamanhos], porque é que uma curva com pontos de ordem $n \approx 2^{256}$ corresponde a um nível de segurança de 128 bits, e não de 256?
+
+## Referências {#sec-08-referencias .unnumbered}
+
+::: {#refs}
+:::

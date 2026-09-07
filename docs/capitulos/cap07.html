@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -107,6 +127,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../assets/css/custom.css">
 </head>
@@ -181,13 +230,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA e HMAC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA, MAC e HMAC</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica — Fundamentos e RSA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica e RSA</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -199,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Criptografia de Curva Elíptica (ECC)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Criptografia de Curva Elíptica</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -211,7 +260,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP — Esquemas Criptográficos Aplicados</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Eficiência Algorítmica e Criptografia Pós-Quântica</span></span></a>
   </div>
 </li>
     </ul>
@@ -219,8 +274,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#sec-07-intro" id="toc-sec-07-intro" class="nav-link active" data-scroll-target="#sec-07-intro">Introdução</a></li>
+  <li><a href="#sec-07-dh-conceito" id="toc-sec-07-dh-conceito" class="nav-link" data-scroll-target="#sec-07-dh-conceito"><span class="header-section-number">7.1</span> Diffie-Hellman: Combinar uma Chave em Público</a></li>
+  <li><a href="#sec-07-dh-matematica" id="toc-sec-07-dh-matematica" class="nav-link" data-scroll-target="#sec-07-dh-matematica"><span class="header-section-number">7.2</span> O Problema Matemático: Logaritmos Discretos</a></li>
+  <li><a href="#sec-07-dh-algoritmo" id="toc-sec-07-dh-algoritmo" class="nav-link" data-scroll-target="#sec-07-dh-algoritmo"><span class="header-section-number">7.3</span> O Algoritmo</a></li>
+  <li><a href="#sec-07-assinaturas-conceito" id="toc-sec-07-assinaturas-conceito" class="nav-link" data-scroll-target="#sec-07-assinaturas-conceito"><span class="header-section-number">7.4</span> Assinaturas Digitais: o Conceito</a></li>
+  <li><a href="#sec-07-dsa-parametros" id="toc-sec-07-dsa-parametros" class="nav-link" data-scroll-target="#sec-07-dsa-parametros"><span class="header-section-number">7.5</span> DSA: Parâmetros e Chaves</a></li>
+  <li><a href="#sec-07-dsa-assinar" id="toc-sec-07-dsa-assinar" class="nav-link" data-scroll-target="#sec-07-dsa-assinar"><span class="header-section-number">7.6</span> DSA: Assinar e Verificar</a></li>
+  <li><a href="#sec-07-confianca" id="toc-sec-07-confianca" class="nav-link" data-scroll-target="#sec-07-confianca"><span class="header-section-number">7.7</span> Um Problema em Aberto: Confiar na Chave Pública</a></li>
+  <li><a href="#sec-07-sintese" id="toc-sec-07-sintese" class="nav-link" data-scroll-target="#sec-07-sintese"><span class="header-section-number">7.8</span> Síntese do Capítulo</a></li>
+  <li><a href="#sec-07-reflexao" id="toc-sec-07-reflexao" class="nav-link" data-scroll-target="#sec-07-reflexao"><span class="header-section-number">7.9</span> Para Pensar</a></li>
+  <li><a href="#sec-07-referencias" id="toc-sec-07-referencias" class="nav-link" data-scroll-target="#sec-07-referencias">Referências</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -256,13 +327,132 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<blockquote class="blockquote">
-<p>Conteúdo por desenvolver.</p>
-</blockquote>
+<section id="sec-07-intro" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-07-intro">Introdução</h2>
+<p>O capítulo anterior resolveu a confidencialidade e a autenticação assumindo que cada participante já tem um par de chaves RSA. Este capítulo trata de dois problemas relacionados, mas distintos. Primeiro, como combinar uma <strong>chave simétrica partilhada</strong> entre duas pessoas que nunca se encontraram, sem que ela seja exposta a quem intercepte a comunicação, o problema que o <strong>Diffie-Hellman</strong> resolve. Segundo, como provar, de forma verificável por qualquer pessoa, que um documento foi mesmo produzido por quem diz tê-lo produzido, sem possibilidade de negação posterior, o problema das <strong>assinaturas digitais</strong>.</p>
+</section>
+<section id="sec-07-dh-conceito" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="sec-07-dh-conceito"><span class="header-section-number">7.1</span> Diffie-Hellman: Combinar uma Chave em Público</h2>
+<p>O <strong>Diffie-Hellman</strong> é um método para combinar em segurança uma chave partilhada, destinada a um sistema de cifra <strong>simétrica</strong>, mesmo através de um canal completamente aberto e observado por terceiros. Este método é um sistema de chave pública, embora não seja usado para a função de encriptação ou de assinatura <span class="citation" data-cites="Du2022">(<a href="cap01.html#ref-Du2022" role="doc-biblioref">Du 2022</a>)</span>.</p>
+</section>
+<section id="sec-07-dh-matematica" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="sec-07-dh-matematica"><span class="header-section-number">7.2</span> O Problema Matemático: Logaritmos Discretos</h2>
+<p>A segurança do Diffie-Hellman assenta num problema matemático concreto. Suponha-se um número da forma <span class="math inline">\(A = g^x\)</span>. Encontrar <span class="math inline">\(x\)</span> a partir de <span class="math inline">\(A\)</span> e <span class="math inline">\(g\)</span> é, em princípio, trivial: basta calcular <span class="math inline">\(\log_g A = \log_g g^x = x\)</span>. Mas se, em vez disso, se tiver <span class="math inline">\(g^x \bmod n\)</span>, com <span class="math inline">\(g\)</span> e <span class="math inline">\(n\)</span> suficientemente grandes, esse cálculo deixa de ser viável, mesmo para um computador poderoso. A este problema chama-se o <strong>problema do logaritmo discreto</strong>, e é nele que assenta toda a segurança do método.</p>
+<p>Tal como a factorização de inteiros de que depende o RSA (Secção 6.5), o logaritmo discreto módulo um primo também admite um ataque mais rápido do que a força bruta pura: uma variante do <em>general number field sieve</em> resolve-o em tempo <strong>subexponencial</strong> <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>. É por esta razão, e não apenas por “ser grande”, que o módulo <span class="math inline">\(p\)</span> do Diffie-Hellman clássico precisa de ter, tal como o <span class="math inline">\(n\)</span> do RSA, pelo menos 2048 a 3072 bits para um nível de segurança prático razoável.</p>
+</section>
+<section id="sec-07-dh-algoritmo" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="sec-07-dh-algoritmo"><span class="header-section-number">7.3</span> O Algoritmo</h2>
+<p>Alice e Bob combinam publicamente dois valores, <span class="math inline">\(g\)</span> e <span class="math inline">\(p\)</span> (um número primo grande), que não precisam de ser secretos. Cada um escolhe depois um número secreto, que nunca revela: Alice escolhe <span class="math inline">\(x\)</span>, Bob escolhe <span class="math inline">\(y\)</span>.</p>
+<div id="fig-07-dh" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-07-dh-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-07-diffie-hellman.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-07-dh-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;7.1: O algoritmo de Diffie-Hellman: <span class="math inline">\(g\)</span> e <span class="math inline">\(p\)</span> são públicos; <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> nunca saem do computador de quem os escolheu; só <span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span> atravessam o canal aberto. Ambos os lados chegam ao mesmo segredo <span class="math inline">\(K=g^{xy} \bmod p\)</span>, sem que ele alguma vez tenha sido transmitido.
+</figcaption>
+</figure>
+</div>
+<p>Cada um calcula então um valor a partir do seu segredo, <span class="math inline">\(A = g^x \bmod p\)</span> (Alice) e <span class="math inline">\(B = g^y \bmod p\)</span> (Bob), e envia-o ao outro, em claro, pelo canal aberto: estes são as <strong>chaves públicas</strong> de Alice e de Bob. Ao receberem o valor um do outro, cada um eleva-o ao seu próprio segredo:</p>
+<p><span class="math display">\[K = B^x \bmod p = (g^y)^x \bmod p = g^{xy} \bmod p \qquad \text{(Alice)}\]</span> <span class="math display">\[K = A^y \bmod p = (g^x)^y \bmod p = g^{xy} \bmod p \qquad \text{(Bob)}\]</span></p>
+<p>Ambos chegam exactamente ao mesmo valor, <span class="math inline">\(K = g^{xy} \bmod p\)</span>, a <strong>chave secreta comum</strong>, sem que <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, ou o próprio <span class="math inline">\(K\)</span> tenham alguma vez atravessado o canal. Um atacante que intercepte <span class="math inline">\(g\)</span>, <span class="math inline">\(p\)</span>, <span class="math inline">\(A\)</span> e <span class="math inline">\(B\)</span>, tudo o que é trocado em claro, teria de resolver o problema do logaritmo discreto para recuperar <span class="math inline">\(x\)</span> ou <span class="math inline">\(y\)</span> a partir daí, exactamente o problema que a Secção 7.2 já identificou como inviável.</p>
+</section>
+<section id="sec-07-assinaturas-conceito" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="sec-07-assinaturas-conceito"><span class="header-section-number">7.4</span> Assinaturas Digitais: o Conceito</h2>
+<p>O capítulo anterior já introduziu a ideia essencial de uma assinatura digital: cifrar com a <strong>chave privada</strong> do emissor, de forma que qualquer pessoa a consiga verificar com a sua chave pública, mas só o dono da chave privada a consiga produzir. A forma mais directa de aplicar isto a uma mensagem é cifrar o seu <strong>hash</strong> com a chave privada, em vez da mensagem inteira (o que seria muito mais lento): usar, por exemplo, o RSA para cifrar <span class="math inline">\(H(m)\)</span>.</p>
+<p>Existe também um algoritmo desenhado especificamente para este único propósito, sem servir para encriptação, o <strong>DSA</strong> (<em>Digital Signature Algorithm</em>). Tal como o Diffie-Hellman, usa criptografia de chave pública baseada nas propriedades da exponenciação modular e no problema do logaritmo discreto, é computacionalmente complexo, e fornece três garantias em simultâneo: <strong>autenticação</strong> (o receptor consegue verificar a origem da mensagem), <strong>integridade</strong>, e <strong>não repúdio</strong> (o autor não consegue negar credivelmente ter assinado).</p>
+</section>
+<section id="sec-07-dsa-parametros" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="sec-07-dsa-parametros"><span class="header-section-number">7.5</span> DSA: Parâmetros e Chaves</h2>
+<p>A definição dos parâmetros iniciais do DSA segue estes passos:</p>
+<ol type="1">
+<li>Escolher uma <strong>função de hash aprovada</strong> <span class="math inline">\(H\)</span> (por exemplo, SHA-512).</li>
+<li>Escolher um comprimento de chave <span class="math inline">\(L\)</span> e um comprimento de módulo <span class="math inline">\(N\)</span>, com <span class="math inline">\(N&lt;L\)</span> e <span class="math inline">\(L \le\)</span> o comprimento da saída de <span class="math inline">\(H\)</span>. Os pares <span class="math inline">\((L,N)\)</span> normalizados são <span class="math inline">\((1024,160)\)</span>, <span class="math inline">\((2048,224)\)</span>, <span class="math inline">\((2048,256)\)</span> ou <span class="math inline">\((3072,256)\)</span>.</li>
+<li>Escolher <span class="math inline">\(q\)</span>, um primo de <span class="math inline">\(N\)</span> bits.</li>
+<li>Escolher <span class="math inline">\(p\)</span>, um primo de <span class="math inline">\(L\)</span> bits, tal que <span class="math inline">\(p-1\)</span> seja múltiplo de <span class="math inline">\(q\)</span>.</li>
+<li>Escolher um inteiro aleatório <span class="math inline">\(h\)</span> entre <span class="math inline">\(2\)</span> e <span class="math inline">\(p-2\)</span>, e calcular <span class="math inline">\(g = h^{(p-1)/q} \bmod p\)</span> (se <span class="math inline">\(g=1\)</span>, escolhe-se outro <span class="math inline">\(h\)</span>).</li>
+</ol>
+<p>Os três valores <span class="math inline">\(p\)</span>, <span class="math inline">\(q\)</span> e <span class="math inline">\(g\)</span> são <strong>partilhados publicamente</strong>, tal como o <span class="math inline">\(g\)</span> e o <span class="math inline">\(p\)</span> do Diffie-Hellman. A partir deles, cada participante gera o seu próprio par de chaves: a <strong>chave privada</strong> é um número aleatório <span class="math inline">\(x\)</span>, entre <span class="math inline">\(1\)</span> e <span class="math inline">\(q-1\)</span>; a <strong>chave pública</strong> é <span class="math inline">\(y = g^x \bmod p\)</span>. O mesmo par <span class="math inline">\((x,y)\)</span> pode ser reutilizado para qualquer número de assinaturas.</p>
+</section>
+<section id="sec-07-dsa-assinar" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="sec-07-dsa-assinar"><span class="header-section-number">7.6</span> DSA: Assinar e Verificar</h2>
+<p>Para assinar uma mensagem <span class="math inline">\(m\)</span>, escolhe-se primeiro <span class="math inline">\(k\)</span>, um número aleatório entre <span class="math inline">\(1\)</span> e <span class="math inline">\(q-1\)</span>. Ao contrário de <span class="math inline">\(x\)</span>, este <span class="math inline">\(k\)</span> é <strong>efémero</strong>: secreto, e usado <strong>uma única vez</strong>, apenas nessa assinatura, exactamente pela mesma razão que uma cifra de fluxo nunca pode reutilizar o par (chave, <em>nonce</em>), reutilizá-lo permitiria a um atacante recuperar <span class="math inline">\(x\)</span> a partir de duas assinaturas distintas. Calcula-se então:</p>
+<p><span class="math display">\[r = (g^k \bmod p) \bmod q \qquad\qquad s = k^{-1}(H(m) + xr) \bmod q\]</span></p>
+<p>e a assinatura é o par <span class="math inline">\((r,s)\)</span>. O valor <span class="math inline">\(s\)</span> tem de satisfazer requisitos exigentes ao mesmo tempo: depender da mensagem <span class="math inline">\(m\)</span>, provar o uso da chave privada <span class="math inline">\(x\)</span>, nunca revelar nem <span class="math inline">\(x\)</span> nem <span class="math inline">\(k\)</span>, e ainda assim permitir a verificação sem que o verificador precise de conhecer nenhum dos dois.</p>
+<div id="fig-07-dsa-verificar" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-07-dsa-verificar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-07-dsa-assinar-verificar.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-07-dsa-verificar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;7.2: Alice assina <span class="math inline">\(m\)</span> com a sua chave privada e o valor efémero <span class="math inline">\(k\)</span>, produzindo <span class="math inline">\((r,s)\)</span>; qualquer pessoa com a chave pública de Alice consegue depois verificar que a assinatura é válida, sem nunca ter acesso a <span class="math inline">\(x\)</span> nem a <span class="math inline">\(k\)</span>.
+</figcaption>
+</figure>
+</div>
+<p>Para verificar, o receptor conhece <span class="math inline">\(p\)</span>, <span class="math inline">\(q\)</span>, <span class="math inline">\(g\)</span> e a chave pública <span class="math inline">\(y\)</span>, e recebe <span class="math inline">\(m\)</span> e <span class="math inline">\((r,s)\)</span>:</p>
+<ol type="1">
+<li>Confirma que <span class="math inline">\(r\)</span> e <span class="math inline">\(s\)</span> são positivos e menores do que <span class="math inline">\(q\)</span>.</li>
+<li>Calcula <span class="math inline">\(w = s^{-1} \bmod q\)</span>.</li>
+<li>Calcula <span class="math inline">\(u_1 = H(m) \cdot w \bmod q\)</span> e <span class="math inline">\(u_2 = r \cdot w \bmod q\)</span>.</li>
+<li>Calcula <span class="math inline">\(v = (g^{u_1} y^{u_2} \bmod p) \bmod q\)</span>.</li>
+<li>Se <span class="math inline">\(v = r\)</span>, a assinatura é válida.</li>
+</ol>
+</section>
+<section id="sec-07-confianca" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="sec-07-confianca"><span class="header-section-number">7.7</span> Um Problema em Aberto: Confiar na Chave Pública</h2>
+<p>Alice envia uma mensagem a Bob, assinada com a sua chave privada; Bob verifica a assinatura com a chave pública de Alice, e o cálculo confirma que é válida. Mas isto levanta uma questão que nem o Diffie-Hellman nem o DSA respondem sozinhos: <strong>como sabe Bob que aquela chave pública é mesmo de Alice, e não de outra pessoa a fazer-se passar por ela?</strong></p>
+<p>O problema é geral, e afecta qualquer troca de chaves públicas feita sem mais garantias, incluindo o próprio Diffie-Hellman: um atacante posicionado em qualquer ponto da rede entre Alice e Bob, por exemplo num router comprometido, pode interceptar <span class="math inline">\(g\)</span>, <span class="math inline">\(p\)</span> e os valores trocados, e substituir-se a cada um deles perante o outro, um <strong>ataque do intermediário</strong> (<em>man-in-the-middle</em>, MITM). A vítima nunca percebe, porque cada lado continua a receber valores que parecem legítimos, só que gerados pelo atacante. Este ataque quebra qualquer algoritmo de chave pública que não tenha forma de confirmar, de forma independente, que uma chave pública pertence mesmo a quem diz pertencer.</p>
+</section>
+<section id="sec-07-sintese" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="sec-07-sintese"><span class="header-section-number">7.8</span> Síntese do Capítulo</h2>
+<p>Este capítulo respondeu a duas perguntas deixadas em aberto pela criptografia assimétrica:</p>
+<ol type="1">
+<li>O <strong>Diffie-Hellman</strong> permite a duas partes combinarem uma chave secreta comum através de um canal completamente aberto, sem nunca a transmitir directamente</li>
+<li>A sua segurança assenta no <strong>problema do logaritmo discreto</strong>: calcular <span class="math inline">\(g^x \bmod p\)</span> é fácil, mas recuperar <span class="math inline">\(x\)</span> a partir do resultado é computacionalmente inviável para valores suficientemente grandes</li>
+<li>Cada parte troca um valor público (<span class="math inline">\(g^x \bmod p\)</span> ou <span class="math inline">\(g^y \bmod p\)</span>), calculado a partir de um segredo que nunca revela; ambas chegam ao mesmo segredo comum <span class="math inline">\(g^{xy} \bmod p\)</span></li>
+<li>Uma <strong>assinatura digital</strong> pode ser construída cifrando o hash de uma mensagem com a chave privada do autor (usando RSA, por exemplo), ou com um algoritmo dedicado como o <strong>DSA</strong></li>
+<li>O DSA assina com uma chave privada <span class="math inline">\(x\)</span> e um valor efémero <span class="math inline">\(k\)</span>, usado uma única vez por assinatura; qualquer pessoa verifica depois com a chave pública correspondente, sem nunca ter acesso a <span class="math inline">\(x\)</span> nem a <span class="math inline">\(k\)</span></li>
+<li>Nenhum destes dois mecanismos resolve, sozinho, o problema de <strong>confiar</strong> que uma chave pública pertence mesmo a quem diz pertencer: sem essa garantia, um atacante posicionado no meio do canal (MITM) consegue substituir-se a qualquer uma das partes</li>
+</ol>
+</section>
+<section id="sec-07-reflexao" class="level2" data-number="7.9">
+<h2 data-number="7.9" class="anchored" data-anchor-id="sec-07-reflexao"><span class="header-section-number">7.9</span> Para Pensar</h2>
+<p>No DSA, o valor efémero <span class="math inline">\(k\)</span> tem de ser secreto e usado uma única vez por assinatura, tal como o par (chave, <em>nonce</em>) de uma cifra de fluxo nunca pode repetir-se. Nas cifras de fluxo, reutilizar o par expõe o XOR dos dois textos claros (o ataque do <em>two-time pad</em>, Secção 4.1). No DSA, <span class="math inline">\(r = (g^k \bmod p) \bmod q\)</span> depende só de <span class="math inline">\(k\)</span>, por isso duas assinaturas com o mesmo <span class="math inline">\(k\)</span> produzem o mesmo <span class="math inline">\(r\)</span>, e um atacante que reconheça essa repetição fica com duas equações, <span class="math inline">\(s_1 = k^{-1}(H(m_1)+xr) \bmod q\)</span> e <span class="math inline">\(s_2 = k^{-1}(H(m_2)+xr) \bmod q\)</span>, com apenas duas incógnitas, <span class="math inline">\(k\)</span> e <span class="math inline">\(x\)</span>. Que operação simples entre estas duas equações elimina <span class="math inline">\(k\)</span> e permite isolar directamente a chave privada <span class="math inline">\(x\)</span>?</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solução
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A operação é a <strong>subtracção</strong> das duas equações:</p>
+<p><span class="math display">\[s_1 - s_2 = k^{-1}\big[(H(m_1)+xr) - (H(m_2)+xr)\big] \bmod q = k^{-1}\big(H(m_1)-H(m_2)\big) \bmod q\]</span></p>
+<p>O termo <span class="math inline">\(xr\)</span> é igual nas duas equações (mesmo <span class="math inline">\(r\)</span>, porque depende só do <span class="math inline">\(k\)</span> reutilizado, e a mesma chave <span class="math inline">\(x\)</span>), por isso cancela-se por completo na subtracção, deixando uma equação com uma única incógnita, <span class="math inline">\(k\)</span>:</p>
+<p><span class="math display">\[k = \big(H(m_1)-H(m_2)\big)\,(s_1-s_2)^{-1} \bmod q\]</span></p>
+<p>Com <span class="math inline">\(k\)</span> recuperado, basta substituir numa das equações originais para isolar a chave privada:</p>
+<p><span class="math display">\[x = (s_1 k - H(m_1))\, r^{-1} \bmod q\]</span></p>
+<p>Este não é um ataque só teórico: foi exactamente desta forma que a Sony Computer Entertainment perdeu, em 2010, a chave privada de assinatura de código da PlayStation 3. A implementação da Sony usava sempre o mesmo valor de <span class="math inline">\(k\)</span> em vez de gerar um novo, aleatório, para cada assinatura, e um grupo de investigadores (o <em>fail0verflow</em>, seguido por George Hotz) explorou exactamente esta reutilização para recuperar a chave privada da consola, permitindo assinar e executar código não autorizado em qualquer PS3.</p>
+</div>
+</div>
+</section>
+<section id="sec-07-referencias" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-07-referencias">Referências</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-Du2022" class="csl-entry" role="listitem">
+Du, Wenliang. 2022. <em>Computer Security: A Hands-on Approach</em>. 3.ª ed. CreateSpace / Self-published.
+</div>
+<div id="ref-Stallings2020" class="csl-entry" role="listitem">
+Stallings, William. 2020. <em>Cryptography and Network Security: Principles and Practice</em>. 8.ª ed. Pearson.
+</div>
+</div>
 
 
 <!-- -->
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -879,13 +1069,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../capitulos/cap06.html" class="pagination-link" aria-label="Criptografia Assimétrica — Fundamentos e RSA">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica — Fundamentos e RSA</span></span>
+      <a href="../capitulos/cap06.html" class="pagination-link" aria-label="Criptografia Assimétrica e RSA">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica e RSA</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../capitulos/cap08.html" class="pagination-link" aria-label="Criptografia de Curva Elíptica (ECC)">
-        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Criptografia de Curva Elíptica (ECC)</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../capitulos/cap08.html" class="pagination-link" aria-label="Criptografia de Curva Elíptica">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Criptografia de Curva Elíptica</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Código fonte</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
@@ -896,7 +1086,112 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-PT</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Conteúdo por desenvolver.</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução {#sec-07-intro .unnumbered}</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>O capítulo anterior resolveu a confidencialidade e a autenticação assumindo que cada participante já tem um par de chaves RSA. Este capítulo trata de dois problemas relacionados, mas distintos. Primeiro, como combinar uma **chave simétrica partilhada** entre duas pessoas que nunca se encontraram, sem que ela seja exposta a quem intercepte a comunicação, o problema que o **Diffie-Hellman** resolve. Segundo, como provar, de forma verificável por qualquer pessoa, que um documento foi mesmo produzido por quem diz tê-lo produzido, sem possibilidade de negação posterior, o problema das **assinaturas digitais**.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Diffie-Hellman: Combinar uma Chave em Público {#sec-07-dh-conceito}</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>O **Diffie-Hellman** é um método para combinar em segurança uma chave partilhada, destinada a um sistema de cifra **simétrica**, mesmo através de um canal completamente aberto e observado por terceiros. Este método é um sistema de chave pública, embora não seja usado para a função de encriptação ou de assinatura <span class="co">[</span><span class="ot">@Du2022</span><span class="co">]</span>.</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## O Problema Matemático: Logaritmos Discretos {#sec-07-dh-matematica}</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>A segurança do Diffie-Hellman assenta num problema matemático concreto. Suponha-se um número da forma $A = g^x$. Encontrar $x$ a partir de $A$ e $g$ é, em princípio, trivial: basta calcular $\log_g A = \log_g g^x = x$. Mas se, em vez disso, se tiver $g^x \bmod n$, com $g$ e $n$ suficientemente grandes, esse cálculo deixa de ser viável, mesmo para um computador poderoso. A este problema chama-se o **problema do logaritmo discreto**, e é nele que assenta toda a segurança do método.</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>Tal como a factorização de inteiros de que depende o RSA (Secção 6.5), o logaritmo discreto módulo um primo também admite um ataque mais rápido do que a força bruta pura: uma variante do *general number field sieve* resolve-o em tempo **subexponencial** <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>. É por esta razão, e não apenas por "ser grande", que o módulo $p$ do Diffie-Hellman clássico precisa de ter, tal como o $n$ do RSA, pelo menos 2048 a 3072 bits para um nível de segurança prático razoável.</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## O Algoritmo {#sec-07-dh-algoritmo}</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Alice e Bob combinam publicamente dois valores, $g$ e $p$ (um número primo grande), que não precisam de ser secretos. Cada um escolhe depois um número secreto, que nunca revela: Alice escolhe $x$, Bob escolhe $y$.</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="al">![O algoritmo de Diffie-Hellman: $g$ e $p$ são públicos; $x$ e $y$ nunca saem do computador de quem os escolheu; só $A$ e $B$ atravessam o canal aberto. Ambos os lados chegam ao mesmo segredo $K=g^{xy} \bmod p$, sem que ele alguma vez tenha sido transmitido.](../assets/images/fig-07-diffie-hellman.png)</span>{#fig-07-dh width=85%}</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Cada um calcula então um valor a partir do seu segredo, $A = g^x \bmod p$ (Alice) e $B = g^y \bmod p$ (Bob), e envia-o ao outro, em claro, pelo canal aberto: estes são as **chaves públicas** de Alice e de Bob. Ao receberem o valor um do outro, cada um eleva-o ao seu próprio segredo:</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>$$K = B^x \bmod p = (g^y)^x \bmod p = g^{xy} \bmod p \qquad \text{(Alice)}$$</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>$$K = A^y \bmod p = (g^x)^y \bmod p = g^{xy} \bmod p \qquad \text{(Bob)}$$</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>Ambos chegam exactamente ao mesmo valor, $K = g^{xy} \bmod p$, a **chave secreta comum**, sem que $x$, $y$, ou o próprio $K$ tenham alguma vez atravessado o canal. Um atacante que intercepte $g$, $p$, $A$ e $B$, tudo o que é trocado em claro, teria de resolver o problema do logaritmo discreto para recuperar $x$ ou $y$ a partir daí, exactamente o problema que a Secção 7.2 já identificou como inviável.</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Assinaturas Digitais: o Conceito {#sec-07-assinaturas-conceito}</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>O capítulo anterior já introduziu a ideia essencial de uma assinatura digital: cifrar com a **chave privada** do emissor, de forma que qualquer pessoa a consiga verificar com a sua chave pública, mas só o dono da chave privada a consiga produzir. A forma mais directa de aplicar isto a uma mensagem é cifrar o seu **hash** com a chave privada, em vez da mensagem inteira (o que seria muito mais lento): usar, por exemplo, o RSA para cifrar $H(m)$.</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>Existe também um algoritmo desenhado especificamente para este único propósito, sem servir para encriptação, o **DSA** (*Digital Signature Algorithm*). Tal como o Diffie-Hellman, usa criptografia de chave pública baseada nas propriedades da exponenciação modular e no problema do logaritmo discreto, é computacionalmente complexo, e fornece três garantias em simultâneo: **autenticação** (o receptor consegue verificar a origem da mensagem), **integridade**, e **não repúdio** (o autor não consegue negar credivelmente ter assinado).</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## DSA: Parâmetros e Chaves {#sec-07-dsa-parametros}</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>A definição dos parâmetros iniciais do DSA segue estes passos:</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Escolher uma **função de hash aprovada** $H$ (por exemplo, SHA-512).</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Escolher um comprimento de chave $L$ e um comprimento de módulo $N$, com $N&lt;L$ e $L \le$ o comprimento da saída de $H$. Os pares $(L,N)$ normalizados são $(1024,160)$, $(2048,224)$, $(2048,256)$ ou $(3072,256)$.</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Escolher $q$, um primo de $N$ bits.</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Escolher $p$, um primo de $L$ bits, tal que $p-1$ seja múltiplo de $q$.</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Escolher um inteiro aleatório $h$ entre $2$ e $p-2$, e calcular $g = h^{(p-1)/q} \bmod p$ (se $g=1$, escolhe-se outro $h$).</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>Os três valores $p$, $q$ e $g$ são **partilhados publicamente**, tal como o $g$ e o $p$ do Diffie-Hellman. A partir deles, cada participante gera o seu próprio par de chaves: a **chave privada** é um número aleatório $x$, entre $1$ e $q-1$; a **chave pública** é $y = g^x \bmod p$. O mesmo par $(x,y)$ pode ser reutilizado para qualquer número de assinaturas.</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="fu">## DSA: Assinar e Verificar {#sec-07-dsa-assinar}</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>Para assinar uma mensagem $m$, escolhe-se primeiro $k$, um número aleatório entre $1$ e $q-1$. Ao contrário de $x$, este $k$ é **efémero**: secreto, e usado **uma única vez**, apenas nessa assinatura, exactamente pela mesma razão que uma cifra de fluxo nunca pode reutilizar o par (chave, *nonce*), reutilizá-lo permitiria a um atacante recuperar $x$ a partir de duas assinaturas distintas. Calcula-se então:</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>$$r = (g^k \bmod p) \bmod q \qquad\qquad s = k^{-1}(H(m) + xr) \bmod q$$</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>e a assinatura é o par $(r,s)$. O valor $s$ tem de satisfazer requisitos exigentes ao mesmo tempo: depender da mensagem $m$, provar o uso da chave privada $x$, nunca revelar nem $x$ nem $k$, e ainda assim permitir a verificação sem que o verificador precise de conhecer nenhum dos dois.</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="al">![Alice assina $m$ com a sua chave privada e o valor efémero $k$, produzindo $(r,s)$; qualquer pessoa com a chave pública de Alice consegue depois verificar que a assinatura é válida, sem nunca ter acesso a $x$ nem a $k$.](../assets/images/fig-07-dsa-assinar-verificar.png)</span>{#fig-07-dsa-verificar width=100%}</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>Para verificar, o receptor conhece $p$, $q$, $g$ e a chave pública $y$, e recebe $m$ e $(r,s)$:</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Confirma que $r$ e $s$ são positivos e menores do que $q$.</span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Calcula $w = s^{-1} \bmod q$.</span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Calcula $u_1 = H(m) \cdot w \bmod q$ e $u_2 = r \cdot w \bmod q$.</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Calcula $v = (g^{u_1} y^{u_2} \bmod p) \bmod q$.</span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Se $v = r$, a assinatura é válida.</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a><span class="fu">## Um Problema em Aberto: Confiar na Chave Pública {#sec-07-confianca}</span></span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>Alice envia uma mensagem a Bob, assinada com a sua chave privada; Bob verifica a assinatura com a chave pública de Alice, e o cálculo confirma que é válida. Mas isto levanta uma questão que nem o Diffie-Hellman nem o DSA respondem sozinhos: **como sabe Bob que aquela chave pública é mesmo de Alice, e não de outra pessoa a fazer-se passar por ela?**</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>O problema é geral, e afecta qualquer troca de chaves públicas feita sem mais garantias, incluindo o próprio Diffie-Hellman: um atacante posicionado em qualquer ponto da rede entre Alice e Bob, por exemplo num router comprometido, pode interceptar $g$, $p$ e os valores trocados, e substituir-se a cada um deles perante o outro, um **ataque do intermediário** (*man-in-the-middle*, MITM). A vítima nunca percebe, porque cada lado continua a receber valores que parecem legítimos, só que gerados pelo atacante. Este ataque quebra qualquer algoritmo de chave pública que não tenha forma de confirmar, de forma independente, que uma chave pública pertence mesmo a quem diz pertencer.</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-07-sintese}</span></span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>Este capítulo respondeu a duas perguntas deixadas em aberto pela criptografia assimétrica:</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>O **Diffie-Hellman** permite a duas partes combinarem uma chave secreta comum através de um canal completamente aberto, sem nunca a transmitir directamente</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>A sua segurança assenta no **problema do logaritmo discreto**: calcular $g^x \bmod p$ é fácil, mas recuperar $x$ a partir do resultado é computacionalmente inviável para valores suficientemente grandes</span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Cada parte troca um valor público ($g^x \bmod p$ ou $g^y \bmod p$), calculado a partir de um segredo que nunca revela; ambas chegam ao mesmo segredo comum $g^{xy} \bmod p$</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Uma **assinatura digital** pode ser construída cifrando o hash de uma mensagem com a chave privada do autor (usando RSA, por exemplo), ou com um algoritmo dedicado como o **DSA**</span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>O DSA assina com uma chave privada $x$ e um valor efémero $k$, usado uma única vez por assinatura; qualquer pessoa verifica depois com a chave pública correspondente, sem nunca ter acesso a $x$ nem a $k$</span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Nenhum destes dois mecanismos resolve, sozinho, o problema de **confiar** que uma chave pública pertence mesmo a quem diz pertencer: sem essa garantia, um atacante posicionado no meio do canal (MITM) consegue substituir-se a qualquer uma das partes</span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-07-reflexao}</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a>No DSA, o valor efémero $k$ tem de ser secreto e usado uma única vez por assinatura, tal como o par (chave, *nonce*) de uma cifra de fluxo nunca pode repetir-se. Nas cifras de fluxo, reutilizar o par expõe o XOR dos dois textos claros (o ataque do *two-time pad*, Secção 4.1). No DSA, $r = (g^k \bmod p) \bmod q$ depende só de $k$, por isso duas assinaturas com o mesmo $k$ produzem o mesmo $r$, e um atacante que reconheça essa repetição fica com duas equações, $s_1 = k^{-1}(H(m_1)+xr) \bmod q$ e $s_2 = k^{-1}(H(m_2)+xr) \bmod q$, com apenas duas incógnitas, $k$ e $x$. Que operação simples entre estas duas equações elimina $k$ e permite isolar directamente a chave privada $x$?</span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Solução</span></span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>A operação é a **subtracção** das duas equações:</span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a>$$s_1 - s_2 = k^{-1}\big<span class="co">[</span><span class="ot">(H(m_1)+xr) - (H(m_2)+xr)\big</span><span class="co">]</span> \bmod q = k^{-1}\big(H(m_1)-H(m_2)\big) \bmod q$$</span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>O termo $xr$ é igual nas duas equações (mesmo $r$, porque depende só do $k$ reutilizado, e a mesma chave $x$), por isso cancela-se por completo na subtracção, deixando uma equação com uma única incógnita, $k$:</span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a>$$k = \big(H(m_1)-H(m_2)\big)\,(s_1-s_2)^{-1} \bmod q$$</span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a>Com $k$ recuperado, basta substituir numa das equações originais para isolar a chave privada:</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a>$$x = (s_1 k - H(m_1))\, r^{-1} \bmod q$$</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a>Este não é um ataque só teórico: foi exactamente desta forma que a Sony Computer Entertainment perdeu, em 2010, a chave privada de assinatura de código da PlayStation 3. A implementação da Sony usava sempre o mesmo valor de $k$ em vez de gerar um novo, aleatório, para cada assinatura, e um grupo de investigadores (o *fail0verflow*, seguido por George Hotz) explorou exactamente esta reutilização para recuperar a chave privada da consola, permitindo assinar e executar código não autorizado em qualquer PS3.</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-07-referencias .unnumbered}</span></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

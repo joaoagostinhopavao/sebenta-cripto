@@ -8,7 +8,7 @@
 
 <meta name="author" content="João Pavão">
 
-<title>6&nbsp; Criptografia Assimétrica — Fundamentos e RSA – Criptografia</title>
+<title>6&nbsp; Criptografia Assimétrica e RSA – Criptografia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -107,6 +127,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../assets/css/custom.css">
 </head>
@@ -120,7 +169,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap06.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica — Fundamentos e RSA</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap06.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica e RSA</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
@@ -187,7 +236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica — Fundamentos e RSA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica e RSA</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -199,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Criptografia de Curva Elíptica (ECC)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Criptografia de Curva Elíptica</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -211,7 +260,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP — Esquemas Criptográficos Aplicados</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Eficiência Algorítmica e Criptografia Pós-Quântica</span></span></a>
   </div>
 </li>
     </ul>
@@ -219,15 +274,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Índice</h2>
+   
+  <ul>
+  <li><a href="#sec-06-intro" id="toc-sec-06-intro" class="nav-link active" data-scroll-target="#sec-06-intro">Introdução</a></li>
+  <li><a href="#sec-06-conceito" id="toc-sec-06-conceito" class="nav-link" data-scroll-target="#sec-06-conceito"><span class="header-section-number">6.1</span> Criptografia Assimétrica: o Conceito</a></li>
+  <li><a href="#sec-06-categorias" id="toc-sec-06-categorias" class="nav-link" data-scroll-target="#sec-06-categorias"><span class="header-section-number">6.2</span> Categorias e Aplicações</a></li>
+  <li><a href="#sec-06-rsa-geracao" id="toc-sec-06-rsa-geracao" class="nav-link" data-scroll-target="#sec-06-rsa-geracao"><span class="header-section-number">6.3</span> RSA: Geração de Chaves</a></li>
+  <li><a href="#sec-06-rsa-cifra" id="toc-sec-06-rsa-cifra" class="nav-link" data-scroll-target="#sec-06-rsa-cifra"><span class="header-section-number">6.4</span> RSA: Cifragem e Decifragem</a></li>
+  <li><a href="#sec-06-rsa-seguranca" id="toc-sec-06-rsa-seguranca" class="nav-link" data-scroll-target="#sec-06-rsa-seguranca"><span class="header-section-number">6.5</span> Segurança: o que Torna o RSA Difícil de Quebrar — e Fácil de Usar Mal</a></li>
+  <li><a href="#sec-06-sintese" id="toc-sec-06-sintese" class="nav-link" data-scroll-target="#sec-06-sintese"><span class="header-section-number">6.6</span> Síntese do Capítulo</a></li>
+  <li><a href="#sec-06-reflexao" id="toc-sec-06-reflexao" class="nav-link" data-scroll-target="#sec-06-reflexao"><span class="header-section-number">6.7</span> Para Pensar</a></li>
+  <li><a href="#sec-06-referencias" id="toc-sec-06-referencias" class="nav-link" data-scroll-target="#sec-06-referencias">Referências</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica — Fundamentos e RSA</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica e RSA</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
 </div>
 
 
@@ -256,13 +325,175 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<blockquote class="blockquote">
-<p>Conteúdo por desenvolver.</p>
-</blockquote>
+<section id="sec-06-intro" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-06-intro">Introdução</h2>
+<p>Todos os capítulos anteriores, das cifras clássicas ao HMAC, partilham uma limitação estrutural: exigem uma chave secreta <strong>partilhada previamente</strong> entre emissor e receptor. Mas como é que dois desconhecidos, que nunca se encontraram e não têm nenhum canal seguro entre si, combinam essa chave em primeiro lugar? Este é o <strong>problema da distribuição de chaves</strong>, e durante décadas não teve resposta satisfatória. A solução, proposta por Diffie e Hellman em 1976 e concretizada por Rivest, Shamir e Adleman em 1977 com o algoritmo que dá nome a este capítulo, é radical: em vez de uma chave partilhada, cada participante passa a ter <strong>duas chaves matematicamente relacionadas</strong>, uma que pode divulgar livremente e outra que nunca revela a ninguém.</p>
+</section>
+<section id="sec-06-conceito" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="sec-06-conceito"><span class="header-section-number">6.1</span> Criptografia Assimétrica: o Conceito</h2>
+<p>Um sistema de chave pública assenta em seis componentes <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>: um algoritmo de cifragem, um algoritmo de decifragem, uma mensagem em texto claro, uma mensagem cifrada, e as duas chaves de cada participante, a <strong>chave pública</strong> (<span class="math inline">\(PU\)</span>), livremente distribuída, e a <strong>chave privada</strong> (<span class="math inline">\(PR\)</span>), mantida secreta pelo seu dono. A propriedade que torna isto útil é puramente matemática: o que quer que se cifre com uma das chaves de um par, só se decifra com a outra, nunca com a mesma.</p>
+<p>Esta simples inversão de “que chave usar para quê” dá origem a dois esquemas distintos, com propósitos opostos:</p>
+<div id="fig-06-confid-autent" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-06-confid-autent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-06-confidencialidade-autenticacao.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-06-confid-autent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6.1: Nos dois esquemas, uma mensagem <span class="math inline">\(X\)</span> é cifrada numa das pontas e decifrada na outra, mas o par de chaves usado, e o que cada esquema garante, são opostos. Na confidencialidade, cifra-se com a chave pública do destinatário; na autenticação, cifra-se com a chave privada do próprio emissor.
+</figcaption>
+</figure>
+</div>
+<p><strong>Confidencialidade.</strong> Para enviar uma mensagem confidencial a Bob, Alice cifra-a com a <strong>chave pública de Bob</strong> (<span class="math inline">\(PU_b\)</span>), que qualquer pessoa conhece:</p>
+<p><span class="math display">\[Y = E[PU_b, X] \qquad X = D[PR_b, Y]\]</span></p>
+<p>Só Bob consegue decifrar <span class="math inline">\(Y\)</span>, porque só ele tem <span class="math inline">\(PR_b\)</span>. Note-se que isto resolve exactamente o problema identificado na introdução: Alice nunca precisou de combinar nenhum segredo com Bob antecipadamente, só precisou de conhecer uma chave pública dele.</p>
+<p><strong>Autenticação.</strong> Para provar que uma mensagem vem mesmo de Alice, ela cifra-a com a sua própria <strong>chave privada</strong> (<span class="math inline">\(PR_a\)</span>):</p>
+<p><span class="math display">\[Y = E[PR_a, X] \qquad X = D[PU_a, Y]\]</span></p>
+<p>Qualquer pessoa pode decifrar <span class="math inline">\(Y\)</span> com a chave pública de Alice, <span class="math inline">\(PU_a\)</span>, que também é livremente conhecida, mas é precisamente por isso que este esquema não dá confidencialidade nenhuma. O que dá é a garantia de que <strong>só Alice</strong> podia ter produzido <span class="math inline">\(Y\)</span>, já que só ela possui <span class="math inline">\(PR_a\)</span>: é a base conceptual da assinatura digital, retomada num capítulo posterior.</p>
+<p>Nada impede combinar os dois esquemas para obter ambas as propriedades ao mesmo tempo: Alice primeiro cifra com a sua própria chave privada (assina), e depois cifra o resultado com a chave pública de Bob (garante confidencialidade):</p>
+<p><span class="math display">\[Z = E[PU_b,\, E[PR_a, X]]\]</span></p>
+<p>Bob inverte as duas operações pela ordem inversa, <span class="math inline">\(X = D[PU_a,\, D[PR_b, Z]]\)</span>, obtendo simultaneamente a certeza de que a mensagem só podia ter vindo de Alice, e a garantia de que mais ninguém a conseguiu ler pelo caminho.</p>
+</section>
+<section id="sec-06-categorias" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="sec-06-categorias"><span class="header-section-number">6.2</span> Categorias e Aplicações</h2>
+<p>Nem todos os algoritmos de chave pública servem os três usos possíveis (encriptação, assinatura digital, troca de chaves) igualmente bem:</p>
+<div id="tbl-06-aplicacoes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-06-aplicacoes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;6.1: Aplicações dos principais algoritmos de chave pública <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>
+</figcaption>
+<div aria-describedby="tbl-06-aplicacoes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Algoritmo</th>
+<th>Encriptação/Decriptação</th>
+<th>Assinatura Digital</th>
+<th>Troca de Chaves</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>RSA</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Sim</td>
+</tr>
+<tr class="even">
+<td>Curva Elíptica</td>
+<td>Sim</td>
+<td>Sim</td>
+<td>Sim</td>
+</tr>
+<tr class="odd">
+<td>Diffie-Hellman</td>
+<td>Não</td>
+<td>Não</td>
+<td>Sim</td>
+</tr>
+<tr class="even">
+<td>DSS</td>
+<td>Não</td>
+<td>Sim</td>
+<td>Não</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>O RSA, apresentado neste capítulo, é o único, ao lado da criptografia de curva elíptica, capaz de servir os três papéis. O Diffie-Hellman, capítulo seguinte, serve apenas para combinar uma chave partilhada; o DSS existe apenas para assinar.</p>
+</section>
+<section id="sec-06-rsa-geracao" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="sec-06-rsa-geracao"><span class="header-section-number">6.3</span> RSA: Geração de Chaves</h2>
+<p>O <strong>RSA</strong> (Rivest, Shamir e Adleman, 1977) continua a ser o algoritmo de chave pública mais usado na prática, apesar de assentar num único problema matemático difícil: a <strong>factorização de números inteiros muito grandes</strong>. A geração do par de chaves segue cinco passos:</p>
+<div id="fig-06-rsa-infografico" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-06-rsa-infografico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-06-rsa-infografico.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-06-rsa-infografico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6.2: Geração de chaves, cifragem e decifragem no RSA. A segurança de todo o esquema depende de <span class="math inline">\(d\)</span> ser impossível de calcular sem conhecer <span class="math inline">\(p\)</span> e <span class="math inline">\(q\)</span>: quem só conhece <span class="math inline">\(n\)</span> tem de o factorizar primeiro, um problema sem solução eficiente conhecida para números suficientemente grandes.
+</figcaption>
+</figure>
+</div>
+<ol type="1">
+<li>Escolhem-se dois números primos grandes e aleatórios, <span class="math inline">\(p\)</span> e <span class="math inline">\(q\)</span>.</li>
+<li>Calcula-se <span class="math inline">\(n = p \cdot q\)</span> (o <strong>módulo</strong>, que será público) e <span class="math inline">\(\phi(n) = (p-1)(q-1)\)</span> (a função totiente de Euler, que tem de se manter secreta).</li>
+<li>Escolhe-se <span class="math inline">\(e\)</span> tal que <span class="math inline">\(1 &lt; e &lt; \phi(n)\)</span> e <span class="math inline">\(\text{mdc}(e, \phi(n)) = 1\)</span> (isto garante que <span class="math inline">\(e\)</span> é invertível módulo <span class="math inline">\(\phi(n)\)</span>).</li>
+<li>Calcula-se <span class="math inline">\(d\)</span>, o inverso modular de <span class="math inline">\(e\)</span>: <span class="math inline">\(d \cdot e \equiv 1 \pmod{\phi(n)}\)</span>.</li>
+<li>A <strong>chave pública</strong> é o par <span class="math inline">\((e, n)\)</span>; a <strong>chave privada</strong> é o par <span class="math inline">\((d, n)\)</span>. O módulo <span class="math inline">\(n\)</span> é público, mas <span class="math inline">\(p\)</span>, <span class="math inline">\(q\)</span>, <span class="math inline">\(\phi(n)\)</span> e <span class="math inline">\(d\)</span> nunca são revelados.</li>
+</ol>
+</section>
+<section id="sec-06-rsa-cifra" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="sec-06-rsa-cifra"><span class="header-section-number">6.4</span> RSA: Cifragem e Decifragem</h2>
+<p>Com as chaves geradas, cifrar e decifrar um bloco <span class="math inline">\(M\)</span> (um número, <span class="math inline">\(0 \le M &lt; n\)</span>) resume-se a uma exponenciação modular:</p>
+<p><span class="math display">\[C = M^e \bmod n \qquad\qquad M = C^d \bmod n = (M^e)^d \bmod n = M^{e \cdot d} \bmod n\]</span></p>
+<p>Isto funciona porque <span class="math inline">\(e\)</span> e <span class="math inline">\(d\)</span> foram escolhidos de forma a serem <strong>inversos multiplicativos módulo <span class="math inline">\(\phi(n)\)</span></strong> (<span class="math inline">\(e \cdot d \equiv 1 \bmod \phi(n)\)</span>), tal como, na aritmética normal, <span class="math inline">\(3\)</span> e <span class="math inline">\(\frac{1}{3}\)</span> são inversos porque <span class="math inline">\(3 \cdot \frac{1}{3} = 1\)</span>: elevar a <span class="math inline">\(e\)</span> e depois a <span class="math inline">\(d\)</span> (ou vice-versa) devolve sempre o valor original.</p>
+<p>Um exemplo completo, com números pequenos apenas para ilustrar o mecanismo:</p>
+<ol type="1">
+<li>Escolhem-se <span class="math inline">\(p=17\)</span> e <span class="math inline">\(q=11\)</span>.</li>
+<li><span class="math inline">\(n = 17 \times 11 = 187\)</span>; <span class="math inline">\(\phi(n) = 16 \times 10 = 160\)</span>.</li>
+<li>Escolhe-se <span class="math inline">\(e=7\)</span> (relativamente primo com 160).</li>
+<li>Calcula-se <span class="math inline">\(d=23\)</span>, porque <span class="math inline">\((23 \times 7) \bmod 160 = 161 \bmod 160 = 1\)</span>.</li>
+<li>Chave pública <span class="math inline">\(= \{7, 187\}\)</span>; chave privada <span class="math inline">\(= \{23, 187\}\)</span>.</li>
+</ol>
+<div id="fig-06-rsa-exemplo" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-06-rsa-exemplo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-06-rsa-exemplo.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-06-rsa-exemplo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6.3: O mesmo exemplo em acção: a mensagem <span class="math inline">\(M=88\)</span> cifra-se com a chave pública <span class="math inline">\((7,187)\)</span>, obtendo <span class="math inline">\(C=11\)</span>; decifra-se com a chave privada <span class="math inline">\((23,187)\)</span>, recuperando <span class="math inline">\(M=88\)</span>.
+</figcaption>
+</figure>
+</div>
+<p>Para enviar a mensagem <span class="math inline">\(M=88\)</span>: <span class="math inline">\(C = 88^7 \bmod 187 = 11\)</span>. Para a recuperar: <span class="math inline">\(M = 11^{23} \bmod 187 = 88\)</span>.</p>
+</section>
+<section id="sec-06-rsa-seguranca" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="sec-06-rsa-seguranca"><span class="header-section-number">6.5</span> Segurança: o que Torna o RSA Difícil de Quebrar — e Fácil de Usar Mal</h2>
+<p>O exemplo da secção anterior usa números pequenos só para tornar as contas possíveis à mão, mas isso tem um preço: com <span class="math inline">\(n=187\)</span> (8 bits), factorizar <span class="math inline">\(n\)</span> de volta em <span class="math inline">\(p=17\)</span> e <span class="math inline">\(q=11\)</span> é trivial, o que anula por completo a segurança do esquema. Na prática, recomenda-se <span class="math inline">\(n\)</span> com pelo menos 2048 a 4096 bits, tornando a factorização computacionalmente inviável com os métodos e o poder de computação actualmente conhecidos, o <strong>problema da factorização de inteiros</strong>, do qual depende toda a segurança do RSA.</p>
+<p>Vale a pena perceber porque é que este tamanho de chave é tão maior do que o de uma cifra simétrica (128 ou 256 bits, capítulos 3 e 4) para um nível de segurança comparável. O melhor algoritmo conhecido para factorizar inteiros grandes, o <em>general number field sieve</em> (GNFS), tem complexidade <strong>subexponencial</strong>: cresce mais lentamente do que uma pesquisa exaustiva (que custaria <span class="math inline">\(2^n\)</span> operações para um valor de <span class="math inline">\(n\)</span> bits), mas mais depressa do que um algoritmo polinomial, o que o torna significativamente mais rápido do que a força bruta pura, ainda que continue impraticável para módulos de milhares de bits <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>. É precisamente esta existência de um atalho, mais rápido do que a força bruta mas não polinomial, que obriga o RSA a compensar com chaves muito maiores do que as de uma cifra simétrica: um módulo de 3072 bits é necessário para atingir o mesmo nível de segurança prático de uma chave simétrica de apenas 128 bits (Tabela <a href="cap08.html#tbl-08-tamanhos" class="quarto-xref"><span>8.1</span></a>, Capítulo 8).</p>
+<p>Mesmo com um <span class="math inline">\(n\)</span> suficientemente grande, usar o RSA exactamente como descrito acima, o chamado <strong>RSA “textbook”</strong>, não é seguro: é determinístico (a mesma mensagem produz sempre o mesmo texto cifrado, permitindo a um atacante reconhecer mensagens repetidas) e não oferece segurança semântica. Por isso, nenhuma biblioteca criptográfica séria implementa o RSA cru:</p>
+<ul>
+<li>Para <strong>encriptação</strong>, usa-se um esquema de <em>padding</em> como o <strong>RSA-OAEP</strong> (<em>Optimal Asymmetric Encryption Padding</em>), que introduz aleatoriedade antes de cifrar, garantindo que a mesma mensagem nunca produz o mesmo texto cifrado duas vezes.</li>
+<li>Para <strong>assinaturas</strong>, usa-se o <strong>RSA-PSS</strong> (<em>Probabilistic Signature Scheme</em>), que garante segurança contra falsificação de assinaturas, uma propriedade que o esquema simples da Secção 6.2 não oferece por si só.</li>
+</ul>
+<p>Do lado do desempenho, é comum substituir <span class="math inline">\(\phi(n)\)</span> por <span class="math inline">\(\lambda(n) = \text{mmc}(p-1, q-1)\)</span> (a condição <span class="math inline">\(e \cdot d \equiv 1 \bmod \lambda(n)\)</span> também é suficiente, e produz um <span class="math inline">\(d\)</span> tipicamente mais pequeno), e usar o <strong>Teorema Chinês do Resto</strong> para acelerar a decifragem, resolvendo <span class="math inline">\(M = C^d \bmod n\)</span> separadamente módulo <span class="math inline">\(p\)</span> e módulo <span class="math inline">\(q\)</span>, e combinando os resultados, uma operação várias vezes mais rápida do que a exponenciação directa módulo <span class="math inline">\(n\)</span>.</p>
+</section>
+<section id="sec-06-sintese" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="sec-06-sintese"><span class="header-section-number">6.6</span> Síntese do Capítulo</h2>
+<p>Este capítulo introduziu a segunda grande família da criptografia moderna:</p>
+<ol type="1">
+<li>A <strong>criptografia assimétrica</strong> resolve o problema da distribuição de chaves: cada participante tem uma chave pública, livremente distribuída, e uma chave privada, nunca partilhada</li>
+<li>Cifrar com a <strong>chave pública</strong> do destinatário garante <strong>confidencialidade</strong>; cifrar com a <strong>chave privada</strong> do próprio garante <strong>autenticação</strong>; combinar as duas garante ambas</li>
+<li>O RSA, a curva elíptica, o Diffie-Hellman e o DSS não servem todos os mesmos propósitos: só o RSA e a curva elíptica servem encriptação, assinatura e troca de chaves em simultâneo</li>
+<li>O <strong>RSA</strong> gera as suas chaves a partir de dois primos grandes <span class="math inline">\(p\)</span> e <span class="math inline">\(q\)</span>: <span class="math inline">\(n=pq\)</span>, <span class="math inline">\(\phi(n)=(p-1)(q-1)\)</span>, <span class="math inline">\(e\)</span> coprimo com <span class="math inline">\(\phi(n)\)</span>, e <span class="math inline">\(d\)</span> o seu inverso modular; cifra e decifra por exponenciação modular, <span class="math inline">\(C=M^e \bmod n\)</span> e <span class="math inline">\(M=C^d \bmod n\)</span></li>
+<li>A segurança do RSA depende inteiramente da dificuldade de <strong>factorizar</strong> <span class="math inline">\(n\)</span> em <span class="math inline">\(p\)</span> e <span class="math inline">\(q\)</span>; com <span class="math inline">\(n\)</span> pequeno (como no exemplo didáctico <span class="math inline">\(n=187\)</span>), a factorização é trivial, por isso a norma actual exige <span class="math inline">\(n\)</span> de pelo menos 2048 a 4096 bits</li>
+<li>O <strong>RSA “textbook”</strong> não é seguro por si só: usos reais exigem <strong>RSA-OAEP</strong> para encriptação e <strong>RSA-PSS</strong> para assinaturas</li>
+</ol>
+</section>
+<section id="sec-06-reflexao" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="sec-06-reflexao"><span class="header-section-number">6.7</span> Para Pensar</h2>
+<p>O exemplo resolvido da Secção 6.4 usa <span class="math inline">\(n=187\)</span> (8 bits), trivialmente factorizável, o que anula a sua segurança; a norma actual recomenda <span class="math inline">\(n\)</span> de 2048 a 4096 bits. Em implementações reais de RSA, o expoente público <span class="math inline">\(e\)</span> é normalmente um número pequeno e fixo (o valor <span class="math inline">\(e=65537\)</span> é o mais comum), o mesmo em milhões de chaves diferentes por esse mundo fora, sem que isso comprometa a segurança de nenhuma delas. Tendo em conta de onde vem toda a segurança do RSA (Secção 6.5), porque é que aumentar o tamanho de <span class="math inline">\(e\)</span>, mantendo <span class="math inline">\(n\)</span> pequeno, não tornaria o exemplo da Secção 6.4 mais seguro?</p>
+</section>
+<section id="sec-06-referencias" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-06-referencias">Referências</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-Stallings2020" class="csl-entry" role="listitem">
+Stallings, William. 2020. <em>Cryptography and Network Security: Principles and Practice</em>. 8.ª ed. Pearson.
+</div>
+</div>
 
 
 <!-- -->
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -890,13 +1121,121 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Código fonte</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Criptografia Assimétrica — Fundamentos e RSA"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Criptografia Assimétrica e RSA"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "João Pavão"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-09-14</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-PT</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">&gt; Conteúdo por desenvolver.</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução {#sec-06-intro .unnumbered}</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Todos os capítulos anteriores, das cifras clássicas ao HMAC, partilham uma limitação estrutural: exigem uma chave secreta **partilhada previamente** entre emissor e receptor. Mas como é que dois desconhecidos, que nunca se encontraram e não têm nenhum canal seguro entre si, combinam essa chave em primeiro lugar? Este é o **problema da distribuição de chaves**, e durante décadas não teve resposta satisfatória. A solução, proposta por Diffie e Hellman em 1976 e concretizada por Rivest, Shamir e Adleman em 1977 com o algoritmo que dá nome a este capítulo, é radical: em vez de uma chave partilhada, cada participante passa a ter **duas chaves matematicamente relacionadas**, uma que pode divulgar livremente e outra que nunca revela a ninguém.</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Criptografia Assimétrica: o Conceito {#sec-06-conceito}</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>Um sistema de chave pública assenta em seis componentes <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>: um algoritmo de cifragem, um algoritmo de decifragem, uma mensagem em texto claro, uma mensagem cifrada, e as duas chaves de cada participante, a **chave pública** ($PU$), livremente distribuída, e a **chave privada** ($PR$), mantida secreta pelo seu dono. A propriedade que torna isto útil é puramente matemática: o que quer que se cifre com uma das chaves de um par, só se decifra com a outra, nunca com a mesma.</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Esta simples inversão de "que chave usar para quê" dá origem a dois esquemas distintos, com propósitos opostos:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="al">![Nos dois esquemas, uma mensagem $X$ é cifrada numa das pontas e decifrada na outra, mas o par de chaves usado, e o que cada esquema garante, são opostos. Na confidencialidade, cifra-se com a chave pública do destinatário; na autenticação, cifra-se com a chave privada do próprio emissor.](../assets/images/fig-06-confidencialidade-autenticacao.png)</span>{#fig-06-confid-autent width=100%}</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>**Confidencialidade.** Para enviar uma mensagem confidencial a Bob, Alice cifra-a com a **chave pública de Bob** ($PU_b$), que qualquer pessoa conhece:</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>$$Y = E<span class="co">[</span><span class="ot">PU_b, X</span><span class="co">]</span> \qquad X = D<span class="co">[</span><span class="ot">PR_b, Y</span><span class="co">]</span>$$</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Só Bob consegue decifrar $Y$, porque só ele tem $PR_b$. Note-se que isto resolve exactamente o problema identificado na introdução: Alice nunca precisou de combinar nenhum segredo com Bob antecipadamente, só precisou de conhecer uma chave pública dele.</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>**Autenticação.** Para provar que uma mensagem vem mesmo de Alice, ela cifra-a com a sua própria **chave privada** ($PR_a$):</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>$$Y = E<span class="co">[</span><span class="ot">PR_a, X</span><span class="co">]</span> \qquad X = D<span class="co">[</span><span class="ot">PU_a, Y</span><span class="co">]</span>$$</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>Qualquer pessoa pode decifrar $Y$ com a chave pública de Alice, $PU_a$, que também é livremente conhecida, mas é precisamente por isso que este esquema não dá confidencialidade nenhuma. O que dá é a garantia de que **só Alice** podia ter produzido $Y$, já que só ela possui $PR_a$: é a base conceptual da assinatura digital, retomada num capítulo posterior.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>Nada impede combinar os dois esquemas para obter ambas as propriedades ao mesmo tempo: Alice primeiro cifra com a sua própria chave privada (assina), e depois cifra o resultado com a chave pública de Bob (garante confidencialidade):</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>$$Z = E<span class="co">[</span><span class="ot">PU_b,\, E[PR_a, X]</span><span class="co">]</span>$$</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>Bob inverte as duas operações pela ordem inversa, $X = D<span class="co">[</span><span class="ot">PU_a,\, D[PR_b, Z]</span><span class="co">]</span>$, obtendo simultaneamente a certeza de que a mensagem só podia ter vindo de Alice, e a garantia de que mais ninguém a conseguiu ler pelo caminho.</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="fu">## Categorias e Aplicações {#sec-06-categorias}</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>Nem todos os algoritmos de chave pública servem os três usos possíveis (encriptação, assinatura digital, troca de chaves) igualmente bem:</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>| Algoritmo | Encriptação/Decriptação | Assinatura Digital | Troca de Chaves |</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>|---|---|---|---|</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>| RSA | Sim | Sim | Sim |</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>| Curva Elíptica | Sim | Sim | Sim |</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>| Diffie-Hellman | Não | Não | Sim |</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>| DSS | Não | Sim | Não |</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>: Aplicações dos principais algoritmos de chave pública <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span> {#tbl-06-aplicacoes}</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>O RSA, apresentado neste capítulo, é o único, ao lado da criptografia de curva elíptica, capaz de servir os três papéis. O Diffie-Hellman, capítulo seguinte, serve apenas para combinar uma chave partilhada; o DSS existe apenas para assinar.</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a><span class="fu">## RSA: Geração de Chaves {#sec-06-rsa-geracao}</span></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>O **RSA** (Rivest, Shamir e Adleman, 1977) continua a ser o algoritmo de chave pública mais usado na prática, apesar de assentar num único problema matemático difícil: a **factorização de números inteiros muito grandes**. A geração do par de chaves segue cinco passos:</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a><span class="al">![Geração de chaves, cifragem e decifragem no RSA. A segurança de todo o esquema depende de $d$ ser impossível de calcular sem conhecer $p$ e $q$: quem só conhece $n$ tem de o factorizar primeiro, um problema sem solução eficiente conhecida para números suficientemente grandes.](../assets/images/fig-06-rsa-infografico.png)</span>{#fig-06-rsa-infografico width=100%}</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Escolhem-se dois números primos grandes e aleatórios, $p$ e $q$.</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Calcula-se $n = p \cdot q$ (o **módulo**, que será público) e $\phi(n) = (p-1)(q-1)$ (a função totiente de Euler, que tem de se manter secreta).</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Escolhe-se $e$ tal que $1 &lt; e &lt; \phi(n)$ e $\text{mdc}(e, \phi(n)) = 1$ (isto garante que $e$ é invertível módulo $\phi(n)$).</span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Calcula-se $d$, o inverso modular de $e$: $d \cdot e \equiv 1 \pmod{\phi(n)}$.</span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>A **chave pública** é o par $(e, n)$; a **chave privada** é o par $(d, n)$. O módulo $n$ é público, mas $p$, $q$, $\phi(n)$ e $d$ nunca são revelados.</span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="fu">## RSA: Cifragem e Decifragem {#sec-06-rsa-cifra}</span></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>Com as chaves geradas, cifrar e decifrar um bloco $M$ (um número, $0 \le M &lt; n$) resume-se a uma exponenciação modular:</span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>$$C = M^e \bmod n \qquad\qquad M = C^d \bmod n = (M^e)^d \bmod n = M^{e \cdot d} \bmod n$$</span>
+<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a>Isto funciona porque $e$ e $d$ foram escolhidos de forma a serem **inversos multiplicativos módulo $\phi(n)$** ($e \cdot d \equiv 1 \bmod \phi(n)$), tal como, na aritmética normal, $3$ e $\frac{1}{3}$ são inversos porque $3 \cdot \frac{1}{3} = 1$: elevar a $e$ e depois a $d$ (ou vice-versa) devolve sempre o valor original.</span>
+<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>Um exemplo completo, com números pequenos apenas para ilustrar o mecanismo:</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Escolhem-se $p=17$ e $q=11$.</span>
+<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>$n = 17 \times 11 = 187$; $\phi(n) = 16 \times 10 = 160$.</span>
+<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Escolhe-se $e=7$ (relativamente primo com 160).</span>
+<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Calcula-se $d=23$, porque $(23 \times 7) \bmod 160 = 161 \bmod 160 = 1$.</span>
+<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Chave pública $= <span class="sc">\{</span>7, 187<span class="sc">\}</span>$; chave privada $= <span class="sc">\{</span>23, 187<span class="sc">\}</span>$.</span>
+<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="al">![O mesmo exemplo em acção: a mensagem $M=88$ cifra-se com a chave pública $(7,187)$, obtendo $C=11$; decifra-se com a chave privada $(23,187)$, recuperando $M=88$.](../assets/images/fig-06-rsa-exemplo.png)</span>{#fig-06-rsa-exemplo width=100%}</span>
+<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>Para enviar a mensagem $M=88$: $C = 88^7 \bmod 187 = 11$. Para a recuperar: $M = 11^{23} \bmod 187 = 88$.</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="fu">## Segurança: o que Torna o RSA Difícil de Quebrar — e Fácil de Usar Mal {#sec-06-rsa-seguranca}</span></span>
+<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>O exemplo da secção anterior usa números pequenos só para tornar as contas possíveis à mão, mas isso tem um preço: com $n=187$ (8 bits), factorizar $n$ de volta em $p=17$ e $q=11$ é trivial, o que anula por completo a segurança do esquema. Na prática, recomenda-se $n$ com pelo menos 2048 a 4096 bits, tornando a factorização computacionalmente inviável com os métodos e o poder de computação actualmente conhecidos, o **problema da factorização de inteiros**, do qual depende toda a segurança do RSA.</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a>Vale a pena perceber porque é que este tamanho de chave é tão maior do que o de uma cifra simétrica (128 ou 256 bits, capítulos 3 e 4) para um nível de segurança comparável. O melhor algoritmo conhecido para factorizar inteiros grandes, o *general number field sieve* (GNFS), tem complexidade **subexponencial**: cresce mais lentamente do que uma pesquisa exaustiva (que custaria $2^n$ operações para um valor de $n$ bits), mas mais depressa do que um algoritmo polinomial, o que o torna significativamente mais rápido do que a força bruta pura, ainda que continue impraticável para módulos de milhares de bits <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>. É precisamente esta existência de um atalho, mais rápido do que a força bruta mas não polinomial, que obriga o RSA a compensar com chaves muito maiores do que as de uma cifra simétrica: um módulo de 3072 bits é necessário para atingir o mesmo nível de segurança prático de uma chave simétrica de apenas 128 bits (Tabela <span class="co">[</span><span class="ot">-@tbl-08-tamanhos</span><span class="co">]</span>, Capítulo 8).</span>
+<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>Mesmo com um $n$ suficientemente grande, usar o RSA exactamente como descrito acima, o chamado **RSA "textbook"**, não é seguro: é determinístico (a mesma mensagem produz sempre o mesmo texto cifrado, permitindo a um atacante reconhecer mensagens repetidas) e não oferece segurança semântica. Por isso, nenhuma biblioteca criptográfica séria implementa o RSA cru:</span>
+<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Para **encriptação**, usa-se um esquema de *padding* como o **RSA-OAEP** (*Optimal Asymmetric Encryption Padding*), que introduz aleatoriedade antes de cifrar, garantindo que a mesma mensagem nunca produz o mesmo texto cifrado duas vezes.</span>
+<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Para **assinaturas**, usa-se o **RSA-PSS** (*Probabilistic Signature Scheme*), que garante segurança contra falsificação de assinaturas, uma propriedade que o esquema simples da Secção 6.2 não oferece por si só.</span>
+<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a>Do lado do desempenho, é comum substituir $\phi(n)$ por $\lambda(n) = \text{mmc}(p-1, q-1)$ (a condição $e \cdot d \equiv 1 \bmod \lambda(n)$ também é suficiente, e produz um $d$ tipicamente mais pequeno), e usar o **Teorema Chinês do Resto** para acelerar a decifragem, resolvendo $M = C^d \bmod n$ separadamente módulo $p$ e módulo $q$, e combinando os resultados, uma operação várias vezes mais rápida do que a exponenciação directa módulo $n$.</span>
+<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-06-sintese}</span></span>
+<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a>Este capítulo introduziu a segunda grande família da criptografia moderna:</span>
+<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>A **criptografia assimétrica** resolve o problema da distribuição de chaves: cada participante tem uma chave pública, livremente distribuída, e uma chave privada, nunca partilhada</span>
+<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Cifrar com a **chave pública** do destinatário garante **confidencialidade**; cifrar com a **chave privada** do próprio garante **autenticação**; combinar as duas garante ambas</span>
+<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>O RSA, a curva elíptica, o Diffie-Hellman e o DSS não servem todos os mesmos propósitos: só o RSA e a curva elíptica servem encriptação, assinatura e troca de chaves em simultâneo</span>
+<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>O **RSA** gera as suas chaves a partir de dois primos grandes $p$ e $q$: $n=pq$, $\phi(n)=(p-1)(q-1)$, $e$ coprimo com $\phi(n)$, e $d$ o seu inverso modular; cifra e decifra por exponenciação modular, $C=M^e \bmod n$ e $M=C^d \bmod n$</span>
+<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>A segurança do RSA depende inteiramente da dificuldade de **factorizar** $n$ em $p$ e $q$; com $n$ pequeno (como no exemplo didáctico $n=187$), a factorização é trivial, por isso a norma actual exige $n$ de pelo menos 2048 a 4096 bits</span>
+<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>O **RSA "textbook"** não é seguro por si só: usos reais exigem **RSA-OAEP** para encriptação e **RSA-PSS** para assinaturas</span>
+<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-06-reflexao}</span></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>O exemplo resolvido da Secção 6.4 usa $n=187$ (8 bits), trivialmente factorizável, o que anula a sua segurança; a norma actual recomenda $n$ de 2048 a 4096 bits. Em implementações reais de RSA, o expoente público $e$ é normalmente um número pequeno e fixo (o valor $e=65537$ é o mais comum), o mesmo em milhões de chaves diferentes por esse mundo fora, sem que isso comprometa a segurança de nenhuma delas. Tendo em conta de onde vem toda a segurança do RSA (Secção 6.5), porque é que aumentar o tamanho de $e$, mantendo $n$ pequeno, não tornaria o exemplo da Secção 6.4 mais seguro?</span>
+<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-06-referencias .unnumbered}</span></span>
+<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

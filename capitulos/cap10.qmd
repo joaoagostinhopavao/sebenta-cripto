@@ -1,8 +1,59 @@
 ---
-title: "TLS e PGP — Esquemas Criptográficos Aplicados"
+title: "TLS e PGP"
 author: "João Pavão"
 date: 2026-09-14
 lang: pt-PT
 ---
 
-> Conteúdo por desenvolver.
+## Introdução {#sec-10-intro .unnumbered}
+
+Este capítulo mostra como as ferramentas apresentadas ao longo do livro, cifras simétricas, funções de hash, MACs, RSA, Diffie-Hellman, curva elíptica e certificados X.509, se combinam em dois protocolos reais de largo uso: o **TLS**, que protege praticamente todo o tráfego web actual, e o **PGP**, um dos primeiros sistemas de criptografia de utilização generalizada para correio electrónico. Outros esquemas de interesse prático, à medida que forem sendo incorporados no programa da UC, terão naturalmente lugar aqui.
+
+## TLS: Objectivos e Camadas {#sec-10-tls-objetivos}
+
+O **TLS** (*Transport Layer Security*), sucessor do SSL, protege uma ligação de rede em três frentes: confidencialidade (os dados trocados não podem ser lidos por terceiros), integridade (não podem ser alterados sem detecção) e autenticação (pelo menos o servidor, tipicamente através de um certificado X.509, prova a sua identidade) [@Stallings2020; @RFC8446]. O protocolo organiza-se em duas camadas: o **protocolo de acordo** (*handshake*), que negoceia os parâmetros da sessão e estabelece uma chave partilhada, e o **protocolo de registo** (*record protocol*), que usa essa chave para cifrar e autenticar todo o tráfego subsequente com uma construção AEAD, como o AES-GCM ou o ChaCha20-Poly1305 (capítulos 3 e 4).
+
+## O Handshake do TLS 1.3 {#sec-10-tls-handshake}
+
+O TLS 1.3 [@RFC8446] simplificou significativamente o processo de acordo em relação a versões anteriores, reduzindo-o a uma única volta de ida e volta (*1-RTT*) na generalidade dos casos:
+
+![O handshake do TLS 1.3: cliente e servidor trocam um valor de troca de chaves (*key_share*, tipicamente ECDH sobre a Curve25519) logo no primeiro par de mensagens; o servidor prova a sua identidade com um certificado X.509 e a respectiva assinatura; ambos confirmam ter derivado a mesma chave de sessão antes de trocar dados de aplicação.](../assets/images/fig-10-tls-handshake.png){#fig-10-tls-handshake width=75%}
+
+O cliente inicia com um `ClientHello`, que já inclui um valor de troca de chaves (*key_share*), tipicamente um ponto de curva elíptica para ECDH (Secção 8.5). O servidor responde com o seu próprio `ServerHello` e *key_share*, permitindo que ambos os lados derivem imediatamente uma chave de sessão comum, exactamente como na Secção 8.5. O servidor envia ainda o seu certificado X.509 (Secção 9.3) e uma assinatura sobre o histórico do *handshake*, provando que possui a chave privada correspondente; ambos os lados terminam confirmando, através de uma mensagem `Finished` autenticada, que chegaram à mesma chave. A partir daqui, toda a comunicação segue cifrada e autenticada pela camada de registo.
+
+Um detalhe do desenho do TLS 1.3 vale a pena assinalar: o valor *key_share* de cada lado é gerado de novo, **efemeramente**, em cada *handshake*, e nunca reutilizado de uma sessão para a seguinte. Esta propriedade chama-se **sigilo perspectivo** (*forward secrecy*): mesmo que a chave privada de longo prazo do servidor (a que assina o `CertificateVerify`) seja comprometida no futuro, essa chave nunca participou directamente na derivação da chave de sessão, apenas autenticou o valor efémero trocado nesse *handshake* específico. Comprometer a chave de longo prazo permite fazer-se passar pelo servidor daí em diante, mas não decifrar sessões passadas já terminadas e descartadas.
+
+## Cifras Modernas em TLS {#sec-10-tls-cifras}
+
+Uma **cifra combinada** (*cipher suite*) do TLS 1.3 especifica o algoritmo AEAD e a função de hash usada para derivar chaves e autenticar o *handshake*. As duas combinações dominantes na prática actual já foram ambas apresentadas neste livro:
+
+- `TLS_AES_128_GCM_SHA256`: AES em modo GCM (Secção 3.6) com SHA-256 (Secção 5.3), beneficia de aceleração de hardware (AES-NI) na generalidade dos processadores modernos.
+- `TLS_CHACHA20_POLY1305_SHA256`: ChaCha20-Poly1305 (Secção 4.5) com SHA-256, preferido em dispositivos sem aceleração de hardware para AES, como muitos telemóveis, exactamente pela razão de desempenho já discutida no Capítulo 4.
+
+## PGP: Cifra Híbrida para Correio Electrónico {#sec-10-pgp}
+
+O **PGP** (*Pretty Good Privacy*), e o seu sucessor normalizado, o OpenPGP [@RFC4880], resolve um problema diferente do TLS: proteger uma mensagem que não segue uma ligação em tempo real, como um correio electrónico, entre um emissor e um destinatário cujas chaves públicas já são conhecidas [@Martin2017]. A construção combina cifra simétrica e assimétrica, aproveitando a velocidade da primeira e a conveniência da segunda:
+
+![O esquema híbrido do PGP: a mensagem é assinada com a chave privada do emissor e cifrada com uma chave de sessão gerada ao acaso; essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário. Só quem tiver a chave privada correspondente consegue recuperar a chave de sessão, e por essa via a mensagem.](../assets/images/fig-10-pgp.png){#fig-10-pgp width=100%}
+
+Do lado do emissor: a mensagem $M$ é primeiro assinada (hash mais cifra com a chave privada do emissor, tal como na Secção 7.4); o resultado é cifrado com uma **chave de sessão** $K_s$, gerada ao acaso e usada uma única vez, através de uma cifra simétrica rápida; e essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário, usando RSA. O que é transmitido é o par (texto cifrado, chave de sessão cifrada). Do lado do receptor, o processo inverte-se: a chave privada do destinatário decifra $K_s$, que decifra o texto, revelando a mensagem e a assinatura, que se verifica por fim com a chave pública do emissor.
+
+Uma diferença de fundo em relação ao modelo do Capítulo 9 é o modelo de confiança: em vez de uma hierarquia de CAs, o PGP assenta numa **rede de confiança** (*Web of Trust*), em que cada utilizador assina as chaves públicas de outros em quem confia directamente, e a confiança propaga-se de forma descentralizada através dessa rede de assinaturas [@Stallings2020].
+
+## Síntese do Capítulo {#sec-10-sintese}
+
+Este capítulo combinou as ferramentas dos capítulos anteriores em dois sistemas reais:
+
+1. O **TLS** protege uma ligação de rede combinando um *handshake*, que negoceia uma chave de sessão (tipicamente por ECDH), com um protocolo de registo, que cifra o tráfego com uma construção AEAD
+2. O TLS 1.3 reduziu o *handshake* a uma volta (1-RTT), autenticando o servidor através de um certificado X.509 e a respectiva assinatura; o valor de troca de chaves é gerado de forma efémera em cada sessão, garantindo sigilo perspectivo
+3. As cifras combinadas modernas usam AES-GCM ou ChaCha20-Poly1305, consoante haja ou não aceleração de hardware disponível
+4. O **PGP** protege mensagens assíncronas, como o correio electrónico, com uma cifra **híbrida**: a mensagem cifra-se com uma chave de sessão simétrica, e só essa chave se cifra com RSA; a confiança organiza-se numa rede descentralizada, não numa hierarquia de CAs
+
+## Para Pensar {#sec-10-reflexao}
+
+O sigilo perspectivo do TLS 1.3 (Secção 10.2) garante que comprometer a chave privada de longo prazo do servidor não permite decifrar sessões passadas, porque a chave de sessão nunca dependeu directamente dela. O PGP (Secção 10.4) funciona de forma bastante diferente: a chave pública do destinatário cifra directamente a chave de sessão $K_s$ de cada mensagem, usando sempre o mesmo par de chaves RSA de longo prazo. Tendo isto em conta, que consequência tem, para as mensagens PGP já enviadas no passado, a eventual futura descoberta da chave privada de longo prazo de um destinatário, e em que é que essa situação se distingue precisamente da garantia oferecida pelo TLS 1.3?
+
+## Referências {#sec-10-referencias .unnumbered}
+
+::: {#refs}
+:::

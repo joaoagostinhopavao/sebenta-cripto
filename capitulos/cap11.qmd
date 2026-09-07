@@ -1,0 +1,117 @@
+---
+title: "Eficiência Algorítmica e Criptografia Pós-Quântica"
+author: "João Pavão"
+date: 2026-09-14
+lang: pt-PT
+---
+
+## Introdução {#sec-11-intro .unnumbered}
+
+Este capítulo final muda de registo em relação ao anterior. Em vez de mostrar como os mecanismos deste livro se combinam num protocolo concreto, pergunta algo mais fundamental, que atravessou todos os capítulos anteriores sem nunca ter sido formalizado: o que significa, com rigor de engenharia, dizer que um esquema criptográfico é "seguro"? E, uma vez respondida essa pergunta, que preço em eficiência se paga por essa segurança, sobretudo agora que a ameaça da computação quântica obriga a repensar praticamente tudo o que foi construído até aqui?
+
+## Quantificar a Segurança: de Conceito Binário a Ciência Mensurável {#sec-11-quantificar}
+
+A segurança de software tradicional é tipicamente um conceito binário: uma aplicação está segura ou não está, e o objectivo é impedir por completo que um atacante viole o código. A criptografia mede segurança de forma fundamentalmente diferente: não como uma propriedade absoluta, mas como o **esforço quantificável** necessário para quebrar um esquema, transformando a segurança de um conceito binário numa ciência mensurável [@Aumasson2017].
+
+## Segurança Informacional vs. Segurança Computacional {#sec-11-dois-caminhos}
+
+Existem dois caminhos distintos para tornar um esquema "impossível" de quebrar [@Aumasson2017]:
+
+- **Segurança informacional** (*information-theoretic security*): uma impossibilidade teórica, absoluta, independente do tempo, do poder de computação ou da memória disponíveis ao atacante. O único exemplo já encontrado neste livro é o **One-Time Pad** de Shannon (Secção 1.2.6): mesmo testando exaustivamente todas as chaves possíveis, existem tantos textos claros candidatos quantas chaves, o que torna impossível identificar qual é o correcto, mesmo com recursos computacionais infinitos.
+- **Segurança computacional** (*computational security*): uma impossibilidade prática, não absoluta. Um esquema é computacionalmente seguro se não puder ser quebrado num tempo e com recursos razoáveis (memória, hardware, orçamento, energia), ainda que, em teoria, um atacante com tempo e recursos ilimitados o consiga sempre quebrar.
+
+Com a única excepção do One-Time Pad, **todos** os restantes esquemas apresentados neste livro, AES, RC4, ChaCha20, SHA-256, HMAC, RSA, Diffie-Hellman, DSA, ECC, dependem inteiramente de segurança computacional, não informacional. É esta a medida de segurança realmente relevante na prática [@Aumasson2017].
+
+## Limites Razoáveis: o Exemplo da Chave Simétrica {#sec-11-limites-razoaveis}
+
+Um esquema é computacionalmente seguro se não puder ser quebrado por força bruta dentro de limites de tempo e recursos considerados razoáveis. Para uma chave simétrica de 128 bits (Secção 3.2), esses limites podem tornar-se concretos:
+
+::: {.callout-note}
+#### Quantificar o inquebrável: 128 bits em números
+
+Uma chave de 128 bits admite $2^{128}$ valores possíveis, aproximadamente $3{,}4 \times 10^{38}$. Supondo um atacante capaz de testar 100 mil milhões de chaves por segundo ($10^{11}$/s, uma estimativa generosa mesmo para *hardware* dedicado), pesquisar todo o espaço de chaves demoraria:
+
+$$\frac{3{,}4 \times 10^{38}}{10^{11}} \approx 3{,}4 \times 10^{27} \text{ segundos} \approx 10^{20} \text{ anos}$$
+
+Um número muitas ordens de grandeza maior do que a idade do universo. O esquema **não** é informacionalmente seguro (um atacante com tempo suficiente encontraria sempre a chave certa), mas é, para qualquer efeito prático, computacionalmente inquebrável.
+:::
+
+## O Enquadramento $(t,\varepsilon)$ {#sec-11-t-epsilon}
+
+A definição formal de segurança computacional, adoptada de forma padrão na literatura de criptografia [@Aumasson2017], expressa-se através de dois valores:
+
+- $t$: o número **máximo de operações** que um atacante está disposto a realizar.
+- $\varepsilon$: um limite superior à **probabilidade de sucesso** desse atacante, com $0 < \varepsilon < 1$.
+
+Um esquema é **$(t,\varepsilon)$-seguro** se nenhum atacante, realizando no máximo $t$ operações, tiver uma probabilidade de sucesso superior a $\varepsilon$. Para uma cifra simétrica com chave $K$ de 128 bits, idealmente segura, este par toma a forma $(t,\, t/2^{128})$, para qualquer $1 \le t \le 2^{128}$: a probabilidade de sucesso cresce proporcionalmente à fracção do espaço de chaves já testada, nunca mais depressa do que isso.
+
+Três cenários concretos ilustram a ideia:
+
+| Cenário | Operações ($t$) | Probabilidade de sucesso ($\varepsilon$) |
+|---|---|---|
+| Uma única tentativa | $t=1$ | $\varepsilon = 2^{-128}$ |
+| Testar metade do espaço | $t=2^{64}$ | $\varepsilon = 2^{-64}$ |
+| Testar todo o espaço | $t=2^{128}$ | $\varepsilon = 1$ (sucesso garantido) |
+
+: Probabilidade de sucesso da força bruta contra uma chave de 128 bits, em função do esforço do atacante {#tbl-11-forca-bruta}
+
+Vale a pena notar a distinção entre um **limite inferior** (*lower bound*): são necessárias pelo menos $t$ operações para comprometer o esquema, o esforço real pode ser maior, e um **limite real** (*real bound*): o esforço exacto conhecido para quebrar o esquema com probabilidade $\varepsilon$ usando exactamente $t$ operações. A força bruta nunca deixa de funcionar, mais cedo ou mais tarde: o objectivo da criptografia não é tornar um esquema absolutamente inquebrável, mas garantir que a força bruta continua a ser o **melhor ataque conhecido**, e que o seu custo excede largamente qualquer benefício realista para um atacante.
+
+## Classes de Complexidade: Porque a Escala Importa {#sec-11-complexidade}
+
+O enquadramento $(t,\varepsilon)$ da secção anterior mede o esforço de um ataque para um **tamanho de chave fixo**. Mas ao longo deste livro, sempre que se recomendou um tamanho de chave concreto, 128 bits para o AES, 3072 para o RSA, 256 para a ECC, a justificação verdadeira dependeu de uma pergunta diferente: **como cresce** o custo de um ataque à medida que o tamanho da chave $n$ aumenta? Esta é a pergunta que as **classes de complexidade computacional** respondem, e os termos "subexponencial", "exponencial" e "polinomial", já usados nos capítulos 6 a 8 sem uma definição formal, descrevem precisamente essa taxa de crescimento [@Stallings2020; @Aumasson2017].
+
+- **Tempo polinomial**, $O(n^k)$ para alguma constante $k$: o custo cresce como uma potência de $n$. Duplicar $n$ multiplica o custo por um factor fixo (por exemplo, $2^k$), por maior que $k$ seja. Diz-se que um problema **tratável** admite um algoritmo polinomial.
+- **Tempo exponencial**, $O(c^n)$ para alguma constante $c>1$: o custo cresce de forma explosiva. Duplicar $n$ eleva o custo ao **quadrado**. A pesquisa exaustiva de uma chave de $n$ bits, $O(2^n)$, é o exemplo paradigmático, e continua exponencial mesmo depois de melhorada pelo algoritmo de Grover (Secção 3.5) ou pelo rho de Pollard (Secção 8.3): ambos reduzem a *constante* no expoente ($O(2^{n/2})$ em vez de $O(2^n)$), mas não mudam de classe.
+- **Tempo subexponencial**: estritamente entre as duas anteriores, cresce mais depressa do que qualquer polinómio, mas mais devagar do que qualquer exponencial. É a classe do *general number field sieve* (Secções 6.5 e 7.2), com uma forma característica $L_n[\alpha,c] = \exp\!\big((c+o(1))(\ln n)^{\alpha}(\ln\ln n)^{1-\alpha}\big)$, com $\alpha=\tfrac{1}{3}$ para a factorização e para o logaritmo discreto módulo um primo [@Stallings2020].
+
+A diferença de escala entre estas classes é o que explica, com rigor, porque é que o RSA e o Diffie-Hellman clássico precisam de chaves tão maiores do que uma cifra simétrica ou do que a ECC para o mesmo nível de segurança prático: contra um problema **subexponencial**, aumentar $n$ ainda ajuda, mas cada vez menos por bit acrescentado, obrigando a compensar com módulos muito maiores. Contra um problema puramente **exponencial**, como o ECDLP (Secção 8.3) ou uma pesquisa exaustiva sobre uma chave simétrica, cada bit acrescentado duplica sempre o esforço do atacante, por isso um crescimento modesto de $n$ já basta.
+
+Esta distinção é também o que torna a criptografia de chave pública possível, e vale a pena dizê-lo explicitamente: um sistema como o RSA (Secção 6.4) ou o ECDH (Secção 8.5) só funciona porque a operação legítima, cifrar, decifrar com a chave certa, assinar, verificar, é sempre **polinomial** (rápida, praticável em qualquer computador comum), enquanto o ataque correspondente, factorizar $n$, calcular um logaritmo discreto, resolver o ECDLP, sem conhecer o segredo, é **subexponencial ou exponencial** (impraticável para valores suficientemente grandes). Esta assimetria entre facilidade de uso e dificuldade de ataque, e não qualquer propriedade misteriosa de nenhum algoritmo em particular, é o que torna útil toda a criptografia assimétrica apresentada neste livro.
+
+## Eficiência dos Algoritmos Apresentados neste Livro {#sec-11-eficiencia}
+
+O enquadramento $(t,\varepsilon)$ mede *quanto esforço* é preciso para quebrar um esquema, mas diz pouco sobre o custo de o **usar** correctamente. Na prática, escolher um algoritmo é sempre um compromisso entre o nível de segurança pretendido e a eficiência computacional, o tamanho das chaves, das assinaturas e dos textos cifrados, e a velocidade das operações [@Aumasson2017; @Stallings2020]:
+
+| Algoritmo | Família | Segurança clássica | Efeito de um computador quântico | Tamanho típico | Eficiência |
+|---|---|---|---|---|---|
+| AES-256 | Simétrica (Secção 3.2) | 256 bits | Grover reduz para ~128 bits (Secção 3.5); ainda seguro | Chave: 256 bits | Referência de velocidade; acelerado por hardware dedicado (AES-NI) |
+| ChaCha20-Poly1305 | Simétrica (Secção 4.5) | 256 bits | Idêntico ao AES-256 | Chave: 256 bits | Tão rápido como o AES-256 sem aceleração de hardware |
+| RSA-3072 | Assimétrica clássica (factorização) | 128 bits | Quebrado por Shor em tempo polinomial | Chave pública e assinatura: 3072 bits | Cifragem rápida; decifragem e assinatura lentas (expoente privado grande) |
+| ECDSA P-256 / X25519 | Assimétrica clássica (curva elíptica) | 128 bits | Quebrado por Shor em tempo polinomial | Chave pública: 256 bits; assinatura: ~512 bits | Ordens de grandeza mais rápido e compacto que o RSA equivalente |
+| ML-KEM-768 | Pós-quântica (reticulados) | ~128 bits (Categoria NIST 3) | Sem ataque quântico eficiente conhecido | Chave pública: ~1184 bytes; texto cifrado: ~1088 bytes | Sem exponenciação modular; operações rápidas, mas chaves muito maiores que a ECC |
+| ML-DSA-65 | Pós-quântica (reticulados) | ~128 bits (Categoria NIST 3) | Sem ataque quântico eficiente conhecido | Chave pública: ~1952 bytes; assinatura: ~3293 bytes | Geração e verificação competitivas; assinatura cerca de 6 vezes maior que a do ECDSA |
+
+: Comparação aproximada de segurança e eficiência dos principais algoritmos apresentados neste livro [@Aumasson2017; @Stallings2020; @FIPS203; @FIPS204] {#tbl-11-eficiencia}
+
+O padrão que emerge desta tabela antecipa a secção seguinte: a criptografia de curva elíptica (Capítulo 8) é, de longe, a mais eficiente das famílias clássicas, com chaves e assinaturas pequenas e operações rápidas. A criptografia pós-quântica troca precisamente essa eficiência por resistência ao algoritmo de Shor: as suas chaves e assinaturas são tipicamente vinte a cinquenta vezes maiores do que as equivalentes em ECC, para o mesmo nível de segurança clássica, e é este o custo de engenharia real da transição que a secção seguinte descreve.
+
+## Criptografia Pós-Quântica: Ameaça e Migração {#sec-11-pqc}
+
+Todo o edifício da criptografia assimétrica apresentado neste livro, RSA, Diffie-Hellman, DSA, curva elíptica, assenta em dois problemas matemáticos: a factorização de inteiros e o logaritmo discreto (módulo um primo, ou sobre uma curva elíptica). Em 1997, Peter Shor mostrou que um computador quântico suficientemente grande resolve ambos os problemas em tempo **polinomial** [@Shor1997], o que tornaria trivial quebrar qualquer chave RSA, Diffie-Hellman ou ECC, independentemente do seu tamanho. O algoritmo de Grover, já referido a propósito da segurança do AES (Secção 3.5), tem um efeito mais limitado sobre a criptografia simétrica, reduzindo para metade o número efectivo de bits de segurança [@Grover1996], o que se resolve simplesmente duplicando o tamanho da chave (AES-256 em vez de AES-128).
+
+A ameaça de Shor não é, para já, prática: construir um computador quântico suficientemente estável e grande para a executar contra chaves do tamanho usado hoje continua a ser um desafio de engenharia em aberto. Mas a migração para alternativas resistentes a computadores quânticos já está em curso, motivada em parte pelo cenário "**colher agora, decifrar depois**" (*harvest now, decrypt later*): tráfego cifrado hoje, interceptado e armazenado, pode ser decifrado retroactivamente assim que um computador quântico capaz existir, o que é já hoje uma preocupação para dados que precisem de permanecer confidenciais durante décadas.
+
+O NIST concluiu, em 2024, a normalização das primeiras normas de **criptografia pós-quântica** (*post-quantum cryptography*, PQC): o **ML-KEM** (antigo Kyber, FIPS 203 [@FIPS203]) para troca de chaves, e o **ML-DSA** (antigo Dilithium, FIPS 204 [@FIPS204]) para assinaturas digitais, ambos assentes em problemas sobre reticulados (*lattices*), não em factorização nem em logaritmos discretos, e por isso não conhecidamente vulneráveis ao algoritmo de Shor. Protocolos como o TLS 1.3 (Secção 10.2) já suportam hoje esquemas **híbridos**, que combinam um mecanismo clássico (como o X25519 da Secção 8.6) com um mecanismo pós-quântico no mesmo *handshake*, de forma que a ligação só fica vulnerável se **ambos** os mecanismos forem quebrados, uma estratégia de transição prudente enquanto a confiança nos novos algoritmos amadurece.
+
+## Síntese do Capítulo {#sec-11-sintese}
+
+Este capítulo fechou o livro quantificando a própria noção de segurança:
+
+1. A criptografia mede segurança como um **esforço quantificável**, não como uma propriedade binária: transforma-a numa ciência mensurável
+2. A **segurança informacional** é uma impossibilidade absoluta (o único exemplo do livro é o One-Time Pad); a **segurança computacional**, de que dependem todos os outros esquemas apresentados, é uma impossibilidade apenas prática
+3. O enquadramento **$(t,\varepsilon)$** formaliza a segurança computacional: nenhum atacante com no máximo $t$ operações deve ter sucesso com probabilidade superior a $\varepsilon$
+4. As **classes de complexidade** (polinomial, subexponencial, exponencial) descrevem como o custo de um ataque escala com o tamanho da chave; é essa escala, não o esforço a um tamanho fixo, que explica porque é que problemas subexponenciais (factorização, logaritmo discreto módulo um primo) exigem chaves muito maiores do que problemas exponenciais (ECDLP, pesquisa exaustiva) para o mesmo nível de segurança
+5. Toda a criptografia de chave pública depende de uma assimetria de complexidade: a operação legítima é sempre polinomial, o ataque sem o segredo é subexponencial ou exponencial
+6. A eficiência de um algoritmo, tamanho de chave, velocidade, tamanho de assinatura, é sempre um compromisso com o nível de segurança pretendido; a curva elíptica é hoje a família clássica mais eficiente
+7. O algoritmo de Shor resolve a factorização e o logaritmo discreto em tempo **polinomial**, tornando trivial quebrar RSA, Diffie-Hellman e ECC num computador quântico suficientemente grande; o de Grover apenas reduz a segurança simétrica a metade
+8. O NIST já normalizou alternativas **pós-quânticas** (ML-KEM, ML-DSA) baseadas em reticulados, com chaves e assinaturas 20 a 50 vezes maiores do que as da ECC, e os primeiros esquemas híbridos já estão em produção
+
+## Para Pensar {#sec-11-reflexao}
+
+O cenário "colher agora, decifrar depois" significa que tráfego TLS interceptado hoje pode vir a ser decifrado no futuro, quando existir um computador quântico suficientemente grande, mesmo que a chave de sessão usada seja, hoje, computacionalmente inquebrável. Tendo em conta que a chave de sessão do TLS deriva de um ECDH executado durante o *handshake* (Secção 10.2), porque é que este cenário **não** ameaça da mesma forma dados cifrados com uma chave simétrica de longo prazo já anteriormente combinada por um canal físico seguro, como uma pen USB entregue em mão?
+
+## Referências {#sec-11-referencias .unnumbered}
+
+::: {#refs}
+:::

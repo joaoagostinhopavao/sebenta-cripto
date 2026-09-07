@@ -27,6 +27,7 @@ book:
     - capitulos/cap08.qmd
     - capitulos/cap09.qmd
     - capitulos/cap10.qmd
+    - capitulos/cap11.qmd
 
   sidebar:
     search: true

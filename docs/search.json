@@ -94,7 +94,7 @@
     "href": "capitulos/cap01.html#sec-01-referencias",
     "title": "1  Criptografia Clássica — Substituição, Polialfabética e Transposição",
     "section": "Referências",
-    "text": "Referências\n\n\nAlFardan, Nadhem J., Daniel J. Bernstein, Kenneth G. Paterson, Bertram\nPoettering, and Jacob C. N. Schuldt. 2013. “On the Security of\nRC4 in TLS.” In 22nd USENIX\nSecurity Symposium.\n\n\nAumasson, Jean-Philippe. 2017. Serious Cryptography: A Practical\nIntroduction to Modern Encryption. No Starch Press.\n\n\nBellare, Mihir, Ran Canetti, and Hugo Krawczyk. 1996. “Keying Hash\nFunctions for Message Authentication.” In Advances in\nCryptology (CRYPTO ’96).\n\n\nBernstein, Daniel J. 2005. “The Poly1305-AES\nMessage-Authentication Code.” In Fast Software Encryption\n(FSE 2005). Vol. 3557. Lecture Notes in Computer Science. Springer.\n\n\nBöck, Hanno, Aaron Zauner, Sean Devlin, Juraj Somorovsky, and Philipp\nJovanovic. 2016. “Nonce-Disrespecting Adversaries: Practical\nForgery Attacks on GCM in TLS.” In\nUSENIX Workshop on Offensive Technologies (WOOT).\n\n\nDu, Wenliang. 2022. Computer Security: A Hands-on Approach. 3rd\ned. CreateSpace / Self-published.\n\n\nDworkin, Morris. 2001. “Recommendation for Block Cipher Modes of\nOperation: Methods and Techniques.” SP 800-38A. NIST.\n\n\n———. 2007. “Recommendation for Block Cipher Modes of Operation:\nGalois/Counter Mode (GCM) and GMAC.” SP\n800-38D. NIST.\n\n\nFluhrer, Scott, Itsik Mantin, and Adi Shamir. 2001. “Weaknesses in\nthe Key Scheduling Algorithm of RC4.” In\nSelected Areas in Cryptography (SAC 2001).\n\n\nKerckhoffs, Auguste. 1883. “La Cryptographie Militaire.”\nJournal Des Sciences Militaires 9: 5–38.\n\n\nKrawczyk, Hugo, Mihir Bellare, and Ran Canetti. 1997.\n“HMAC: Keyed-Hashing for Message\nAuthentication.” RFC 2104. IETF.\n\n\nMartin, Keith. 2017. Everyday Cryptography. 2nd ed. Oxford\nUniversity Press.\n\n\nNational Institute of Standards and Technology. 2001. “Advanced\nEncryption Standard (AES).” FIPS PUB 197. NIST.\n\n\n———. 2015. “Secure Hash Standard (SHS).” FIPS PUB 180-4.\nNIST.\n\n\nNir, Yoav, and Adam Langley. 2018. “ChaCha20 and\nPoly1305 for IETF Protocols.” RFC 8439.\nIETF.\n\n\nPopov, Andrei. 2015. “Prohibiting RC4 Cipher\nSuites.” RFC 7465. IETF.\n\n\nPreneel, Bart, and Paul C. van Oorschot. 1995.\n“MDx-MAC and Building Fast MACs from\nHash Functions.” In Advances in Cryptology (CRYPTO ’95).\n\n\nShannon, Claude E. 1949. “Communication Theory of Secrecy\nSystems.” Bell System Technical Journal 28 (4): 656–715.\n\n\nStallings, William. 2020. Cryptography and Network Security:\nPrinciples and Practice. 8th ed. Pearson.\n\n\nStevens, Marc, Elie Bursztein, Pierre Karpman, Ange Albertini, and Yarik\nMarkov. 2017. “The First Collision for Full\nSHA-1.” In Advances in Cryptology (CRYPTO\n2017).\n\n\nWang, Xiaoyun, and Hongbo Yu. 2005. “How to Break MD5\nand Other Hash Functions.” In Advances in Cryptology\n(EUROCRYPT 2005).",
+    "text": "Referências\n\n\nAlFardan, Nadhem J., Daniel J. Bernstein, Kenneth G. Paterson, Bertram\nPoettering, and Jacob C. N. Schuldt. 2013. “On the Security of\nRC4 in TLS.” In 22nd USENIX\nSecurity Symposium.\n\n\nAumasson, Jean-Philippe. 2017. Serious Cryptography: A Practical\nIntroduction to Modern Encryption. No Starch Press.\n\n\nBarker, Elaine. 2020. “Recommendation for Key Management, Part 1:\nGeneral.” SP 800-57 Part 1 Rev. 5. NIST.\n\n\nBellare, Mihir, Ran Canetti, and Hugo Krawczyk. 1996. “Keying Hash\nFunctions for Message Authentication.” In Advances in\nCryptology (CRYPTO ’96).\n\n\nBernstein, Daniel J. 2005. “The Poly1305-AES\nMessage-Authentication Code.” In Fast Software Encryption\n(FSE 2005). Vol. 3557. Lecture Notes in Computer Science. Springer.\n\n\n———. 2006. “Curve25519: New Diffie-Hellman Speed\nRecords.” In Public Key Cryptography (PKC 2006). Vol.\n3958. Lecture Notes in Computer Science. Springer.\n\n\nBöck, Hanno, Aaron Zauner, Sean Devlin, Juraj Somorovsky, and Philipp\nJovanovic. 2016. “Nonce-Disrespecting Adversaries: Practical\nForgery Attacks on GCM in TLS.” In\nUSENIX Workshop on Offensive Technologies (WOOT).\n\n\nCallas, Jon, Lutz Donnerhacke, Hal Finney, David Shaw, and Rodney\nThayer. 2007. “OpenPGP Message Format.” RFC\n4880. IETF.\n\n\nCooper, David, Stefan Santesson, Stephen Farrell, Sharon Boeyen, Russell\nHousley, and Tim Polk. 2008. “Internet X.509 Public\nKey Infrastructure Certificate and Certificate Revocation List\n(CRL) Profile.” RFC 5280. IETF.\n\n\nDu, Wenliang. 2022. Computer Security: A Hands-on Approach. 3rd\ned. CreateSpace / Self-published.\n\n\nDworkin, Morris. 2001. “Recommendation for Block Cipher Modes of\nOperation: Methods and Techniques.” SP 800-38A. NIST.\n\n\n———. 2007. “Recommendation for Block Cipher Modes of Operation:\nGalois/Counter Mode (GCM) and GMAC.” SP\n800-38D. NIST.\n\n\nFluhrer, Scott, Itsik Mantin, and Adi Shamir. 2001. “Weaknesses in\nthe Key Scheduling Algorithm of RC4.” In\nSelected Areas in Cryptography (SAC 2001).\n\n\nGrover, Lov K. 1996. “A Fast Quantum Mechanical Algorithm for\nDatabase Search.” In 28th Annual ACM Symposium on Theory of\nComputing (STOC).\n\n\nKerckhoffs, Auguste. 1883. “La Cryptographie Militaire.”\nJournal Des Sciences Militaires 9: 5–38.\n\n\nKoblitz, Neal. 1987. “Elliptic Curve Cryptosystems.”\nMathematics of Computation 48 (177): 203–9.\n\n\nKrawczyk, Hugo, Mihir Bellare, and Ran Canetti. 1997.\n“HMAC: Keyed-Hashing for Message\nAuthentication.” RFC 2104. IETF.\n\n\nLangley, Adam, Mike Hamburg, and Sean Turner. 2016. “Elliptic\nCurves for Security.” RFC 7748. IETF.\n\n\nMartin, Keith. 2017. Everyday Cryptography. 2nd ed. Oxford\nUniversity Press.\n\n\nMiller, Victor S. 1985. “Use of Elliptic Curves in\nCryptography.” In Advances in Cryptology (CRYPTO ’85).\n\n\nNational Institute of Standards and Technology. 2001. “Advanced\nEncryption Standard (AES).” FIPS PUB 197. NIST.\n\n\n———. 2015. “Secure Hash Standard (SHS).” FIPS PUB 180-4.\nNIST.\n\n\n———. 2024a. “Module-Lattice-Based Digital Signature\nStandard.” FIPS PUB 204. NIST.\n\n\n———. 2024b. “Module-Lattice-Based Key-Encapsulation Mechanism\nStandard.” FIPS PUB 203. NIST.\n\n\nNir, Yoav, and Adam Langley. 2018. “ChaCha20 and\nPoly1305 for IETF Protocols.” RFC 8439.\nIETF.\n\n\nPopov, Andrei. 2015. “Prohibiting RC4 Cipher\nSuites.” RFC 7465. IETF.\n\n\nPreneel, Bart, and Paul C. van Oorschot. 1995.\n“MDx-MAC and Building Fast MACs from\nHash Functions.” In Advances in Cryptology (CRYPTO ’95).\n\n\nRescorla, Eric. 2018. “The Transport Layer Security\n(TLS) Protocol Version 1.3.” RFC 8446. IETF.\n\n\nShannon, Claude E. 1949. “Communication Theory of Secrecy\nSystems.” Bell System Technical Journal 28 (4): 656–715.\n\n\nShor, Peter W. 1997. “Polynomial-Time Algorithms for Prime\nFactorization and Discrete Logarithms on a Quantum Computer.”\nSIAM Journal on Computing 26 (5): 1484–1509.\n\n\nStallings, William. 2020. Cryptography and Network Security:\nPrinciples and Practice. 8th ed. Pearson.\n\n\nStevens, Marc, Elie Bursztein, Pierre Karpman, Ange Albertini, and Yarik\nMarkov. 2017. “The First Collision for Full\nSHA-1.” In Advances in Cryptology (CRYPTO\n2017).\n\n\nWang, Xiaoyun, and Hongbo Yu. 2005. “How to Break MD5\nand Other Hash Functions.” In Advances in Cryptology\n(EUROCRYPT 2005).",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Criptografia Clássica — Substituição, Polialfabética e Transposição</span>"
     ]
@@ -250,6 +250,16 @@
     ]
   },
   {
+    "objectID": "capitulos/cap03.html#sec-03-padding",
+    "href": "capitulos/cap03.html#sec-03-padding",
+    "title": "3  AES — Estágios e Modos de Operação",
+    "section": "3.7 Padding",
+    "text": "3.7 Padding\nUma cifra de bloco, como o AES, cifra sempre um bloco de tamanho fixo, 128 bits (16 bytes). Nem todas as mensagens têm um comprimento múltiplo exacto desse tamanho: quando o último bloco de uma mensagem não está completo, o algoritmo de cifragem não tem bytes suficientes para o processar.\nO padding resolve isto acrescentando bytes extra ao fim da mensagem, antes da cifragem, até completar esse último bloco. O esquema mais comum é o PKCS#7: se faltam \\(n\\) bytes para completar o bloco, preenchem-se esses \\(n\\) bytes com o valor \\(n\\) (em hexadecimal, 0xN). Por exemplo, se faltam 10 bytes para completar o bloco, acrescentam-se dez bytes, todos com o valor 0xA. Do lado da decifragem, basta ler o valor do último byte recebido para saber exactamente quantos bytes de padding remover, sem qualquer ambiguidade.\nNem todos os modos apresentados neste capítulo precisam de padding: só os que cifram o texto claro directamente, bloco a bloco, como o ECB e o CBC (Tabela 3.1). O CTR e o GCM, por transformarem a cifra de bloco numa espécie de cifra de fluxo, combinando-a com o texto claro por XOR em vez de a aplicar directamente, dispensam-no inteiramente: podem cifrar mensagens de qualquer comprimento, byte a byte, sem nunca precisar de completar um bloco final.\nVale a pena assinalar desde já uma consequência de segurança importante: uma validação de padding mal implementada, que revele a um atacante, através de uma mensagem de erro ou de uma diferença de tempo de resposta, se o padding recebido era ou não válido, pode ser explorada para decifrar mensagens inteiras sem nunca conhecer a chave, byte a byte, através do chamado ataque de oráculo de padding (padding oracle attack). A lição de fundo é uma que se repete ao longo deste livro: um mecanismo matematicamente correcto pode ainda assim falhar por causa de como é implementado.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>AES — Estágios e Modos de Operação</span>"
+    ]
+  },
+  {
     "objectID": "capitulos/cap03.html#sec-03-sintese",
     "href": "capitulos/cap03.html#sec-03-sintese",
     "title": "3  AES — Estágios e Modos de Operação",
@@ -340,16 +350,6 @@
     ]
   },
   {
-    "objectID": "capitulos/cap04.html#sec-04-padding",
-    "href": "capitulos/cap04.html#sec-04-padding",
-    "title": "4  Cifras de Fluxo — RC4, Salsa20, ChaCha20 e Padding",
-    "section": "4.6 Padding",
-    "text": "4.6 Padding\nUma cifra de fluxo, como se viu, dispensa qualquer noção de bloco: processa a mensagem byte a byte, seja qual for o seu comprimento. As cifras de bloco em modos como o CBC ou o ECB não têm essa liberdade: exigem que a mensagem seja um múltiplo exacto do tamanho do bloco antes de a cifrar. Quando o último bloco de uma mensagem não está completo, o algoritmo de cifragem não tem bytes suficientes para o processar.\nO padding resolve isto acrescentando bytes extra ao fim da mensagem, antes da cifragem, até completar o bloco. O esquema mais comum é o PKCS#7: se faltam \\(n\\) bytes para completar o último bloco, preenchem-se esses \\(n\\) bytes com o valor \\(n\\) (em hexadecimal, 0xN). Por exemplo, se faltam 10 bytes para completar o bloco, acrescentam-se dez bytes, todos com o valor 0xA. Do lado da decifragem, basta ler o valor do último byte recebido para saber exactamente quantos bytes de padding remover, sem qualquer ambiguidade.\nVale a pena recordar, como já ficou registado na tabela de modos de operação do capítulo anterior, que o CBC é precisamente um dos modos que depende deste mecanismo — e que uma validação de padding mal implementada, que revele a um atacante, através de uma mensagem de erro ou de uma diferença de tempo de resposta, se o padding recebido era ou não válido, pode ser explorada para decifrar mensagens inteiras sem nunca conhecer a chave, byte a byte, através do chamado ataque de oráculo de padding (padding oracle attack). A lição de fundo é a mesma que já apareceu antes neste livro: um mecanismo matematicamente correcto pode ainda assim falhar por causa de como é implementado.",
-    "crumbs": [
-      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Cifras de Fluxo — RC4, Salsa20, ChaCha20 e Padding</span>"
-    ]
-  },
-  {
     "objectID": "capitulos/cap04.html#sec-04-sintese",
     "href": "capitulos/cap04.html#sec-04-sintese",
     "title": "4  Cifras de Fluxo — RC4, Salsa20, ChaCha20 e Padding",
@@ -387,66 +387,6 @@
     "text": "Introdução\nOs capítulos anteriores trataram sempre de confidencialidade: como transformar uma mensagem de forma que só quem possui a chave certa a consiga ler. Mas confidencialidade não é a única propriedade que uma comunicação segura precisa de garantir. Uma mensagem pode viajar perfeitamente cifrada e, ainda assim, ser alterada a meio do caminho, ou não vir de quem diz vir. Este capítulo muda de problema: trata da integridade (a garantia de que os dados não foram alterados) e da autenticação (a garantia de que os dados vêm de quem se espera), e da ferramenta que serve de base a ambas, a função de hash.",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hashing — Propriedades, Ataques, SHA, MAC e HMAC</span>"
-    ]
-  },
-  {
-    "objectID": "capitulos/cap06.html",
-    "href": "capitulos/cap06.html",
-    "title": "6  Criptografia Assimétrica — Fundamentos e RSA",
-    "section": "",
-    "text": "Conteúdo por desenvolver.",
-    "crumbs": [
-      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Criptografia Assimétrica — Fundamentos e RSA</span>"
-    ]
-  },
-  {
-    "objectID": "capitulos/cap07.html",
-    "href": "capitulos/cap07.html",
-    "title": "7  Diffie-Hellman e Assinaturas Digitais",
-    "section": "",
-    "text": "Conteúdo por desenvolver.",
-    "crumbs": [
-      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Diffie-Hellman e Assinaturas Digitais</span>"
-    ]
-  },
-  {
-    "objectID": "capitulos/cap08.html",
-    "href": "capitulos/cap08.html",
-    "title": "8  Criptografia de Curva Elíptica (ECC)",
-    "section": "",
-    "text": "Conteúdo por desenvolver.",
-    "crumbs": [
-      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Criptografia de Curva Elíptica (ECC)</span>"
-    ]
-  },
-  {
-    "objectID": "capitulos/cap09.html",
-    "href": "capitulos/cap09.html",
-    "title": "9  Infraestrutura de Chave Pública (PKI)",
-    "section": "",
-    "text": "Conteúdo por desenvolver.",
-    "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Infraestrutura de Chave Pública (PKI)</span>"
-    ]
-  },
-  {
-    "objectID": "capitulos/cap10.html",
-    "href": "capitulos/cap10.html",
-    "title": "10  TLS e PGP — Esquemas Criptográficos Aplicados",
-    "section": "",
-    "text": "Conteúdo por desenvolver.",
-    "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS e PGP — Esquemas Criptográficos Aplicados</span>"
-    ]
-  },
-  {
-    "objectID": "capitulos/cap03.html#sec-03-padding",
-    "href": "capitulos/cap03.html#sec-03-padding",
-    "title": "3  AES — Estágios e Modos de Operação",
-    "section": "3.7 Padding",
-    "text": "3.7 Padding\nUma cifra de bloco, como o AES, cifra sempre um bloco de tamanho fixo, 128 bits (16 bytes). Nem todas as mensagens têm um comprimento múltiplo exacto desse tamanho: quando o último bloco de uma mensagem não está completo, o algoritmo de cifragem não tem bytes suficientes para o processar.\nO padding resolve isto acrescentando bytes extra ao fim da mensagem, antes da cifragem, até completar esse último bloco. O esquema mais comum é o PKCS#7: se faltam \\(n\\) bytes para completar o bloco, preenchem-se esses \\(n\\) bytes com o valor \\(n\\) (em hexadecimal, 0xN). Por exemplo, se faltam 10 bytes para completar o bloco, acrescentam-se dez bytes, todos com o valor 0xA. Do lado da decifragem, basta ler o valor do último byte recebido para saber exactamente quantos bytes de padding remover, sem qualquer ambiguidade.\nNem todos os modos apresentados neste capítulo precisam de padding: só os que cifram o texto claro directamente, bloco a bloco, como o ECB e o CBC (Tabela 3.1). O CTR e o GCM, por transformarem a cifra de bloco numa espécie de cifra de fluxo, combinando-a com o texto claro por XOR em vez de a aplicar directamente, dispensam-no inteiramente: podem cifrar mensagens de qualquer comprimento, byte a byte, sem nunca precisar de completar um bloco final.\nVale a pena assinalar desde já uma consequência de segurança importante: uma validação de padding mal implementada, que revele a um atacante, através de uma mensagem de erro ou de uma diferença de tempo de resposta, se o padding recebido era ou não válido, pode ser explorada para decifrar mensagens inteiras sem nunca conhecer a chave, byte a byte, através do chamado ataque de oráculo de padding (padding oracle attack). A lição de fundo é uma que se repete ao longo deste livro: um mecanismo matematicamente correcto pode ainda assim falhar por causa de como é implementado.",
-    "crumbs": [
-      "<span class='chapter-number'>3</span>  <span class='chapter-title'>AES — Estágios e Modos de Operação</span>"
     ]
   },
   {
@@ -537,6 +477,596 @@
     "text": "Referências\n\n\nBellare, Mihir, Ran Canetti, e Hugo Krawczyk. 1996. «Keying Hash Functions for Message Authentication». Em Advances in Cryptology (CRYPTO ’96).\n\n\nKrawczyk, Hugo, Mihir Bellare, e Ran Canetti. 1997. «HMAC: Keyed-Hashing for Message Authentication». RFC 2104. IETF.\n\n\nNational Institute of Standards and Technology. 2015. «Secure Hash Standard (SHS)». FIPS PUB 180-4. NIST.\n\n\nPreneel, Bart, e Paul C. van Oorschot. 1995. «MDx-MAC and Building Fast MACs from Hash Functions». Em Advances in Cryptology (CRYPTO ’95).\n\n\nStallings, William. 2020. Cryptography and Network Security: Principles and Practice. 8.ª ed. Pearson.\n\n\nStevens, Marc, Elie Bursztein, Pierre Karpman, Ange Albertini, e Yarik Markov. 2017. «The First Collision for Full SHA-1». Em Advances in Cryptology (CRYPTO 2017).\n\n\nWang, Xiaoyun, e Hongbo Yu. 2005. «How to Break MD5 and Other Hash Functions». Em Advances in Cryptology (EUROCRYPT 2005).",
     "crumbs": [
       "<span class='chapter-number'>5</span>  <span class='chapter-title'>Hashing — Propriedades, Ataques, SHA, MAC e HMAC</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap06.html",
+    "href": "capitulos/cap06.html",
+    "title": "6  Criptografia Assimétrica e RSA",
+    "section": "",
+    "text": "Introdução\nTodos os capítulos anteriores, das cifras clássicas ao HMAC, partilham uma limitação estrutural: exigem uma chave secreta partilhada previamente entre emissor e receptor. Mas como é que dois desconhecidos, que nunca se encontraram e não têm nenhum canal seguro entre si, combinam essa chave em primeiro lugar? Este é o problema da distribuição de chaves, e durante décadas não teve resposta satisfatória. A solução, proposta por Diffie e Hellman em 1976 e concretizada por Rivest, Shamir e Adleman em 1977 com o algoritmo que dá nome a este capítulo, é radical: em vez de uma chave partilhada, cada participante passa a ter duas chaves matematicamente relacionadas, uma que pode divulgar livremente e outra que nunca revela a ninguém.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Criptografia Assimétrica e RSA</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap06.html#sec-06-conceito",
+    "href": "capitulos/cap06.html#sec-06-conceito",
+    "title": "6  Criptografia Assimétrica e RSA",
+    "section": "6.1 Criptografia Assimétrica: o Conceito",
+    "text": "6.1 Criptografia Assimétrica: o Conceito\nUm sistema de chave pública assenta em seis componentes (Stallings 2020): um algoritmo de cifragem, um algoritmo de decifragem, uma mensagem em texto claro, uma mensagem cifrada, e as duas chaves de cada participante, a chave pública (\\(PU\\)), livremente distribuída, e a chave privada (\\(PR\\)), mantida secreta pelo seu dono. A propriedade que torna isto útil é puramente matemática: o que quer que se cifre com uma das chaves de um par, só se decifra com a outra, nunca com a mesma.\nEsta simples inversão de “que chave usar para quê” dá origem a dois esquemas distintos, com propósitos opostos:\n\n\n\n\n\n\nFigura 6.1: Nos dois esquemas, uma mensagem \\(X\\) é cifrada numa das pontas e decifrada na outra, mas o par de chaves usado, e o que cada esquema garante, são opostos. Na confidencialidade, cifra-se com a chave pública do destinatário; na autenticação, cifra-se com a chave privada do próprio emissor.\n\n\n\nConfidencialidade. Para enviar uma mensagem confidencial a Bob, Alice cifra-a com a chave pública de Bob (\\(PU_b\\)), que qualquer pessoa conhece:\n\\[Y = E[PU_b, X] \\qquad X = D[PR_b, Y]\\]\nSó Bob consegue decifrar \\(Y\\), porque só ele tem \\(PR_b\\). Note-se que isto resolve exactamente o problema identificado na introdução: Alice nunca precisou de combinar nenhum segredo com Bob antecipadamente, só precisou de conhecer uma chave pública dele.\nAutenticação. Para provar que uma mensagem vem mesmo de Alice, ela cifra-a com a sua própria chave privada (\\(PR_a\\)):\n\\[Y = E[PR_a, X] \\qquad X = D[PU_a, Y]\\]\nQualquer pessoa pode decifrar \\(Y\\) com a chave pública de Alice, \\(PU_a\\), que também é livremente conhecida, mas é precisamente por isso que este esquema não dá confidencialidade nenhuma. O que dá é a garantia de que só Alice podia ter produzido \\(Y\\), já que só ela possui \\(PR_a\\): é a base conceptual da assinatura digital, retomada num capítulo posterior.\nNada impede combinar os dois esquemas para obter ambas as propriedades ao mesmo tempo: Alice primeiro cifra com a sua própria chave privada (assina), e depois cifra o resultado com a chave pública de Bob (garante confidencialidade):\n\\[Z = E[PU_b,\\, E[PR_a, X]]\\]\nBob inverte as duas operações pela ordem inversa, \\(X = D[PU_a,\\, D[PR_b, Z]]\\), obtendo simultaneamente a certeza de que a mensagem só podia ter vindo de Alice, e a garantia de que mais ninguém a conseguiu ler pelo caminho.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Criptografia Assimétrica e RSA</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap06.html#sec-06-categorias",
+    "href": "capitulos/cap06.html#sec-06-categorias",
+    "title": "6  Criptografia Assimétrica e RSA",
+    "section": "6.2 Categorias e Aplicações",
+    "text": "6.2 Categorias e Aplicações\nNem todos os algoritmos de chave pública servem os três usos possíveis (encriptação, assinatura digital, troca de chaves) igualmente bem:\n\n\n\nTabela 6.1: Aplicações dos principais algoritmos de chave pública (Stallings 2020)\n\n\n\n\n\n\n\n\n\n\n\nAlgoritmo\nEncriptação/Decriptação\nAssinatura Digital\nTroca de Chaves\n\n\n\n\nRSA\nSim\nSim\nSim\n\n\nCurva Elíptica\nSim\nSim\nSim\n\n\nDiffie-Hellman\nNão\nNão\nSim\n\n\nDSS\nNão\nSim\nNão\n\n\n\n\n\n\nO RSA, apresentado neste capítulo, é o único, ao lado da criptografia de curva elíptica, capaz de servir os três papéis. O Diffie-Hellman, capítulo seguinte, serve apenas para combinar uma chave partilhada; o DSS existe apenas para assinar.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Criptografia Assimétrica e RSA</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap06.html#sec-06-rsa-geracao",
+    "href": "capitulos/cap06.html#sec-06-rsa-geracao",
+    "title": "6  Criptografia Assimétrica e RSA",
+    "section": "6.3 RSA: Geração de Chaves",
+    "text": "6.3 RSA: Geração de Chaves\nO RSA (Rivest, Shamir e Adleman, 1977) continua a ser o algoritmo de chave pública mais usado na prática, apesar de assentar num único problema matemático difícil: a factorização de números inteiros muito grandes. A geração do par de chaves segue cinco passos:\n\n\n\n\n\n\nFigura 6.2: Geração de chaves, cifragem e decifragem no RSA. A segurança de todo o esquema depende de \\(d\\) ser impossível de calcular sem conhecer \\(p\\) e \\(q\\): quem só conhece \\(n\\) tem de o factorizar primeiro, um problema sem solução eficiente conhecida para números suficientemente grandes.\n\n\n\n\nEscolhem-se dois números primos grandes e aleatórios, \\(p\\) e \\(q\\).\nCalcula-se \\(n = p \\cdot q\\) (o módulo, que será público) e \\(\\phi(n) = (p-1)(q-1)\\) (a função totiente de Euler, que tem de se manter secreta).\nEscolhe-se \\(e\\) tal que \\(1 &lt; e &lt; \\phi(n)\\) e \\(\\text{mdc}(e, \\phi(n)) = 1\\) (isto garante que \\(e\\) é invertível módulo \\(\\phi(n)\\)).\nCalcula-se \\(d\\), o inverso modular de \\(e\\): \\(d \\cdot e \\equiv 1 \\pmod{\\phi(n)}\\).\nA chave pública é o par \\((e, n)\\); a chave privada é o par \\((d, n)\\). O módulo \\(n\\) é público, mas \\(p\\), \\(q\\), \\(\\phi(n)\\) e \\(d\\) nunca são revelados.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Criptografia Assimétrica e RSA</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap06.html#sec-06-rsa-cifra",
+    "href": "capitulos/cap06.html#sec-06-rsa-cifra",
+    "title": "6  Criptografia Assimétrica e RSA",
+    "section": "6.4 RSA: Cifragem e Decifragem",
+    "text": "6.4 RSA: Cifragem e Decifragem\nCom as chaves geradas, cifrar e decifrar um bloco \\(M\\) (um número, \\(0 \\le M &lt; n\\)) resume-se a uma exponenciação modular:\n\\[C = M^e \\bmod n \\qquad\\qquad M = C^d \\bmod n = (M^e)^d \\bmod n = M^{e \\cdot d} \\bmod n\\]\nIsto funciona porque \\(e\\) e \\(d\\) foram escolhidos de forma a serem inversos multiplicativos módulo \\(\\phi(n)\\) (\\(e \\cdot d \\equiv 1 \\bmod \\phi(n)\\)), tal como, na aritmética normal, \\(3\\) e \\(\\frac{1}{3}\\) são inversos porque \\(3 \\cdot \\frac{1}{3} = 1\\): elevar a \\(e\\) e depois a \\(d\\) (ou vice-versa) devolve sempre o valor original.\nUm exemplo completo, com números pequenos apenas para ilustrar o mecanismo:\n\nEscolhem-se \\(p=17\\) e \\(q=11\\).\n\\(n = 17 \\times 11 = 187\\); \\(\\phi(n) = 16 \\times 10 = 160\\).\nEscolhe-se \\(e=7\\) (relativamente primo com 160).\nCalcula-se \\(d=23\\), porque \\((23 \\times 7) \\bmod 160 = 161 \\bmod 160 = 1\\).\nChave pública \\(= \\{7, 187\\}\\); chave privada \\(= \\{23, 187\\}\\).\n\n\n\n\n\n\n\nFigura 6.3: O mesmo exemplo em acção: a mensagem \\(M=88\\) cifra-se com a chave pública \\((7,187)\\), obtendo \\(C=11\\); decifra-se com a chave privada \\((23,187)\\), recuperando \\(M=88\\).\n\n\n\nPara enviar a mensagem \\(M=88\\): \\(C = 88^7 \\bmod 187 = 11\\). Para a recuperar: \\(M = 11^{23} \\bmod 187 = 88\\).",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Criptografia Assimétrica e RSA</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap06.html#sec-06-rsa-seguranca",
+    "href": "capitulos/cap06.html#sec-06-rsa-seguranca",
+    "title": "6  Criptografia Assimétrica e RSA",
+    "section": "6.5 Segurança: o que Torna o RSA Difícil de Quebrar — e Fácil de Usar Mal",
+    "text": "6.5 Segurança: o que Torna o RSA Difícil de Quebrar — e Fácil de Usar Mal\nO exemplo da secção anterior usa números pequenos só para tornar as contas possíveis à mão, mas isso tem um preço: com \\(n=187\\) (8 bits), factorizar \\(n\\) de volta em \\(p=17\\) e \\(q=11\\) é trivial, o que anula por completo a segurança do esquema. Na prática, recomenda-se \\(n\\) com pelo menos 2048 a 4096 bits, tornando a factorização computacionalmente inviável com os métodos e o poder de computação actualmente conhecidos, o problema da factorização de inteiros, do qual depende toda a segurança do RSA.\nVale a pena perceber porque é que este tamanho de chave é tão maior do que o de uma cifra simétrica (128 ou 256 bits, capítulos 3 e 4) para um nível de segurança comparável. O melhor algoritmo conhecido para factorizar inteiros grandes, o general number field sieve (GNFS), tem complexidade subexponencial: cresce mais lentamente do que uma pesquisa exaustiva (que custaria \\(2^n\\) operações para um valor de \\(n\\) bits), mas mais depressa do que um algoritmo polinomial, o que o torna significativamente mais rápido do que a força bruta pura, ainda que continue impraticável para módulos de milhares de bits (Stallings 2020). É precisamente esta existência de um atalho, mais rápido do que a força bruta mas não polinomial, que obriga o RSA a compensar com chaves muito maiores do que as de uma cifra simétrica: um módulo de 3072 bits é necessário para atingir o mesmo nível de segurança prático de uma chave simétrica de apenas 128 bits (Tabela 8.1, Capítulo 8).\nMesmo com um \\(n\\) suficientemente grande, usar o RSA exactamente como descrito acima, o chamado RSA “textbook”, não é seguro: é determinístico (a mesma mensagem produz sempre o mesmo texto cifrado, permitindo a um atacante reconhecer mensagens repetidas) e não oferece segurança semântica. Por isso, nenhuma biblioteca criptográfica séria implementa o RSA cru:\n\nPara encriptação, usa-se um esquema de padding como o RSA-OAEP (Optimal Asymmetric Encryption Padding), que introduz aleatoriedade antes de cifrar, garantindo que a mesma mensagem nunca produz o mesmo texto cifrado duas vezes.\nPara assinaturas, usa-se o RSA-PSS (Probabilistic Signature Scheme), que garante segurança contra falsificação de assinaturas, uma propriedade que o esquema simples da Secção 6.2 não oferece por si só.\n\nDo lado do desempenho, é comum substituir \\(\\phi(n)\\) por \\(\\lambda(n) = \\text{mmc}(p-1, q-1)\\) (a condição \\(e \\cdot d \\equiv 1 \\bmod \\lambda(n)\\) também é suficiente, e produz um \\(d\\) tipicamente mais pequeno), e usar o Teorema Chinês do Resto para acelerar a decifragem, resolvendo \\(M = C^d \\bmod n\\) separadamente módulo \\(p\\) e módulo \\(q\\), e combinando os resultados, uma operação várias vezes mais rápida do que a exponenciação directa módulo \\(n\\).",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Criptografia Assimétrica e RSA</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap06.html#sec-06-sintese",
+    "href": "capitulos/cap06.html#sec-06-sintese",
+    "title": "6  Criptografia Assimétrica e RSA",
+    "section": "6.6 Síntese do Capítulo",
+    "text": "6.6 Síntese do Capítulo\nEste capítulo introduziu a segunda grande família da criptografia moderna:\n\nA criptografia assimétrica resolve o problema da distribuição de chaves: cada participante tem uma chave pública, livremente distribuída, e uma chave privada, nunca partilhada\nCifrar com a chave pública do destinatário garante confidencialidade; cifrar com a chave privada do próprio garante autenticação; combinar as duas garante ambas\nO RSA, a curva elíptica, o Diffie-Hellman e o DSS não servem todos os mesmos propósitos: só o RSA e a curva elíptica servem encriptação, assinatura e troca de chaves em simultâneo\nO RSA gera as suas chaves a partir de dois primos grandes \\(p\\) e \\(q\\): \\(n=pq\\), \\(\\phi(n)=(p-1)(q-1)\\), \\(e\\) coprimo com \\(\\phi(n)\\), e \\(d\\) o seu inverso modular; cifra e decifra por exponenciação modular, \\(C=M^e \\bmod n\\) e \\(M=C^d \\bmod n\\)\nA segurança do RSA depende inteiramente da dificuldade de factorizar \\(n\\) em \\(p\\) e \\(q\\); com \\(n\\) pequeno (como no exemplo didáctico \\(n=187\\)), a factorização é trivial, por isso a norma actual exige \\(n\\) de pelo menos 2048 a 4096 bits\nO RSA “textbook” não é seguro por si só: usos reais exigem RSA-OAEP para encriptação e RSA-PSS para assinaturas",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Criptografia Assimétrica e RSA</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap06.html#sec-06-reflexao",
+    "href": "capitulos/cap06.html#sec-06-reflexao",
+    "title": "6  Criptografia Assimétrica e RSA",
+    "section": "6.7 Para Pensar",
+    "text": "6.7 Para Pensar\nO exemplo resolvido da Secção 6.4 usa \\(n=187\\) (8 bits), trivialmente factorizável, o que anula a sua segurança; a norma actual recomenda \\(n\\) de 2048 a 4096 bits. Em implementações reais de RSA, o expoente público \\(e\\) é normalmente um número pequeno e fixo (o valor \\(e=65537\\) é o mais comum), o mesmo em milhões de chaves diferentes por esse mundo fora, sem que isso comprometa a segurança de nenhuma delas. Tendo em conta de onde vem toda a segurança do RSA (Secção 6.5), porque é que aumentar o tamanho de \\(e\\), mantendo \\(n\\) pequeno, não tornaria o exemplo da Secção 6.4 mais seguro?",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Criptografia Assimétrica e RSA</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap06.html#sec-06-referencias",
+    "href": "capitulos/cap06.html#sec-06-referencias",
+    "title": "6  Criptografia Assimétrica e RSA",
+    "section": "Referências",
+    "text": "Referências\n\n\nStallings, William. 2020. Cryptography and Network Security: Principles and Practice. 8.ª ed. Pearson.",
+    "crumbs": [
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Criptografia Assimétrica e RSA</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap07.html",
+    "href": "capitulos/cap07.html",
+    "title": "7  Diffie-Hellman e Assinaturas Digitais",
+    "section": "",
+    "text": "Introdução\nO capítulo anterior resolveu a confidencialidade e a autenticação assumindo que cada participante já tem um par de chaves RSA. Este capítulo trata de dois problemas relacionados, mas distintos. Primeiro, como combinar uma chave simétrica partilhada entre duas pessoas que nunca se encontraram, sem que ela seja exposta a quem intercepte a comunicação, o problema que o Diffie-Hellman resolve. Segundo, como provar, de forma verificável por qualquer pessoa, que um documento foi mesmo produzido por quem diz tê-lo produzido, sem possibilidade de negação posterior, o problema das assinaturas digitais.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Diffie-Hellman e Assinaturas Digitais</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap07.html#sec-07-dh-conceito",
+    "href": "capitulos/cap07.html#sec-07-dh-conceito",
+    "title": "7  Diffie-Hellman e Assinaturas Digitais",
+    "section": "7.1 Diffie-Hellman: Combinar uma Chave em Público",
+    "text": "7.1 Diffie-Hellman: Combinar uma Chave em Público\nO Diffie-Hellman é um método para combinar em segurança uma chave partilhada, destinada a um sistema de cifra simétrica, mesmo através de um canal completamente aberto e observado por terceiros. Este método é um sistema de chave pública, embora não seja usado para a função de encriptação ou de assinatura (Du 2022).",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Diffie-Hellman e Assinaturas Digitais</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap07.html#sec-07-dh-matematica",
+    "href": "capitulos/cap07.html#sec-07-dh-matematica",
+    "title": "7  Diffie-Hellman e Assinaturas Digitais",
+    "section": "7.2 O Problema Matemático: Logaritmos Discretos",
+    "text": "7.2 O Problema Matemático: Logaritmos Discretos\nA segurança do Diffie-Hellman assenta num problema matemático concreto. Suponha-se um número da forma \\(A = g^x\\). Encontrar \\(x\\) a partir de \\(A\\) e \\(g\\) é, em princípio, trivial: basta calcular \\(\\log_g A = \\log_g g^x = x\\). Mas se, em vez disso, se tiver \\(g^x \\bmod n\\), com \\(g\\) e \\(n\\) suficientemente grandes, esse cálculo deixa de ser viável, mesmo para um computador poderoso. A este problema chama-se o problema do logaritmo discreto, e é nele que assenta toda a segurança do método.\nTal como a factorização de inteiros de que depende o RSA (Secção 6.5), o logaritmo discreto módulo um primo também admite um ataque mais rápido do que a força bruta pura: uma variante do general number field sieve resolve-o em tempo subexponencial (Stallings 2020). É por esta razão, e não apenas por “ser grande”, que o módulo \\(p\\) do Diffie-Hellman clássico precisa de ter, tal como o \\(n\\) do RSA, pelo menos 2048 a 3072 bits para um nível de segurança prático razoável.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Diffie-Hellman e Assinaturas Digitais</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap07.html#sec-07-dh-algoritmo",
+    "href": "capitulos/cap07.html#sec-07-dh-algoritmo",
+    "title": "7  Diffie-Hellman e Assinaturas Digitais",
+    "section": "7.3 O Algoritmo",
+    "text": "7.3 O Algoritmo\nAlice e Bob combinam publicamente dois valores, \\(g\\) e \\(p\\) (um número primo grande), que não precisam de ser secretos. Cada um escolhe depois um número secreto, que nunca revela: Alice escolhe \\(x\\), Bob escolhe \\(y\\).\n\n\n\n\n\n\nFigura 7.1: O algoritmo de Diffie-Hellman: \\(g\\) e \\(p\\) são públicos; \\(x\\) e \\(y\\) nunca saem do computador de quem os escolheu; só \\(A\\) e \\(B\\) atravessam o canal aberto. Ambos os lados chegam ao mesmo segredo \\(K=g^{xy} \\bmod p\\), sem que ele alguma vez tenha sido transmitido.\n\n\n\nCada um calcula então um valor a partir do seu segredo, \\(A = g^x \\bmod p\\) (Alice) e \\(B = g^y \\bmod p\\) (Bob), e envia-o ao outro, em claro, pelo canal aberto: estes são as chaves públicas de Alice e de Bob. Ao receberem o valor um do outro, cada um eleva-o ao seu próprio segredo:\n\\[K = B^x \\bmod p = (g^y)^x \\bmod p = g^{xy} \\bmod p \\qquad \\text{(Alice)}\\] \\[K = A^y \\bmod p = (g^x)^y \\bmod p = g^{xy} \\bmod p \\qquad \\text{(Bob)}\\]\nAmbos chegam exactamente ao mesmo valor, \\(K = g^{xy} \\bmod p\\), a chave secreta comum, sem que \\(x\\), \\(y\\), ou o próprio \\(K\\) tenham alguma vez atravessado o canal. Um atacante que intercepte \\(g\\), \\(p\\), \\(A\\) e \\(B\\), tudo o que é trocado em claro, teria de resolver o problema do logaritmo discreto para recuperar \\(x\\) ou \\(y\\) a partir daí, exactamente o problema que a Secção 7.2 já identificou como inviável.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Diffie-Hellman e Assinaturas Digitais</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap07.html#sec-07-assinaturas-conceito",
+    "href": "capitulos/cap07.html#sec-07-assinaturas-conceito",
+    "title": "7  Diffie-Hellman e Assinaturas Digitais",
+    "section": "7.4 Assinaturas Digitais: o Conceito",
+    "text": "7.4 Assinaturas Digitais: o Conceito\nO capítulo anterior já introduziu a ideia essencial de uma assinatura digital: cifrar com a chave privada do emissor, de forma que qualquer pessoa a consiga verificar com a sua chave pública, mas só o dono da chave privada a consiga produzir. A forma mais directa de aplicar isto a uma mensagem é cifrar o seu hash com a chave privada, em vez da mensagem inteira (o que seria muito mais lento): usar, por exemplo, o RSA para cifrar \\(H(m)\\).\nExiste também um algoritmo desenhado especificamente para este único propósito, sem servir para encriptação, o DSA (Digital Signature Algorithm). Tal como o Diffie-Hellman, usa criptografia de chave pública baseada nas propriedades da exponenciação modular e no problema do logaritmo discreto, é computacionalmente complexo, e fornece três garantias em simultâneo: autenticação (o receptor consegue verificar a origem da mensagem), integridade, e não repúdio (o autor não consegue negar credivelmente ter assinado).",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Diffie-Hellman e Assinaturas Digitais</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap07.html#sec-07-dsa-parametros",
+    "href": "capitulos/cap07.html#sec-07-dsa-parametros",
+    "title": "7  Diffie-Hellman e Assinaturas Digitais",
+    "section": "7.5 DSA: Parâmetros e Chaves",
+    "text": "7.5 DSA: Parâmetros e Chaves\nA definição dos parâmetros iniciais do DSA segue estes passos:\n\nEscolher uma função de hash aprovada \\(H\\) (por exemplo, SHA-512).\nEscolher um comprimento de chave \\(L\\) e um comprimento de módulo \\(N\\), com \\(N&lt;L\\) e \\(L \\le\\) o comprimento da saída de \\(H\\). Os pares \\((L,N)\\) normalizados são \\((1024,160)\\), \\((2048,224)\\), \\((2048,256)\\) ou \\((3072,256)\\).\nEscolher \\(q\\), um primo de \\(N\\) bits.\nEscolher \\(p\\), um primo de \\(L\\) bits, tal que \\(p-1\\) seja múltiplo de \\(q\\).\nEscolher um inteiro aleatório \\(h\\) entre \\(2\\) e \\(p-2\\), e calcular \\(g = h^{(p-1)/q} \\bmod p\\) (se \\(g=1\\), escolhe-se outro \\(h\\)).\n\nOs três valores \\(p\\), \\(q\\) e \\(g\\) são partilhados publicamente, tal como o \\(g\\) e o \\(p\\) do Diffie-Hellman. A partir deles, cada participante gera o seu próprio par de chaves: a chave privada é um número aleatório \\(x\\), entre \\(1\\) e \\(q-1\\); a chave pública é \\(y = g^x \\bmod p\\). O mesmo par \\((x,y)\\) pode ser reutilizado para qualquer número de assinaturas.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Diffie-Hellman e Assinaturas Digitais</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap07.html#sec-07-dsa-assinar",
+    "href": "capitulos/cap07.html#sec-07-dsa-assinar",
+    "title": "7  Diffie-Hellman e Assinaturas Digitais",
+    "section": "7.6 DSA: Assinar e Verificar",
+    "text": "7.6 DSA: Assinar e Verificar\nPara assinar uma mensagem \\(m\\), escolhe-se primeiro \\(k\\), um número aleatório entre \\(1\\) e \\(q-1\\). Ao contrário de \\(x\\), este \\(k\\) é efémero: secreto, e usado uma única vez, apenas nessa assinatura, exactamente pela mesma razão que uma cifra de fluxo nunca pode reutilizar o par (chave, nonce), reutilizá-lo permitiria a um atacante recuperar \\(x\\) a partir de duas assinaturas distintas. Calcula-se então:\n\\[r = (g^k \\bmod p) \\bmod q \\qquad\\qquad s = k^{-1}(H(m) + xr) \\bmod q\\]\ne a assinatura é o par \\((r,s)\\). O valor \\(s\\) tem de satisfazer requisitos exigentes ao mesmo tempo: depender da mensagem \\(m\\), provar o uso da chave privada \\(x\\), nunca revelar nem \\(x\\) nem \\(k\\), e ainda assim permitir a verificação sem que o verificador precise de conhecer nenhum dos dois.\n\n\n\n\n\n\nFigura 7.2: Alice assina \\(m\\) com a sua chave privada e o valor efémero \\(k\\), produzindo \\((r,s)\\); qualquer pessoa com a chave pública de Alice consegue depois verificar que a assinatura é válida, sem nunca ter acesso a \\(x\\) nem a \\(k\\).\n\n\n\nPara verificar, o receptor conhece \\(p\\), \\(q\\), \\(g\\) e a chave pública \\(y\\), e recebe \\(m\\) e \\((r,s)\\):\n\nConfirma que \\(r\\) e \\(s\\) são positivos e menores do que \\(q\\).\nCalcula \\(w = s^{-1} \\bmod q\\).\nCalcula \\(u_1 = H(m) \\cdot w \\bmod q\\) e \\(u_2 = r \\cdot w \\bmod q\\).\nCalcula \\(v = (g^{u_1} y^{u_2} \\bmod p) \\bmod q\\).\nSe \\(v = r\\), a assinatura é válida.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Diffie-Hellman e Assinaturas Digitais</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap07.html#sec-07-confianca",
+    "href": "capitulos/cap07.html#sec-07-confianca",
+    "title": "7  Diffie-Hellman e Assinaturas Digitais",
+    "section": "7.7 Um Problema em Aberto: Confiar na Chave Pública",
+    "text": "7.7 Um Problema em Aberto: Confiar na Chave Pública\nAlice envia uma mensagem a Bob, assinada com a sua chave privada; Bob verifica a assinatura com a chave pública de Alice, e o cálculo confirma que é válida. Mas isto levanta uma questão que nem o Diffie-Hellman nem o DSA respondem sozinhos: como sabe Bob que aquela chave pública é mesmo de Alice, e não de outra pessoa a fazer-se passar por ela?\nO problema é geral, e afecta qualquer troca de chaves públicas feita sem mais garantias, incluindo o próprio Diffie-Hellman: um atacante posicionado em qualquer ponto da rede entre Alice e Bob, por exemplo num router comprometido, pode interceptar \\(g\\), \\(p\\) e os valores trocados, e substituir-se a cada um deles perante o outro, um ataque do intermediário (man-in-the-middle, MITM). A vítima nunca percebe, porque cada lado continua a receber valores que parecem legítimos, só que gerados pelo atacante. Este ataque quebra qualquer algoritmo de chave pública que não tenha forma de confirmar, de forma independente, que uma chave pública pertence mesmo a quem diz pertencer.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Diffie-Hellman e Assinaturas Digitais</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap07.html#sec-07-sintese",
+    "href": "capitulos/cap07.html#sec-07-sintese",
+    "title": "7  Diffie-Hellman e Assinaturas Digitais",
+    "section": "7.8 Síntese do Capítulo",
+    "text": "7.8 Síntese do Capítulo\nEste capítulo respondeu a duas perguntas deixadas em aberto pela criptografia assimétrica:\n\nO Diffie-Hellman permite a duas partes combinarem uma chave secreta comum através de um canal completamente aberto, sem nunca a transmitir directamente\nA sua segurança assenta no problema do logaritmo discreto: calcular \\(g^x \\bmod p\\) é fácil, mas recuperar \\(x\\) a partir do resultado é computacionalmente inviável para valores suficientemente grandes\nCada parte troca um valor público (\\(g^x \\bmod p\\) ou \\(g^y \\bmod p\\)), calculado a partir de um segredo que nunca revela; ambas chegam ao mesmo segredo comum \\(g^{xy} \\bmod p\\)\nUma assinatura digital pode ser construída cifrando o hash de uma mensagem com a chave privada do autor (usando RSA, por exemplo), ou com um algoritmo dedicado como o DSA\nO DSA assina com uma chave privada \\(x\\) e um valor efémero \\(k\\), usado uma única vez por assinatura; qualquer pessoa verifica depois com a chave pública correspondente, sem nunca ter acesso a \\(x\\) nem a \\(k\\)\nNenhum destes dois mecanismos resolve, sozinho, o problema de confiar que uma chave pública pertence mesmo a quem diz pertencer: sem essa garantia, um atacante posicionado no meio do canal (MITM) consegue substituir-se a qualquer uma das partes",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Diffie-Hellman e Assinaturas Digitais</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap07.html#sec-07-reflexao",
+    "href": "capitulos/cap07.html#sec-07-reflexao",
+    "title": "7  Diffie-Hellman e Assinaturas Digitais",
+    "section": "7.9 Para Pensar",
+    "text": "7.9 Para Pensar\nNo DSA, o valor efémero \\(k\\) tem de ser secreto e usado uma única vez por assinatura, tal como o par (chave, nonce) de uma cifra de fluxo nunca pode repetir-se. Nas cifras de fluxo, reutilizar o par expõe o XOR dos dois textos claros (o ataque do two-time pad, Secção 4.1). No DSA, \\(r = (g^k \\bmod p) \\bmod q\\) depende só de \\(k\\), por isso duas assinaturas com o mesmo \\(k\\) produzem o mesmo \\(r\\), e um atacante que reconheça essa repetição fica com duas equações, \\(s_1 = k^{-1}(H(m_1)+xr) \\bmod q\\) e \\(s_2 = k^{-1}(H(m_2)+xr) \\bmod q\\), com apenas duas incógnitas, \\(k\\) e \\(x\\). Que operação simples entre estas duas equações elimina \\(k\\) e permite isolar directamente a chave privada \\(x\\)?\n\n\n\n\n\n\nSolução\n\n\n\nA operação é a subtracção das duas equações:\n\\[s_1 - s_2 = k^{-1}\\big[(H(m_1)+xr) - (H(m_2)+xr)\\big] \\bmod q = k^{-1}\\big(H(m_1)-H(m_2)\\big) \\bmod q\\]\nO termo \\(xr\\) é igual nas duas equações (mesmo \\(r\\), porque depende só do \\(k\\) reutilizado, e a mesma chave \\(x\\)), por isso cancela-se por completo na subtracção, deixando uma equação com uma única incógnita, \\(k\\):\n\\[k = \\big(H(m_1)-H(m_2)\\big)\\,(s_1-s_2)^{-1} \\bmod q\\]\nCom \\(k\\) recuperado, basta substituir numa das equações originais para isolar a chave privada:\n\\[x = (s_1 k - H(m_1))\\, r^{-1} \\bmod q\\]\nEste não é um ataque só teórico: foi exactamente desta forma que a Sony Computer Entertainment perdeu, em 2010, a chave privada de assinatura de código da PlayStation 3. A implementação da Sony usava sempre o mesmo valor de \\(k\\) em vez de gerar um novo, aleatório, para cada assinatura, e um grupo de investigadores (o fail0verflow, seguido por George Hotz) explorou exactamente esta reutilização para recuperar a chave privada da consola, permitindo assinar e executar código não autorizado em qualquer PS3.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Diffie-Hellman e Assinaturas Digitais</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap07.html#sec-07-referencias",
+    "href": "capitulos/cap07.html#sec-07-referencias",
+    "title": "7  Diffie-Hellman e Assinaturas Digitais",
+    "section": "Referências",
+    "text": "Referências\n\n\nDu, Wenliang. 2022. Computer Security: A Hands-on Approach. 3.ª ed. CreateSpace / Self-published.\n\n\nStallings, William. 2020. Cryptography and Network Security: Principles and Practice. 8.ª ed. Pearson.",
+    "crumbs": [
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Diffie-Hellman e Assinaturas Digitais</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap08.html",
+    "href": "capitulos/cap08.html",
+    "title": "8  Criptografia de Curva Elíptica",
+    "section": "",
+    "text": "Introdução\nO RSA e o Diffie-Hellman assentam em dois problemas matemáticos, a factorização de inteiros e o logaritmo discreto módulo um primo, para os quais existem algoritmos de ataque subexponenciais, mais rápidos do que a força bruta pura, ainda que continuem impraticáveis para módulos suficientemente grandes (Stallings 2020). Isto obriga a chaves cada vez maiores à medida que o poder de computação cresce, hoje tipicamente 2048 a 4096 bits (Secção 6.5). A criptografia de curva elíptica (Elliptic Curve Cryptography, ECC), proposta de forma independente por Koblitz (Koblitz 1987) e Miller (Miller 1985), resolve o mesmo tipo de problema, a troca de chaves e a assinatura digital, assente num problema matemático diferente, para o qual não é conhecido nenhum ataque subexponencial. O resultado prático é uma segurança equivalente com chaves ordens de grandeza mais pequenas, uma vantagem decisiva em dispositivos com poucos recursos computacionais, como telemóveis, cartões inteligentes ou sensores Internet of Things (Aumasson 2017).",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Criptografia de Curva Elíptica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap08.html#sec-08-curvas",
+    "href": "capitulos/cap08.html#sec-08-curvas",
+    "title": "8  Criptografia de Curva Elíptica",
+    "section": "8.1 Curvas Elípticas sobre Corpos Finitos",
+    "text": "8.1 Curvas Elípticas sobre Corpos Finitos\nUma curva elíptica é o conjunto de pontos \\((x,y)\\) que satisfazem uma equação da forma:\n\\[y^2 = x^3 + ax + b\\]\ncom \\(a\\) e \\(b\\) constantes que definem a curva, sujeitas à condição \\(4a^3 + 27b^2 \\neq 0\\), que garante que a curva não tem singularidades (auto-intersecções ou cúspides) (Stallings 2020). Para uso criptográfico, a equação não é resolvida sobre os números reais, mas sobre um corpo finito \\(\\mathbb{Z}_p\\), com \\(p\\) um primo grande: os valores de \\(x\\) e \\(y\\) são inteiros entre \\(0\\) e \\(p-1\\), e toda a aritmética (soma, produto, potência) é feita módulo \\(p\\). O conjunto resultante de pontos é finito, e junta-se-lhe ainda um elemento especial, o ponto no infinito \\(\\mathcal{O}\\), que funciona como elemento neutro.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Criptografia de Curva Elíptica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap08.html#sec-08-soma",
+    "href": "capitulos/cap08.html#sec-08-soma",
+    "title": "8  Criptografia de Curva Elíptica",
+    "section": "8.2 A Soma de Pontos: uma Lei de Grupo",
+    "text": "8.2 A Soma de Pontos: uma Lei de Grupo\nO que torna uma curva elíptica útil em criptografia é que os seus pontos, com uma operação de soma definida de forma apropriada, formam um grupo abeliano. A definição mais intuitiva desta soma é geométrica, e vale a pena visualizá-la sobre os números reais antes de a transportar para um corpo finito (Martin 2017):\n\n\n\n\n\n\nFigura 8.1: Somar dois pontos \\(P\\) e \\(Q\\) de uma curva elíptica: traça-se a recta que passa por ambos, que intersecta a curva num terceiro ponto; reflectindo esse ponto em torno do eixo dos \\(x\\) obtém-se \\(R = P+Q\\). Para somar um ponto a si próprio (\\(P+P\\)), usa-se em vez disso a tangente à curva em \\(P\\).\n\n\n\nAlgebricamente, para somar \\(P=(x_1,y_1)\\) e \\(Q=(x_2,y_2)\\), com \\(P \\neq Q\\), calcula-se primeiro o declive \\(\\lambda\\) da recta que passa por ambos:\n\\[\\lambda = \\frac{y_2 - y_1}{x_2 - x_1} \\pmod p\\]\ne depois as coordenadas da soma \\(R=(x_3,y_3)\\):\n\\[x_3 = \\lambda^2 - x_1 - x_2 \\pmod p \\qquad\\qquad y_3 = \\lambda(x_1 - x_3) - y_1 \\pmod p\\]\nPara somar um ponto a si próprio (duplicar \\(P\\)), usa-se em vez disso o declive da tangente à curva em \\(P\\), \\(\\lambda = \\frac{3x_1^2+a}{2y_1} \\pmod p\\), e as mesmas fórmulas para \\(x_3\\) e \\(y_3\\). O ponto no infinito \\(\\mathcal{O}\\) comporta-se como o zero desta soma, \\(P + \\mathcal{O} = P\\), e o simétrico de \\(P=(x_1,y_1)\\) é \\(-P=(x_1,-y_1)\\), com \\(P + (-P) = \\mathcal{O}\\).\nPorque importa ser um grupo abeliano. Dizer que \\((E(\\mathbb{Z}_p), +)\\) é um grupo abeliano significa que a soma de pontos é fechada (a soma de dois pontos da curva é sempre outro ponto da curva, nunca sai do conjunto), associativa (\\((P+Q)+R = P+(Q+R)\\)), tem elemento neutro (\\(\\mathcal{O}\\)) e inverso para cada ponto, e é comutativa (\\(P+Q=Q+P\\)). Isto não é uma curiosidade algébrica, é a condição estrutural que torna toda a Secção 8.5 possível: o protocolo Diffie-Hellman (Secção 7.3) não depende de nada específico da exponenciação modular, depende apenas de existir um grupo abeliano onde multiplicar um elemento por um escalar seja fácil, mas inverter essa operação seja difícil (Stallings 2020). A comutatividade, em particular, é o que garante directamente a igualdade central do ECDH, \\(d_A(d_B G) = d_B(d_A G)\\): sem ela, Alice e Bob simplesmente não chegariam ao mesmo segredo. A associatividade, por sua vez, é o que permite calcular \\(kP\\) eficientemente por duplicações sucessivas (Secção 8.4), agrupando as somas por qualquer ordem conveniente sem alterar o resultado final.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Criptografia de Curva Elíptica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap08.html#sec-08-ecdlp",
+    "href": "capitulos/cap08.html#sec-08-ecdlp",
+    "title": "8  Criptografia de Curva Elíptica",
+    "section": "8.3 Multiplicação Escalar e o Problema do Logaritmo Discreto em Curvas Elípticas",
+    "text": "8.3 Multiplicação Escalar e o Problema do Logaritmo Discreto em Curvas Elípticas\nA operação fundamental da criptografia de curva elíptica não é a soma de dois pontos quaisquer, mas a multiplicação escalar: somar um mesmo ponto \\(P\\) a si próprio \\(k\\) vezes, \\(kP = P + P + \\dots + P\\). Tal como a exponenciação modular do RSA e do Diffie-Hellman se calcula eficientemente por quadrados sucessivos (Secção 6.4), a multiplicação escalar calcula-se de forma análoga, por duplicações e somas sucessivas, sem nunca precisar de \\(k\\) somas individuais.\nA segurança de toda a construção assenta no problema do logaritmo discreto em curvas elípticas (Elliptic Curve Discrete Logarithm Problem, ECDLP): dados \\(P\\) e \\(Q=kP\\), recuperar \\(k\\).\nPorque é difícil inverter esta operação. No sentido directo, calcular \\(Q=kP\\) é rápido: o método de duplicação e soma (Secção 8.4) obtém \\(kP\\) em cerca de \\(\\log_2 k\\) operações, tirando partido da associatividade da soma de pontos. No sentido inverso, porém, não existe nenhum equivalente de “dividir” \\(Q\\) por \\(P\\): a multiplicação escalar não é uma multiplicação no sentido algébrico usual, é uma soma repetida dentro de um grupo, e um grupo, por definição, só garante soma e inverso aditivo, nunca uma operação de divisão entre os seus elementos. Não há, portanto, nenhuma manipulação algébrica directa capaz de “desfazer” \\(kP\\) e devolver \\(k\\), ao contrário do que aconteceria, por exemplo, ao inverter uma multiplicação normal.\nUm atacante fica reduzido a métodos de pesquisa dentro do grupo. O melhor ataque genérico conhecido, o algoritmo rho de Pollard, tem complexidade \\(O(\\sqrt{n})\\), em que \\(n\\) é a ordem do grupo de pontos (Stallings 2020; Aumasson 2017), essencialmente uma pesquisa aleatória inteligente que detecta colisões entre sequências de pontos gerados a partir de \\(P\\) e de \\(Q\\). Mas há um método bem mais rápido, o cálculo de índice (index calculus), que quebra o logaritmo discreto módulo um primo e a factorização de inteiros em tempo subexponencial (o general number field sieve), precisamente porque explora o facto de os inteiros se decomporem em factores primos pequenos: qualquer elemento de \\(\\mathbb{Z}_p^*\\) pode reexprimir-se, com boa probabilidade, como produto de primos de uma pequena “base de factores”, o que permite montar e resolver um sistema de equações muito mais rápido do que uma pesquisa exaustiva (Aumasson 2017). Os pontos de uma curva elíptica não têm nenhuma noção equivalente de decomposição em factores pequenos: não há uma “base de pontos primos” natural em que expressar \\(P\\) e \\(Q\\), por isso o cálculo de índice simplesmente não se aplica ao ECDLP. É esta ausência de estrutura extra, e não qualquer propriedade misteriosa das curvas, que deixa o atacante sem alternativa melhor do que a pesquisa genérica \\(O(\\sqrt{n})\\), e é precisamente essa ausência de atalhos matemáticos que permite à ECC oferecer o mesmo nível de segurança do RSA/DH com chaves muito mais pequenas.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Criptografia de Curva Elíptica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap08.html#sec-08-tamanhos",
+    "href": "capitulos/cap08.html#sec-08-tamanhos",
+    "title": "8  Criptografia de Curva Elíptica",
+    "section": "8.4 Comparação de Tamanhos de Chave",
+    "text": "8.4 Comparação de Tamanhos de Chave\nA tabela seguinte, com base nas recomendações do NIST (Barker 2020; Stallings 2020), compara o tamanho de chave necessário em RSA/Diffie-Hellman e em ECC para atingir o mesmo nível de segurança (medido em bits, o equivalente a uma pesquisa exaustiva sobre uma chave simétrica desse comprimento):\n\n\n\nTabela 8.1: Tamanhos de chave equivalentes para vários níveis de segurança (Barker 2020)\n\n\n\n\n\nNível de segurança (bits)\nRSA / Diffie-Hellman\nECC\n\n\n\n\n80\n1024\n160\n\n\n112\n2048\n224\n\n\n128\n3072\n256\n\n\n192\n7680\n384\n\n\n256\n15360\n521\n\n\n\n\n\n\nA diferença amplia-se rapidamente: para um nível de segurança de 256 bits, o RSA exigiria uma chave 30 vezes maior do que a ECC. Chaves mais pequenas significam não só menos dados a transmitir e armazenar, mas também operações de assinatura e troca de chaves significativamente mais rápidas, uma vantagem decisiva em ligações TLS de alto débito ou em dispositivos com pouca capacidade de computação.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Criptografia de Curva Elíptica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap08.html#sec-08-ecdh",
+    "href": "capitulos/cap08.html#sec-08-ecdh",
+    "title": "8  Criptografia de Curva Elíptica",
+    "section": "8.5 ECDH: Diffie-Hellman em Curva Elíptica",
+    "text": "8.5 ECDH: Diffie-Hellman em Curva Elíptica\nO ECDH (Elliptic Curve Diffie-Hellman) aplica exactamente a mesma lógica do Diffie-Hellman clássico (Secção 7.1-7.3), substituindo a exponenciação modular por multiplicação escalar de pontos. Alice e Bob combinam publicamente uma curva e um ponto gerador \\(G\\), de ordem \\(n\\) grande. Alice escolhe um inteiro secreto \\(d_A\\) e calcula \\(Q_A = d_A \\cdot G\\); Bob escolhe \\(d_B\\) e calcula \\(Q_B = d_B \\cdot G\\). Trocam \\(Q_A\\) e \\(Q_B\\) publicamente, e cada um calcula o segredo comum:\n\\[K = d_A \\cdot Q_B = d_A \\cdot (d_B \\cdot G) = (d_A d_B) \\cdot G = d_B \\cdot (d_A \\cdot G) = d_B \\cdot Q_A\\]\nA estrutura é idêntica à da Figura 7.1 do capítulo anterior: só a operação matemática interna muda, exponenciação modular num caso, multiplicação escalar de pontos no outro. A dificuldade de recuperar \\(d_A\\) ou \\(d_B\\) a partir de \\(Q_A\\), \\(Q_B\\) e \\(G\\) é exactamente o ECDLP da Secção 8.3.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Criptografia de Curva Elíptica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap08.html#sec-08-ecdsa",
+    "href": "capitulos/cap08.html#sec-08-ecdsa",
+    "title": "8  Criptografia de Curva Elíptica",
+    "section": "8.6 ECDSA e Curvas Usadas na Prática",
+    "text": "8.6 ECDSA e Curvas Usadas na Prática\nO ECDSA (Elliptic Curve Digital Signature Algorithm) é, de forma equivalente, a versão em curva elíptica do DSA (Secção 7.4-7.6): a assinatura continua a ser um par \\((r,s)\\), calculado a partir de uma chave privada e de um valor efémero de utilização única, mas \\(r\\) deriva agora da coordenada \\(x\\) de um múltiplo escalar de \\(G\\), em vez de uma exponenciação modular (Stallings 2020).\nNa prática, poucas curvas são usadas na generalidade dos sistemas. A P-256 (também chamada secp256r1), normalizada pelo NIST, é a mais usada em certificados TLS e assinaturas ECDSA. A Curve25519, desenhada por Daniel J. Bernstein (Bernstein 2006), o mesmo autor do Salsa20, do ChaCha20 e do Poly1305 (Capítulo 4), e normalizada no RFC 7748 (Langley, Hamburg, e Turner 2016), foi construída especificamente para evitar classes inteiras de erros de implementação, como ataques de curva inválida ou fugas por canal lateral relacionadas com tempo de execução, e é hoje a curva de referência para troca de chaves (X25519) em sistemas como o TLS 1.3, o Signal e o SSH.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Criptografia de Curva Elíptica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap08.html#sec-08-sintese",
+    "href": "capitulos/cap08.html#sec-08-sintese",
+    "title": "8  Criptografia de Curva Elíptica",
+    "section": "8.7 Síntese do Capítulo",
+    "text": "8.7 Síntese do Capítulo\nEste capítulo apresentou uma alternativa estrutural ao RSA e ao Diffie-Hellman:\n\nUma curva elíptica é o conjunto de pontos que satisfazem \\(y^2=x^3+ax+b\\) sobre um corpo finito \\(\\mathbb{Z}_p\\), mais um ponto no infinito \\(\\mathcal{O}\\), que serve de elemento neutro\nOs pontos de uma curva elíptica formam um grupo abeliano sob uma operação de soma definida geometricamente (recta e reflexão, ou tangente e reflexão para duplicar um ponto)\nA segurança da ECC assenta no ECDLP: dados \\(P\\) e \\(kP\\), recuperar \\(k\\) é difícil, e o melhor ataque genérico conhecido é \\(O(\\sqrt{n})\\), sem nenhum atalho subexponencial conhecido, ao contrário da factorização ou do logaritmo discreto módulo um primo\nPor isso, a ECC atinge o mesmo nível de segurança do RSA/DH com chaves muito mais pequenas (256 bits em ECC ≈ 3072 bits em RSA, para 128 bits de segurança)\nO ECDH e o ECDSA replicam directamente o Diffie-Hellman e o DSA dos capítulos anteriores, substituindo a exponenciação modular pela multiplicação escalar de pontos\nNa prática, predominam a curva P-256 e a Curve25519, esta última desenhada por Bernstein para evitar classes de erros de implementação comuns noutras curvas",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Criptografia de Curva Elíptica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap08.html#sec-08-reflexao",
+    "href": "capitulos/cap08.html#sec-08-reflexao",
+    "title": "8  Criptografia de Curva Elíptica",
+    "section": "8.8 Para Pensar",
+    "text": "8.8 Para Pensar\nO melhor ataque genérico conhecido contra o ECDLP, o algoritmo rho de Pollard, tem complexidade \\(O(\\sqrt{n})\\), em que \\(n\\) é a ordem do grupo de pontos da curva. Sabendo isto, e olhando para a Tabela 8.1, porque é que uma curva com pontos de ordem \\(n \\approx 2^{256}\\) corresponde a um nível de segurança de 128 bits, e não de 256?",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Criptografia de Curva Elíptica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap08.html#sec-08-referencias",
+    "href": "capitulos/cap08.html#sec-08-referencias",
+    "title": "8  Criptografia de Curva Elíptica",
+    "section": "Referências",
+    "text": "Referências\n\n\nAumasson, Jean-Philippe. 2017. Serious Cryptography: A Practical Introduction to Modern Encryption. No Starch Press.\n\n\nBarker, Elaine. 2020. «Recommendation for Key Management, Part 1: General». SP 800-57 Part 1 Rev. 5. NIST.\n\n\nBernstein, Daniel J. 2006. «Curve25519: New Diffie-Hellman Speed Records». Em Public Key Cryptography (PKC 2006). Vol. 3958. Lecture Notes em Computer Science. Springer.\n\n\nKoblitz, Neal. 1987. «Elliptic Curve Cryptosystems». Mathematics of Computation 48 (177): 203–9.\n\n\nLangley, Adam, Mike Hamburg, e Sean Turner. 2016. «Elliptic Curves for Security». RFC 7748. IETF.\n\n\nMartin, Keith. 2017. Everyday Cryptography. 2.ª ed. Oxford University Press.\n\n\nMiller, Victor S. 1985. «Use of Elliptic Curves in Cryptography». Em Advances in Cryptology (CRYPTO ’85).\n\n\nStallings, William. 2020. Cryptography and Network Security: Principles and Practice. 8.ª ed. Pearson.",
+    "crumbs": [
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Criptografia de Curva Elíptica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap09.html",
+    "href": "capitulos/cap09.html",
+    "title": "9  Infraestrutura de Chave Pública (PKI)",
+    "section": "",
+    "text": "Introdução\nO capítulo anterior terminou com uma pergunta em aberto: como sabe alguém que uma chave pública pertence mesmo a quem diz pertencer? Sem resposta a esta pergunta, todo o edifício da criptografia assimétrica, confidencialidade, autenticação, assinaturas, Diffie-Hellman, fica exposto a um único tipo de ataque. Este capítulo examina esse ataque em detalhe, e a solução de engenharia que se tornou o padrão da indústria para o resolver: a infraestrutura de chave pública.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Infraestrutura de Chave Pública (PKI)</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap09.html#sec-09-mitm",
+    "href": "capitulos/cap09.html#sec-09-mitm",
+    "title": "9  Infraestrutura de Chave Pública (PKI)",
+    "section": "9.1 O Ataque do Intermediário em Detalhe",
+    "text": "9.1 O Ataque do Intermediário em Detalhe\nNo ataque do intermediário (man-in-the-middle, MITM), um atacante posicionado em qualquer ponto da rede entre as duas partes, por exemplo num router comprometido, intercepta e substitui as chaves públicas trocadas, sem que nenhuma das vítimas se aperceba (Stallings 2020):\n\n\n\n\n\n\nFigura 9.1: O atacante (Mallory) intercepta as chaves públicas de Alice e de Bob, e substitui-as pelas suas próprias antes de as reenviar. Cada um pensa estar a usar a chave pública do outro, quando na verdade está a usar a chave pública de Mallory.\n\n\n\nO ataque funciona porque uma chave pública, por definição, não tem nada que a ligue de forma inseparável ao seu dono: é apenas um número, e um número não tem identidade própria. Quando Alice recebe algo que parece ser a chave pública de Bob, não tem, por si só, nenhuma forma de confirmar essa origem.\nVale a pena notar que este ataque quebra qualquer algoritmo de chave pública, não é uma fraqueza do RSA, do Diffie-Hellman ou do DSA em particular. No caso específico do Diffie-Hellman (Secção 7.3), o ataque tem uma consequência particularmente insidiosa: Mallory estabelece duas trocas de chave distintas, uma com Alice e outra com Bob, e passa a decifrar e recifrar cada mensagem trocada entre eles, sem que nenhum dos dois consiga sequer detectar que a chave “comum” que pensam partilhar não é, de facto, partilhada com o outro, mas sim com Mallory de ambos os lados.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Infraestrutura de Chave Pública (PKI)</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap09.html#sec-09-solucao",
+    "href": "capitulos/cap09.html#sec-09-solucao",
+    "title": "9  Infraestrutura de Chave Pública (PKI)",
+    "section": "9.2 A Solução: uma Entidade de Confiança",
+    "text": "9.2 A Solução: uma Entidade de Confiança\nA solução passa por introduzir uma terceira parte, uma entidade de confiança, que ambas as partes reconheçam antecipadamente, e que testemunhe a ligação entre uma identidade e uma chave pública. Se Alice e Bob confiarem na mesma entidade, cada um pode perguntar-lhe, “esta chave pública pertence mesmo à outra parte?”, sem que essa pergunta precise de passar pelo canal, potencialmente comprometido, entre os dois (Stallings 2020; Martin 2017).\nEsta é exactamente a função de uma infraestrutura de chave pública (Public Key Infrastructure, PKI): um conjunto de entidades, processos e normas que ligam formalmente identidades a chaves públicas, através de certificados digitais. Ao contrário de uma verificação pontual, o certificado é um objecto assinado, verificável de forma independente e reutilizável por qualquer parte que confie na entidade que o emitiu.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Infraestrutura de Chave Pública (PKI)</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap09.html#sec-09-x509",
+    "href": "capitulos/cap09.html#sec-09-x509",
+    "title": "9  Infraestrutura de Chave Pública (PKI)",
+    "section": "9.3 O Certificado X.509",
+    "text": "9.3 O Certificado X.509\nA norma X.509, hoje universal na Web, define a estrutura de um certificado de chave pública. Um certificado X.509 contém, no essencial, os dados de identificação do titular e a assinatura de quem os certifica (Cooper et al. 2008):\n\n\n\n\n\n\nFigura 9.2: Estrutura essencial de um certificado X.509: os dados do titular (identidade, chave pública, período de validade, emissor e número de série), e a assinatura da entidade certificadora sobre o hash desses dados.\n\n\n\n\nIdentidade (Subject): a quem pertence o certificado, tipicamente um domínio, uma organização, ou uma pessoa.\nChave pública: a chave que o certificado atesta pertencer a essa identidade.\nValidade: um intervalo de datas fora do qual o certificado deixa de ser considerado válido.\nEmissor (Issuer): a identidade da entidade certificadora que o assinou.\nNúmero de série: um identificador único do certificado, essencial para o processo de revogação.\nAssinatura da CA: a entidade certificadora (Certificate Authority, CA) assina, com a sua própria chave privada, o hash de todos os campos anteriores: \\(\\mathrm{Sign}(sk_{CA}, H(\\text{dados do titular}))\\).\n\nEsta última linha é o que transforma os dados de identificação numa afirmação verificável: qualquer pessoa com a chave pública da CA consegue confirmar que foi mesmo aquela CA, e não outra entidade, a atestar a ligação entre aquela identidade e aquela chave pública.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Infraestrutura de Chave Pública (PKI)</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap09.html#sec-09-cadeia",
+    "href": "capitulos/cap09.html#sec-09-cadeia",
+    "title": "9  Infraestrutura de Chave Pública (PKI)",
+    "section": "9.4 A Cadeia de Certificação",
+    "text": "9.4 A Cadeia de Certificação\nUm único par de chaves de CA a certificar directamente cada site da Internet seria impraticável e frágil (um único ponto de compromisso comprometeria tudo). Em vez disso, a confiança organiza-se numa cadeia de certificação: cada certificado é assinado por outro, até chegar a uma CA raiz (Root CA), cuja chave pública vem pré-instalada no sistema operativo ou no navegador (Stallings 2020):\n\n\n\n\n\n\nFigura 9.3: A cadeia de certificação: a CA raiz assina certificados de CAs intermédias, que por sua vez assinam outros certificados, até chegar ao titular final de um domínio. Confiar na raiz, já instalada no sistema, basta para validar toda a cadeia.\n\n\n\nConfiar apenas na CA raiz, um número relativamente pequeno de entidades, cuidadosamente auditadas, é suficiente para validar qualquer certificado emitido em qualquer ponto da cadeia, por mais intermediários que existam entre a raiz e o titular final.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Infraestrutura de Chave Pública (PKI)</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap09.html#sec-09-verificacao",
+    "href": "capitulos/cap09.html#sec-09-verificacao",
+    "title": "9  Infraestrutura de Chave Pública (PKI)",
+    "section": "9.5 Como Funciona a Verificação",
+    "text": "9.5 Como Funciona a Verificação\nQuando Bob recebe o certificado de Alice, verifica-o seguindo estes passos (Stallings 2020):\n\nLê o campo Emissor do certificado, identificando qual CA o assinou.\nObtém a chave pública dessa CA, \\(pk_{CA}\\) (a partir do certificado da própria CA, já conhecido e confiado, ou seguindo a cadeia até uma raiz que o seja).\nVerifica a assinatura: \\(\\mathrm{Verify}(pk_{CA}, \\text{dados do certificado}, \\text{assinatura}_{CA})\\).\nSe a assinatura for válida, a chave pública de Alice está confirmada como genuína.\nVerifica ainda o período de validade, o estado de revogação (através de uma lista de revogação, Certificate Revocation List, ou do protocolo em tempo real Online Certificate Status Protocol, OCSP), e o uso permitido do certificado.\n\nSó depois de todos estes passos passarem é que Bob tem uma garantia fundamentada de que a chave pública recebida é mesmo de Alice, e não de um atacante interposto.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Infraestrutura de Chave Pública (PKI)</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap09.html#sec-09-pratica",
+    "href": "capitulos/cap09.html#sec-09-pratica",
+    "title": "9  Infraestrutura de Chave Pública (PKI)",
+    "section": "9.6 Na Prática: Inspeccionar um Certificado",
+    "text": "9.6 Na Prática: Inspeccionar um Certificado\nQualquer certificado X.509 usado num servidor público pode ser inspeccionado directamente:\n$ openssl s_client -showcerts -connect www.exemplo.com:443 &gt;&gt; cert.pem\n$ openssl x509 -in cert.pem -text -noout\nO primeiro comando estabelece uma ligação TLS e regista a cadeia de certificados enviada pelo servidor; o segundo lê o certificado e apresenta, em texto legível, exactamente os campos discutidos na Secção 9.3, incluindo o titular, o emissor, o período de validade e o algoritmo de assinatura usado.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Infraestrutura de Chave Pública (PKI)</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap09.html#sec-09-sintese",
+    "href": "capitulos/cap09.html#sec-09-sintese",
+    "title": "9  Infraestrutura de Chave Pública (PKI)",
+    "section": "9.7 Síntese do Capítulo",
+    "text": "9.7 Síntese do Capítulo\nEste capítulo resolveu o problema deixado em aberto no capítulo anterior:\n\nO ataque do intermediário (MITM) quebra qualquer algoritmo de chave pública, substituindo as chaves trocadas por outras, controladas pelo atacante, sem que nenhuma das vítimas o perceba\nA solução é introduzir uma entidade de confiança partilhada, capaz de atestar formalmente a ligação entre uma identidade e uma chave pública\nUm certificado X.509 contém a identidade do titular, a sua chave pública, um período de validade, o emissor, e a assinatura desse emissor sobre um hash de todos estes dados\nA confiança organiza-se numa cadeia de certificação, da CA raiz (pré-instalada no sistema) até ao titular final, através de CAs intermédias\nVerificar um certificado exige confirmar a assinatura da CA emissora, o período de validade, e o estado de revogação, não basta confirmar só a assinatura",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Infraestrutura de Chave Pública (PKI)</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap09.html#sec-09-reflexao",
+    "href": "capitulos/cap09.html#sec-09-reflexao",
+    "title": "9  Infraestrutura de Chave Pública (PKI)",
+    "section": "9.8 Para Pensar",
+    "text": "9.8 Para Pensar\nA cadeia de certificação (Secção 9.4) resolve o problema de confiar numa chave pública introduzindo confiança numa CA raiz, pré-instalada no sistema operativo ou no navegador. Isto desloca o problema original (como confiar numa chave pública?) para um problema ligeiramente diferente. Qual é esse novo problema, e porque é que confiar numa dezena de CAs raiz pré-instaladas é uma solução mais praticável do que pedir a cada utilizador da Internet que confirme manualmente a chave pública de cada site que visita?",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Infraestrutura de Chave Pública (PKI)</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap09.html#sec-09-referencias",
+    "href": "capitulos/cap09.html#sec-09-referencias",
+    "title": "9  Infraestrutura de Chave Pública (PKI)",
+    "section": "Referências",
+    "text": "Referências\n\n\nCooper, David, Stefan Santesson, Stephen Farrell, Sharon Boeyen, Russell Housley, e Tim Polk. 2008. «Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile». RFC 5280. IETF.\n\n\nMartin, Keith. 2017. Everyday Cryptography. 2.ª ed. Oxford University Press.\n\n\nStallings, William. 2020. Cryptography and Network Security: Principles and Practice. 8.ª ed. Pearson.",
+    "crumbs": [
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Infraestrutura de Chave Pública (PKI)</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap10.html",
+    "href": "capitulos/cap10.html",
+    "title": "10  TLS e PGP",
+    "section": "",
+    "text": "Introdução\nEste capítulo mostra como as ferramentas apresentadas ao longo do livro, cifras simétricas, funções de hash, MACs, RSA, Diffie-Hellman, curva elíptica e certificados X.509, se combinam em dois protocolos reais de largo uso: o TLS, que protege praticamente todo o tráfego web actual, e o PGP, um dos primeiros sistemas de criptografia de utilização generalizada para correio electrónico. Outros esquemas de interesse prático, à medida que forem sendo incorporados no programa da UC, terão naturalmente lugar aqui.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS e PGP</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap10.html#sec-10-tls-objetivos",
+    "href": "capitulos/cap10.html#sec-10-tls-objetivos",
+    "title": "10  TLS e PGP",
+    "section": "10.1 TLS: Objectivos e Camadas",
+    "text": "10.1 TLS: Objectivos e Camadas\nO TLS (Transport Layer Security), sucessor do SSL, protege uma ligação de rede em três frentes: confidencialidade (os dados trocados não podem ser lidos por terceiros), integridade (não podem ser alterados sem detecção) e autenticação (pelo menos o servidor, tipicamente através de um certificado X.509, prova a sua identidade) (Stallings 2020; Rescorla 2018). O protocolo organiza-se em duas camadas: o protocolo de acordo (handshake), que negoceia os parâmetros da sessão e estabelece uma chave partilhada, e o protocolo de registo (record protocol), que usa essa chave para cifrar e autenticar todo o tráfego subsequente com uma construção AEAD, como o AES-GCM ou o ChaCha20-Poly1305 (capítulos 3 e 4).",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS e PGP</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap10.html#sec-10-tls-handshake",
+    "href": "capitulos/cap10.html#sec-10-tls-handshake",
+    "title": "10  TLS e PGP",
+    "section": "10.2 O Handshake do TLS 1.3",
+    "text": "10.2 O Handshake do TLS 1.3\nO TLS 1.3 (Rescorla 2018) simplificou significativamente o processo de acordo em relação a versões anteriores, reduzindo-o a uma única volta de ida e volta (1-RTT) na generalidade dos casos:\n\n\n\n\n\n\nFigura 10.1: O handshake do TLS 1.3: cliente e servidor trocam um valor de troca de chaves (key_share, tipicamente ECDH sobre a Curve25519) logo no primeiro par de mensagens; o servidor prova a sua identidade com um certificado X.509 e a respectiva assinatura; ambos confirmam ter derivado a mesma chave de sessão antes de trocar dados de aplicação.\n\n\n\nO cliente inicia com um ClientHello, que já inclui um valor de troca de chaves (key_share), tipicamente um ponto de curva elíptica para ECDH (Secção 8.5). O servidor responde com o seu próprio ServerHello e key_share, permitindo que ambos os lados derivem imediatamente uma chave de sessão comum, exactamente como na Secção 8.5. O servidor envia ainda o seu certificado X.509 (Secção 9.3) e uma assinatura sobre o histórico do handshake, provando que possui a chave privada correspondente; ambos os lados terminam confirmando, através de uma mensagem Finished autenticada, que chegaram à mesma chave. A partir daqui, toda a comunicação segue cifrada e autenticada pela camada de registo.\nUm detalhe do desenho do TLS 1.3 vale a pena assinalar: o valor key_share de cada lado é gerado de novo, efemeramente, em cada handshake, e nunca reutilizado de uma sessão para a seguinte. Esta propriedade chama-se sigilo perspectivo (forward secrecy): mesmo que a chave privada de longo prazo do servidor (a que assina o CertificateVerify) seja comprometida no futuro, essa chave nunca participou directamente na derivação da chave de sessão, apenas autenticou o valor efémero trocado nesse handshake específico. Comprometer a chave de longo prazo permite fazer-se passar pelo servidor daí em diante, mas não decifrar sessões passadas já terminadas e descartadas.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS e PGP</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap10.html#sec-10-tls-cifras",
+    "href": "capitulos/cap10.html#sec-10-tls-cifras",
+    "title": "10  TLS e PGP",
+    "section": "10.3 Cifras Modernas em TLS",
+    "text": "10.3 Cifras Modernas em TLS\nUma cifra combinada (cipher suite) do TLS 1.3 especifica o algoritmo AEAD e a função de hash usada para derivar chaves e autenticar o handshake. As duas combinações dominantes na prática actual já foram ambas apresentadas neste livro:\n\nTLS_AES_128_GCM_SHA256: AES em modo GCM (Secção 3.6) com SHA-256 (Secção 5.3), beneficia de aceleração de hardware (AES-NI) na generalidade dos processadores modernos.\nTLS_CHACHA20_POLY1305_SHA256: ChaCha20-Poly1305 (Secção 4.5) com SHA-256, preferido em dispositivos sem aceleração de hardware para AES, como muitos telemóveis, exactamente pela razão de desempenho já discutida no Capítulo 4.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS e PGP</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap10.html#sec-10-pgp",
+    "href": "capitulos/cap10.html#sec-10-pgp",
+    "title": "10  TLS e PGP",
+    "section": "10.4 PGP: Cifra Híbrida para Correio Electrónico",
+    "text": "10.4 PGP: Cifra Híbrida para Correio Electrónico\nO PGP (Pretty Good Privacy), e o seu sucessor normalizado, o OpenPGP (Callas et al. 2007), resolve um problema diferente do TLS: proteger uma mensagem que não segue uma ligação em tempo real, como um correio electrónico, entre um emissor e um destinatário cujas chaves públicas já são conhecidas (Martin 2017). A construção combina cifra simétrica e assimétrica, aproveitando a velocidade da primeira e a conveniência da segunda:\n\n\n\n\n\n\nFigura 10.2: O esquema híbrido do PGP: a mensagem é assinada com a chave privada do emissor e cifrada com uma chave de sessão gerada ao acaso; essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário. Só quem tiver a chave privada correspondente consegue recuperar a chave de sessão, e por essa via a mensagem.\n\n\n\nDo lado do emissor: a mensagem \\(M\\) é primeiro assinada (hash mais cifra com a chave privada do emissor, tal como na Secção 7.4); o resultado é cifrado com uma chave de sessão \\(K_s\\), gerada ao acaso e usada uma única vez, através de uma cifra simétrica rápida; e essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário, usando RSA. O que é transmitido é o par (texto cifrado, chave de sessão cifrada). Do lado do receptor, o processo inverte-se: a chave privada do destinatário decifra \\(K_s\\), que decifra o texto, revelando a mensagem e a assinatura, que se verifica por fim com a chave pública do emissor.\nUma diferença de fundo em relação ao modelo do Capítulo 9 é o modelo de confiança: em vez de uma hierarquia de CAs, o PGP assenta numa rede de confiança (Web of Trust), em que cada utilizador assina as chaves públicas de outros em quem confia directamente, e a confiança propaga-se de forma descentralizada através dessa rede de assinaturas (Stallings 2020).",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS e PGP</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap10.html#sec-10-sintese",
+    "href": "capitulos/cap10.html#sec-10-sintese",
+    "title": "10  TLS e PGP",
+    "section": "10.5 Síntese do Capítulo",
+    "text": "10.5 Síntese do Capítulo\nEste capítulo combinou as ferramentas dos capítulos anteriores em dois sistemas reais:\n\nO TLS protege uma ligação de rede combinando um handshake, que negoceia uma chave de sessão (tipicamente por ECDH), com um protocolo de registo, que cifra o tráfego com uma construção AEAD\nO TLS 1.3 reduziu o handshake a uma volta (1-RTT), autenticando o servidor através de um certificado X.509 e a respectiva assinatura; o valor de troca de chaves é gerado de forma efémera em cada sessão, garantindo sigilo perspectivo\nAs cifras combinadas modernas usam AES-GCM ou ChaCha20-Poly1305, consoante haja ou não aceleração de hardware disponível\nO PGP protege mensagens assíncronas, como o correio electrónico, com uma cifra híbrida: a mensagem cifra-se com uma chave de sessão simétrica, e só essa chave se cifra com RSA; a confiança organiza-se numa rede descentralizada, não numa hierarquia de CAs",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS e PGP</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap10.html#sec-10-reflexao",
+    "href": "capitulos/cap10.html#sec-10-reflexao",
+    "title": "10  TLS e PGP",
+    "section": "10.6 Para Pensar",
+    "text": "10.6 Para Pensar\nO sigilo perspectivo do TLS 1.3 (Secção 10.2) garante que comprometer a chave privada de longo prazo do servidor não permite decifrar sessões passadas, porque a chave de sessão nunca dependeu directamente dela. O PGP (Secção 10.4) funciona de forma bastante diferente: a chave pública do destinatário cifra directamente a chave de sessão \\(K_s\\) de cada mensagem, usando sempre o mesmo par de chaves RSA de longo prazo. Tendo isto em conta, que consequência tem, para as mensagens PGP já enviadas no passado, a eventual futura descoberta da chave privada de longo prazo de um destinatário, e em que é que essa situação se distingue precisamente da garantia oferecida pelo TLS 1.3?",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS e PGP</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap10.html#sec-10-referencias",
+    "href": "capitulos/cap10.html#sec-10-referencias",
+    "title": "10  TLS e PGP",
+    "section": "Referências",
+    "text": "Referências\n\n\nCallas, Jon, Lutz Donnerhacke, Hal Finney, David Shaw, e Rodney Thayer. 2007. «OpenPGP Message Format». RFC 4880. IETF.\n\n\nMartin, Keith. 2017. Everyday Cryptography. 2.ª ed. Oxford University Press.\n\n\nRescorla, Eric. 2018. «The Transport Layer Security (TLS) Protocol Version 1.3». RFC 8446. IETF.\n\n\nStallings, William. 2020. Cryptography and Network Security: Principles and Practice. 8.ª ed. Pearson.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS e PGP</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap11.html",
+    "href": "capitulos/cap11.html",
+    "title": "11  Eficiência Algorítmica e Criptografia Pós-Quântica",
+    "section": "",
+    "text": "Introdução\nEste capítulo final muda de registo em relação ao anterior. Em vez de mostrar como os mecanismos deste livro se combinam num protocolo concreto, pergunta algo mais fundamental, que atravessou todos os capítulos anteriores sem nunca ter sido formalizado: o que significa, com rigor de engenharia, dizer que um esquema criptográfico é “seguro”? E, uma vez respondida essa pergunta, que preço em eficiência se paga por essa segurança, sobretudo agora que a ameaça da computação quântica obriga a repensar praticamente tudo o que foi construído até aqui?",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Eficiência Algorítmica e Criptografia Pós-Quântica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap11.html#sec-11-quantificar",
+    "href": "capitulos/cap11.html#sec-11-quantificar",
+    "title": "11  Eficiência Algorítmica e Criptografia Pós-Quântica",
+    "section": "11.1 Quantificar a Segurança: de Conceito Binário a Ciência Mensurável",
+    "text": "11.1 Quantificar a Segurança: de Conceito Binário a Ciência Mensurável\nA segurança de software tradicional é tipicamente um conceito binário: uma aplicação está segura ou não está, e o objectivo é impedir por completo que um atacante viole o código. A criptografia mede segurança de forma fundamentalmente diferente: não como uma propriedade absoluta, mas como o esforço quantificável necessário para quebrar um esquema, transformando a segurança de um conceito binário numa ciência mensurável (Aumasson 2017).",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Eficiência Algorítmica e Criptografia Pós-Quântica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap11.html#sec-11-dois-caminhos",
+    "href": "capitulos/cap11.html#sec-11-dois-caminhos",
+    "title": "11  Eficiência Algorítmica e Criptografia Pós-Quântica",
+    "section": "11.2 Segurança Informacional vs. Segurança Computacional",
+    "text": "11.2 Segurança Informacional vs. Segurança Computacional\nExistem dois caminhos distintos para tornar um esquema “impossível” de quebrar (Aumasson 2017):\n\nSegurança informacional (information-theoretic security): uma impossibilidade teórica, absoluta, independente do tempo, do poder de computação ou da memória disponíveis ao atacante. O único exemplo já encontrado neste livro é o One-Time Pad de Shannon (Secção 1.2.6): mesmo testando exaustivamente todas as chaves possíveis, existem tantos textos claros candidatos quantas chaves, o que torna impossível identificar qual é o correcto, mesmo com recursos computacionais infinitos.\nSegurança computacional (computational security): uma impossibilidade prática, não absoluta. Um esquema é computacionalmente seguro se não puder ser quebrado num tempo e com recursos razoáveis (memória, hardware, orçamento, energia), ainda que, em teoria, um atacante com tempo e recursos ilimitados o consiga sempre quebrar.\n\nCom a única excepção do One-Time Pad, todos os restantes esquemas apresentados neste livro, AES, RC4, ChaCha20, SHA-256, HMAC, RSA, Diffie-Hellman, DSA, ECC, dependem inteiramente de segurança computacional, não informacional. É esta a medida de segurança realmente relevante na prática (Aumasson 2017).",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Eficiência Algorítmica e Criptografia Pós-Quântica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap11.html#sec-11-limites-razoaveis",
+    "href": "capitulos/cap11.html#sec-11-limites-razoaveis",
+    "title": "11  Eficiência Algorítmica e Criptografia Pós-Quântica",
+    "section": "11.3 Limites Razoáveis: o Exemplo da Chave Simétrica",
+    "text": "11.3 Limites Razoáveis: o Exemplo da Chave Simétrica\nUm esquema é computacionalmente seguro se não puder ser quebrado por força bruta dentro de limites de tempo e recursos considerados razoáveis. Para uma chave simétrica de 128 bits (Secção 3.2), esses limites podem tornar-se concretos:\n\n\n\n\n\n\nQuantificar o inquebrável: 128 bits em números\n\n\n\nUma chave de 128 bits admite \\(2^{128}\\) valores possíveis, aproximadamente \\(3{,}4 \\times 10^{38}\\). Supondo um atacante capaz de testar 100 mil milhões de chaves por segundo (\\(10^{11}\\)/s, uma estimativa generosa mesmo para hardware dedicado), pesquisar todo o espaço de chaves demoraria:\n\\[\\frac{3{,}4 \\times 10^{38}}{10^{11}} \\approx 3{,}4 \\times 10^{27} \\text{ segundos} \\approx 10^{20} \\text{ anos}\\]\nUm número muitas ordens de grandeza maior do que a idade do universo. O esquema não é informacionalmente seguro (um atacante com tempo suficiente encontraria sempre a chave certa), mas é, para qualquer efeito prático, computacionalmente inquebrável.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Eficiência Algorítmica e Criptografia Pós-Quântica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap11.html#sec-11-t-epsilon",
+    "href": "capitulos/cap11.html#sec-11-t-epsilon",
+    "title": "11  Eficiência Algorítmica e Criptografia Pós-Quântica",
+    "section": "11.4 O Enquadramento \\((t,\\varepsilon)\\)",
+    "text": "11.4 O Enquadramento \\((t,\\varepsilon)\\)\nA definição formal de segurança computacional, adoptada de forma padrão na literatura de criptografia (Aumasson 2017), expressa-se através de dois valores:\n\n\\(t\\): o número máximo de operações que um atacante está disposto a realizar.\n\\(\\varepsilon\\): um limite superior à probabilidade de sucesso desse atacante, com \\(0 &lt; \\varepsilon &lt; 1\\).\n\nUm esquema é \\((t,\\varepsilon)\\)-seguro se nenhum atacante, realizando no máximo \\(t\\) operações, tiver uma probabilidade de sucesso superior a \\(\\varepsilon\\). Para uma cifra simétrica com chave \\(K\\) de 128 bits, idealmente segura, este par toma a forma \\((t,\\, t/2^{128})\\), para qualquer \\(1 \\le t \\le 2^{128}\\): a probabilidade de sucesso cresce proporcionalmente à fracção do espaço de chaves já testada, nunca mais depressa do que isso.\nTrês cenários concretos ilustram a ideia:\n\n\n\nTabela 11.1: Probabilidade de sucesso da força bruta contra uma chave de 128 bits, em função do esforço do atacante\n\n\n\n\n\n\n\n\n\n\nCenário\nOperações (\\(t\\))\nProbabilidade de sucesso (\\(\\varepsilon\\))\n\n\n\n\nUma única tentativa\n\\(t=1\\)\n\\(\\varepsilon = 2^{-128}\\)\n\n\nTestar metade do espaço\n\\(t=2^{64}\\)\n\\(\\varepsilon = 2^{-64}\\)\n\n\nTestar todo o espaço\n\\(t=2^{128}\\)\n\\(\\varepsilon = 1\\) (sucesso garantido)\n\n\n\n\n\n\nVale a pena notar a distinção entre um limite inferior (lower bound): são necessárias pelo menos \\(t\\) operações para comprometer o esquema, o esforço real pode ser maior, e um limite real (real bound): o esforço exacto conhecido para quebrar o esquema com probabilidade \\(\\varepsilon\\) usando exactamente \\(t\\) operações. A força bruta nunca deixa de funcionar, mais cedo ou mais tarde: o objectivo da criptografia não é tornar um esquema absolutamente inquebrável, mas garantir que a força bruta continua a ser o melhor ataque conhecido, e que o seu custo excede largamente qualquer benefício realista para um atacante.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Eficiência Algorítmica e Criptografia Pós-Quântica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap11.html#sec-11-complexidade",
+    "href": "capitulos/cap11.html#sec-11-complexidade",
+    "title": "11  Eficiência Algorítmica e Criptografia Pós-Quântica",
+    "section": "11.5 Classes de Complexidade: Porque a Escala Importa",
+    "text": "11.5 Classes de Complexidade: Porque a Escala Importa\nO enquadramento \\((t,\\varepsilon)\\) da secção anterior mede o esforço de um ataque para um tamanho de chave fixo. Mas ao longo deste livro, sempre que se recomendou um tamanho de chave concreto, 128 bits para o AES, 3072 para o RSA, 256 para a ECC, a justificação verdadeira dependeu de uma pergunta diferente: como cresce o custo de um ataque à medida que o tamanho da chave \\(n\\) aumenta? Esta é a pergunta que as classes de complexidade computacional respondem, e os termos “subexponencial”, “exponencial” e “polinomial”, já usados nos capítulos 6 a 8 sem uma definição formal, descrevem precisamente essa taxa de crescimento (Stallings 2020; Aumasson 2017).\n\nTempo polinomial, \\(O(n^k)\\) para alguma constante \\(k\\): o custo cresce como uma potência de \\(n\\). Duplicar \\(n\\) multiplica o custo por um factor fixo (por exemplo, \\(2^k\\)), por maior que \\(k\\) seja. Diz-se que um problema tratável admite um algoritmo polinomial.\nTempo exponencial, \\(O(c^n)\\) para alguma constante \\(c&gt;1\\): o custo cresce de forma explosiva. Duplicar \\(n\\) eleva o custo ao quadrado. A pesquisa exaustiva de uma chave de \\(n\\) bits, \\(O(2^n)\\), é o exemplo paradigmático, e continua exponencial mesmo depois de melhorada pelo algoritmo de Grover (Secção 3.5) ou pelo rho de Pollard (Secção 8.3): ambos reduzem a constante no expoente (\\(O(2^{n/2})\\) em vez de \\(O(2^n)\\)), mas não mudam de classe.\nTempo subexponencial: estritamente entre as duas anteriores, cresce mais depressa do que qualquer polinómio, mas mais devagar do que qualquer exponencial. É a classe do general number field sieve (Secções 6.5 e 7.2), com uma forma característica \\(L_n[\\alpha,c] = \\exp\\!\\big((c+o(1))(\\ln n)^{\\alpha}(\\ln\\ln n)^{1-\\alpha}\\big)\\), com \\(\\alpha=\\tfrac{1}{3}\\) para a factorização e para o logaritmo discreto módulo um primo (Stallings 2020).\n\nA diferença de escala entre estas classes é o que explica, com rigor, porque é que o RSA e o Diffie-Hellman clássico precisam de chaves tão maiores do que uma cifra simétrica ou do que a ECC para o mesmo nível de segurança prático: contra um problema subexponencial, aumentar \\(n\\) ainda ajuda, mas cada vez menos por bit acrescentado, obrigando a compensar com módulos muito maiores. Contra um problema puramente exponencial, como o ECDLP (Secção 8.3) ou uma pesquisa exaustiva sobre uma chave simétrica, cada bit acrescentado duplica sempre o esforço do atacante, por isso um crescimento modesto de \\(n\\) já basta.\nEsta distinção é também o que torna a criptografia de chave pública possível, e vale a pena dizê-lo explicitamente: um sistema como o RSA (Secção 6.4) ou o ECDH (Secção 8.5) só funciona porque a operação legítima, cifrar, decifrar com a chave certa, assinar, verificar, é sempre polinomial (rápida, praticável em qualquer computador comum), enquanto o ataque correspondente, factorizar \\(n\\), calcular um logaritmo discreto, resolver o ECDLP, sem conhecer o segredo, é subexponencial ou exponencial (impraticável para valores suficientemente grandes). Esta assimetria entre facilidade de uso e dificuldade de ataque, e não qualquer propriedade misteriosa de nenhum algoritmo em particular, é o que torna útil toda a criptografia assimétrica apresentada neste livro.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Eficiência Algorítmica e Criptografia Pós-Quântica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap11.html#sec-11-eficiencia",
+    "href": "capitulos/cap11.html#sec-11-eficiencia",
+    "title": "11  Eficiência Algorítmica e Criptografia Pós-Quântica",
+    "section": "11.6 Eficiência dos Algoritmos Apresentados neste Livro",
+    "text": "11.6 Eficiência dos Algoritmos Apresentados neste Livro\nO enquadramento \\((t,\\varepsilon)\\) mede quanto esforço é preciso para quebrar um esquema, mas diz pouco sobre o custo de o usar correctamente. Na prática, escolher um algoritmo é sempre um compromisso entre o nível de segurança pretendido e a eficiência computacional, o tamanho das chaves, das assinaturas e dos textos cifrados, e a velocidade das operações (Aumasson 2017; Stallings 2020):\n\n\n\nTabela 11.2: Comparação aproximada de segurança e eficiência dos principais algoritmos apresentados neste livro (Aumasson 2017; Stallings 2020; National Institute of Standards and Technology 2024b, 2024a)\n\n\n\n\n\n\n\n\n\n\n\n\n\nAlgoritmo\nFamília\nSegurança clássica\nEfeito de um computador quântico\nTamanho típico\nEficiência\n\n\n\n\nAES-256\nSimétrica (Secção 3.2)\n256 bits\nGrover reduz para ~128 bits (Secção 3.5); ainda seguro\nChave: 256 bits\nReferência de velocidade; acelerado por hardware dedicado (AES-NI)\n\n\nChaCha20-Poly1305\nSimétrica (Secção 4.5)\n256 bits\nIdêntico ao AES-256\nChave: 256 bits\nTão rápido como o AES-256 sem aceleração de hardware\n\n\nRSA-3072\nAssimétrica clássica (factorização)\n128 bits\nQuebrado por Shor em tempo polinomial\nChave pública e assinatura: 3072 bits\nCifragem rápida; decifragem e assinatura lentas (expoente privado grande)\n\n\nECDSA P-256 / X25519\nAssimétrica clássica (curva elíptica)\n128 bits\nQuebrado por Shor em tempo polinomial\nChave pública: 256 bits; assinatura: ~512 bits\nOrdens de grandeza mais rápido e compacto que o RSA equivalente\n\n\nML-KEM-768\nPós-quântica (reticulados)\n~128 bits (Categoria NIST 3)\nSem ataque quântico eficiente conhecido\nChave pública: ~1184 bytes; texto cifrado: ~1088 bytes\nSem exponenciação modular; operações rápidas, mas chaves muito maiores que a ECC\n\n\nML-DSA-65\nPós-quântica (reticulados)\n~128 bits (Categoria NIST 3)\nSem ataque quântico eficiente conhecido\nChave pública: ~1952 bytes; assinatura: ~3293 bytes\nGeração e verificação competitivas; assinatura cerca de 6 vezes maior que a do ECDSA\n\n\n\n\n\n\nO padrão que emerge desta tabela antecipa a secção seguinte: a criptografia de curva elíptica (Capítulo 8) é, de longe, a mais eficiente das famílias clássicas, com chaves e assinaturas pequenas e operações rápidas. A criptografia pós-quântica troca precisamente essa eficiência por resistência ao algoritmo de Shor: as suas chaves e assinaturas são tipicamente vinte a cinquenta vezes maiores do que as equivalentes em ECC, para o mesmo nível de segurança clássica, e é este o custo de engenharia real da transição que a secção seguinte descreve.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Eficiência Algorítmica e Criptografia Pós-Quântica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap11.html#sec-11-pqc",
+    "href": "capitulos/cap11.html#sec-11-pqc",
+    "title": "11  Eficiência Algorítmica e Criptografia Pós-Quântica",
+    "section": "11.7 Criptografia Pós-Quântica: Ameaça e Migração",
+    "text": "11.7 Criptografia Pós-Quântica: Ameaça e Migração\nTodo o edifício da criptografia assimétrica apresentado neste livro, RSA, Diffie-Hellman, DSA, curva elíptica, assenta em dois problemas matemáticos: a factorização de inteiros e o logaritmo discreto (módulo um primo, ou sobre uma curva elíptica). Em 1997, Peter Shor mostrou que um computador quântico suficientemente grande resolve ambos os problemas em tempo polinomial (Shor 1997), o que tornaria trivial quebrar qualquer chave RSA, Diffie-Hellman ou ECC, independentemente do seu tamanho. O algoritmo de Grover, já referido a propósito da segurança do AES (Secção 3.5), tem um efeito mais limitado sobre a criptografia simétrica, reduzindo para metade o número efectivo de bits de segurança (Grover 1996), o que se resolve simplesmente duplicando o tamanho da chave (AES-256 em vez de AES-128).\nA ameaça de Shor não é, para já, prática: construir um computador quântico suficientemente estável e grande para a executar contra chaves do tamanho usado hoje continua a ser um desafio de engenharia em aberto. Mas a migração para alternativas resistentes a computadores quânticos já está em curso, motivada em parte pelo cenário “colher agora, decifrar depois” (harvest now, decrypt later): tráfego cifrado hoje, interceptado e armazenado, pode ser decifrado retroactivamente assim que um computador quântico capaz existir, o que é já hoje uma preocupação para dados que precisem de permanecer confidenciais durante décadas.\nO NIST concluiu, em 2024, a normalização das primeiras normas de criptografia pós-quântica (post-quantum cryptography, PQC): o ML-KEM (antigo Kyber, FIPS 203 (National Institute of Standards and Technology 2024b)) para troca de chaves, e o ML-DSA (antigo Dilithium, FIPS 204 (National Institute of Standards and Technology 2024a)) para assinaturas digitais, ambos assentes em problemas sobre reticulados (lattices), não em factorização nem em logaritmos discretos, e por isso não conhecidamente vulneráveis ao algoritmo de Shor. Protocolos como o TLS 1.3 (Secção 10.2) já suportam hoje esquemas híbridos, que combinam um mecanismo clássico (como o X25519 da Secção 8.6) com um mecanismo pós-quântico no mesmo handshake, de forma que a ligação só fica vulnerável se ambos os mecanismos forem quebrados, uma estratégia de transição prudente enquanto a confiança nos novos algoritmos amadurece.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Eficiência Algorítmica e Criptografia Pós-Quântica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap11.html#sec-11-sintese",
+    "href": "capitulos/cap11.html#sec-11-sintese",
+    "title": "11  Eficiência Algorítmica e Criptografia Pós-Quântica",
+    "section": "11.8 Síntese do Capítulo",
+    "text": "11.8 Síntese do Capítulo\nEste capítulo fechou o livro quantificando a própria noção de segurança:\n\nA criptografia mede segurança como um esforço quantificável, não como uma propriedade binária: transforma-a numa ciência mensurável\nA segurança informacional é uma impossibilidade absoluta (o único exemplo do livro é o One-Time Pad); a segurança computacional, de que dependem todos os outros esquemas apresentados, é uma impossibilidade apenas prática\nO enquadramento \\((t,\\varepsilon)\\) formaliza a segurança computacional: nenhum atacante com no máximo \\(t\\) operações deve ter sucesso com probabilidade superior a \\(\\varepsilon\\)\nAs classes de complexidade (polinomial, subexponencial, exponencial) descrevem como o custo de um ataque escala com o tamanho da chave; é essa escala, não o esforço a um tamanho fixo, que explica porque é que problemas subexponenciais (factorização, logaritmo discreto módulo um primo) exigem chaves muito maiores do que problemas exponenciais (ECDLP, pesquisa exaustiva) para o mesmo nível de segurança\nToda a criptografia de chave pública depende de uma assimetria de complexidade: a operação legítima é sempre polinomial, o ataque sem o segredo é subexponencial ou exponencial\nA eficiência de um algoritmo, tamanho de chave, velocidade, tamanho de assinatura, é sempre um compromisso com o nível de segurança pretendido; a curva elíptica é hoje a família clássica mais eficiente\nO algoritmo de Shor resolve a factorização e o logaritmo discreto em tempo polinomial, tornando trivial quebrar RSA, Diffie-Hellman e ECC num computador quântico suficientemente grande; o de Grover apenas reduz a segurança simétrica a metade\nO NIST já normalizou alternativas pós-quânticas (ML-KEM, ML-DSA) baseadas em reticulados, com chaves e assinaturas 20 a 50 vezes maiores do que as da ECC, e os primeiros esquemas híbridos já estão em produção",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Eficiência Algorítmica e Criptografia Pós-Quântica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap11.html#sec-11-reflexao",
+    "href": "capitulos/cap11.html#sec-11-reflexao",
+    "title": "11  Eficiência Algorítmica e Criptografia Pós-Quântica",
+    "section": "11.9 Para Pensar",
+    "text": "11.9 Para Pensar\nO cenário “colher agora, decifrar depois” significa que tráfego TLS interceptado hoje pode vir a ser decifrado no futuro, quando existir um computador quântico suficientemente grande, mesmo que a chave de sessão usada seja, hoje, computacionalmente inquebrável. Tendo em conta que a chave de sessão do TLS deriva de um ECDH executado durante o handshake (Secção 10.2), porque é que este cenário não ameaça da mesma forma dados cifrados com uma chave simétrica de longo prazo já anteriormente combinada por um canal físico seguro, como uma pen USB entregue em mão?",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Eficiência Algorítmica e Criptografia Pós-Quântica</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap11.html#sec-11-referencias",
+    "href": "capitulos/cap11.html#sec-11-referencias",
+    "title": "11  Eficiência Algorítmica e Criptografia Pós-Quântica",
+    "section": "Referências",
+    "text": "Referências\n\n\nAumasson, Jean-Philippe. 2017. Serious Cryptography: A Practical Introduction to Modern Encryption. No Starch Press.\n\n\nGrover, Lov K. 1996. «A Fast Quantum Mechanical Algorithm for Database Search». Em 28th Annual ACM Symposium on Theory of Computing (STOC).\n\n\nNational Institute of Standards and Technology. 2024a. «Module-Lattice-Based Digital Signature Standard». FIPS PUB 204. NIST.\n\n\n———. 2024b. «Module-Lattice-Based Key-Encapsulation Mechanism Standard». FIPS PUB 203. NIST.\n\n\nShor, Peter W. 1997. «Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer». SIAM Journal on Computing 26 (5): 1484–1509.\n\n\nStallings, William. 2020. Cryptography and Network Security: Principles and Practice. 8.ª ed. Pearson.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Eficiência Algorítmica e Criptografia Pós-Quântica</span>"
     ]
   }
 ]

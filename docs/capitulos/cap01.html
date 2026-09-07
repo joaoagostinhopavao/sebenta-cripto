@@ -236,7 +236,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica — Fundamentos e RSA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Criptografia Assimétrica e RSA</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -248,7 +248,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Criptografia de Curva Elíptica (ECC)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Criptografia de Curva Elíptica</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -260,7 +260,13 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP — Esquemas Criptográficos Aplicados</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Eficiência Algorítmica e Criptografia Pós-Quântica</span></span></a>
   </div>
 </li>
     </ul>
@@ -1062,6 +1068,10 @@ Security Symposium</em>.
 Aumasson, Jean-Philippe. 2017. <em>Serious Cryptography: A Practical
 Introduction to Modern Encryption</em>. No Starch Press.
 </div>
+<div id="ref-NIST80057" class="csl-entry" role="listitem">
+Barker, Elaine. 2020. <span>“Recommendation for Key Management, Part 1:
+General.”</span> SP 800-57 Part 1 Rev. 5. NIST.
+</div>
 <div id="ref-BellareCanettiKrawczyk1996" class="csl-entry" role="listitem">
 Bellare, Mihir, Ran Canetti, and Hugo Krawczyk. 1996. <span>“Keying Hash
 Functions for Message Authentication.”</span> In <em>Advances in
@@ -1072,11 +1082,27 @@ Bernstein, Daniel J. 2005. <span>“The <span>Poly1305-AES</span>
 Message-Authentication Code.”</span> In <em>Fast Software Encryption
 (FSE 2005)</em>. Vol. 3557. Lecture Notes in Computer Science. Springer.
 </div>
+<div id="ref-Bernstein2006Curve25519" class="csl-entry" role="listitem">
+———. 2006. <span>“Curve25519: New <span>Diffie-Hellman</span> Speed
+Records.”</span> In <em>Public Key Cryptography (PKC 2006)</em>. Vol.
+3958. Lecture Notes in Computer Science. Springer.
+</div>
 <div id="ref-Bock2016" class="csl-entry" role="listitem">
 Böck, Hanno, Aaron Zauner, Sean Devlin, Juraj Somorovsky, and Philipp
 Jovanovic. 2016. <span>“Nonce-Disrespecting Adversaries: Practical
 Forgery Attacks on <span>GCM</span> in <span>TLS</span>.”</span> In
 <em>USENIX Workshop on Offensive Technologies (WOOT)</em>.
+</div>
+<div id="ref-RFC4880" class="csl-entry" role="listitem">
+Callas, Jon, Lutz Donnerhacke, Hal Finney, David Shaw, and Rodney
+Thayer. 2007. <span>“<span>OpenPGP</span> Message Format.”</span> RFC
+4880. IETF.
+</div>
+<div id="ref-RFC5280" class="csl-entry" role="listitem">
+Cooper, David, Stefan Santesson, Stephen Farrell, Sharon Boeyen, Russell
+Housley, and Tim Polk. 2008. <span>“Internet <span>X.509</span> Public
+Key Infrastructure Certificate and Certificate Revocation List
+(<span>CRL</span>) Profile.”</span> RFC 5280. IETF.
 </div>
 <div id="ref-Du2022" class="csl-entry" role="listitem">
 Du, Wenliang. 2022. <em>Computer Security: A Hands-on Approach</em>. 3rd
@@ -1096,18 +1122,35 @@ Fluhrer, Scott, Itsik Mantin, and Adi Shamir. 2001. <span>“Weaknesses in
 the Key Scheduling Algorithm of <span>RC4</span>.”</span> In
 <em>Selected Areas in Cryptography (SAC 2001)</em>.
 </div>
+<div id="ref-Grover1996" class="csl-entry" role="listitem">
+Grover, Lov K. 1996. <span>“A Fast Quantum Mechanical Algorithm for
+Database Search.”</span> In <em>28th Annual ACM Symposium on Theory of
+Computing (STOC)</em>.
+</div>
 <div id="ref-Kerckhoffs1883" class="csl-entry" role="listitem">
 Kerckhoffs, Auguste. 1883. <span>“La Cryptographie Militaire.”</span>
 <em>Journal Des Sciences Militaires</em> 9: 5–38.
+</div>
+<div id="ref-Koblitz1987" class="csl-entry" role="listitem">
+Koblitz, Neal. 1987. <span>“Elliptic Curve Cryptosystems.”</span>
+<em>Mathematics of Computation</em> 48 (177): 203–9.
 </div>
 <div id="ref-RFC2104" class="csl-entry" role="listitem">
 Krawczyk, Hugo, Mihir Bellare, and Ran Canetti. 1997.
 <span>“<span>HMAC</span>: Keyed-Hashing for Message
 Authentication.”</span> RFC 2104. IETF.
 </div>
+<div id="ref-RFC7748" class="csl-entry" role="listitem">
+Langley, Adam, Mike Hamburg, and Sean Turner. 2016. <span>“Elliptic
+Curves for Security.”</span> RFC 7748. IETF.
+</div>
 <div id="ref-Martin2017" class="csl-entry" role="listitem">
 Martin, Keith. 2017. <em>Everyday Cryptography</em>. 2nd ed. Oxford
 University Press.
+</div>
+<div id="ref-Miller1985" class="csl-entry" role="listitem">
+Miller, Victor S. 1985. <span>“Use of Elliptic Curves in
+Cryptography.”</span> In <em>Advances in Cryptology (CRYPTO ’85)</em>.
 </div>
 <div id="ref-FIPS197" class="csl-entry" role="listitem">
 National Institute of Standards and Technology. 2001. <span>“Advanced
@@ -1116,6 +1159,14 @@ Encryption Standard (AES).”</span> FIPS PUB 197. NIST.
 <div id="ref-FIPS1804" class="csl-entry" role="listitem">
 ———. 2015. <span>“Secure Hash Standard (SHS).”</span> FIPS PUB 180-4.
 NIST.
+</div>
+<div id="ref-FIPS204" class="csl-entry" role="listitem">
+———. 2024a. <span>“Module-Lattice-Based Digital Signature
+Standard.”</span> FIPS PUB 204. NIST.
+</div>
+<div id="ref-FIPS203" class="csl-entry" role="listitem">
+———. 2024b. <span>“Module-Lattice-Based Key-Encapsulation Mechanism
+Standard.”</span> FIPS PUB 203. NIST.
 </div>
 <div id="ref-RFC8439" class="csl-entry" role="listitem">
 Nir, Yoav, and Adam Langley. 2018. <span>“<span>ChaCha20</span> and
@@ -1131,9 +1182,18 @@ Preneel, Bart, and Paul C. van Oorschot. 1995.
 <span>“<span>MDx-MAC</span> and Building Fast <span>MAC</span>s from
 Hash Functions.”</span> In <em>Advances in Cryptology (CRYPTO ’95)</em>.
 </div>
+<div id="ref-RFC8446" class="csl-entry" role="listitem">
+Rescorla, Eric. 2018. <span>“The Transport Layer Security
+(<span>TLS</span>) Protocol Version 1.3.”</span> RFC 8446. IETF.
+</div>
 <div id="ref-Shannon1949" class="csl-entry" role="listitem">
 Shannon, Claude E. 1949. <span>“Communication Theory of Secrecy
 Systems.”</span> <em>Bell System Technical Journal</em> 28 (4): 656–715.
+</div>
+<div id="ref-Shor1997" class="csl-entry" role="listitem">
+Shor, Peter W. 1997. <span>“Polynomial-Time Algorithms for Prime
+Factorization and Discrete Logarithms on a Quantum Computer.”</span>
+<em>SIAM Journal on Computing</em> 26 (5): 1484–1509.
 </div>
 <div id="ref-Stallings2020" class="csl-entry" role="listitem">
 Stallings, William. 2020. <em>Cryptography and Network Security:
