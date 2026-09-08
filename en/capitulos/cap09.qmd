@@ -13,7 +13,7 @@ The previous chapter ended with an open question: how does anyone know that a pu
 
 In a **man-in-the-middle attack** (MITM), an attacker positioned at any point in the network between the two parties, for example on a compromised router, intercepts and substitutes the public keys being exchanged, without either victim noticing [@Stallings2020]:
 
-![The attacker (Mallory) intercepts Alice's and Bob's public keys, and substitutes them with her own before forwarding them on. Each party thinks they are using the other's public key, when in fact they are using Mallory's public key.](../assets/images/fig-09-mitm.png){#fig-09-mitm width=85%}
+![The attacker (Mallory) intercepts Alice's and Bob's public keys, and substitutes them with her own before forwarding them on. Each party thinks they are using the other's public key, when in fact they are using Mallory's public key.](../assets/images/fig-09-mitm-en.png){#fig-09-mitm width=85%}
 
 The attack works because a public key, by definition, has nothing that inseparably ties it to its owner: it is just a number, and a number has no identity of its own. When Alice receives something that looks like Bob's public key, she has, by herself, no way of confirming its origin.
 
@@ -29,7 +29,7 @@ This is exactly the function of a **Public Key Infrastructure** (PKI): a set of 
 
 The **X.509** standard, now universal on the Web, defines the structure of a public-key certificate. An X.509 certificate essentially contains the holder's identification data and the signature of whoever certifies it [@RFC5280]:
 
-![Essential structure of an X.509 certificate: the holder's data (identity, public key, validity period, issuer, and serial number), and the certificate authority's signature over the hash of that data.](../assets/images/fig-09-x509.png){#fig-09-x509 width=55%}
+![Essential structure of an X.509 certificate: the holder's data (identity, public key, validity period, issuer, and serial number), and the certificate authority's signature over the hash of that data.](../assets/images/fig-09-x509-en.png){#fig-09-x509 width=55%}
 
 - **Identity** (*Subject*): to whom the certificate belongs, typically a domain, an organisation, or a person.
 - **Public key**: the key that the certificate attests belongs to that identity.
@@ -44,7 +44,7 @@ This last line is what turns the identification data into a verifiable statement
 
 A single CA key pair directly certifying every site on the Internet would be impractical and fragile (a single point of compromise would compromise everything). Instead, trust is organised into a **certificate chain**: each certificate is signed by another, up to a **Root CA**, whose public key comes pre-installed in the operating system or browser [@Stallings2020]:
 
-![The certificate chain: the Root CA signs certificates for intermediate CAs, which in turn sign further certificates, down to the final holder of a domain. Trusting the root, already installed on the system, is enough to validate the entire chain.](../assets/images/fig-09-cadeia-ca.png){#fig-09-cadeia-ca width=85%}
+![The certificate chain: the Root CA signs certificates for intermediate CAs, which in turn sign further certificates, down to the final holder of a domain. Trusting the root, already installed on the system, is enough to validate the entire chain.](../assets/images/fig-09-cadeia-ca-en.png){#fig-09-cadeia-ca width=85%}
 
 Trusting only the Root CAs, a relatively small number of carefully audited entities, is enough to validate any certificate issued at any point in the chain, however many intermediaries exist between the root and the final holder.
 
@@ -81,7 +81,7 @@ This chapter resolved the problem left open in the previous chapter:
 4. Trust is organised into a **certificate chain**, from the Root CA (pre-installed on the system) down to the final holder, through intermediate CAs
 5. Verifying a certificate requires confirming the issuing CA's signature, the validity period, and the revocation status, confirming the signature alone is not enough
 
-## Food for Thought {#sec-09-reflexao}
+## Discussion Question {#sec-09-reflexao}
 
 The certificate chain (Section 9.4) solves the problem of trusting a public key by introducing trust in a Root CA, pre-installed in the operating system or browser. This shifts the original problem (how to trust a public key?) into a slightly different one. What is that new problem, and why is trusting a handful of pre-installed Root CAs a more practicable solution than asking every Internet user to manually confirm the public key of every site they visit?
 

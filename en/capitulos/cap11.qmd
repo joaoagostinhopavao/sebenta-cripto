@@ -107,7 +107,7 @@ This chapter closed the book by quantifying the very notion of security:
 7. Shor's algorithm solves factorisation and the discrete logarithm in **polynomial** time, making it trivial to break RSA, Diffie-Hellman, and ECC on a sufficiently large quantum computer; Grover's algorithm only halves symmetric security
 8. NIST has already standardised **post-quantum** alternatives (ML-KEM, ML-DSA) based on lattices, with keys and signatures 20 to 50 times larger than those of ECC, and the first hybrid schemes are already in production
 
-## Food for Thought {#sec-11-reflexao}
+## Discussion Question {#sec-11-reflexao}
 
 The "harvest now, decrypt later" scenario means that TLS traffic intercepted today may come to be decrypted in the future, once a sufficiently large quantum computer exists, even though the session key used is, today, computationally unbreakable. Given that the TLS session key derives from an ECDH exchange carried out during the handshake (Section 10.2), why does this scenario **not** threaten, in the same way, data encrypted with a long-term symmetric key that was previously exchanged over a secure physical channel, such as a USB drive delivered by hand?
 

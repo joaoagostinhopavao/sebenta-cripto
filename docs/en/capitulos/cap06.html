@@ -288,7 +288,7 @@ window.Quarto = {
   <li><a href="#sec-06-rsa-cifra" id="toc-sec-06-rsa-cifra" class="nav-link" data-scroll-target="#sec-06-rsa-cifra"><span class="header-section-number">6.4</span> RSA: Encryption and Decryption</a></li>
   <li><a href="#sec-06-rsa-seguranca" id="toc-sec-06-rsa-seguranca" class="nav-link" data-scroll-target="#sec-06-rsa-seguranca"><span class="header-section-number">6.5</span> Security: What Makes RSA Hard to Break — and Easy to Misuse</a></li>
   <li><a href="#sec-06-sintese" id="toc-sec-06-sintese" class="nav-link" data-scroll-target="#sec-06-sintese"><span class="header-section-number">6.6</span> Chapter Summary</a></li>
-  <li><a href="#sec-06-reflexao" id="toc-sec-06-reflexao" class="nav-link" data-scroll-target="#sec-06-reflexao"><span class="header-section-number">6.7</span> Food for Thought</a></li>
+  <li><a href="#sec-06-reflexao" id="toc-sec-06-reflexao" class="nav-link" data-scroll-target="#sec-06-reflexao"><span class="header-section-number">6.7</span> Discussion Question</a></li>
   <li><a href="#sec-06-referencias" id="toc-sec-06-referencias" class="nav-link" data-scroll-target="#sec-06-referencias">References</a></li>
   </ul>
 </nav>
@@ -338,7 +338,7 @@ window.Quarto = {
 <div id="fig-06-confid-autent" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-06-confid-autent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-06-confidencialidade-autenticacao.png" class="img-fluid figure-img" style="width:100.0%">
+<img src="../assets/images/fig-06-confidencialidade-autenticacao-en.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-06-confid-autent-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6.1: In both schemes, a message <span class="math inline">\(X\)</span> is encrypted at one end and decrypted at the other, but the key pair used, and what each scheme guarantees, are opposite. For confidentiality, encryption uses the recipient’s public key; for authentication, encryption uses the sender’s own private key.
@@ -442,7 +442,7 @@ Figure&nbsp;6.2: Key generation, encryption and decryption in RSA. The security 
 <div id="fig-06-rsa-exemplo" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-06-rsa-exemplo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-06-rsa-exemplo.png" class="img-fluid figure-img" style="width:100.0%">
+<img src="../assets/images/fig-06-rsa-exemplo-en.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-06-rsa-exemplo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;6.3: The same example in action: the message <span class="math inline">\(M=88\)</span> is encrypted with the public key <span class="math inline">\((7,187)\)</span>, obtaining <span class="math inline">\(C=11\)</span>; it is decrypted with the private key <span class="math inline">\((23,187)\)</span>, recovering <span class="math inline">\(M=88\)</span>.
@@ -475,7 +475,7 @@ Figure&nbsp;6.3: The same example in action: the message <span class="math inlin
 </ol>
 </section>
 <section id="sec-06-reflexao" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="sec-06-reflexao"><span class="header-section-number">6.7</span> Food for Thought</h2>
+<h2 data-number="6.7" class="anchored" data-anchor-id="sec-06-reflexao"><span class="header-section-number">6.7</span> Discussion Question</h2>
 <p>The worked example in Section 6.4 uses <span class="math inline">\(n=187\)</span> (8 bits), trivially factorizable, which destroys its security; the current standard recommends <span class="math inline">\(n\)</span> of 2048 to 4096 bits. In real RSA implementations, the public exponent <span class="math inline">\(e\)</span> is usually a small, fixed number (the value <span class="math inline">\(e=65537\)</span> is the most common), the same across millions of different keys worldwide, without this compromising the security of any of them. Given where all of RSA’s security actually comes from (Section 6.5), why would increasing the size of <span class="math inline">\(e\)</span>, while keeping <span class="math inline">\(n\)</span> small, not make the example in Section 6.4 more secure?</p>
 </section>
 <section id="sec-06-referencias" class="level2 unnumbered">
@@ -1133,7 +1133,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>This simple inversion of "which key to use for what" gives rise to two distinct schemes, with opposite purposes:</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="al">![In both schemes, a message $X$ is encrypted at one end and decrypted at the other, but the key pair used, and what each scheme guarantees, are opposite. For confidentiality, encryption uses the recipient's public key; for authentication, encryption uses the sender's own private key.](../assets/images/fig-06-confidencialidade-autenticacao.png)</span>{#fig-06-confid-autent width=100%}</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="al">![In both schemes, a message $X$ is encrypted at one end and decrypted at the other, but the key pair used, and what each scheme guarantees, are opposite. For confidentiality, encryption uses the recipient's public key; for authentication, encryption uses the sender's own private key.](../assets/images/fig-06-confidencialidade-autenticacao-en.png)</span>{#fig-06-confid-autent width=100%}</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>**Confidentiality.** To send Bob a confidential message, Alice encrypts it with **Bob's public key** ($PU_b$), which anyone knows:</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
@@ -1196,7 +1196,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Compute $d=23$, because $(23 \times 7) \bmod 160 = 161 \bmod 160 = 1$.</span>
 <span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Public key $= <span class="sc">\{</span>7, 187<span class="sc">\}</span>$; private key $= <span class="sc">\{</span>23, 187<span class="sc">\}</span>$.</span>
 <span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="al">![The same example in action: the message $M=88$ is encrypted with the public key $(7,187)$, obtaining $C=11$; it is decrypted with the private key $(23,187)$, recovering $M=88$.](../assets/images/fig-06-rsa-exemplo.png)</span>{#fig-06-rsa-exemplo width=100%}</span>
+<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="al">![The same example in action: the message $M=88$ is encrypted with the public key $(7,187)$, obtaining $C=11$; it is decrypted with the private key $(23,187)$, recovering $M=88$.](../assets/images/fig-06-rsa-exemplo-en.png)</span>{#fig-06-rsa-exemplo width=100%}</span>
 <span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>To send the message $M=88$: $C = 88^7 \bmod 187 = 11$. To recover it: $M = 11^{23} \bmod 187 = 88$.</span>
 <span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a></span>
@@ -1224,7 +1224,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>RSA's security depends entirely on the difficulty of **factorizing** $n$ into $p$ and $q$; with a small $n$ (as in the didactic example $n=187$), factorization is trivial, which is why the current standard requires $n$ of at least 2048 to 4096 bits</span>
 <span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**Textbook RSA** is not secure on its own: real-world use requires **RSA-OAEP** for encryption and **RSA-PSS** for signatures</span>
 <span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="fu">## Food for Thought {#sec-06-reflexao}</span></span>
+<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion Question {#sec-06-reflexao}</span></span>
 <span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a>The worked example in Section 6.4 uses $n=187$ (8 bits), trivially factorizable, which destroys its security; the current standard recommends $n$ of 2048 to 4096 bits. In real RSA implementations, the public exponent $e$ is usually a small, fixed number (the value $e=65537$ is the most common), the same across millions of different keys worldwide, without this compromising the security of any of them. Given where all of RSA's security actually comes from (Section 6.5), why would increasing the size of $e$, while keeping $n$ small, not make the example in Section 6.4 more secure?</span>
 <span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a></span>

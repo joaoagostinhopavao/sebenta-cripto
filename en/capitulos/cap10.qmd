@@ -17,7 +17,7 @@ This chapter shows how the tools presented throughout the book, symmetric cipher
 
 TLS 1.3 [@RFC8446] significantly simplified the handshake process relative to earlier versions, reducing it to a single round trip (*1-RTT*) in the general case:
 
-![The TLS 1.3 handshake: client and server exchange a key-share value (*key_share*, typically ECDH over Curve25519) in the very first pair of messages; the server proves its identity with an X.509 certificate and the corresponding signature; both sides confirm they have derived the same session key before exchanging application data.](../assets/images/fig-10-tls-handshake.png){#fig-10-tls-handshake width=75%}
+![The TLS 1.3 handshake: client and server exchange a key-share value (*key_share*, typically ECDH over Curve25519) in the very first pair of messages; the server proves its identity with an X.509 certificate and the corresponding signature; both sides confirm they have derived the same session key before exchanging application data.](../assets/images/fig-10-tls-handshake-en.png){#fig-10-tls-handshake width=75%}
 
 The client starts with a `ClientHello`, which already includes a key-share value (*key_share*), typically an elliptic curve point for ECDH (Section 8.5). The server responds with its own `ServerHello` and *key_share*, allowing both sides to immediately derive a common session key, exactly as in Section 8.5. The server also sends its X.509 certificate (Section 9.3) and a signature over the handshake transcript, proving that it holds the corresponding private key; both sides finish by confirming, through an authenticated `Finished` message, that they arrived at the same key. From this point on, all communication proceeds encrypted and authenticated by the record layer.
 
@@ -34,7 +34,7 @@ A **cipher suite** in TLS 1.3 specifies the AEAD algorithm and the hash function
 
 **PGP** (*Pretty Good Privacy*), and its standardised successor, OpenPGP [@RFC4880], solves a different problem from TLS: protecting a message that does not follow a real-time connection, such as an email, between a sender and a recipient whose public keys are already known [@Martin2017]. The construction combines symmetric and asymmetric encryption, drawing on the speed of the former and the convenience of the latter:
 
-![PGP's hybrid scheme: the message is signed with the sender's private key and encrypted with a randomly generated session key; that session key, in turn, is encrypted with the recipient's public key. Only whoever holds the corresponding private key can recover the session key, and through it, the message.](../assets/images/fig-10-pgp.png){#fig-10-pgp width=100%}
+![PGP's hybrid scheme: the message is signed with the sender's private key and encrypted with a randomly generated session key; that session key, in turn, is encrypted with the recipient's public key. Only whoever holds the corresponding private key can recover the session key, and through it, the message.](../assets/images/fig-10-pgp-en.png){#fig-10-pgp width=100%}
 
 On the sender's side: the message $M$ is first signed (hashed and then encrypted with the sender's private key, as in Section 7.4); the result is encrypted with a **session key** $K_s$, generated at random and used only once, via a fast symmetric cipher; and that session key, in turn, is encrypted with the recipient's public key, using RSA. What is transmitted is the pair (ciphertext, encrypted session key). On the receiver's side, the process is reversed: the recipient's private key decrypts $K_s$, which decrypts the text, revealing the message and the signature, which is finally verified with the sender's public key.
 
@@ -49,7 +49,7 @@ This chapter combined the tools from previous chapters into two real systems:
 3. Modern cipher suites use AES-GCM or ChaCha20-Poly1305, depending on whether hardware acceleration is available
 4. **PGP** protects asynchronous messages, such as email, with a **hybrid** cipher: the message is encrypted with a symmetric session key, and only that key is encrypted with RSA; trust is organised as a decentralised network, not a CA hierarchy
 
-## Food for Thought {#sec-10-reflexao}
+## Discussion Question {#sec-10-reflexao}
 
 The forward secrecy of TLS 1.3 (Section 10.2) guarantees that compromising the server's long-term private key does not allow past sessions to be decrypted, because the session key never depended directly on it. PGP (Section 10.4) works quite differently: the recipient's public key directly encrypts the session key $K_s$ of each message, always using the same long-term RSA key pair. Given this, what consequence does the eventual future discovery of a recipient's long-term private key have for PGP messages already sent in the past, and precisely how does this situation differ from the guarantee offered by TLS 1.3?
 

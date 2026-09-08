@@ -80,7 +80,7 @@ The most direct use of a hash function is to check whether a piece of data has r
 
 But this scheme has a serious flaw, which only becomes visible once an active attacker, capable of intervening on the communication channel, is considered, rather than just an accidental transmission error:
 
-![A keyless hash function detects accidental errors, but does not withstand an active attacker: since anyone can compute $H$, an attacker who alters the data can also recompute a new, valid hash, and the receiver has no way of telling this situation apart from a legitimate communication.](../assets/images/fig-05-hash-integridade-ataque.png){#fig-05-integridade-ataque width=100%}
+![A keyless hash function detects accidental errors, but does not withstand an active attacker: since anyone can compute $H$, an attacker who alters the data can also recompute a new, valid hash, and the receiver has no way of telling this situation apart from a legitimate communication.](../assets/images/fig-05-hash-integridade-ataque-en.png){#fig-05-integridade-ataque width=100%}
 
 The root of the problem: $H$ is **public**. There is no secret involved in computing the hash, so an attacker capable of altering data in transit is equally capable of recomputing the hash corresponding to the altered data. The hash value, on its own, proves that the data did not suffer an accidental error, but it proves neither that the data comes from whoever claims to have sent it, nor that it was not deliberately tampered with by someone along the way. What is missing is an ingredient that only the legitimate sender and receiver possess, and that an attacker cannot reproduce: a **shared secret**.
 
@@ -90,7 +90,7 @@ The simplest solution to the problem identified in the previous section is to in
 
 $$T = \text{MAC}_K(\text{data})$$
 
-![With a secret key $K$, shared only between sender and receiver, the same attack from Figure [-@fig-05-integridade-ataque] fails: the attacker can alter the data, but cannot compute the corresponding tag without knowing $K$, and the receiver rejects the tampered message.](../assets/images/fig-05-mac-generico.png){#fig-05-mac-generico width=100%}
+![With a secret key $K$, shared only between sender and receiver, the same attack from Figure [-@fig-05-integridade-ataque] fails: the attacker can alter the data, but cannot compute the corresponding tag without knowing $K$, and the receiver rejects the tampered message.](../assets/images/fig-05-mac-generico-en.png){#fig-05-mac-generico width=100%}
 
 A concrete example helps fix the idea. Suppose a bank transfer order, "Transfer €100 to IBAN PT50...", protected with $\text{MAC}_K$. The bank receives the message and the tag, recomputes $\text{MAC}_K$ over the received message with the same key $K$ (previously agreed with the customer, for example when activating the card), and compares. If an attacker intercepts the message and changes "€100" to "€10000", the old tag no longer matches the altered message, and computing the correct tag for the new message would require knowing $K$, exactly what the attacker in Figure [-@fig-05-integridade-ataque] lacked.
 
@@ -126,7 +126,7 @@ $$\text{HMAC}(K, M) = H\big((K' \oplus \text{opad}) \,\Vert\, H((K' \oplus \text
 
 where $K'$ is the key adjusted to the block size of $H$ (padded with zeros if shorter, or itself digested by $H$ if longer), and `ipad` and `opad` are two fixed, public constants (the byte `0x36` and the byte `0x5C`, repeated up to the block size), chosen simply for having a large Hamming distance between them, so that the two internal keys, $K' \oplus \text{ipad}$ and $K' \oplus \text{opad}$, behave like two independent keys:
 
-![The HMAC construction: the message is first combined with one version of the key ($K \oplus \text{ipad}$) and passed through $H$, producing an inner hash; this result is then combined with a second version of the key ($K \oplus \text{opad}$) and passed through $H$ a second time, producing the final tag. Neither invocation of $H$ ever processes the original key directly.](../assets/images/fig-05-hmac-construcao.png){#fig-05-hmac-construcao width=95%}
+![The HMAC construction: the message is first combined with one version of the key ($K \oplus \text{ipad}$) and passed through $H$, producing an inner hash; this result is then combined with a second version of the key ($K \oplus \text{opad}$) and passed through $H$ a second time, producing the final tag. Neither invocation of $H$ ever processes the original key directly.](../assets/images/fig-05-hmac-construcao-en.png){#fig-05-hmac-construcao width=95%}
 
 This two-layer structure resolves both attacks from the previous list: the outer hash never exposes its internal state from data known to the attacker (the inner hash has already consumed the key before that point), which eliminates length extension, and a collision in the inner hash is no longer enough to forge a tag, because the result still has to pass through the second $H$, protected by the second key.
 
@@ -146,7 +146,7 @@ This chapter moved from confidentiality to integrity and authentication:
 6. Naively concatenating the key to the message (`H(K‖M)` or `H(M‖K)`) has known problems, length extension in the first case, total dependence on collision resistance in the second
 7. **HMAC** solves both by applying $H$ twice, in a nested structure with two derived keys (`ipad`/`opad`); its security does not depend on the collision resistance of $H$, which explains why HMAC-SHA1 remains without known practical attacks, despite SHA-1 no longer being secure as a general-purpose hash
 
-## Food for Thought {#sec-05-reflexao}
+## Discussion Question {#sec-05-reflexao}
 
 SHA-1 is no longer secure against collisions, and is formally discouraged for digital signatures and certificates. Even so, HMAC-SHA1 remains in use in several legacy systems without being considered a critical flaw. Bearing in mind the distinction between the properties of a hash (Section 5.2) and what HMAC's security proof actually requires (Section 5.6), why does breaking a hash function's collision resistance not automatically break the MAC built on top of it?
 

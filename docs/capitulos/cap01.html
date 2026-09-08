@@ -919,6 +919,17 @@ Figura&nbsp;1.3: Grelha de Playfair construída a partir da palavra-chave “RED
 <p>Na cifra de Vigenère, a palavra-chave define uma sequência de deslocamentos (cada letra da chave corresponde a um deslocamento de César diferente), aplicados ciclicamente às sucessivas letras do texto claro. Sendo <span class="math inline">\(m\)</span> o comprimento da palavra-chave, e <span class="math inline">\(k_0, k_1, \dots, k_{m-1}\)</span> os deslocamentos que ela define:</p>
 <p><span class="math display">\[C_i = (p_i + k_{i \bmod m}) \bmod 26 \qquad p_i = (C_i - k_{i \bmod m}) \bmod 26\]</span></p>
 <p>Como a chave é mais curta do que a mensagem (<span class="math inline">\(m\)</span> é tipicamente muito menor do que o número de letras do texto claro), o índice <span class="math inline">\(i \bmod m\)</span> garante que ela se repete ciclicamente até cobrir todo o texto. A mesma letra do texto claro pode assim corresponder a letras diferentes no texto cifrado, consoante a posição em que ocorre, o que achata consideravelmente a distribuição de frequências observável no texto cifrado.</p>
+<p>A <a href="#fig-01-achatamento-frequencia" class="quarto-xref">Figura&nbsp;<span>1.4</span></a> mostra este efeito de forma directa: para cada cifra, ordenam-se as letras do texto cifrado da mais para a menos frequente e normaliza-se pela frequência da letra mais comum. O texto claro produz uma curva muito inclinada, com um pequeno número de letras a dominar. A Playfair achata-a moderadamente, ao substituir pares de letras em vez de letras isoladas. A Vigenère achata-a ainda mais, precisamente pelo mecanismo descrito acima. Uma cifra polialfabética com uma chave tão longa quanto (pseudo)aleatória aproxima-se de uma recta praticamente horizontal, sem qualquer letra a destacar-se — é essa recta que o One-Time Pad, mais adiante, atinge de forma perfeita.</p>
+<div id="fig-01-achatamento-frequencia" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-01-achatamento-frequencia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-01-achatamento-frequencia.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-01-achatamento-frequencia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1.4: Achatamento da distribuição de frequências: à medida que uma cifra se aproxima da polialfabética ideal, a curva de frequências ordenadas torna-se mais horizontal, eliminando a informação estatística que a criptanálise de frequência exploraria.
+</figcaption>
+</figure>
+</div>
 <p>Usando de novo a chave “REDIAL”, repetida tantas vezes quantas as necessárias para cobrir todo o texto claro, e o trava-línguas “Três tigres tristes dormem”:</p>
 <div class="httpmsg">
 <pre><code>Chave:          R E D I A L R E D I A L R E D I A L R E D I A
@@ -950,7 +961,7 @@ Grupo 6 (pos. 6, 12, 18):     T C O</code></pre>
 <img src="../assets/images/fig-vernam-gerador.png" class="img-fluid figure-img" style="width:95.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-01-vernam-gerador-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;1.4: A cifra de Vernam: um gerador de fluxo de chave produz a sequência <span class="math inline">\(k_i\)</span>, combinada por XOR com o texto claro na cifragem, e com o texto cifrado na decifragem — a mesma operação em ambos os sentidos.
+Figura&nbsp;1.5: A cifra de Vernam: um gerador de fluxo de chave produz a sequência <span class="math inline">\(k_i\)</span>, combinada por XOR com o texto claro na cifragem, e com o texto cifrado na decifragem — a mesma operação em ambos os sentidos.
 </figcaption>
 </figure>
 </div>
@@ -1011,7 +1022,7 @@ Decrypts to: THIS API KEY WAS SHARED</code></pre>
 <img src="../assets/images/fig-rail-fence.png" class="img-fluid figure-img" style="width:80.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-01-rail-fence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;1.5: A técnica rail fence: o texto claro escreve-se em ziguezague por duas linhas; o texto cifrado lê-se linha a linha.
+Figura&nbsp;1.6: A técnica rail fence: o texto claro escreve-se em ziguezague por duas linhas; o texto cifrado lê-se linha a linha.
 </figcaption>
 </figure>
 </div>
@@ -1027,7 +1038,7 @@ Figura&nbsp;1.5: A técnica rail fence: o texto claro escreve-se em ziguezague p
 <img src="../assets/images/fig-transposicao-grelha.png" class="img-fluid figure-img" style="width:60.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-01-transposicao-grelha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;1.6: Grelha de transposição colunar com a chave “REDIAL”. O número entre parêntesis, por baixo de cada letra da chave, indica a ordem alfabética dessa letra e, por isso, a ordem de leitura da respectiva coluna.
+Figura&nbsp;1.7: Grelha de transposição colunar com a chave “REDIAL”. O número entre parêntesis, por baixo de cada letra da chave, indica a ordem alfabética dessa letra e, por isso, a ordem de leitura da respectiva coluna.
 </figcaption>
 </figure>
 </div>
@@ -2114,157 +2125,161 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb14-269"><a href="#cb14-269" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-270"><a href="#cb14-270" aria-hidden="true" tabindex="-1"></a>Como a chave é mais curta do que a mensagem ($m$ é tipicamente muito menor do que o número de letras do texto claro), o índice $i \bmod m$ garante que ela se repete ciclicamente até cobrir todo o texto. A mesma letra do texto claro pode assim corresponder a letras diferentes no texto cifrado, consoante a posição em que ocorre, o que achata consideravelmente a distribuição de frequências observável no texto cifrado.</span>
 <span id="cb14-271"><a href="#cb14-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-272"><a href="#cb14-272" aria-hidden="true" tabindex="-1"></a>Usando de novo a chave "REDIAL", repetida tantas vezes quantas as necessárias para cobrir todo o texto claro, e o trava-línguas "Três tigres tristes dormem":</span>
+<span id="cb14-272"><a href="#cb14-272" aria-hidden="true" tabindex="-1"></a>A @fig-01-achatamento-frequencia mostra este efeito de forma directa: para cada cifra, ordenam-se as letras do texto cifrado da mais para a menos frequente e normaliza-se pela frequência da letra mais comum. O texto claro produz uma curva muito inclinada, com um pequeno número de letras a dominar. A Playfair achata-a moderadamente, ao substituir pares de letras em vez de letras isoladas. A Vigenère achata-a ainda mais, precisamente pelo mecanismo descrito acima. Uma cifra polialfabética com uma chave tão longa quanto (pseudo)aleatória aproxima-se de uma recta praticamente horizontal, sem qualquer letra a destacar-se — é essa recta que o One-Time Pad, mais adiante, atinge de forma perfeita.</span>
 <span id="cb14-273"><a href="#cb14-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-274"><a href="#cb14-274" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
-<span id="cb14-275"><a href="#cb14-275" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-276"><a href="#cb14-276" aria-hidden="true" tabindex="-1"></a><span class="in">Chave:          R E D I A L R E D I A L R E D I A L R E D I A</span></span>
-<span id="cb14-277"><a href="#cb14-277" aria-hidden="true" tabindex="-1"></a><span class="in">Texto claro:    T R E S T I G R E S T R I S T E S D O R M E M</span></span>
-<span id="cb14-278"><a href="#cb14-278" aria-hidden="true" tabindex="-1"></a><span class="in">Texto cifrado:  K V H A T T X V H A T C Z W W M S O F V P M M</span></span>
-<span id="cb14-279"><a href="#cb14-279" aria-hidden="true" tabindex="-1"></a><span class="in">                  ^ ^ ^       ^ ^ ^</span></span>
-<span id="cb14-280"><a href="#cb14-280" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-281"><a href="#cb14-281" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb14-282"><a href="#cb14-282" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-283"><a href="#cb14-283" aria-hidden="true" tabindex="-1"></a>Repare-se no bloco **VHA**, que aparece duas vezes no texto cifrado. Não é uma palavra repetida desta vez, é uma coincidência genuína do próprio trava-línguas: a sequência "RES" surge em "T**RES**" e, por acaso, também em "tig**RES**", exactamente 6 posições depois. Como a chave "REDIAL" também tem 6 letras, as duas ocorrências de "RES" alinham-se com a chave da mesma forma, produzindo o mesmo bloco cifrado. Este é o princípio por trás do exame de Kasiski: sempre que um trecho do texto claro se repete a uma distância múltipla do comprimento da chave, mesmo por coincidência, o texto cifrado correspondente repete-se também, e essa repetição visível é uma pista directa sobre o comprimento da chave — aqui, 6.</span>
-<span id="cb14-284"><a href="#cb14-284" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-285"><a href="#cb14-285" aria-hidden="true" tabindex="-1"></a>A cifra de Vigenère resistiu a criptanálise sistemática durante séculos, mas não é inquebrável: se a chave for curta e repetida muitas vezes ao longo de um texto suficientemente longo, técnicas como o exame de Kasiski (identificação de repetições no texto cifrado, que revelam múltiplos do comprimento da chave) permitem recuperar o comprimento da chave e, a partir daí, tratar o texto como várias cifras de César independentes, uma por posição dentro do ciclo da chave.</span>
+<span id="cb14-274"><a href="#cb14-274" aria-hidden="true" tabindex="-1"></a><span class="al">![Achatamento da distribuição de frequências: à medida que uma cifra se aproxima da polialfabética ideal, a curva de frequências ordenadas torna-se mais horizontal, eliminando a informação estatística que a criptanálise de frequência exploraria.](../assets/images/fig-01-achatamento-frequencia.png)</span>{#fig-01-achatamento-frequencia width=70%}</span>
+<span id="cb14-275"><a href="#cb14-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-276"><a href="#cb14-276" aria-hidden="true" tabindex="-1"></a>Usando de novo a chave "REDIAL", repetida tantas vezes quantas as necessárias para cobrir todo o texto claro, e o trava-línguas "Três tigres tristes dormem":</span>
+<span id="cb14-277"><a href="#cb14-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-278"><a href="#cb14-278" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
+<span id="cb14-279"><a href="#cb14-279" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-280"><a href="#cb14-280" aria-hidden="true" tabindex="-1"></a><span class="in">Chave:          R E D I A L R E D I A L R E D I A L R E D I A</span></span>
+<span id="cb14-281"><a href="#cb14-281" aria-hidden="true" tabindex="-1"></a><span class="in">Texto claro:    T R E S T I G R E S T R I S T E S D O R M E M</span></span>
+<span id="cb14-282"><a href="#cb14-282" aria-hidden="true" tabindex="-1"></a><span class="in">Texto cifrado:  K V H A T T X V H A T C Z W W M S O F V P M M</span></span>
+<span id="cb14-283"><a href="#cb14-283" aria-hidden="true" tabindex="-1"></a><span class="in">                  ^ ^ ^       ^ ^ ^</span></span>
+<span id="cb14-284"><a href="#cb14-284" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-285"><a href="#cb14-285" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb14-286"><a href="#cb14-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-287"><a href="#cb14-287" aria-hidden="true" tabindex="-1"></a>Sabendo já, só pelo exame de Kasiski, que a chave tem 6 letras (sem ainda saber quais), o criptanalista reagrupa o texto cifrado: todas as letras nas posições 1, 7, 13, 19, ... formam um primeiro grupo; as posições 2, 8, 14, 20, ... formam um segundo grupo; e assim sucessivamente até ao sexto grupo. Cada grupo, tomado isoladamente, é uma cifra de César comum, com um único $k$ fixo, exactamente o tipo de problema já resolvido na secção anterior:</span>
+<span id="cb14-287"><a href="#cb14-287" aria-hidden="true" tabindex="-1"></a>Repare-se no bloco **VHA**, que aparece duas vezes no texto cifrado. Não é uma palavra repetida desta vez, é uma coincidência genuína do próprio trava-línguas: a sequência "RES" surge em "T**RES**" e, por acaso, também em "tig**RES**", exactamente 6 posições depois. Como a chave "REDIAL" também tem 6 letras, as duas ocorrências de "RES" alinham-se com a chave da mesma forma, produzindo o mesmo bloco cifrado. Este é o princípio por trás do exame de Kasiski: sempre que um trecho do texto claro se repete a uma distância múltipla do comprimento da chave, mesmo por coincidência, o texto cifrado correspondente repete-se também, e essa repetição visível é uma pista directa sobre o comprimento da chave — aqui, 6.</span>
 <span id="cb14-288"><a href="#cb14-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-289"><a href="#cb14-289" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
-<span id="cb14-290"><a href="#cb14-290" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-291"><a href="#cb14-291" aria-hidden="true" tabindex="-1"></a><span class="in">Grupo 1 (pos. 1, 7, 13, 19):  K X Z F</span></span>
-<span id="cb14-292"><a href="#cb14-292" aria-hidden="true" tabindex="-1"></a><span class="in">Grupo 2 (pos. 2, 8, 14, 20):  V V W V</span></span>
-<span id="cb14-293"><a href="#cb14-293" aria-hidden="true" tabindex="-1"></a><span class="in">Grupo 3 (pos. 3, 9, 15, 21):  H H W P</span></span>
-<span id="cb14-294"><a href="#cb14-294" aria-hidden="true" tabindex="-1"></a><span class="in">Grupo 4 (pos. 4, 10, 16, 22): A A M M</span></span>
-<span id="cb14-295"><a href="#cb14-295" aria-hidden="true" tabindex="-1"></a><span class="in">Grupo 5 (pos. 5, 11, 17, 23): T T S M</span></span>
-<span id="cb14-296"><a href="#cb14-296" aria-hidden="true" tabindex="-1"></a><span class="in">Grupo 6 (pos. 6, 12, 18):     T C O</span></span>
-<span id="cb14-297"><a href="#cb14-297" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-298"><a href="#cb14-298" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb14-299"><a href="#cb14-299" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-300"><a href="#cb14-300" aria-hidden="true" tabindex="-1"></a>Note-se que isto não contradiz o que se disse atrás sobre a Vigenère achatar a distribuição de frequências: essa distorção afecta o texto cifrado *como um todo*, onde letras cifradas com deslocamentos diferentes se misturam. Dentro de cada grupo isolado, porém, foi sempre usado o mesmo deslocamento, pelo que a distribuição volta a ser a de uma César normal, sem achatamento nenhum. O exame de Kasiski e a análise de frequência resolvem, por isso, dois problemas diferentes e complementares: um dá o número de grupos a formar (o comprimento da chave); o outro, aplicado depois a cada grupo separadamente, dá o deslocamento de cada um.</span>
-<span id="cb14-301"><a href="#cb14-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-302"><a href="#cb14-302" aria-hidden="true" tabindex="-1"></a>A cada grupo aplica-se, isoladamente, a mesma análise de frequência de letra única usada contra a cifra de César: qual a letra mais frequente deste grupo, e a que letra da língua deverá corresponder? Neste exemplo, com apenas 3 a 4 letras por grupo, não há dados suficientes para essa análise ser fiável, tal como já se viu antes com textos curtos; num texto real, bastante mais longo, cada grupo teria dezenas ou centenas de letras, e o método funciona tão bem quanto funcionou contra a César.</span>
+<span id="cb14-289"><a href="#cb14-289" aria-hidden="true" tabindex="-1"></a>A cifra de Vigenère resistiu a criptanálise sistemática durante séculos, mas não é inquebrável: se a chave for curta e repetida muitas vezes ao longo de um texto suficientemente longo, técnicas como o exame de Kasiski (identificação de repetições no texto cifrado, que revelam múltiplos do comprimento da chave) permitem recuperar o comprimento da chave e, a partir daí, tratar o texto como várias cifras de César independentes, uma por posição dentro do ciclo da chave.</span>
+<span id="cb14-290"><a href="#cb14-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-291"><a href="#cb14-291" aria-hidden="true" tabindex="-1"></a>Sabendo já, só pelo exame de Kasiski, que a chave tem 6 letras (sem ainda saber quais), o criptanalista reagrupa o texto cifrado: todas as letras nas posições 1, 7, 13, 19, ... formam um primeiro grupo; as posições 2, 8, 14, 20, ... formam um segundo grupo; e assim sucessivamente até ao sexto grupo. Cada grupo, tomado isoladamente, é uma cifra de César comum, com um único $k$ fixo, exactamente o tipo de problema já resolvido na secção anterior:</span>
+<span id="cb14-292"><a href="#cb14-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-293"><a href="#cb14-293" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
+<span id="cb14-294"><a href="#cb14-294" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-295"><a href="#cb14-295" aria-hidden="true" tabindex="-1"></a><span class="in">Grupo 1 (pos. 1, 7, 13, 19):  K X Z F</span></span>
+<span id="cb14-296"><a href="#cb14-296" aria-hidden="true" tabindex="-1"></a><span class="in">Grupo 2 (pos. 2, 8, 14, 20):  V V W V</span></span>
+<span id="cb14-297"><a href="#cb14-297" aria-hidden="true" tabindex="-1"></a><span class="in">Grupo 3 (pos. 3, 9, 15, 21):  H H W P</span></span>
+<span id="cb14-298"><a href="#cb14-298" aria-hidden="true" tabindex="-1"></a><span class="in">Grupo 4 (pos. 4, 10, 16, 22): A A M M</span></span>
+<span id="cb14-299"><a href="#cb14-299" aria-hidden="true" tabindex="-1"></a><span class="in">Grupo 5 (pos. 5, 11, 17, 23): T T S M</span></span>
+<span id="cb14-300"><a href="#cb14-300" aria-hidden="true" tabindex="-1"></a><span class="in">Grupo 6 (pos. 6, 12, 18):     T C O</span></span>
+<span id="cb14-301"><a href="#cb14-301" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-302"><a href="#cb14-302" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb14-303"><a href="#cb14-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-304"><a href="#cb14-304" aria-hidden="true" tabindex="-1"></a><span class="fu">### Cifra de Vernam {#sec-01-vernam}</span></span>
+<span id="cb14-304"><a href="#cb14-304" aria-hidden="true" tabindex="-1"></a>Note-se que isto não contradiz o que se disse atrás sobre a Vigenère achatar a distribuição de frequências: essa distorção afecta o texto cifrado *como um todo*, onde letras cifradas com deslocamentos diferentes se misturam. Dentro de cada grupo isolado, porém, foi sempre usado o mesmo deslocamento, pelo que a distribuição volta a ser a de uma César normal, sem achatamento nenhum. O exame de Kasiski e a análise de frequência resolvem, por isso, dois problemas diferentes e complementares: um dá o número de grupos a formar (o comprimento da chave); o outro, aplicado depois a cada grupo separadamente, dá o deslocamento de cada um.</span>
 <span id="cb14-305"><a href="#cb14-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-306"><a href="#cb14-306" aria-hidden="true" tabindex="-1"></a>Antes de se chegar à solução definitiva, vale a pena um passo intermédio. A **cifra de Vernam**, criada por Gilbert Vernam nos laboratórios AT&amp;T em 1918 para telegrafia [@Stallings2020], generaliza a Vigenère de duas formas: substitui a soma modular por uma operação **XOR** ao nível dos bits, e usa uma chave muito mais longa do que a palavra-chave curta típica da Vigenère, ao ponto de, na prática, ser tão longa quanto a própria fita de papel perfurado que a implementava.</span>
+<span id="cb14-306"><a href="#cb14-306" aria-hidden="true" tabindex="-1"></a>A cada grupo aplica-se, isoladamente, a mesma análise de frequência de letra única usada contra a cifra de César: qual a letra mais frequente deste grupo, e a que letra da língua deverá corresponder? Neste exemplo, com apenas 3 a 4 letras por grupo, não há dados suficientes para essa análise ser fiável, tal como já se viu antes com textos curtos; num texto real, bastante mais longo, cada grupo teria dezenas ou centenas de letras, e o método funciona tão bem quanto funcionou contra a César.</span>
 <span id="cb14-307"><a href="#cb14-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-308"><a href="#cb14-308" aria-hidden="true" tabindex="-1"></a>$$C_i = P_i \oplus K_{i \bmod m} \qquad P_i = C_i \oplus K_{i \bmod m}$$</span>
+<span id="cb14-308"><a href="#cb14-308" aria-hidden="true" tabindex="-1"></a><span class="fu">### Cifra de Vernam {#sec-01-vernam}</span></span>
 <span id="cb14-309"><a href="#cb14-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-310"><a href="#cb14-310" aria-hidden="true" tabindex="-1"></a><span class="al">![A cifra de Vernam: um gerador de fluxo de chave produz a sequência $k_i$, combinada por XOR com o texto claro na cifragem, e com o texto cifrado na decifragem — a mesma operação em ambos os sentidos.](../assets/images/fig-vernam-gerador.png)</span>{#fig-01-vernam-gerador width=95%}</span>
+<span id="cb14-310"><a href="#cb14-310" aria-hidden="true" tabindex="-1"></a>Antes de se chegar à solução definitiva, vale a pena um passo intermédio. A **cifra de Vernam**, criada por Gilbert Vernam nos laboratórios AT&amp;T em 1918 para telegrafia [@Stallings2020], generaliza a Vigenère de duas formas: substitui a soma modular por uma operação **XOR** ao nível dos bits, e usa uma chave muito mais longa do que a palavra-chave curta típica da Vigenère, ao ponto de, na prática, ser tão longa quanto a própria fita de papel perfurado que a implementava.</span>
 <span id="cb14-311"><a href="#cb14-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-312"><a href="#cb14-312" aria-hidden="true" tabindex="-1"></a>Uma chave muito mais longa dificulta consideravelmente o exame de Kasiski, já que as repetições no texto cifrado tornam-se muito mais raras. Mas o problema de fundo não desaparece: mais cedo ou mais tarde, mesmo uma fita de chave muito longa esgota-se e tem de recomeçar, voltando a introduzir um ciclo, ainda que muito maior do que o de uma palavra-chave Vigenère. A cifra de Vernam é, por isso, uma melhoria substancial sobre a Vigenère, mas não uma solução definitiva: continua vulnerável, em princípio, ao mesmo tipo de criptanálise, apenas exigindo mensagens interceptadas muito mais longas para se tornar praticável.</span>
+<span id="cb14-312"><a href="#cb14-312" aria-hidden="true" tabindex="-1"></a>$$C_i = P_i \oplus K_{i \bmod m} \qquad P_i = C_i \oplus K_{i \bmod m}$$</span>
 <span id="cb14-313"><a href="#cb14-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-314"><a href="#cb14-314" aria-hidden="true" tabindex="-1"></a>Note-se uma limitação estrutural da cifra de Vernam, tal como concebida originalmente: usa apenas uma chave, sem qualquer outro valor que distinga uma mensagem da seguinte. É precisamente essa ausência que obriga a fita de chave a repetir-se assim que se esgota. As cifras de fluxo modernas, retomadas no capítulo 4, resolvem este problema introduzindo um segundo valor, o *nonce*, único por mensagem mas não secreto, que permite reutilizar a mesma chave em segurança de mensagem para mensagem, sem nunca repetir o fluxo de chave.</span>
+<span id="cb14-314"><a href="#cb14-314" aria-hidden="true" tabindex="-1"></a><span class="al">![A cifra de Vernam: um gerador de fluxo de chave produz a sequência $k_i$, combinada por XOR com o texto claro na cifragem, e com o texto cifrado na decifragem — a mesma operação em ambos os sentidos.](../assets/images/fig-vernam-gerador.png)</span>{#fig-01-vernam-gerador width=95%}</span>
 <span id="cb14-315"><a href="#cb14-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-316"><a href="#cb14-316" aria-hidden="true" tabindex="-1"></a><span class="fu">### One-Time Pad {#sec-01-otp}</span></span>
+<span id="cb14-316"><a href="#cb14-316" aria-hidden="true" tabindex="-1"></a>Uma chave muito mais longa dificulta consideravelmente o exame de Kasiski, já que as repetições no texto cifrado tornam-se muito mais raras. Mas o problema de fundo não desaparece: mais cedo ou mais tarde, mesmo uma fita de chave muito longa esgota-se e tem de recomeçar, voltando a introduzir um ciclo, ainda que muito maior do que o de uma palavra-chave Vigenère. A cifra de Vernam é, por isso, uma melhoria substancial sobre a Vigenère, mas não uma solução definitiva: continua vulnerável, em princípio, ao mesmo tipo de criptanálise, apenas exigindo mensagens interceptadas muito mais longas para se tornar praticável.</span>
 <span id="cb14-317"><a href="#cb14-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-318"><a href="#cb14-318" aria-hidden="true" tabindex="-1"></a>O **One-Time Pad** (cifra de utilização única) resolve definitivamente a fragilidade que a cifra de Vernam apenas atenuava: usa uma chave verdadeiramente aleatória, do mesmo comprimento que a mensagem, nunca reutilizada noutra mensagem, e por isso nunca sujeita a ciclo nenhum. Cada letra do texto claro é combinada com a letra correspondente da chave, tal como no Vigenère, mas sem qualquer ciclo, uma vez que a chave é tão longa quanto o próprio texto.</span>
+<span id="cb14-318"><a href="#cb14-318" aria-hidden="true" tabindex="-1"></a>Note-se uma limitação estrutural da cifra de Vernam, tal como concebida originalmente: usa apenas uma chave, sem qualquer outro valor que distinga uma mensagem da seguinte. É precisamente essa ausência que obriga a fita de chave a repetir-se assim que se esgota. As cifras de fluxo modernas, retomadas no capítulo 4, resolvem este problema introduzindo um segundo valor, o *nonce*, único por mensagem mas não secreto, que permite reutilizar a mesma chave em segurança de mensagem para mensagem, sem nunca repetir o fluxo de chave.</span>
 <span id="cb14-319"><a href="#cb14-319" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-320"><a href="#cb14-320" aria-hidden="true" tabindex="-1"></a>Claude Shannon demonstrou, em 1949, que o One-Time Pad, quando usado correctamente, é **matematicamente inquebrável**: o texto cifrado não revela nenhuma informação sobre o texto claro, mesmo com poder computacional ilimitado [@Shannon1949]. Esta propriedade chama-se **segredo perfeito**.</span>
+<span id="cb14-320"><a href="#cb14-320" aria-hidden="true" tabindex="-1"></a><span class="fu">### One-Time Pad {#sec-01-otp}</span></span>
 <span id="cb14-321"><a href="#cb14-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-322"><a href="#cb14-322" aria-hidden="true" tabindex="-1"></a>**Um exemplo concreto de segredo perfeito.** Para qualquer texto cifrado $C$ e qualquer texto claro $P$ do mesmo comprimento, existe sempre exactamente uma chave $K = (C - P) \bmod 26$ que os liga. Como todas as chaves são, à partida, igualmente prováveis, o texto cifrado não favorece nenhuma leitura em detrimento de outra: para um mesmo texto cifrado, existe sempre uma chave que o decifra em qualquer texto claro que se queira, do mesmo comprimento.</span>
+<span id="cb14-322"><a href="#cb14-322" aria-hidden="true" tabindex="-1"></a>O **One-Time Pad** (cifra de utilização única) resolve definitivamente a fragilidade que a cifra de Vernam apenas atenuava: usa uma chave verdadeiramente aleatória, do mesmo comprimento que a mensagem, nunca reutilizada noutra mensagem, e por isso nunca sujeita a ciclo nenhum. Cada letra do texto claro é combinada com a letra correspondente da chave, tal como no Vigenère, mas sem qualquer ciclo, uma vez que a chave é tão longa quanto o próprio texto.</span>
 <span id="cb14-323"><a href="#cb14-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-324"><a href="#cb14-324" aria-hidden="true" tabindex="-1"></a>Isto demonstra-se de forma concreta. Fixando um único texto cifrado de 16 letras, encontram-se três chaves diferentes que o decifram em três frases portuguesas plausíveis, sobre o mesmo assunto e mutuamente incompatíveis entre si:</span>
+<span id="cb14-324"><a href="#cb14-324" aria-hidden="true" tabindex="-1"></a>Claude Shannon demonstrou, em 1949, que o One-Time Pad, quando usado correctamente, é **matematicamente inquebrável**: o texto cifrado não revela nenhuma informação sobre o texto claro, mesmo com poder computacional ilimitado [@Shannon1949]. Esta propriedade chama-se **segredo perfeito**.</span>
 <span id="cb14-325"><a href="#cb14-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-326"><a href="#cb14-326" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
-<span id="cb14-327"><a href="#cb14-327" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-328"><a href="#cb14-328" aria-hidden="true" tabindex="-1"></a><span class="in">Texto cifrado (fixo):                 Q X B Z R P P N M N R S X S N J</span></span>
+<span id="cb14-326"><a href="#cb14-326" aria-hidden="true" tabindex="-1"></a>**Um exemplo concreto de segredo perfeito.** Para qualquer texto cifrado $C$ e qualquer texto claro $P$ do mesmo comprimento, existe sempre exactamente uma chave $K = (C - P) \bmod 26$ que os liga. Como todas as chaves são, à partida, igualmente prováveis, o texto cifrado não favorece nenhuma leitura em detrimento de outra: para um mesmo texto cifrado, existe sempre uma chave que o decifra em qualquer texto claro que se queira, do mesmo comprimento.</span>
+<span id="cb14-327"><a href="#cb14-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-328"><a href="#cb14-328" aria-hidden="true" tabindex="-1"></a>Isto demonstra-se de forma concreta. Fixando um único texto cifrado de 16 letras, encontram-se três chaves diferentes que o decifram em três frases portuguesas plausíveis, sobre o mesmo assunto e mutuamente incompatíveis entre si:</span>
 <span id="cb14-329"><a href="#cb14-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-330"><a href="#cb14-330" aria-hidden="true" tabindex="-1"></a><span class="in">Chave 1: Q F X M K P L V T N Z O R Y W J</span></span>
-<span id="cb14-331"><a href="#cb14-331" aria-hidden="true" tabindex="-1"></a><span class="in">Decifra para: A SENHA ESTA SEGURA</span></span>
-<span id="cb14-332"><a href="#cb14-332" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-333"><a href="#cb14-333" aria-hidden="true" tabindex="-1"></a><span class="in">Chave 2: Q V U Z W L K Z E W D Y W S K J</span></span>
-<span id="cb14-334"><a href="#cb14-334" aria-hidden="true" tabindex="-1"></a><span class="in">Decifra para: A CHAVE FOI ROUBADA</span></span>
-<span id="cb14-335"><a href="#cb14-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-336"><a href="#cb14-336" aria-hidden="true" tabindex="-1"></a><span class="in">Chave 3: C E N P N C C T Z L R G D P Z P</span></span>
-<span id="cb14-337"><a href="#cb14-337" aria-hidden="true" tabindex="-1"></a><span class="in">Decifra para: O TOKEN NUNCA MUDOU</span></span>
-<span id="cb14-338"><a href="#cb14-338" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-339"><a href="#cb14-339" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb14-340"><a href="#cb14-340" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-341"><a href="#cb14-341" aria-hidden="true" tabindex="-1"></a>As três decifragens são correctas: cada uma resulta de aplicar $p = (C - K) \bmod 26$, letra a letra, com a respectiva chave. Um atacante que intercepte apenas <span class="in">`QXBZRPPNMNRSXSNJ`</span>, sem conhecer a chave, não tem forma alguma de saber se a senha está segura, foi roubada, ou se, afinal, o assunto era antes o token, e nunca a senha. As três leituras, e infinitas outras do mesmo comprimento, são igualmente compatíveis com o texto cifrado.</span>
-<span id="cb14-342"><a href="#cb14-342" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-343"><a href="#cb14-343" aria-hidden="true" tabindex="-1"></a>O mesmo efeito reproduz-se em qualquer língua. Com um texto cifrado diferente, de 19 letras, obtêm-se três leituras em inglês, também mutuamente incompatíveis:</span>
+<span id="cb14-330"><a href="#cb14-330" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
+<span id="cb14-331"><a href="#cb14-331" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-332"><a href="#cb14-332" aria-hidden="true" tabindex="-1"></a><span class="in">Texto cifrado (fixo):                 Q X B Z R P P N M N R S X S N J</span></span>
+<span id="cb14-333"><a href="#cb14-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-334"><a href="#cb14-334" aria-hidden="true" tabindex="-1"></a><span class="in">Chave 1: Q F X M K P L V T N Z O R Y W J</span></span>
+<span id="cb14-335"><a href="#cb14-335" aria-hidden="true" tabindex="-1"></a><span class="in">Decifra para: A SENHA ESTA SEGURA</span></span>
+<span id="cb14-336"><a href="#cb14-336" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-337"><a href="#cb14-337" aria-hidden="true" tabindex="-1"></a><span class="in">Chave 2: Q V U Z W L K Z E W D Y W S K J</span></span>
+<span id="cb14-338"><a href="#cb14-338" aria-hidden="true" tabindex="-1"></a><span class="in">Decifra para: A CHAVE FOI ROUBADA</span></span>
+<span id="cb14-339"><a href="#cb14-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-340"><a href="#cb14-340" aria-hidden="true" tabindex="-1"></a><span class="in">Chave 3: C E N P N C C T Z L R G D P Z P</span></span>
+<span id="cb14-341"><a href="#cb14-341" aria-hidden="true" tabindex="-1"></a><span class="in">Decifra para: O TOKEN NUNCA MUDOU</span></span>
+<span id="cb14-342"><a href="#cb14-342" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-343"><a href="#cb14-343" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb14-344"><a href="#cb14-344" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-345"><a href="#cb14-345" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
-<span id="cb14-346"><a href="#cb14-346" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-347"><a href="#cb14-347" aria-hidden="true" tabindex="-1"></a><span class="in">Ciphertext (fixed):                     J O B P D C R H E U G R W H U X Z G H</span></span>
+<span id="cb14-345"><a href="#cb14-345" aria-hidden="true" tabindex="-1"></a>As três decifragens são correctas: cada uma resulta de aplicar $p = (C - K) \bmod 26$, letra a letra, com a respectiva chave. Um atacante que intercepte apenas <span class="in">`QXBZRPPNMNRSXSNJ`</span>, sem conhecer a chave, não tem forma alguma de saber se a senha está segura, foi roubada, ou se, afinal, o assunto era antes o token, e nunca a senha. As três leituras, e infinitas outras do mesmo comprimento, são igualmente compatíveis com o texto cifrado.</span>
+<span id="cb14-346"><a href="#cb14-346" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-347"><a href="#cb14-347" aria-hidden="true" tabindex="-1"></a>O mesmo efeito reproduz-se em qualquer língua. Com um texto cifrado diferente, de 19 letras, obtêm-se três leituras em inglês, também mutuamente incompatíveis:</span>
 <span id="cb14-348"><a href="#cb14-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-349"><a href="#cb14-349" aria-hidden="true" tabindex="-1"></a><span class="in">Key 1: X Q M P L K V T N R O Y W J C F Z B D</span></span>
-<span id="cb14-350"><a href="#cb14-350" aria-hidden="true" tabindex="-1"></a><span class="in">Decrypts to: MY PASSWORD STAYS SAFE</span></span>
-<span id="cb14-351"><a href="#cb14-351" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-352"><a href="#cb14-352" aria-hidden="true" tabindex="-1"></a><span class="in">Key 2: Q H T X L Y P Q A B A D D P B J O C U</span></span>
-<span id="cb14-353"><a href="#cb14-353" aria-hidden="true" tabindex="-1"></a><span class="in">Decrypts to: THIS SECRET GOT STOLEN</span></span>
-<span id="cb14-354"><a href="#cb14-354" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-355"><a href="#cb14-355" aria-hidden="true" tabindex="-1"></a><span class="in">Key 3: Q H T X D N J X A W K R E P N X I C E</span></span>
-<span id="cb14-356"><a href="#cb14-356" aria-hidden="true" tabindex="-1"></a><span class="in">Decrypts to: THIS API KEY WAS SHARED</span></span>
-<span id="cb14-357"><a href="#cb14-357" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-358"><a href="#cb14-358" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb14-359"><a href="#cb14-359" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-360"><a href="#cb14-360" aria-hidden="true" tabindex="-1"></a>Apesar desta garantia teórica absoluta, o One-Time Pad é impraticável na generalidade dos cenários reais, por três exigências difíceis de satisfazer em simultâneo:</span>
-<span id="cb14-361"><a href="#cb14-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-362"><a href="#cb14-362" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>a chave tem de ser tão longa quanto a mensagem;</span>
-<span id="cb14-363"><a href="#cb14-363" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>a chave tem de ser genuinamente aleatória, não gerada por um algoritmo determinístico;</span>
-<span id="cb14-364"><a href="#cb14-364" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>a chave nunca pode ser reutilizada, nem parcialmente.</span>
+<span id="cb14-349"><a href="#cb14-349" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
+<span id="cb14-350"><a href="#cb14-350" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-351"><a href="#cb14-351" aria-hidden="true" tabindex="-1"></a><span class="in">Ciphertext (fixed):                     J O B P D C R H E U G R W H U X Z G H</span></span>
+<span id="cb14-352"><a href="#cb14-352" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-353"><a href="#cb14-353" aria-hidden="true" tabindex="-1"></a><span class="in">Key 1: X Q M P L K V T N R O Y W J C F Z B D</span></span>
+<span id="cb14-354"><a href="#cb14-354" aria-hidden="true" tabindex="-1"></a><span class="in">Decrypts to: MY PASSWORD STAYS SAFE</span></span>
+<span id="cb14-355"><a href="#cb14-355" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-356"><a href="#cb14-356" aria-hidden="true" tabindex="-1"></a><span class="in">Key 2: Q H T X L Y P Q A B A D D P B J O C U</span></span>
+<span id="cb14-357"><a href="#cb14-357" aria-hidden="true" tabindex="-1"></a><span class="in">Decrypts to: THIS SECRET GOT STOLEN</span></span>
+<span id="cb14-358"><a href="#cb14-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-359"><a href="#cb14-359" aria-hidden="true" tabindex="-1"></a><span class="in">Key 3: Q H T X D N J X A W K R E P N X I C E</span></span>
+<span id="cb14-360"><a href="#cb14-360" aria-hidden="true" tabindex="-1"></a><span class="in">Decrypts to: THIS API KEY WAS SHARED</span></span>
+<span id="cb14-361"><a href="#cb14-361" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-362"><a href="#cb14-362" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb14-363"><a href="#cb14-363" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-364"><a href="#cb14-364" aria-hidden="true" tabindex="-1"></a>Apesar desta garantia teórica absoluta, o One-Time Pad é impraticável na generalidade dos cenários reais, por três exigências difíceis de satisfazer em simultâneo:</span>
 <span id="cb14-365"><a href="#cb14-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-366"><a href="#cb14-366" aria-hidden="true" tabindex="-1"></a>Distribuir e armazenar chaves deste tamanho, de forma segura, é tão difícil quanto distribuir a própria mensagem em segurança. A isto acresce um custo menos óbvio: gerar, de forma genuinamente aleatória, e depois gerir com segurança um grande volume de chaves desta dimensão tem também um custo computacional apreciável, que pode tornar o processo lento de mais para a generalidade das aplicações práticas. Estas exigências combinadas limitam o uso do One-Time Pad a cenários muito específicos, como certas comunicações diplomáticas ou militares de importância excepcional.</span>
-<span id="cb14-367"><a href="#cb14-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-368"><a href="#cb14-368" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cifras de Transposição {#sec-01-transposicao}</span></span>
+<span id="cb14-366"><a href="#cb14-366" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>a chave tem de ser tão longa quanto a mensagem;</span>
+<span id="cb14-367"><a href="#cb14-367" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>a chave tem de ser genuinamente aleatória, não gerada por um algoritmo determinístico;</span>
+<span id="cb14-368"><a href="#cb14-368" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>a chave nunca pode ser reutilizada, nem parcialmente.</span>
 <span id="cb14-369"><a href="#cb14-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-370"><a href="#cb14-370" aria-hidden="true" tabindex="-1"></a>Ao contrário das cifras de substituição, as **cifras de transposição** não alteram a identidade dos símbolos do texto claro, apenas a sua ordem. O texto cifrado contém exactamente as mesmas letras do texto claro, apenas reorganizadas segundo uma regra determinada pela chave.</span>
+<span id="cb14-370"><a href="#cb14-370" aria-hidden="true" tabindex="-1"></a>Distribuir e armazenar chaves deste tamanho, de forma segura, é tão difícil quanto distribuir a própria mensagem em segurança. A isto acresce um custo menos óbvio: gerar, de forma genuinamente aleatória, e depois gerir com segurança um grande volume de chaves desta dimensão tem também um custo computacional apreciável, que pode tornar o processo lento de mais para a generalidade das aplicações práticas. Estas exigências combinadas limitam o uso do One-Time Pad a cenários muito específicos, como certas comunicações diplomáticas ou militares de importância excepcional.</span>
 <span id="cb14-371"><a href="#cb14-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-372"><a href="#cb14-372" aria-hidden="true" tabindex="-1"></a><span class="fu">### A técnica rail fence {#sec-01-rail-fence}</span></span>
+<span id="cb14-372"><a href="#cb14-372" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cifras de Transposição {#sec-01-transposicao}</span></span>
 <span id="cb14-373"><a href="#cb14-373" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-374"><a href="#cb14-374" aria-hidden="true" tabindex="-1"></a>A forma mais simples de transposição é a técnica **rail fence** (cerca de caminho de ferro): o texto claro escreve-se alternadamente em duas linhas, formando um ziguezague, e o texto cifrado obtém-se lendo primeiro a linha de cima, depois a linha de baixo, sem interrupções.</span>
+<span id="cb14-374"><a href="#cb14-374" aria-hidden="true" tabindex="-1"></a>Ao contrário das cifras de substituição, as **cifras de transposição** não alteram a identidade dos símbolos do texto claro, apenas a sua ordem. O texto cifrado contém exactamente as mesmas letras do texto claro, apenas reorganizadas segundo uma regra determinada pela chave.</span>
 <span id="cb14-375"><a href="#cb14-375" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-376"><a href="#cb14-376" aria-hidden="true" tabindex="-1"></a>Para o texto claro "ESCONDE BEM A CHAVE" (sem espaços, 16 letras):</span>
+<span id="cb14-376"><a href="#cb14-376" aria-hidden="true" tabindex="-1"></a><span class="fu">### A técnica rail fence {#sec-01-rail-fence}</span></span>
 <span id="cb14-377"><a href="#cb14-377" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-378"><a href="#cb14-378" aria-hidden="true" tabindex="-1"></a><span class="al">![A técnica rail fence: o texto claro escreve-se em ziguezague por duas linhas; o texto cifrado lê-se linha a linha.](../assets/images/fig-rail-fence.png)</span>{#fig-01-rail-fence width=80%}</span>
+<span id="cb14-378"><a href="#cb14-378" aria-hidden="true" tabindex="-1"></a>A forma mais simples de transposição é a técnica **rail fence** (cerca de caminho de ferro): o texto claro escreve-se alternadamente em duas linhas, formando um ziguezague, e o texto cifrado obtém-se lendo primeiro a linha de cima, depois a linha de baixo, sem interrupções.</span>
 <span id="cb14-379"><a href="#cb14-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-380"><a href="#cb14-380" aria-hidden="true" tabindex="-1"></a>Lendo a Linha 1 seguida da Linha 2, obtém-se o texto cifrado <span class="in">`ECNEEAHVSODBMCAE`</span>. Todas as letras do texto cifrado pertencem ao texto claro, apenas reordenadas, pelo que a criptanálise estatística sobre a frequência de letras isoladas continua perfeitamente viável, tal como se discutirá adiante nesta secção.</span>
+<span id="cb14-380"><a href="#cb14-380" aria-hidden="true" tabindex="-1"></a>Para o texto claro "ESCONDE BEM A CHAVE" (sem espaços, 16 letras):</span>
 <span id="cb14-381"><a href="#cb14-381" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-382"><a href="#cb14-382" aria-hidden="true" tabindex="-1"></a><span class="fu">### Transposição colunar {#sec-01-transposicao-colunar}</span></span>
+<span id="cb14-382"><a href="#cb14-382" aria-hidden="true" tabindex="-1"></a><span class="al">![A técnica rail fence: o texto claro escreve-se em ziguezague por duas linhas; o texto cifrado lê-se linha a linha.](../assets/images/fig-rail-fence.png)</span>{#fig-01-rail-fence width=80%}</span>
 <span id="cb14-383"><a href="#cb14-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-384"><a href="#cb14-384" aria-hidden="true" tabindex="-1"></a>Uma técnica mais elaborada é a **transposição colunar**: o texto claro é escrito numa grelha com um número de colunas igual ao comprimento da palavra-chave, e o texto cifrado obtém-se lendo as colunas pela ordem alfabética das letras da palavra-chave, em vez da ordem original em que foram escritas.</span>
+<span id="cb14-384"><a href="#cb14-384" aria-hidden="true" tabindex="-1"></a>Lendo a Linha 1 seguida da Linha 2, obtém-se o texto cifrado <span class="in">`ECNEEAHVSODBMCAE`</span>. Todas as letras do texto cifrado pertencem ao texto claro, apenas reordenadas, pelo que a criptanálise estatística sobre a frequência de letras isoladas continua perfeitamente viável, tal como se discutirá adiante nesta secção.</span>
 <span id="cb14-385"><a href="#cb14-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-386"><a href="#cb14-386" aria-hidden="true" tabindex="-1"></a>Usando de novo a palavra-chave "REDIAL" — agora não para deslocar nem substituir, mas para ordenar colunas — e a frase "Isto fica só entre nós" (18 letras, exactamente três linhas de seis colunas, sem necessidade de enchimento). A cada letra da chave associa-se a sua posição na ordem alfabética (A=1, D=2, E=3, I=4, L=5, R=6), e o texto claro escreve-se por linhas, coluna a coluna, por baixo da chave:</span>
+<span id="cb14-386"><a href="#cb14-386" aria-hidden="true" tabindex="-1"></a><span class="fu">### Transposição colunar {#sec-01-transposicao-colunar}</span></span>
 <span id="cb14-387"><a href="#cb14-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-388"><a href="#cb14-388" aria-hidden="true" tabindex="-1"></a><span class="al">![Grelha de transposição colunar com a chave "REDIAL". O número entre parêntesis, por baixo de cada letra da chave, indica a ordem alfabética dessa letra e, por isso, a ordem de leitura da respectiva coluna.](../assets/images/fig-transposicao-grelha.png)</span>{#fig-01-transposicao-grelha width=60%}</span>
+<span id="cb14-388"><a href="#cb14-388" aria-hidden="true" tabindex="-1"></a>Uma técnica mais elaborada é a **transposição colunar**: o texto claro é escrito numa grelha com um número de colunas igual ao comprimento da palavra-chave, e o texto cifrado obtém-se lendo as colunas pela ordem alfabética das letras da palavra-chave, em vez da ordem original em que foram escritas.</span>
 <span id="cb14-389"><a href="#cb14-389" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-390"><a href="#cb14-390" aria-hidden="true" tabindex="-1"></a>O texto cifrado obtém-se lendo as colunas pela ordem numérica das suas posições (não pela ordem em que aparecem na grelha): primeiro a coluna sob "A" (posição 1), depois a coluna sob "D" (posição 2), e assim sucessivamente até à coluna sob "R" (posição 6):</span>
+<span id="cb14-390"><a href="#cb14-390" aria-hidden="true" tabindex="-1"></a>Usando de novo a palavra-chave "REDIAL" — agora não para deslocar nem substituir, mas para ordenar colunas — e a frase "Isto fica só entre nós" (18 letras, exactamente três linhas de seis colunas, sem necessidade de enchimento). A cada letra da chave associa-se a sua posição na ordem alfabética (A=1, D=2, E=3, I=4, L=5, R=6), e o texto claro escreve-se por linhas, coluna a coluna, por baixo da chave:</span>
 <span id="cb14-391"><a href="#cb14-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-392"><a href="#cb14-392" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
-<span id="cb14-393"><a href="#cb14-393" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-394"><a href="#cb14-394" aria-hidden="true" tabindex="-1"></a><span class="in">FEO TSE SAR OON INS ICT</span></span>
-<span id="cb14-395"><a href="#cb14-395" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb14-396"><a href="#cb14-396" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb14-397"><a href="#cb14-397" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-398"><a href="#cb14-398" aria-hidden="true" tabindex="-1"></a>Ou seja, "FEOTSESAROONINSICT". Note-se que todas as letras do texto claro continuam presentes no texto cifrado, na mesma quantidade; só a ordem mudou.</span>
-<span id="cb14-399"><a href="#cb14-399" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-400"><a href="#cb14-400" aria-hidden="true" tabindex="-1"></a>Uma única transposição colunar é vulnerável a criptanálise, uma vez que a distribuição de frequência de letras isoladas se mantém inteiramente inalterada, apenas a sua posição relativa muda. Há aqui uma diferença importante em relação à substituição: numa substituição, a frequência serve para adivinhar que letra do texto claro corresponde a cada letra do texto cifrado, um problema de mapeamento; numa transposição, não há mapeamento nenhum para adivinhar, já que uma letra "E" no texto cifrado é mesmo um "E" do texto original, apenas deslocado de posição. A letra mais frequente do texto cifrado é, por isso, directamente a letra mais frequente da língua, sem qualquer hipótese intermédia — o que permite, inclusive, **distinguir** uma transposição de uma substituição só pela frequência: se a letra mais frequente do texto cifrado coincide com a esperada para a língua (A ou E, em português), é sinal de transposição, não de substituição. O que a frequência de letras isoladas não revela, sozinha, é a ordem de leitura das colunas: para isso são necessárias outras pistas, como dígrafos e trígrafos frequentes partidos ao meio pela grelha, ou testar várias larguras de coluna. Repetir a transposição várias vezes, com chaves diferentes (**transposição dupla** ou múltipla), dificulta consideravelmente a reconstrução manual, ainda que continue vulnerável a ataques computacionais modernos.</span>
+<span id="cb14-392"><a href="#cb14-392" aria-hidden="true" tabindex="-1"></a><span class="al">![Grelha de transposição colunar com a chave "REDIAL". O número entre parêntesis, por baixo de cada letra da chave, indica a ordem alfabética dessa letra e, por isso, a ordem de leitura da respectiva coluna.](../assets/images/fig-transposicao-grelha.png)</span>{#fig-01-transposicao-grelha width=60%}</span>
+<span id="cb14-393"><a href="#cb14-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-394"><a href="#cb14-394" aria-hidden="true" tabindex="-1"></a>O texto cifrado obtém-se lendo as colunas pela ordem numérica das suas posições (não pela ordem em que aparecem na grelha): primeiro a coluna sob "A" (posição 1), depois a coluna sob "D" (posição 2), e assim sucessivamente até à coluna sob "R" (posição 6):</span>
+<span id="cb14-395"><a href="#cb14-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-396"><a href="#cb14-396" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
+<span id="cb14-397"><a href="#cb14-397" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-398"><a href="#cb14-398" aria-hidden="true" tabindex="-1"></a><span class="in">FEO TSE SAR OON INS ICT</span></span>
+<span id="cb14-399"><a href="#cb14-399" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb14-400"><a href="#cb14-400" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb14-401"><a href="#cb14-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-402"><a href="#cb14-402" aria-hidden="true" tabindex="-1"></a>Historicamente, a combinação de substituição e transposição, cada uma delas fraca isoladamente, mas fortes quando combinadas, é o princípio que dá origem aos conceitos modernos de **confusão** e **difusão**, introduzidos por Shannon e centrais no desenho das cifras de bloco modernas estudadas no capítulo seguinte.</span>
+<span id="cb14-402"><a href="#cb14-402" aria-hidden="true" tabindex="-1"></a>Ou seja, "FEOTSESAROONINSICT". Note-se que todas as letras do texto claro continuam presentes no texto cifrado, na mesma quantidade; só a ordem mudou.</span>
 <span id="cb14-403"><a href="#cb14-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-404"><a href="#cb14-404" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-01-sintese}</span></span>
+<span id="cb14-404"><a href="#cb14-404" aria-hidden="true" tabindex="-1"></a>Uma única transposição colunar é vulnerável a criptanálise, uma vez que a distribuição de frequência de letras isoladas se mantém inteiramente inalterada, apenas a sua posição relativa muda. Há aqui uma diferença importante em relação à substituição: numa substituição, a frequência serve para adivinhar que letra do texto claro corresponde a cada letra do texto cifrado, um problema de mapeamento; numa transposição, não há mapeamento nenhum para adivinhar, já que uma letra "E" no texto cifrado é mesmo um "E" do texto original, apenas deslocado de posição. A letra mais frequente do texto cifrado é, por isso, directamente a letra mais frequente da língua, sem qualquer hipótese intermédia — o que permite, inclusive, **distinguir** uma transposição de uma substituição só pela frequência: se a letra mais frequente do texto cifrado coincide com a esperada para a língua (A ou E, em português), é sinal de transposição, não de substituição. O que a frequência de letras isoladas não revela, sozinha, é a ordem de leitura das colunas: para isso são necessárias outras pistas, como dígrafos e trígrafos frequentes partidos ao meio pela grelha, ou testar várias larguras de coluna. Repetir a transposição várias vezes, com chaves diferentes (**transposição dupla** ou múltipla), dificulta consideravelmente a reconstrução manual, ainda que continue vulnerável a ataques computacionais modernos.</span>
 <span id="cb14-405"><a href="#cb14-405" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-406"><a href="#cb14-406" aria-hidden="true" tabindex="-1"></a>Este capítulo estabeleceu o vocabulário e os princípios fundamentais que atravessam toda a disciplina de criptografia:</span>
+<span id="cb14-406"><a href="#cb14-406" aria-hidden="true" tabindex="-1"></a>Historicamente, a combinação de substituição e transposição, cada uma delas fraca isoladamente, mas fortes quando combinadas, é o princípio que dá origem aos conceitos modernos de **confusão** e **difusão**, introduzidos por Shannon e centrais no desenho das cifras de bloco modernas estudadas no capítulo seguinte.</span>
 <span id="cb14-407"><a href="#cb14-407" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-408"><a href="#cb14-408" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Um sistema criptográfico simétrico define-se pelos seus cinco componentes, texto claro, algoritmo de cifragem, chave secreta, texto cifrado e algoritmo de decifragem, relacionados por $Y = E(K, X)$ e $X = D(K, Y)$</span>
-<span id="cb14-409"><a href="#cb14-409" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>O **princípio de Kerckhoffs** estabelece que a segurança de uma cifra deve depender apenas do segredo da chave, nunca do segredo do algoritmo</span>
-<span id="cb14-410"><a href="#cb14-410" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Um atacante dispõe de duas estratégias gerais: **força bruta** (testar exaustivamente o espaço de chaves) e **criptanálise** (explorar informação adicional para deduzir a chave sem a testar exaustivamente)</span>
-<span id="cb14-411"><a href="#cb14-411" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>As **cifras de substituição** (César, monoalfabética, Playfair, Vigenère) substituem símbolos do texto claro por outros símbolos, com vulnerabilidades decrescentes, mas nunca totalmente eliminadas, a ataques de análise de frequência</span>
-<span id="cb14-412"><a href="#cb14-412" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>A **cifra de Vernam** generaliza a Vigenère com XOR e uma chave muito mais longa, atenuando mas não eliminando o problema da chave que se repete; o **One-Time Pad** elimina-o por completo, sendo a única cifra clássica matematicamente inquebrável, ao custo de exigências de gestão de chaves impraticáveis na generalidade dos cenários reais</span>
-<span id="cb14-413"><a href="#cb14-413" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>As **cifras de transposição** reordenam os símbolos do texto claro sem alterar a sua identidade, sendo a base histórica dos conceitos modernos de confusão e difusão</span>
-<span id="cb14-414"><a href="#cb14-414" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-415"><a href="#cb14-415" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-01-reflexao}</span></span>
-<span id="cb14-416"><a href="#cb14-416" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-417"><a href="#cb14-417" aria-hidden="true" tabindex="-1"></a>Porque é que o One-Time Pad, apesar de matematicamente inquebrável, não é a solução universal para todos os problemas de comunicação segura? Que outro problema, tão difícil quanto o da própria mensagem, a sua utilização acaba por introduzir?</span>
+<span id="cb14-408"><a href="#cb14-408" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-01-sintese}</span></span>
+<span id="cb14-409"><a href="#cb14-409" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-410"><a href="#cb14-410" aria-hidden="true" tabindex="-1"></a>Este capítulo estabeleceu o vocabulário e os princípios fundamentais que atravessam toda a disciplina de criptografia:</span>
+<span id="cb14-411"><a href="#cb14-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-412"><a href="#cb14-412" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Um sistema criptográfico simétrico define-se pelos seus cinco componentes, texto claro, algoritmo de cifragem, chave secreta, texto cifrado e algoritmo de decifragem, relacionados por $Y = E(K, X)$ e $X = D(K, Y)$</span>
+<span id="cb14-413"><a href="#cb14-413" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>O **princípio de Kerckhoffs** estabelece que a segurança de uma cifra deve depender apenas do segredo da chave, nunca do segredo do algoritmo</span>
+<span id="cb14-414"><a href="#cb14-414" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Um atacante dispõe de duas estratégias gerais: **força bruta** (testar exaustivamente o espaço de chaves) e **criptanálise** (explorar informação adicional para deduzir a chave sem a testar exaustivamente)</span>
+<span id="cb14-415"><a href="#cb14-415" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>As **cifras de substituição** (César, monoalfabética, Playfair, Vigenère) substituem símbolos do texto claro por outros símbolos, com vulnerabilidades decrescentes, mas nunca totalmente eliminadas, a ataques de análise de frequência</span>
+<span id="cb14-416"><a href="#cb14-416" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>A **cifra de Vernam** generaliza a Vigenère com XOR e uma chave muito mais longa, atenuando mas não eliminando o problema da chave que se repete; o **One-Time Pad** elimina-o por completo, sendo a única cifra clássica matematicamente inquebrável, ao custo de exigências de gestão de chaves impraticáveis na generalidade dos cenários reais</span>
+<span id="cb14-417"><a href="#cb14-417" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>As **cifras de transposição** reordenam os símbolos do texto claro sem alterar a sua identidade, sendo a base histórica dos conceitos modernos de confusão e difusão</span>
 <span id="cb14-418"><a href="#cb14-418" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-419"><a href="#cb14-419" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-01-referencias .unnumbered}</span></span>
+<span id="cb14-419"><a href="#cb14-419" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-01-reflexao}</span></span>
 <span id="cb14-420"><a href="#cb14-420" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-421"><a href="#cb14-421" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb14-422"><a href="#cb14-422" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb14-421"><a href="#cb14-421" aria-hidden="true" tabindex="-1"></a>Porque é que o One-Time Pad, apesar de matematicamente inquebrável, não é a solução universal para todos os problemas de comunicação segura? Que outro problema, tão difícil quanto o da própria mensagem, a sua utilização acaba por introduzir?</span>
+<span id="cb14-422"><a href="#cb14-422" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-423"><a href="#cb14-423" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-01-referencias .unnumbered}</span></span>
+<span id="cb14-424"><a href="#cb14-424" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-425"><a href="#cb14-425" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb14-426"><a href="#cb14-426" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

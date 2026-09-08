@@ -289,7 +289,7 @@ window.Quarto = {
   <li><a href="#sec-11-eficiencia" id="toc-sec-11-eficiencia" class="nav-link" data-scroll-target="#sec-11-eficiencia"><span class="header-section-number">11.6</span> Efficiency of the Algorithms Presented in this Book</a></li>
   <li><a href="#sec-11-pqc" id="toc-sec-11-pqc" class="nav-link" data-scroll-target="#sec-11-pqc"><span class="header-section-number">11.7</span> Post-Quantum Cryptography: Threat and Migration</a></li>
   <li><a href="#sec-11-sintese" id="toc-sec-11-sintese" class="nav-link" data-scroll-target="#sec-11-sintese"><span class="header-section-number">11.8</span> Chapter Summary</a></li>
-  <li><a href="#sec-11-reflexao" id="toc-sec-11-reflexao" class="nav-link" data-scroll-target="#sec-11-reflexao"><span class="header-section-number">11.9</span> Food for Thought</a></li>
+  <li><a href="#sec-11-reflexao" id="toc-sec-11-reflexao" class="nav-link" data-scroll-target="#sec-11-reflexao"><span class="header-section-number">11.9</span> Discussion Question</a></li>
   <li><a href="#sec-11-referencias" id="toc-sec-11-referencias" class="nav-link" data-scroll-target="#sec-11-referencias">References</a></li>
   </ul>
 </nav>
@@ -531,7 +531,7 @@ Table&nbsp;11.2: Approximate comparison of security and efficiency of the main a
 </ol>
 </section>
 <section id="sec-11-reflexao" class="level2" data-number="11.9">
-<h2 data-number="11.9" class="anchored" data-anchor-id="sec-11-reflexao"><span class="header-section-number">11.9</span> Food for Thought</h2>
+<h2 data-number="11.9" class="anchored" data-anchor-id="sec-11-reflexao"><span class="header-section-number">11.9</span> Discussion Question</h2>
 <p>The “harvest now, decrypt later” scenario means that TLS traffic intercepted today may come to be decrypted in the future, once a sufficiently large quantum computer exists, even though the session key used is, today, computationally unbreakable. Given that the TLS session key derives from an ECDH exchange carried out during the handshake (Section 10.2), why does this scenario <strong>not</strong> threaten, in the same way, data encrypted with a long-term symmetric key that was previously exchanged over a secure physical channel, such as a USB drive delivered by hand?</p>
 </section>
 <section id="sec-11-referencias" class="level2 unnumbered">
@@ -1293,7 +1293,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Shor's algorithm solves factorisation and the discrete logarithm in **polynomial** time, making it trivial to break RSA, Diffie-Hellman, and ECC on a sufficiently large quantum computer; Grover's algorithm only halves symmetric security</span>
 <span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>NIST has already standardised **post-quantum** alternatives (ML-KEM, ML-DSA) based on lattices, with keys and signatures 20 to 50 times larger than those of ECC, and the first hybrid schemes are already in production</span>
 <span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## Food for Thought {#sec-11-reflexao}</span></span>
+<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion Question {#sec-11-reflexao}</span></span>
 <span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>The "harvest now, decrypt later" scenario means that TLS traffic intercepted today may come to be decrypted in the future, once a sufficiently large quantum computer exists, even though the session key used is, today, computationally unbreakable. Given that the TLS session key derives from an ECDH exchange carried out during the handshake (Section 10.2), why does this scenario **not** threaten, in the same way, data encrypted with a long-term symmetric key that was previously exchanged over a secure physical channel, such as a USB drive delivered by hand?</span>
 <span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a></span>

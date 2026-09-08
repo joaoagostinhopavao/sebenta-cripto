@@ -86,7 +86,7 @@ This chapter presented a structural alternative to RSA and Diffie-Hellman:
 5. **ECDH** and **ECDSA** directly replicate the Diffie-Hellman and DSA of the previous chapters, replacing modular exponentiation with scalar multiplication of points
 6. In practice, the **P-256** curve and **Curve25519** predominate, the latter designed by Bernstein to avoid classes of implementation errors common to other curves
 
-## Food for Thought {#sec-08-reflexao}
+## Discussion Question {#sec-08-reflexao}
 
 The best known generic attack against the ECDLP, Pollard's rho algorithm, has complexity $O(\sqrt{n})$, where $n$ is the order of the curve's group of points. Knowing this, and looking at Table [-@tbl-08-tamanhos], why does a curve with points of order $n \approx 2^{256}$ correspond to a security level of 128 bits, and not 256?
 

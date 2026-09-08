@@ -269,6 +269,10 @@ $$C_i = (p_i + k_{i \bmod m}) \bmod 26 \qquad p_i = (C_i - k_{i \bmod m}) \bmod 
 
 Como a chave é mais curta do que a mensagem ($m$ é tipicamente muito menor do que o número de letras do texto claro), o índice $i \bmod m$ garante que ela se repete ciclicamente até cobrir todo o texto. A mesma letra do texto claro pode assim corresponder a letras diferentes no texto cifrado, consoante a posição em que ocorre, o que achata consideravelmente a distribuição de frequências observável no texto cifrado.
 
+A @fig-01-achatamento-frequencia mostra este efeito de forma directa: para cada cifra, ordenam-se as letras do texto cifrado da mais para a menos frequente e normaliza-se pela frequência da letra mais comum. O texto claro produz uma curva muito inclinada, com um pequeno número de letras a dominar. A Playfair achata-a moderadamente, ao substituir pares de letras em vez de letras isoladas. A Vigenère achata-a ainda mais, precisamente pelo mecanismo descrito acima. Uma cifra polialfabética com uma chave tão longa quanto (pseudo)aleatória aproxima-se de uma recta praticamente horizontal, sem qualquer letra a destacar-se — é essa recta que o One-Time Pad, mais adiante, atinge de forma perfeita.
+
+![Achatamento da distribuição de frequências: à medida que uma cifra se aproxima da polialfabética ideal, a curva de frequências ordenadas torna-se mais horizontal, eliminando a informação estatística que a criptanálise de frequência exploraria.](../assets/images/fig-01-achatamento-frequencia.png){#fig-01-achatamento-frequencia width=70%}
+
 Usando de novo a chave "REDIAL", repetida tantas vezes quantas as necessárias para cobrir todo o texto claro, e o trava-línguas "Três tigres tristes dormem":
 
 ::: {.httpmsg}

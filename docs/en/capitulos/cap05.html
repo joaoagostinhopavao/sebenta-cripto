@@ -289,7 +289,7 @@ window.Quarto = {
   <li><a href="#sec-05-mac" id="toc-sec-05-mac" class="nav-link" data-scroll-target="#sec-05-mac"><span class="header-section-number">5.5</span> Message Authentication: the MAC</a></li>
   <li><a href="#sec-05-hmac" id="toc-sec-05-hmac" class="nav-link" data-scroll-target="#sec-05-hmac"><span class="header-section-number">5.6</span> HMAC</a></li>
   <li><a href="#sec-05-sintese" id="toc-sec-05-sintese" class="nav-link" data-scroll-target="#sec-05-sintese"><span class="header-section-number">5.7</span> Chapter Summary</a></li>
-  <li><a href="#sec-05-reflexao" id="toc-sec-05-reflexao" class="nav-link" data-scroll-target="#sec-05-reflexao"><span class="header-section-number">5.8</span> Food for Thought</a></li>
+  <li><a href="#sec-05-reflexao" id="toc-sec-05-reflexao" class="nav-link" data-scroll-target="#sec-05-reflexao"><span class="header-section-number">5.8</span> Discussion Question</a></li>
   <li><a href="#sec-05-referencias" id="toc-sec-05-referencias" class="nav-link" data-scroll-target="#sec-05-referencias">References</a></li>
   </ul>
 </nav>
@@ -491,7 +491,7 @@ Table&nbsp;5.2: Parameters of the SHA family variants (all sizes in bits) <span 
 <div id="fig-05-integridade-ataque" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-05-integridade-ataque-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-05-hash-integridade-ataque.png" class="img-fluid figure-img" style="width:100.0%">
+<img src="../assets/images/fig-05-hash-integridade-ataque-en.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-05-integridade-ataque-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.1: A keyless hash function detects accidental errors, but does not withstand an active attacker: since anyone can compute <span class="math inline">\(H\)</span>, an attacker who alters the data can also recompute a new, valid hash, and the receiver has no way of telling this situation apart from a legitimate communication.
@@ -507,7 +507,7 @@ Figure&nbsp;5.1: A keyless hash function detects accidental errors, but does not
 <div id="fig-05-mac-generico" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-05-mac-generico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-05-mac-generico.png" class="img-fluid figure-img" style="width:100.0%">
+<img src="../assets/images/fig-05-mac-generico-en.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-05-mac-generico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.2: With a secret key <span class="math inline">\(K\)</span>, shared only between sender and receiver, the same attack from Figure <a href="#fig-05-integridade-ataque" class="quarto-xref"><span>5.1</span></a> fails: the attacker can alter the data, but cannot compute the corresponding tag without knowing <span class="math inline">\(K\)</span>, and the receiver rejects the tampered message.
@@ -536,7 +536,7 @@ Figure&nbsp;5.2: With a secret key <span class="math inline">\(K\)</span>, share
 <div id="fig-05-hmac-construcao" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-05-hmac-construcao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-05-hmac-construcao.png" class="img-fluid figure-img" style="width:95.0%">
+<img src="../assets/images/fig-05-hmac-construcao-en.png" class="img-fluid figure-img" style="width:95.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-05-hmac-construcao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5.3: The HMAC construction: the message is first combined with one version of the key (<span class="math inline">\(K \oplus \text{ipad}\)</span>) and passed through <span class="math inline">\(H\)</span>, producing an inner hash; this result is then combined with a second version of the key (<span class="math inline">\(K \oplus \text{opad}\)</span>) and passed through <span class="math inline">\(H\)</span> a second time, producing the final tag. Neither invocation of <span class="math inline">\(H\)</span> ever processes the original key directly.
@@ -561,7 +561,7 @@ Figure&nbsp;5.3: The HMAC construction: the message is first combined with one v
 </ol>
 </section>
 <section id="sec-05-reflexao" class="level2" data-number="5.8">
-<h2 data-number="5.8" class="anchored" data-anchor-id="sec-05-reflexao"><span class="header-section-number">5.8</span> Food for Thought</h2>
+<h2 data-number="5.8" class="anchored" data-anchor-id="sec-05-reflexao"><span class="header-section-number">5.8</span> Discussion Question</h2>
 <p>SHA-1 is no longer secure against collisions, and is formally discouraged for digital signatures and certificates. Even so, HMAC-SHA1 remains in use in several legacy systems without being considered a critical flaw. Bearing in mind the distinction between the properties of a hash (Section 5.2) and what HMAC’s security proof actually requires (Section 5.6), why does breaking a hash function’s collision resistance not automatically break the MAC built on top of it?</p>
 </section>
 <section id="sec-05-referencias" class="level2 unnumbered">
@@ -1302,7 +1302,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>But this scheme has a serious flaw, which only becomes visible once an active attacker, capable of intervening on the communication channel, is considered, rather than just an accidental transmission error:</span>
 <span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="al">![A keyless hash function detects accidental errors, but does not withstand an active attacker: since anyone can compute $H$, an attacker who alters the data can also recompute a new, valid hash, and the receiver has no way of telling this situation apart from a legitimate communication.](../assets/images/fig-05-hash-integridade-ataque.png)</span>{#fig-05-integridade-ataque width=100%}</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="al">![A keyless hash function detects accidental errors, but does not withstand an active attacker: since anyone can compute $H$, an attacker who alters the data can also recompute a new, valid hash, and the receiver has no way of telling this situation apart from a legitimate communication.](../assets/images/fig-05-hash-integridade-ataque-en.png)</span>{#fig-05-integridade-ataque width=100%}</span>
 <span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>The root of the problem: $H$ is **public**. There is no secret involved in computing the hash, so an attacker capable of altering data in transit is equally capable of recomputing the hash corresponding to the altered data. The hash value, on its own, proves that the data did not suffer an accidental error, but it proves neither that the data comes from whoever claims to have sent it, nor that it was not deliberately tampered with by someone along the way. What is missing is an ingredient that only the legitimate sender and receiver possess, and that an attacker cannot reproduce: a **shared secret**.</span>
 <span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
@@ -1312,7 +1312,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>$$T = \text{MAC}_K(\text{data})$$</span>
 <span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>!<span class="co">[</span><span class="ot">With a secret key $K$, shared only between sender and receiver, the same attack from Figure [-@fig-05-integridade-ataque] fails: the attacker can alter the data, but cannot compute the corresponding tag without knowing $K$, and the receiver rejects the tampered message.</span><span class="co">](../assets/images/fig-05-mac-generico.png)</span>{#fig-05-mac-generico width=100%}</span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>!<span class="co">[</span><span class="ot">With a secret key $K$, shared only between sender and receiver, the same attack from Figure [-@fig-05-integridade-ataque] fails: the attacker can alter the data, but cannot compute the corresponding tag without knowing $K$, and the receiver rejects the tampered message.</span><span class="co">](../assets/images/fig-05-mac-generico-en.png)</span>{#fig-05-mac-generico width=100%}</span>
 <span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>A concrete example helps fix the idea. Suppose a bank transfer order, "Transfer €100 to IBAN PT50...", protected with $\text{MAC}_K$. The bank receives the message and the tag, recomputes $\text{MAC}_K$ over the received message with the same key $K$ (previously agreed with the customer, for example when activating the card), and compares. If an attacker intercepts the message and changes "€100" to "€10000", the old tag no longer matches the altered message, and computing the correct tag for the new message would require knowing $K$, exactly what the attacker in Figure <span class="co">[</span><span class="ot">-@fig-05-integridade-ataque</span><span class="co">]</span> lacked.</span>
 <span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a></span>
@@ -1348,7 +1348,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>where $K'$ is the key adjusted to the block size of $H$ (padded with zeros if shorter, or itself digested by $H$ if longer), and <span class="in">`ipad`</span> and <span class="in">`opad`</span> are two fixed, public constants (the byte <span class="in">`0x36`</span> and the byte <span class="in">`0x5C`</span>, repeated up to the block size), chosen simply for having a large Hamming distance between them, so that the two internal keys, $K' \oplus \text{ipad}$ and $K' \oplus \text{opad}$, behave like two independent keys:</span>
 <span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a><span class="al">![The HMAC construction: the message is first combined with one version of the key ($K \oplus \text{ipad}$) and passed through $H$, producing an inner hash; this result is then combined with a second version of the key ($K \oplus \text{opad}$) and passed through $H$ a second time, producing the final tag. Neither invocation of $H$ ever processes the original key directly.](../assets/images/fig-05-hmac-construcao.png)</span>{#fig-05-hmac-construcao width=95%}</span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a><span class="al">![The HMAC construction: the message is first combined with one version of the key ($K \oplus \text{ipad}$) and passed through $H$, producing an inner hash; this result is then combined with a second version of the key ($K \oplus \text{opad}$) and passed through $H$ a second time, producing the final tag. Neither invocation of $H$ ever processes the original key directly.](../assets/images/fig-05-hmac-construcao-en.png)</span>{#fig-05-hmac-construcao width=95%}</span>
 <span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>This two-layer structure resolves both attacks from the previous list: the outer hash never exposes its internal state from data known to the attacker (the inner hash has already consumed the key before that point), which eliminates length extension, and a collision in the inner hash is no longer enough to forge a tag, because the result still has to pass through the second $H$, protected by the second key.</span>
 <span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a></span>
@@ -1368,7 +1368,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Naively concatenating the key to the message (<span class="in">`H(K‖M)`</span> or <span class="in">`H(M‖K)`</span>) has known problems, length extension in the first case, total dependence on collision resistance in the second</span>
 <span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**HMAC** solves both by applying $H$ twice, in a nested structure with two derived keys (<span class="in">`ipad`</span>/<span class="in">`opad`</span>); its security does not depend on the collision resistance of $H$, which explains why HMAC-SHA1 remains without known practical attacks, despite SHA-1 no longer being secure as a general-purpose hash</span>
 <span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a><span class="fu">## Food for Thought {#sec-05-reflexao}</span></span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion Question {#sec-05-reflexao}</span></span>
 <span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>SHA-1 is no longer secure against collisions, and is formally discouraged for digital signatures and certificates. Even so, HMAC-SHA1 remains in use in several legacy systems without being considered a critical flaw. Bearing in mind the distinction between the properties of a hash (Section 5.2) and what HMAC's security proof actually requires (Section 5.6), why does breaking a hash function's collision resistance not automatically break the MAC built on top of it?</span>
 <span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a></span>

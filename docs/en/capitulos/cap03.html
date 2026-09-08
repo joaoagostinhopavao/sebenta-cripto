@@ -304,7 +304,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#sec-03-padding" id="toc-sec-03-padding" class="nav-link" data-scroll-target="#sec-03-padding"><span class="header-section-number">3.7</span> Padding</a></li>
   <li><a href="#sec-03-sintese" id="toc-sec-03-sintese" class="nav-link" data-scroll-target="#sec-03-sintese"><span class="header-section-number">3.8</span> Chapter Summary</a></li>
-  <li><a href="#sec-03-reflexao" id="toc-sec-03-reflexao" class="nav-link" data-scroll-target="#sec-03-reflexao"><span class="header-section-number">3.9</span> Food for Thought</a></li>
+  <li><a href="#sec-03-reflexao" id="toc-sec-03-reflexao" class="nav-link" data-scroll-target="#sec-03-reflexao"><span class="header-section-number">3.9</span> Discussion Question</a></li>
   <li><a href="#sec-03-referencias" id="toc-sec-03-referencias" class="nav-link" data-scroll-target="#sec-03-referencias">References</a></li>
   </ul>
 </nav>
@@ -474,7 +474,7 @@ Figure&nbsp;3.7: The ECB mode: each plaintext block is encrypted (or decrypted) 
 <div id="fig-03-ecb-cbc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-03-ecb-cbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-ecb-vs-cbc.png" class="img-fluid figure-img" style="width:95.0%">
+<img src="../assets/images/fig-ecb-vs-cbc-en.png" class="img-fluid figure-img" style="width:95.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-03-ecb-cbc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3.8: A plaintext organised into blocks, with an obvious structural pattern (frame, cross), encrypted in ECB mode and in CBC mode. Under ECB, identical plaintext blocks generate identical ciphertext blocks: the original pattern remains perfectly visible, only with different colours (values). Under CBC, the same pattern disappears completely.
@@ -621,7 +621,7 @@ Table&nbsp;3.1: Comparison of the modes of operation presented in this chapter <
 </ol>
 </section>
 <section id="sec-03-reflexao" class="level2" data-number="3.9">
-<h2 data-number="3.9" class="anchored" data-anchor-id="sec-03-reflexao"><span class="header-section-number">3.9</span> Food for Thought</h2>
+<h2 data-number="3.9" class="anchored" data-anchor-id="sec-03-reflexao"><span class="header-section-number">3.9</span> Discussion Question</h2>
 <p>DES combines confusion and diffusion through a single function <span class="math inline">\(F\)</span>, applied to only half the block per round. AES separates these two properties into distinct transformations (<code>SubBytes</code> for confusion, <code>ShiftRows</code>/<code>MixColumns</code> for diffusion), applied to the entire block. What advantages might this explicit separation bring, both for the security analysis of the algorithm and for its performance in hardware?</p>
 </section>
 <section id="sec-03-referencias" class="level2 unnumbered">
@@ -1358,7 +1358,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="al">![The ECB mode: each plaintext block is encrypted (or decrypted) completely independently of the others, always with the same key $K$ — hence the absence of any link between consecutive blocks.](../assets/images/fig-modo-ecb.png)</span>{#fig-03-modo-ecb width=90%}</span>
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="al">![A plaintext organised into blocks, with an obvious structural pattern (frame, cross), encrypted in ECB mode and in CBC mode. Under ECB, identical plaintext blocks generate identical ciphertext blocks: the original pattern remains perfectly visible, only with different colours (values). Under CBC, the same pattern disappears completely.](../assets/images/fig-ecb-vs-cbc.png)</span>{#fig-03-ecb-cbc width=95%}</span>
+<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a><span class="al">![A plaintext organised into blocks, with an obvious structural pattern (frame, cross), encrypted in ECB mode and in CBC mode. Under ECB, identical plaintext blocks generate identical ciphertext blocks: the original pattern remains perfectly visible, only with different colours (values). Under CBC, the same pattern disappears completely.](../assets/images/fig-ecb-vs-cbc-en.png)</span>{#fig-03-ecb-cbc width=95%}</span>
 <span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a><span class="fu">### CBC — Cipher Block Chaining {#sec-03-cbc}</span></span>
 <span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a></span>
@@ -1442,7 +1442,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-169"><a href="#cb1-169" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>None of these modes protects the integrity of the message; **GCM** solves this by combining CTR with authentication (GHASH), in an **AEAD** construction that is today the recommended mode for the generality of new applications</span>
 <span id="cb1-170"><a href="#cb1-170" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>**Padding** (namely the PKCS#7 scheme) allows the modes that encrypt directly, block by block, such as ECB and CBC, to process messages of any length; CTR and GCM dispense with it. An incorrect implementation of padding validation can give rise to padding oracle attacks</span>
 <span id="cb1-171"><a href="#cb1-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="fu">## Food for Thought {#sec-03-reflexao}</span></span>
+<span id="cb1-172"><a href="#cb1-172" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion Question {#sec-03-reflexao}</span></span>
 <span id="cb1-173"><a href="#cb1-173" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-174"><a href="#cb1-174" aria-hidden="true" tabindex="-1"></a>DES combines confusion and diffusion through a single function $F$, applied to only half the block per round. AES separates these two properties into distinct transformations (<span class="in">`SubBytes`</span> for confusion, <span class="in">`ShiftRows`</span>/<span class="in">`MixColumns`</span> for diffusion), applied to the entire block. What advantages might this explicit separation bring, both for the security analysis of the algorithm and for its performance in hardware?</span>
 <span id="cb1-175"><a href="#cb1-175" aria-hidden="true" tabindex="-1"></a></span>

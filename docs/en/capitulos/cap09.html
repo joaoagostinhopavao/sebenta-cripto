@@ -289,7 +289,7 @@ window.Quarto = {
   <li><a href="#sec-09-verificacao" id="toc-sec-09-verificacao" class="nav-link" data-scroll-target="#sec-09-verificacao"><span class="header-section-number">9.5</span> How Verification Works</a></li>
   <li><a href="#sec-09-pratica" id="toc-sec-09-pratica" class="nav-link" data-scroll-target="#sec-09-pratica"><span class="header-section-number">9.6</span> In Practice: Inspecting a Certificate</a></li>
   <li><a href="#sec-09-sintese" id="toc-sec-09-sintese" class="nav-link" data-scroll-target="#sec-09-sintese"><span class="header-section-number">9.7</span> Chapter Summary</a></li>
-  <li><a href="#sec-09-reflexao" id="toc-sec-09-reflexao" class="nav-link" data-scroll-target="#sec-09-reflexao"><span class="header-section-number">9.8</span> Food for Thought</a></li>
+  <li><a href="#sec-09-reflexao" id="toc-sec-09-reflexao" class="nav-link" data-scroll-target="#sec-09-reflexao"><span class="header-section-number">9.8</span> Discussion Question</a></li>
   <li><a href="#sec-09-referencias" id="toc-sec-09-referencias" class="nav-link" data-scroll-target="#sec-09-referencias">References</a></li>
   </ul>
 </nav>
@@ -338,7 +338,7 @@ window.Quarto = {
 <div id="fig-09-mitm" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-09-mitm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-09-mitm.png" class="img-fluid figure-img" style="width:85.0%">
+<img src="../assets/images/fig-09-mitm-en.png" class="img-fluid figure-img" style="width:85.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-09-mitm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;9.1: The attacker (Mallory) intercepts Alice’s and Bob’s public keys, and substitutes them with her own before forwarding them on. Each party thinks they are using the other’s public key, when in fact they are using Mallory’s public key.
@@ -359,7 +359,7 @@ Figure&nbsp;9.1: The attacker (Mallory) intercepts Alice’s and Bob’s public 
 <div id="fig-09-x509" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-09-x509-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-09-x509.png" class="img-fluid figure-img" style="width:55.0%">
+<img src="../assets/images/fig-09-x509-en.png" class="img-fluid figure-img" style="width:55.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-09-x509-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;9.2: Essential structure of an X.509 certificate: the holder’s data (identity, public key, validity period, issuer, and serial number), and the certificate authority’s signature over the hash of that data.
@@ -382,7 +382,7 @@ Figure&nbsp;9.2: Essential structure of an X.509 certificate: the holder’s dat
 <div id="fig-09-cadeia-ca" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-09-cadeia-ca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-09-cadeia-ca.png" class="img-fluid figure-img" style="width:85.0%">
+<img src="../assets/images/fig-09-cadeia-ca-en.png" class="img-fluid figure-img" style="width:85.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-09-cadeia-ca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;9.3: The certificate chain: the Root CA signs certificates for intermediate CAs, which in turn sign further certificates, down to the final holder of a domain. Trusting the root, already installed on the system, is enough to validate the entire chain.
@@ -422,7 +422,7 @@ Figure&nbsp;9.3: The certificate chain: the Root CA signs certificates for inter
 </ol>
 </section>
 <section id="sec-09-reflexao" class="level2" data-number="9.8">
-<h2 data-number="9.8" class="anchored" data-anchor-id="sec-09-reflexao"><span class="header-section-number">9.8</span> Food for Thought</h2>
+<h2 data-number="9.8" class="anchored" data-anchor-id="sec-09-reflexao"><span class="header-section-number">9.8</span> Discussion Question</h2>
 <p>The certificate chain (Section 9.4) solves the problem of trusting a public key by introducing trust in a Root CA, pre-installed in the operating system or browser. This shifts the original problem (how to trust a public key?) into a slightly different one. What is that new problem, and why is trusting a handful of pre-installed Root CAs a more practicable solution than asking every Internet user to manually confirm the public key of every site they visit?</p>
 </section>
 <section id="sec-09-referencias" class="level2 unnumbered">
@@ -1084,7 +1084,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>In a **man-in-the-middle attack** (MITM), an attacker positioned at any point in the network between the two parties, for example on a compromised router, intercepts and substitutes the public keys being exchanged, without either victim noticing <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>:</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="al">![The attacker (Mallory) intercepts Alice's and Bob's public keys, and substitutes them with her own before forwarding them on. Each party thinks they are using the other's public key, when in fact they are using Mallory's public key.](../assets/images/fig-09-mitm.png)</span>{#fig-09-mitm width=85%}</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="al">![The attacker (Mallory) intercepts Alice's and Bob's public keys, and substitutes them with her own before forwarding them on. Each party thinks they are using the other's public key, when in fact they are using Mallory's public key.](../assets/images/fig-09-mitm-en.png)</span>{#fig-09-mitm width=85%}</span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>The attack works because a public key, by definition, has nothing that inseparably ties it to its owner: it is just a number, and a number has no identity of its own. When Alice receives something that looks like Bob's public key, she has, by herself, no way of confirming its origin.</span>
 <span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
@@ -1100,7 +1100,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>The **X.509** standard, now universal on the Web, defines the structure of a public-key certificate. An X.509 certificate essentially contains the holder's identification data and the signature of whoever certifies it <span class="co">[</span><span class="ot">@RFC5280</span><span class="co">]</span>:</span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="al">![Essential structure of an X.509 certificate: the holder's data (identity, public key, validity period, issuer, and serial number), and the certificate authority's signature over the hash of that data.](../assets/images/fig-09-x509.png)</span>{#fig-09-x509 width=55%}</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="al">![Essential structure of an X.509 certificate: the holder's data (identity, public key, validity period, issuer, and serial number), and the certificate authority's signature over the hash of that data.](../assets/images/fig-09-x509-en.png)</span>{#fig-09-x509 width=55%}</span>
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Identity** (*Subject*): to whom the certificate belongs, typically a domain, an organisation, or a person.</span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Public key**: the key that the certificate attests belongs to that identity.</span>
@@ -1115,7 +1115,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>A single CA key pair directly certifying every site on the Internet would be impractical and fragile (a single point of compromise would compromise everything). Instead, trust is organised into a **certificate chain**: each certificate is signed by another, up to a **Root CA**, whose public key comes pre-installed in the operating system or browser <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>:</span>
 <span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="al">![The certificate chain: the Root CA signs certificates for intermediate CAs, which in turn sign further certificates, down to the final holder of a domain. Trusting the root, already installed on the system, is enough to validate the entire chain.](../assets/images/fig-09-cadeia-ca.png)</span>{#fig-09-cadeia-ca width=85%}</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="al">![The certificate chain: the Root CA signs certificates for intermediate CAs, which in turn sign further certificates, down to the final holder of a domain. Trusting the root, already installed on the system, is enough to validate the entire chain.](../assets/images/fig-09-cadeia-ca-en.png)</span>{#fig-09-cadeia-ca width=85%}</span>
 <span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>Trusting only the Root CAs, a relatively small number of carefully audited entities, is enough to validate any certificate issued at any point in the chain, however many intermediaries exist between the root and the final holder.</span>
 <span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
@@ -1152,7 +1152,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Trust is organised into a **certificate chain**, from the Root CA (pre-installed on the system) down to the final holder, through intermediate CAs</span>
 <span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Verifying a certificate requires confirming the issuing CA's signature, the validity period, and the revocation status, confirming the signature alone is not enough</span>
 <span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Food for Thought {#sec-09-reflexao}</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion Question {#sec-09-reflexao}</span></span>
 <span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>The certificate chain (Section 9.4) solves the problem of trusting a public key by introducing trust in a Root CA, pre-installed in the operating system or browser. This shifts the original problem (how to trust a public key?) into a slightly different one. What is that new problem, and why is trusting a handful of pre-installed Root CAs a more practicable solution than asking every Internet user to manually confirm the public key of every site they visit?</span>
 <span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a></span>

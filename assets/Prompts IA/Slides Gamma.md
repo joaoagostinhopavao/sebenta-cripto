@@ -1,26 +1,28 @@
 🎓 CONTEXTO — Módulo de Criptografia (Cibersegurança, MEEC)
 
-Estou a criar decks de slides para o módulo de Criptografia, dentro da UC de Cibersegurança do Mestrado em Engenharia Eletrotécnica e de Computadores. Cada deck corresponde a uma aula. Usa sempre as seguintes convenções de estilo e layout. Cada aula deve ter entre 20, no mínimo, a 25 slides (número máximo preferencial), nunca deverão exceder os 30. Os slides devem estar preparados para exportar para o PowerPoint, pelo que não quero slides "compridos" que não permitam uma exportação para o power point.
+Estou a criar decks de slides para o módulo de Criptografia, dentro da UC de Cibersegurança do Mestrado em Engenharia Eletrotécnica e de Computadores. Cada deck corresponde a um capítulo da sebenta (ver estrutura do módulo, abaixo — 11 capítulos, ainda que leccionados em 10 aulas). Usa sempre as seguintes convenções de estilo e layout. Cada deck deve ter entre 20 e 25 slides, nunca excedendo os 30. Os slides devem estar preparados para exportar para o PowerPoint, pelo que não quero slides "compridos" que não permitam uma exportação para o power point.
 
-Vou-te passar as instruções de construção dos slides aqui neste texto, depois deves perguntar-me pelo texto da aula e eu copio e colo (ou passo-te um ficheiro). Antes de começares deves perguntar se há figuras a inserir. Se houver eu insiro e tu deves conservar o mais possível as que forem diagramas e não as substituir por imagens generativas. No entanto podes e deves melhorá-las esteticamente e usar a paleta de cores do resto do esquema dos slides. Deverás inserir essas figuras nos locais indicados nos ficheiros de texto.
+Vou-te passar as instruções de construção dos slides aqui neste texto, depois deves perguntar-me pelo texto do capítulo e eu copio e colo (ou passo-te um ficheiro). Antes de começares deves perguntar se há figuras a inserir. Se houver eu insiro e tu deves conservar o mais possível as que forem diagramas e não as substituir por imagens generativas. No entanto podes e deves melhorá-las esteticamente e usar a paleta de cores do resto do esquema dos slides. Deverás inserir essas figuras nos locais indicados nos ficheiros de texto.
 
 Todos os termos em inglês nos slides de língua portuguesa devem ser italicizados. Excetua-se código (Python, etc.) e nomes próprios de algoritmos/protocolos/normas (AES, RSA, SHA-256, TLS, PGP, X.509, etc.), que não se italicizam.
 
 🎨 TEMAS POR BLOCO
 
-Aula 1 (Apresentação): tema Pearl ou Howlite
-Aula 2 (Bloco 1 — Criptografia Clássica): tema Sanguine ou Wine
-Aulas 3–5 (Bloco 2 — Criptografia Simétrica Moderna): tema Rush ou Slate
-Aula 6 (Bloco 3 — Integridade e Autenticação): tema Ash ou Slate
-Aulas 7–9 (Bloco 4 — Criptografia Assimétrica): tema Founder ou Wine
-Aulas 10–11 (Bloco 5 — Infraestrutura e Aplicações): tema Marine ou Rush
+Todos os temas abaixo têm de ser **light** — nunca escolher um tema dark, mesmo que pareça combinar bem com a cor do bloco.
+
+Apresentação: tema Pearl ou Howlite
+Capítulo 1 (Bloco 1 — Criptografia Clássica): tema Rush ou Ashrose
+Capítulos 2–4 (Bloco 2 — Criptografia Simétrica Moderna): tema Rush ou Icebreaker
+Capítulo 5 (Bloco 3 — Integridade e Autenticação): tema Ash ou Chimney Smoke
+Capítulos 6–8 (Bloco 4 — Criptografia Assimétrica): tema Consultant ou Gold Leaf
+Capítulos 9–11 (Bloco 5 — Infraestrutura e Aplicações): tema Rush ou Zephyr
 
 🖼️ IMAGENS ILUSTRATIVAS
 
 Estilo: isometric illustration, clean geometric shapes, flat colors, technical/security aesthetic, [cor do bloco] and white palette, no shadows, crisp lines
-Modelo: ideogram-v4-turbo
+Modelo: ideogram-v4-turbo (verificar se continua disponível antes de cada novo deck)
 Formato preferido: quadrado (square) para imagens em colunas; portrait para accent images laterais
-artStylePreset: custom
+artStylePreset: custom (verificar se continua um parâmetro válido antes de cada novo deck)
 
 📐 DIAGRAMAS E ESQUEMAS TÉCNICOS
 
@@ -55,9 +57,11 @@ Responde-me sempre em português
 
 📚 ESTRUTURA DO MÓDULO (para referência)
 
-Aula 1 — Apresentação (fora da distribuição de conteúdo)
-Bloco 1 — Criptografia Clássica: Aula 2 (substituição, transposição, César, monoalfabética, Playfair, Vigenère, One-Time Pad)
-Bloco 2 — Criptografia Simétrica Moderna: Aula 3 (Cifras de Bloco — Feistel, DES/3DES), Aula 4 (AES), Aula 5 (Cifras de Fluxo — RC4, Salsa20, ChaCha20)
-Bloco 3 — Integridade e Autenticação: Aula 6 (Hashing, SHA, HMAC)
-Bloco 4 — Criptografia Assimétrica: Aula 7 (Fundamentos, RSA), Aula 8 (Diffie-Hellman, Assinaturas Digitais), Aula 9 (Curva Elíptica — ECC)
-Bloco 5 — Infraestrutura e Aplicações: Aula 10 (PKI, certificados X.509, MITM), Aula 11 (TLS, PGP, nota final sobre pós-quântica)
+O módulo tem 10 aulas teóricas, mas a sebenta e os decks de slides organizam-se por 11 capítulos — as duas últimas aulas de conteúdo (Capítulos 10 e 11) são leccionadas na mesma sessão.
+
+Apresentação (fora da distribuição de conteúdo, sem número de capítulo)
+Bloco 1 — Criptografia Clássica: Capítulo 1 (substituição, transposição, César, monoalfabética, Playfair, Vigenère, One-Time Pad)
+Bloco 2 — Criptografia Simétrica Moderna: Capítulo 2 (Cifras de Bloco — Feistel, DES/3DES), Capítulo 3 (AES), Capítulo 4 (Cifras de Fluxo — RC4, Salsa20, ChaCha20)
+Bloco 3 — Integridade e Autenticação: Capítulo 5 (Hashing, SHA, MAC, HMAC)
+Bloco 4 — Criptografia Assimétrica: Capítulo 6 (Fundamentos, RSA), Capítulo 7 (Diffie-Hellman, Assinaturas Digitais), Capítulo 8 (Curva Elíptica — ECC)
+Bloco 5 — Infraestrutura e Aplicações: Capítulo 9 (PKI, certificados X.509, MITM), Capítulo 10 (TLS, PGP), Capítulo 11 (Eficiência Algorítmica e Criptografia Pós-Quântica — leccionado na mesma aula que o Capítulo 10)

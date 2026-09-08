@@ -182,7 +182,7 @@ This chapter introduced the fundamental structure of modern block ciphers:
 5. **DES**, the dominant standard between 1977 and 1999, has a 64-bit block, an effective 56-bit key and 16 Feistel rounds; its small key space made it vulnerable to brute force (from 96 days, in 1997, to 22 hours, in 1999), and it is obsolete today
 6. **3DES**, adopted in 1999, applies DES three times (the EDE scheme), extending effective security to about 112 bits, at the cost of being about three times slower; it too is being phased out
 
-## Food for Thought {#sec-02-reflexao}
+## Discussion Question {#sec-02-reflexao}
 
 In a Feistel network, the function $F$ does not need to be invertible for the whole system to be reversible. What practical advantage does this bring to whoever designs the algorithm, compared with a cipher in which the central function itself would have to be invertible?
 

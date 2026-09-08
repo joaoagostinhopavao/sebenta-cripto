@@ -85,7 +85,7 @@ The simplest mode splits the message into blocks and encrypts each one independe
 
 ![The ECB mode: each plaintext block is encrypted (or decrypted) completely independently of the others, always with the same key $K$ — hence the absence of any link between consecutive blocks.](../assets/images/fig-modo-ecb.png){#fig-03-modo-ecb width=90%}
 
-![A plaintext organised into blocks, with an obvious structural pattern (frame, cross), encrypted in ECB mode and in CBC mode. Under ECB, identical plaintext blocks generate identical ciphertext blocks: the original pattern remains perfectly visible, only with different colours (values). Under CBC, the same pattern disappears completely.](../assets/images/fig-ecb-vs-cbc.png){#fig-03-ecb-cbc width=95%}
+![A plaintext organised into blocks, with an obvious structural pattern (frame, cross), encrypted in ECB mode and in CBC mode. Under ECB, identical plaintext blocks generate identical ciphertext blocks: the original pattern remains perfectly visible, only with different colours (values). Under CBC, the same pattern disappears completely.](../assets/images/fig-ecb-vs-cbc-en.png){#fig-03-ecb-cbc width=95%}
 
 ### CBC — Cipher Block Chaining {#sec-03-cbc}
 
@@ -169,7 +169,7 @@ This chapter presented the algorithm that today occupies the place of DES, and t
 7. None of these modes protects the integrity of the message; **GCM** solves this by combining CTR with authentication (GHASH), in an **AEAD** construction that is today the recommended mode for the generality of new applications
 8. **Padding** (namely the PKCS#7 scheme) allows the modes that encrypt directly, block by block, such as ECB and CBC, to process messages of any length; CTR and GCM dispense with it. An incorrect implementation of padding validation can give rise to padding oracle attacks
 
-## Food for Thought {#sec-03-reflexao}
+## Discussion Question {#sec-03-reflexao}
 
 DES combines confusion and diffusion through a single function $F$, applied to only half the block per round. AES separates these two properties into distinct transformations (`SubBytes` for confusion, `ShiftRows`/`MixColumns` for diffusion), applied to the entire block. What advantages might this explicit separation bring, both for the security analysis of the algorithm and for its performance in hardware?
 

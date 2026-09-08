@@ -289,7 +289,7 @@ window.Quarto = {
   <li><a href="#sec-08-ecdh" id="toc-sec-08-ecdh" class="nav-link" data-scroll-target="#sec-08-ecdh"><span class="header-section-number">8.5</span> ECDH: Diffie-Hellman over an Elliptic Curve</a></li>
   <li><a href="#sec-08-ecdsa" id="toc-sec-08-ecdsa" class="nav-link" data-scroll-target="#sec-08-ecdsa"><span class="header-section-number">8.6</span> ECDSA and Curves Used in Practice</a></li>
   <li><a href="#sec-08-sintese" id="toc-sec-08-sintese" class="nav-link" data-scroll-target="#sec-08-sintese"><span class="header-section-number">8.7</span> Chapter Summary</a></li>
-  <li><a href="#sec-08-reflexao" id="toc-sec-08-reflexao" class="nav-link" data-scroll-target="#sec-08-reflexao"><span class="header-section-number">8.8</span> Food for Thought</a></li>
+  <li><a href="#sec-08-reflexao" id="toc-sec-08-reflexao" class="nav-link" data-scroll-target="#sec-08-reflexao"><span class="header-section-number">8.8</span> Discussion Question</a></li>
   <li><a href="#sec-08-referencias" id="toc-sec-08-referencias" class="nav-link" data-scroll-target="#sec-08-referencias">References</a></li>
   </ul>
 </nav>
@@ -439,7 +439,7 @@ Table&nbsp;8.1: Equivalent key sizes for various security levels <span class="ci
 </ol>
 </section>
 <section id="sec-08-reflexao" class="level2" data-number="8.8">
-<h2 data-number="8.8" class="anchored" data-anchor-id="sec-08-reflexao"><span class="header-section-number">8.8</span> Food for Thought</h2>
+<h2 data-number="8.8" class="anchored" data-anchor-id="sec-08-reflexao"><span class="header-section-number">8.8</span> Discussion Question</h2>
 <p>The best known generic attack against the ECDLP, Pollard’s rho algorithm, has complexity <span class="math inline">\(O(\sqrt{n})\)</span>, where <span class="math inline">\(n\)</span> is the order of the curve’s group of points. Knowing this, and looking at Table <a href="#tbl-08-tamanhos" class="quarto-xref"><span>8.1</span></a>, why does a curve with points of order <span class="math inline">\(n \approx 2^{256}\)</span> correspond to a security level of 128 bits, and not 256?</p>
 </section>
 <section id="sec-08-referencias" class="level2 unnumbered">
@@ -1189,7 +1189,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**ECDH** and **ECDSA** directly replicate the Diffie-Hellman and DSA of the previous chapters, replacing modular exponentiation with scalar multiplication of points</span>
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>In practice, the **P-256** curve and **Curve25519** predominate, the latter designed by Bernstein to avoid classes of implementation errors common to other curves</span>
 <span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## Food for Thought {#sec-08-reflexao}</span></span>
+<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion Question {#sec-08-reflexao}</span></span>
 <span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>The best known generic attack against the ECDLP, Pollard's rho algorithm, has complexity $O(\sqrt{n})$, where $n$ is the order of the curve's group of points. Knowing this, and looking at Table <span class="co">[</span><span class="ot">-@tbl-08-tamanhos</span><span class="co">]</span>, why does a curve with points of order $n \approx 2^{256}$ correspond to a security level of 128 bits, and not 256?</span>
 <span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>

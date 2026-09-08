@@ -287,7 +287,7 @@ window.Quarto = {
   <li><a href="#sec-10-tls-cifras" id="toc-sec-10-tls-cifras" class="nav-link" data-scroll-target="#sec-10-tls-cifras"><span class="header-section-number">10.3</span> Modern Ciphers in TLS</a></li>
   <li><a href="#sec-10-pgp" id="toc-sec-10-pgp" class="nav-link" data-scroll-target="#sec-10-pgp"><span class="header-section-number">10.4</span> PGP: Hybrid Encryption for Electronic Mail</a></li>
   <li><a href="#sec-10-sintese" id="toc-sec-10-sintese" class="nav-link" data-scroll-target="#sec-10-sintese"><span class="header-section-number">10.5</span> Chapter Summary</a></li>
-  <li><a href="#sec-10-reflexao" id="toc-sec-10-reflexao" class="nav-link" data-scroll-target="#sec-10-reflexao"><span class="header-section-number">10.6</span> Food for Thought</a></li>
+  <li><a href="#sec-10-reflexao" id="toc-sec-10-reflexao" class="nav-link" data-scroll-target="#sec-10-reflexao"><span class="header-section-number">10.6</span> Discussion Question</a></li>
   <li><a href="#sec-10-referencias" id="toc-sec-10-referencias" class="nav-link" data-scroll-target="#sec-10-referencias">References</a></li>
   </ul>
 </nav>
@@ -340,7 +340,7 @@ window.Quarto = {
 <div id="fig-10-tls-handshake" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-10-tls-handshake-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-10-tls-handshake.png" class="img-fluid figure-img" style="width:75.0%">
+<img src="../assets/images/fig-10-tls-handshake-en.png" class="img-fluid figure-img" style="width:75.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-10-tls-handshake-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;10.1: The TLS 1.3 handshake: client and server exchange a key-share value (<em>key_share</em>, typically ECDH over Curve25519) in the very first pair of messages; the server proves its identity with an X.509 certificate and the corresponding signature; both sides confirm they have derived the same session key before exchanging application data.
@@ -364,7 +364,7 @@ Figure&nbsp;10.1: The TLS 1.3 handshake: client and server exchange a key-share 
 <div id="fig-10-pgp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-10-pgp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-10-pgp.png" class="img-fluid figure-img" style="width:100.0%">
+<img src="../assets/images/fig-10-pgp-en.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-10-pgp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;10.2: PGP’s hybrid scheme: the message is signed with the sender’s private key and encrypted with a randomly generated session key; that session key, in turn, is encrypted with the recipient’s public key. Only whoever holds the corresponding private key can recover the session key, and through it, the message.
@@ -385,7 +385,7 @@ Figure&nbsp;10.2: PGP’s hybrid scheme: the message is signed with the sender�
 </ol>
 </section>
 <section id="sec-10-reflexao" class="level2" data-number="10.6">
-<h2 data-number="10.6" class="anchored" data-anchor-id="sec-10-reflexao"><span class="header-section-number">10.6</span> Food for Thought</h2>
+<h2 data-number="10.6" class="anchored" data-anchor-id="sec-10-reflexao"><span class="header-section-number">10.6</span> Discussion Question</h2>
 <p>The forward secrecy of TLS 1.3 (Section 10.2) guarantees that compromising the server’s long-term private key does not allow past sessions to be decrypted, because the session key never depended directly on it. PGP (Section 10.4) works quite differently: the recipient’s public key directly encrypts the session key <span class="math inline">\(K_s\)</span> of each message, always using the same long-term RSA key pair. Given this, what consequence does the eventual future discovery of a recipient’s long-term private key have for PGP messages already sent in the past, and precisely how does this situation differ from the guarantee offered by TLS 1.3?</p>
 </section>
 <section id="sec-10-referencias" class="level2 unnumbered">
@@ -1054,7 +1054,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>TLS 1.3 <span class="co">[</span><span class="ot">@RFC8446</span><span class="co">]</span> significantly simplified the handshake process relative to earlier versions, reducing it to a single round trip (*1-RTT*) in the general case:</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="al">![The TLS 1.3 handshake: client and server exchange a key-share value (*key_share*, typically ECDH over Curve25519) in the very first pair of messages; the server proves its identity with an X.509 certificate and the corresponding signature; both sides confirm they have derived the same session key before exchanging application data.](../assets/images/fig-10-tls-handshake.png)</span>{#fig-10-tls-handshake width=75%}</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="al">![The TLS 1.3 handshake: client and server exchange a key-share value (*key_share*, typically ECDH over Curve25519) in the very first pair of messages; the server proves its identity with an X.509 certificate and the corresponding signature; both sides confirm they have derived the same session key before exchanging application data.](../assets/images/fig-10-tls-handshake-en.png)</span>{#fig-10-tls-handshake width=75%}</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>The client starts with a <span class="in">`ClientHello`</span>, which already includes a key-share value (*key_share*), typically an elliptic curve point for ECDH (Section 8.5). The server responds with its own `ServerHello` and *key_share*, allowing both sides to immediately derive a common session key, exactly as in Section 8.5. The server also sends its X.509 certificate (Section 9.3) and a signature over the handshake transcript, proving that it holds the corresponding private key; both sides finish by confirming, through an authenticated <span class="in">`Finished`</span> message, that they arrived at the same key. From this point on, all communication proceeds encrypted and authenticated by the record layer.</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
@@ -1071,7 +1071,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>**PGP** (*Pretty Good Privacy*), and its standardised successor, OpenPGP <span class="co">[</span><span class="ot">@RFC4880</span><span class="co">]</span>, solves a different problem from TLS: protecting a message that does not follow a real-time connection, such as an email, between a sender and a recipient whose public keys are already known <span class="co">[</span><span class="ot">@Martin2017</span><span class="co">]</span>. The construction combines symmetric and asymmetric encryption, drawing on the speed of the former and the convenience of the latter:</span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="al">![PGP's hybrid scheme: the message is signed with the sender's private key and encrypted with a randomly generated session key; that session key, in turn, is encrypted with the recipient's public key. Only whoever holds the corresponding private key can recover the session key, and through it, the message.](../assets/images/fig-10-pgp.png)</span>{#fig-10-pgp width=100%}</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="al">![PGP's hybrid scheme: the message is signed with the sender's private key and encrypted with a randomly generated session key; that session key, in turn, is encrypted with the recipient's public key. Only whoever holds the corresponding private key can recover the session key, and through it, the message.](../assets/images/fig-10-pgp-en.png)</span>{#fig-10-pgp width=100%}</span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>On the sender's side: the message $M$ is first signed (hashed and then encrypted with the sender's private key, as in Section 7.4); the result is encrypted with a **session key** $K_s$, generated at random and used only once, via a fast symmetric cipher; and that session key, in turn, is encrypted with the recipient's public key, using RSA. What is transmitted is the pair (ciphertext, encrypted session key). On the receiver's side, the process is reversed: the recipient's private key decrypts $K_s$, which decrypts the text, revealing the message and the signature, which is finally verified with the sender's public key.</span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
@@ -1086,7 +1086,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Modern cipher suites use AES-GCM or ChaCha20-Poly1305, depending on whether hardware acceleration is available</span>
 <span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**PGP** protects asynchronous messages, such as email, with a **hybrid** cipher: the message is encrypted with a symmetric session key, and only that key is encrypted with RSA; trust is organised as a decentralised network, not a CA hierarchy</span>
 <span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## Food for Thought {#sec-10-reflexao}</span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion Question {#sec-10-reflexao}</span></span>
 <span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>The forward secrecy of TLS 1.3 (Section 10.2) guarantees that compromising the server's long-term private key does not allow past sessions to be decrypted, because the session key never depended directly on it. PGP (Section 10.4) works quite differently: the recipient's public key directly encrypts the session key $K_s$ of each message, always using the same long-term RSA key pair. Given this, what consequence does the eventual future discovery of a recipient's long-term private key have for PGP messages already sent in the past, and precisely how does this situation differ from the guarantee offered by TLS 1.3?</span>
 <span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>

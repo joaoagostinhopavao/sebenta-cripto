@@ -15,7 +15,7 @@ A public-key system rests on six components [@Stallings2020]: an encryption algo
 
 This simple inversion of "which key to use for what" gives rise to two distinct schemes, with opposite purposes:
 
-![In both schemes, a message $X$ is encrypted at one end and decrypted at the other, but the key pair used, and what each scheme guarantees, are opposite. For confidentiality, encryption uses the recipient's public key; for authentication, encryption uses the sender's own private key.](../assets/images/fig-06-confidencialidade-autenticacao.png){#fig-06-confid-autent width=100%}
+![In both schemes, a message $X$ is encrypted at one end and decrypted at the other, but the key pair used, and what each scheme guarantees, are opposite. For confidentiality, encryption uses the recipient's public key; for authentication, encryption uses the sender's own private key.](../assets/images/fig-06-confidencialidade-autenticacao-en.png){#fig-06-confid-autent width=100%}
 
 **Confidentiality.** To send Bob a confidential message, Alice encrypts it with **Bob's public key** ($PU_b$), which anyone knows:
 
@@ -78,7 +78,7 @@ A complete example, with small numbers used purely to illustrate the mechanism:
 4. Compute $d=23$, because $(23 \times 7) \bmod 160 = 161 \bmod 160 = 1$.
 5. Public key $= \{7, 187\}$; private key $= \{23, 187\}$.
 
-![The same example in action: the message $M=88$ is encrypted with the public key $(7,187)$, obtaining $C=11$; it is decrypted with the private key $(23,187)$, recovering $M=88$.](../assets/images/fig-06-rsa-exemplo.png){#fig-06-rsa-exemplo width=100%}
+![The same example in action: the message $M=88$ is encrypted with the public key $(7,187)$, obtaining $C=11$; it is decrypted with the private key $(23,187)$, recovering $M=88$.](../assets/images/fig-06-rsa-exemplo-en.png){#fig-06-rsa-exemplo width=100%}
 
 To send the message $M=88$: $C = 88^7 \bmod 187 = 11$. To recover it: $M = 11^{23} \bmod 187 = 88$.
 
@@ -106,7 +106,7 @@ This chapter introduced the second great family of modern cryptography:
 5. RSA's security depends entirely on the difficulty of **factorizing** $n$ into $p$ and $q$; with a small $n$ (as in the didactic example $n=187$), factorization is trivial, which is why the current standard requires $n$ of at least 2048 to 4096 bits
 6. **Textbook RSA** is not secure on its own: real-world use requires **RSA-OAEP** for encryption and **RSA-PSS** for signatures
 
-## Food for Thought {#sec-06-reflexao}
+## Discussion Question {#sec-06-reflexao}
 
 The worked example in Section 6.4 uses $n=187$ (8 bits), trivially factorizable, which destroys its security; the current standard recommends $n$ of 2048 to 4096 bits. In real RSA implementations, the public exponent $e$ is usually a small, fixed number (the value $e=65537$ is the most common), the same across millions of different keys worldwide, without this compromising the security of any of them. Given where all of RSA's security actually comes from (Section 6.5), why would increasing the size of $e$, while keeping $n$ small, not make the example in Section 6.4 more secure?
 
