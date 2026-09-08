@@ -158,7 +158,7 @@ F V Q R Z Q   M T B   X   E T V   Y T F R T Z X
 
 Apesar do espaço de chaves astronomicamente maior, a cifra monoalfabética continua vulnerável a criptanálise por análise de frequência: como cada letra do texto claro corresponde sempre à mesma letra no texto cifrado, a distribuição estatística das letras do texto claro transporta-se, intacta, para o texto cifrado, apenas com os símbolos trocados. Basta comparar a frequência das letras no texto cifrado com a frequência conhecida das letras na língua do texto claro para reconstruir grande parte da correspondência.
 
-Em português, a distribuição das letras está longe de ser uniforme: A, E e O dominam claramente, seguidos por um grupo intermédio (S, R, I, N, D, M, U, T, C), e um conjunto de letras raras (Z, J, X e, sobretudo, K, W, Y, praticamente ausentes em palavras portuguesas). Os valores seguintes resultam de uma contagem real, sobre os três primeiros cantos d'*Os Lusíadas*, de Luís de Camões (cerca de 103 mil caracteres alfabéticos), com o alfabeto normalizado para `a`–`z`, sem acentuação nem cedilha. Serve aqui apenas de exemplo aproximado de recolhas em *corpus* maiores:
+Em português, a distribuição das letras está longe de ser uniforme: A, E e O dominam claramente, seguidos por um grupo intermédio (S, R, I, N, D, M, U, T, C), e um conjunto de letras raras (Z, J, X e, sobretudo, K, W, Y, praticamente ausentes em palavras portuguesas). Os valores seguintes resultam de uma contagem real, sobre os três primeiros cantos d'*Os Lusíadas*, de Luís de Camões (**cerca de 103.000 caracteres alfabéticos**), com o alfabeto normalizado para `a`–`z`, sem acentuação nem cedilha. Serve aqui apenas de exemplo aproximado. Para um trabalho profissional convirá usar um *corpus* maior e mais atualizado:
 
 ![Frequência das letras em português, contada sobre os três primeiros cantos d'Os Lusíadas.](../assets/images/fig-frequencia-letras-pt.png){#fig-01-frequencia-letras}
 
@@ -223,7 +223,66 @@ Contando agora as letras deste texto cifrado (221 letras):
 | S | 5 | 2,26% |
 | J | 5 | 2,26% |
 
-Ao contrário do exemplo curto, agora a ordem observada bate certo com a ordem de referência (@fig-01-frequencia-letras), posição a posição: o par dominante (Q, T) corresponde exactamente ao par dominante da língua (A, E); o grupo seguinte (Y, R, X, O, B, P, Z, E, V) corresponde, com pequenos desvios de ordem, ao grupo intermédio (S, R, I, N, D, M, U, T, C). Um criptanalista sem acesso ao texto claro, só com esta tabela e o gráfico de referência, teria motivos sólidos para arriscar $\text{Q} \leftrightarrow \text{A}$ e $\text{T} \leftrightarrow \text{E}$ logo à partida, e resolveria a maior parte da chave por este processo, palavra a palavra, tal como se fez atrás com "QUE" e "SE". A diferença essencial em relação ao exemplo de 20 letras não é o método, é a fiabilidade dos números que o método recebe como ponto de partida. Esta é uma criptanálise baseada em estatística, quanto maior for a mensagem mais acertivo é o processo.
+Ao contrário do exemplo curto, o par dominante do texto cifrado (Q, T) corresponde de imediato ao par dominante da língua (A, E) — uma correspondência directa e segura, porque a distância entre estes dois valores e o terceiro colocado é grande o suficiente para não deixar dúvidas. A partir daí, porém, a correspondência directa deixa de ser fiável: tanto o texto cifrado como o gráfico de referência (@fig-01-frequencia-letras) têm vários valores muito próximos ou mesmo empatados a partir da 3.ª posição (8,14% e 8,14%; 5,43% e 5,43%; 4,52% e 4,52%), e com apenas 221 letras estas pequenas diferenças não são estatisticamente significativas. Fazendo a correspondência posição a posição de forma puramente mecânica, sem qualquer outra pista:
+
+| # | Letra cifrada | Ref. PT | Candidato directo | Chave real | Acerto? |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| 1 | Q (19,00%) | A (13,80%) | Q→A | Q→A | sim |
+| 2 | T (11,31%) | E (13,40%) | T→E | T→E | sim |
+| 3 | Y (8,60%) | O (11,60%) | Y→O | Y→S | não |
+| 4 | R (8,14%) | S (8,10%) | R→S | R→R | não |
+| 5 | X (8,14%) | R (6,90%) | X→R | X→O | não |
+| 6 | O (6,79%) | N (5,40%) | O→N | O→N | sim |
+| 7 | B (5,43%) | I (5,30%) | B→I | B→M | não |
+| 8 | P (5,43%) | D (5,00%) | P→D | P→I | não |
+| 9 | Z (4,52%) | T (5,00%) | Z→T | Z→D | não |
+| 10 | E (4,52%) | M (4,40%) | E→M | E→T | não |
+| 11 | V (3,62%) | U (4,35%) | V→U | V→U | sim |
+| 12 | N (2,71%) | C (3,20%) | N→C | N→P | não |
+| 13 | S (2,26%) | L (2,40%) | S→L | S→L | sim |
+| 14 | J (2,26%) | P (2,30%) | J→P | J→C | não |
+
+Apenas 5 das 14 correspondências (36%) coincidem com a chave real, e a partir da 3.ª posição a hipótese directa já falha. Isto não é uma fraqueza deste exemplo em particular: é a situação real de qualquer texto intercetado de comprimento moderado. A análise de frequência sozinha nunca chega a decifrar uma mensagem: apenas estreita as hipóteses para as letras mais e menos comuns, deixando a maioria por resolver.
+
+**Análise de dígrafos e trígrafos, outra vez.** Para ir mais além, o criptanalista volta à técnica já usada atrás com "QUE" e "SE": procurar blocos de letras que se repetem no texto cifrado e testá-los contra palavras curtas e frequentes da língua. Como se trata de uma substituição simples, uma palavra que se repita no texto claro produz sempre o mesmo bloco no texto cifrado, mesmo sem espaços visíveis a marcar onde ela começa e acaba. Contando os blocos de 3, 4 e 5 letras que se repetem nas 221 letras do texto cifrado, destacam-se quatro:
+
+| Bloco cifrado | Repetições | Hipótese | Palavra(s) plausível(eis) |
+|:-:|:-:|:-:|:-:|
+| CVT | 3× | Q-U-E | "que" (aparece 3× na estrofe) |
+| QZXY | 3× | A-D-?-S | sufixo "-ados" (assinalados, navegados, esforçados) |
+| QRQB | 3× | A-R-A-? | sufixo "-aram" (passaram, edificaram, sublimaram) |
+| GXRJQ | 2× | ?-O-R-?-A | "força" / "esforça-" |
+
+Como já se sabe, do par dominante, que Q corresponde a A, as três primeiras hipóteses ficam de imediato confirmadas pela letra inicial comum a todas: CVT, QZXY e QRQB começam todas por um bloco já reconhecível. Isto dá, de uma só vez, mais oito correspondências — C→Q, V→U, Z→D, X→O, Y→S, R→R, B→M, G→F, J→C — que, juntas às duas já conhecidas (Q→A, T→E), totalizam onze letras da chave recuperadas sem qualquer tentativa de força bruta. Aplicando-as às duas primeiras linhas da estrofe:
+
+::: {.httpmsg}
+```
+QYQRBQYTXYMQRXTYQYYPOQSQZXY  ->  ASARMASEOS_AROESASS__A_ADOS
+CVTZQXJPZTOEQSNRQPQSVYPEQOQ  ->  QUEDAOC_DE__A__RA_A_US__A_A
+```
+:::
+
+Os espaços em branco que restam fecham-se por vocabulário, não por frequência: "OS \_AROES" são provavelmente "OS BARÕES"; "ASS\_\_A\_ADOS" são provavelmente "ASSINALADOS"; "OC\_DENTAL" são provavelmente "OCIDENTAL"; "PRA\_A" são provavelmente "PRAIA"; "\_US\_TANA" são provavelmente "LUSITANA". O resultado final:
+
+> As armas e os barões assinalados,\
+> Que da ocidental praia Lusitana,
+
+Note-se o essencial: chegou-se aqui combinando três fontes de informação diferentes — frequência de letras isoladas, repetição de blocos, e conhecimento da língua — nunca por uma correspondência mecânica única. É esta combinação, não qualquer técnica isolada, que faz da análise de frequência uma ferramenta eficaz na prática.
+
+::: {.callout-note}
+#### E se o texto cifrado preservasse os espaços?
+
+Se, em vez de ocultar os espaços entre palavras, o texto cifrado os mantivesse, o ataque muda de método: as palavras curtas do português formam um vocabulário fechado e quase inconfundível. Cifrando a mesma estrofe, mas preservando os espaços:
+
+::: {.httpmsg}
+```
+AS ARMAS E OS BAROES ASSINALADOS  ->  QY QRBQY T XY MQRXTY QYYPOQSQZXY
+QUE DA OCIDENTAL PRAIA LUSITANA   ->  CVT ZQ XJPZTOEQS NRQPQ SVYPEQOQ
+```
+:::
+
+Contando o comprimento das palavras cifradas ao longo de toda a estrofe: as de 1 letra só podem ser "e" ou "a" ou "o" (as únicas palavras de uma letra da língua); as de 2 letras pertencem a um conjunto pequeno e fechado ("as", "os", "da", "de", "em", "do",...); e a única palavra de 3 letras que se repete três vezes tem uma alta probabilidade de ser "que". Isto identifica de imediato dez letras da chave (A, E, S, O, D, M, Q, U, P, R), sem contar uma única frequência de letra isolada. Preservar os espaços facilita tanto o ataque que, na prática, qualquer cifra usada a sério os remove sempre.
+:::
 
 ### Cifra de Playfair {#sec-01-playfair}
 

@@ -179,7 +179,47 @@ Counting the letters of this ciphertext gives the following frequency table (the
 | D | 5.00% |
 | E | 5.00% |
 
-Comparing this table with the reference chart (@fig-01-frequencia-letras): P, the most frequent ciphertext letter by a wide margin, is the natural candidate to correspond to E, the most frequent letter of English (12.7%); Z, the second most frequent, is the natural candidate for T (9.1%), the second most frequent letter of the language. From here, a cryptanalyst continues the same reasoning across the rest of the alphabet, cross-checking each new hypothesis against likely short words and digraphs, exactly the technique already used above with "to" and "the" — with enough ciphertext, as here, the process converges on the complete substitution key. This is a statistics-based cryptanalysis: the longer the message, the more reliable the process.
+Comparing this table with the reference chart (@fig-01-frequencia-letras): P, the most frequent ciphertext letter by a wide margin, is the natural candidate for E (12.7%), the most frequent letter of English; Z, the second most frequent, is the natural candidate for T (9.1%), the second most frequent letter of the language — a direct and safe correspondence, because the gap between these two values and the third-placed letter is wide enough to leave no doubt. From here, however, direct correspondence stops being reliable: both the ciphertext and the reference chart have several values that are close together or effectively tied from the 3rd position onward (8.33% vs. 8.33%; 5.00% vs. 5.00%; 4.17% vs. 4.17%), and with only 120 letters these small differences carry little statistical weight. Matching position by position, purely mechanically, with no other clue:
+
+| # | Ciphertext | English ref. | Direct guess | Real key | Hit? |
+|:-:|:-:|:-:|:-:|:-:|:-:|
+| 1 | P (13.33%) | E (12.70%) | P→E | P→E | yes |
+| 2 | Z (11.67%) | T (9.06%) | Z→T | Z→T | yes |
+| 3 | U (8.33%) | A (8.17%) | U→A | U→I | no |
+| 4 | S (8.33%) | O (7.51%) | S→O | S→A | no |
+| 5 | O (7.50%) | I (6.97%) | O→I | O→S | no |
+| 6 | M (6.67%) | N (6.75%) | M→N | M→O | no |
+| 7 | H (5.83%) | S (6.33%) | H→S | H→C | no |
+| 8 | E (5.00%) | H (6.09%) | E→H | E→R | no |
+| 9 | D (5.00%) | R (5.99%) | D→R | D→N | no |
+| 10 | V (4.17%) | D (4.25%) | V→D | V→D | yes |
+| 11 | X (4.17%) | L (4.03%) | X→L | X→L | yes |
+| 12 | W (3.33%) | C (2.78%) | W→C | W→H | no |
+| 13 | F (3.33%) | U (2.76%) | F→U | F→V | no |
+| 14 | Q (2.50%) | M (2.41%) | Q→M | Q→W | no |
+
+Only 4 of these 14 correspondences (29%) coincide with the real key, and the mismatches start right after the dominant pair. This is not a weakness of this particular example: it is the realistic situation for any intercepted message of moderate length. Frequency analysis alone never fully decrypts a message on its own; it only narrows the field for the most and least common letters, leaving most of the alphabet unresolved.
+
+**Digraphs and trigraphs, once more.** To go further, the cryptanalyst falls back on the technique already used above with "to" and "the": look for blocks of letters that repeat in the ciphertext, and test them against short, frequent words or word fragments of the language. Because this is a simple substitution, a repeated sequence of letters produces the same ciphertext block wherever it occurs — even when the repetition straddles a word boundary rather than reproducing a whole word. Counting the 3- to 5-letter blocks that repeat across the 120 letters of ciphertext, one stands out immediately: **ZHMD**, which occurs twice.
+
+Since Z is already known to correspond to T, a natural hypothesis is that ZHMD begins a word starting with "T". A second repeated block, **DZS** (also twice), shares the same D and Z, and decodes consistently as "...NTA..." once D is guessed as N — exactly the pattern found inside "co**nta**cts" and "represe**nta**tives". Testing ZHMD as "TCON" — the fragment shared by "direc**TCON**tacts" and "vie**TCON**g" — fits both repeated occurrences perfectly and yields three new letters at once: H→C, M→O, D→N. Combined with S→A (confirmed by the "NTA" pattern) and the two already known (P→E, Z→T), six letters of the key are now fixed without any brute force. Applying them to the ciphertext already makes the message legible in patches:
+
+::: {.httpmsg}
+```
+...UEPHZHMDZSHZOWSFPAPPDTSVPQUZWYMXUZUHSX...
+...___ECTCONTACT__A_E_EEN_A_E__T__O__T_CA_...
+```
+:::
+
+"\_\_ECT CONTACT\_\_A\_E \_EEN \_A\_E \_\_T\_ \_O\_\_T\_CA\_" is already unmistakably "...irect contacts have been made with...ical...". The remaining gaps close by vocabulary, exactly as before, revealing the full sentence:
+
+> "It was disclosed yesterday that several informal but direct contacts have been made with political representatives of the Viet Cong in Moscow."
+
+::: {.callout-note}
+#### What if the ciphertext kept the spaces?
+
+If word boundaries were visible, the attack would change shape again. This particular sentence has no single-letter words, and none of its three short words repeats (**IT**, **OF**, **IN**; **WAS**, **BUT**, **THE**). But spaces still help decisively: once the dominant pair P→E and Z→T is known, a 3-letter word beginning with Z and ending in P is almost certainly "the" — by far the most common three-letter word in English — without needing to search the ciphertext for any hidden repetition. Here that word is ciphered as "ZWP", so that single, targeted test gives W→H immediately, a letter the boundary-spanning "TCON" crib above never touched.
+:::
 
 ### The Playfair cipher {#sec-01-playfair}
 
