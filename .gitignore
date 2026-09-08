@@ -19,3 +19,8 @@ __pycache__/
 # professor, Stallings, etc.) — só para preparação do deck Gamma,
 # nunca para o repositório público.
 assets/slides-fonte/
+
+# PDFs gerados (PT e EN) — evitar binários grandes no repositório;
+# regenerar com `quarto render --to pdf` / `quarto render en/ --to pdf`
+docs/*.pdf
+docs/en/*.pdf

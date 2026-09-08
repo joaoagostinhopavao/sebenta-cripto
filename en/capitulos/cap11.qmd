@@ -1,0 +1,117 @@
+---
+title: "Algorithmic Efficiency and Post-Quantum Cryptography"
+author: "João Pavão"
+date: 2026-09-14
+lang: en-GB
+---
+
+## Introduction {#sec-11-intro .unnumbered}
+
+This final chapter changes register from the previous one. Rather than showing how this book's mechanisms combine into a concrete protocol, it asks something more fundamental, something that has run through every previous chapter without ever being formalised: what does it mean, with engineering rigour, to say that a cryptographic scheme is "secure"? And, once that question is answered, what price in efficiency is paid for that security, especially now that the threat of quantum computing forces a rethink of practically everything built up to this point?
+
+## Quantifying Security: from Binary Concept to Measurable Science {#sec-11-quantificar}
+
+Traditional software security is typically a binary concept: an application is either secure or it is not, and the goal is to completely prevent an attacker from violating the code. Cryptography measures security in a fundamentally different way: not as an absolute property, but as the **quantifiable effort** required to break a scheme, turning security from a binary concept into a measurable science [@Aumasson2017].
+
+## Information-Theoretic vs. Computational Security {#sec-11-dois-caminhos}
+
+There are two distinct paths to making a scheme "impossible" to break [@Aumasson2017]:
+
+- **Information-theoretic security**: a theoretical, absolute impossibility, independent of the time, computing power, or memory available to the attacker. The only example already encountered in this book is Shannon's **One-Time Pad** (Section 1.2.6): even by exhaustively testing every possible key, there are as many candidate plaintexts as there are keys, which makes it impossible to identify the correct one, even with infinite computational resources.
+- **Computational security**: a practical, non-absolute impossibility. A scheme is computationally secure if it cannot be broken within reasonable time and with reasonable resources (memory, hardware, budget, energy), even though, in theory, an attacker with unlimited time and resources could always break it.
+
+With the sole exception of the One-Time Pad, **all** of the remaining schemes presented in this book, AES, RC4, ChaCha20, SHA-256, HMAC, RSA, Diffie-Hellman, DSA, ECC, rely entirely on computational security, not information-theoretic security. This is the measure of security that is actually relevant in practice [@Aumasson2017].
+
+## Reasonable Limits: the Symmetric Key Example {#sec-11-limites-razoaveis}
+
+A scheme is computationally secure if it cannot be broken by brute force within limits of time and resources considered reasonable. For a 128-bit symmetric key (Section 3.2), these limits can be made concrete:
+
+::: {.callout-note}
+#### Quantifying the unbreakable: 128 bits in numbers
+
+A 128-bit key admits $2^{128}$ possible values, approximately $3.4 \times 10^{38}$. Assuming an attacker capable of testing 100 billion keys per second ($10^{11}$/s, a generous estimate even for dedicated hardware), searching the entire key space would take:
+
+$$\frac{3.4 \times 10^{38}}{10^{11}} \approx 3.4 \times 10^{27} \text{ seconds} \approx 10^{20} \text{ years}$$
+
+A number many orders of magnitude greater than the age of the universe. The scheme is **not** information-theoretically secure (an attacker with enough time would always eventually find the correct key), but for any practical purpose it is computationally unbreakable.
+:::
+
+## The $(t,\varepsilon)$ Framework {#sec-11-t-epsilon}
+
+The formal definition of computational security, adopted as standard in the cryptography literature [@Aumasson2017], is expressed through two values:
+
+- $t$: the **maximum number of operations** an attacker is willing to perform.
+- $\varepsilon$: an upper bound on that attacker's **probability of success**, with $0 < \varepsilon < 1$.
+
+A scheme is **$(t,\varepsilon)$-secure** if no attacker performing at most $t$ operations has a probability of success greater than $\varepsilon$. For a symmetric cipher with a 128-bit key $K$, ideally secure, this pair takes the form $(t,\, t/2^{128})$, for any $1 \le t \le 2^{128}$: the probability of success grows proportionally to the fraction of the key space already tested, never faster than that.
+
+Three concrete scenarios illustrate the idea:
+
+| Scenario | Operations ($t$) | Probability of success ($\varepsilon$) |
+|---|---|---|
+| A single attempt | $t=1$ | $\varepsilon = 2^{-128}$ |
+| Testing half the space | $t=2^{64}$ | $\varepsilon = 2^{-64}$ |
+| Testing the entire space | $t=2^{128}$ | $\varepsilon = 1$ (guaranteed success) |
+
+: Probability of success of brute force against a 128-bit key, as a function of attacker effort {#tbl-11-forca-bruta}
+
+It is worth noting the distinction between a **lower bound**: at least $t$ operations are required to compromise the scheme, the actual effort may be higher, and a **real bound** (*tight bound*): the exact effort known to break the scheme with probability $\varepsilon$ using exactly $t$ operations. Brute force never stops working, sooner or later: the goal of cryptography is not to make a scheme absolutely unbreakable, but to guarantee that brute force remains the **best known attack**, and that its cost far exceeds any realistic benefit to an attacker.
+
+## Complexity Classes: Why Scale Matters {#sec-11-complexidade}
+
+The $(t,\varepsilon)$ framework from the previous section measures the effort of an attack for a **fixed key size**. But throughout this book, whenever a concrete key size was recommended, 128 bits for AES, 3072 for RSA, 256 for ECC, the real justification depended on a different question: **how does the cost of an attack grow** as the key size $n$ increases? This is the question that **computational complexity classes** answer, and the terms "subexponential", "exponential" and "polynomial", already used in chapters 6 to 8 without a formal definition, describe precisely this growth rate [@Stallings2020; @Aumasson2017].
+
+- **Polynomial time**, $O(n^k)$ for some constant $k$: the cost grows as a power of $n$. Doubling $n$ multiplies the cost by a fixed factor (for example, $2^k$), however large $k$ may be. A problem that admits a polynomial-time algorithm is said to be **tractable**.
+- **Exponential time**, $O(c^n)$ for some constant $c>1$: the cost grows explosively. Doubling $n$ **squares** the cost. Exhaustive search over an $n$-bit key, $O(2^n)$, is the paradigmatic example, and it remains exponential even after being improved by Grover's algorithm (Section 3.5) or Pollard's rho (Section 8.3): both reduce the *constant* in the exponent ($O(2^{n/2})$ instead of $O(2^n)$), but neither changes complexity class.
+- **Subexponential time**: strictly between the previous two, growing faster than any polynomial, but slower than any exponential. This is the class of the *general number field sieve* (Sections 6.5 and 7.2), with a characteristic form $L_n[\alpha,c] = \exp\!\big((c+o(1))(\ln n)^{\alpha}(\ln\ln n)^{1-\alpha}\big)$, with $\alpha=\tfrac{1}{3}$ for factorisation and for the discrete logarithm modulo a prime [@Stallings2020].
+
+The difference in scale between these classes is what rigorously explains why RSA and classical Diffie-Hellman need keys so much larger than a symmetric cipher or ECC for the same practical security level: against a **subexponential** problem, increasing $n$ still helps, but less and less per added bit, forcing compensation with much larger moduli. Against a purely **exponential** problem, such as the ECDLP (Section 8.3) or exhaustive search over a symmetric key, every added bit always doubles the attacker's effort, so a modest growth in $n$ is already enough.
+
+This distinction is also what makes public-key cryptography possible in the first place, and it is worth stating explicitly: a system such as RSA (Section 6.4) or ECDH (Section 8.5) only works because the legitimate operation, encrypting, decrypting with the correct key, signing, verifying, is always **polynomial** (fast, practicable on any ordinary computer), whereas the corresponding attack, factoring $n$, computing a discrete logarithm, solving the ECDLP, without knowing the secret, is **subexponential or exponential** (impracticable for sufficiently large values). This asymmetry between ease of legitimate use and difficulty of attack, and not any mysterious property of any particular algorithm, is what makes all the public-key cryptography presented in this book useful.
+
+## Efficiency of the Algorithms Presented in this Book {#sec-11-eficiencia}
+
+The $(t,\varepsilon)$ framework measures *how much effort* is required to break a scheme, but it says little about the cost of **using** it correctly. In practice, choosing an algorithm is always a trade-off between the desired security level and computational efficiency, key size, signature size, ciphertext size, and the speed of operations [@Aumasson2017; @Stallings2020]:
+
+| Algorithm | Family | Classical security | Effect of a quantum computer | Typical size | Efficiency |
+|---|---|---|---|---|---|
+| AES-256 | Symmetric (Section 3.2) | 256 bits | Grover reduces to ~128 bits (Section 3.5); still secure | Key: 256 bits | Speed benchmark; accelerated by dedicated hardware (AES-NI) |
+| ChaCha20-Poly1305 | Symmetric (Section 4.5) | 256 bits | Identical to AES-256 | Key: 256 bits | As fast as AES-256 without hardware acceleration |
+| RSA-3072 | Classical asymmetric (factorisation) | 128 bits | Broken by Shor in polynomial time | Public key and signature: 3072 bits | Fast encryption; slow decryption and signing (large private exponent) |
+| ECDSA P-256 / X25519 | Classical asymmetric (elliptic curve) | 128 bits | Broken by Shor in polynomial time | Public key: 256 bits; signature: ~512 bits | Orders of magnitude faster and more compact than equivalent RSA |
+| ML-KEM-768 | Post-quantum (lattices) | ~128 bits (NIST Category 3) | No known efficient quantum attack | Public key: ~1184 bytes; ciphertext: ~1088 bytes | No modular exponentiation; fast operations, but much larger keys than ECC |
+| ML-DSA-65 | Post-quantum (lattices) | ~128 bits (NIST Category 3) | No known efficient quantum attack | Public key: ~1952 bytes; signature: ~3293 bytes | Competitive generation and verification; signature about 6 times larger than ECDSA's |
+
+: Approximate comparison of security and efficiency of the main algorithms presented in this book [@Aumasson2017; @Stallings2020; @FIPS203; @FIPS204] {#tbl-11-eficiencia}
+
+The pattern that emerges from this table anticipates the next section: elliptic curve cryptography (Chapter 8) is by far the most efficient of the classical families, with small keys and signatures and fast operations. Post-quantum cryptography trades precisely that efficiency for resistance to Shor's algorithm: its keys and signatures are typically twenty to fifty times larger than the equivalent ones in ECC, for the same classical security level, and this is the real engineering cost of the transition described in the next section.
+
+## Post-Quantum Cryptography: Threat and Migration {#sec-11-pqc}
+
+The entire edifice of asymmetric cryptography presented in this book, RSA, Diffie-Hellman, DSA, elliptic curve, rests on two mathematical problems: integer factorisation and the discrete logarithm (modulo a prime, or over an elliptic curve). In 1997, Peter Shor showed that a sufficiently large quantum computer solves both problems in **polynomial** time [@Shor1997], which would make it trivial to break any RSA, Diffie-Hellman, or ECC key, regardless of its size. Grover's algorithm, already referred to in connection with the security of AES (Section 3.5), has a more limited effect on symmetric cryptography, halving the effective number of security bits [@Grover1996], which is resolved simply by doubling the key size (AES-256 instead of AES-128).
+
+The threat from Shor's algorithm is not, for now, practical: building a quantum computer stable and large enough to run it against keys of the size used today remains an open engineering challenge. But migration to quantum-resistant alternatives is already under way, motivated in part by the "**harvest now, decrypt later**" scenario: traffic encrypted today, intercepted and stored, can be decrypted retroactively as soon as a capable quantum computer exists, which is already a concern today for data that needs to remain confidential for decades.
+
+In 2024, NIST completed the standardisation of the first **post-quantum cryptography** (PQC) standards: **ML-KEM** (formerly Kyber, FIPS 203 [@FIPS203]) for key exchange, and **ML-DSA** (formerly Dilithium, FIPS 204 [@FIPS204]) for digital signatures, both based on problems over lattices, not on factorisation or discrete logarithms, and therefore not known to be vulnerable to Shor's algorithm. Protocols such as TLS 1.3 (Section 10.2) already support today's **hybrid** schemes, which combine a classical mechanism (such as the X25519 from Section 8.6) with a post-quantum mechanism in the same handshake, so that the connection only becomes vulnerable if **both** mechanisms are broken, a prudent transition strategy while confidence in the new algorithms matures.
+
+## Chapter Summary {#sec-11-sintese}
+
+This chapter closed the book by quantifying the very notion of security:
+
+1. Cryptography measures security as a **quantifiable effort**, not as a binary property: it turns it into a measurable science
+2. **Information-theoretic security** is an absolute impossibility (the book's only example is the One-Time Pad); **computational security**, on which all the other schemes presented rely, is only a practical impossibility
+3. The **$(t,\varepsilon)$** framework formalises computational security: no attacker performing at most $t$ operations should succeed with probability greater than $\varepsilon$
+4. **Complexity classes** (polynomial, subexponential, exponential) describe how the cost of an attack scales with key size; it is this scaling, not the effort at a fixed size, that explains why subexponential problems (factorisation, discrete logarithm modulo a prime) require much larger keys than exponential problems (ECDLP, exhaustive search) for the same security level
+5. All public-key cryptography depends on a complexity asymmetry: the legitimate operation is always polynomial, the attack without the secret is subexponential or exponential
+6. An algorithm's efficiency, key size, speed, signature size, is always a trade-off with the desired security level; elliptic curve cryptography is today the most efficient classical family
+7. Shor's algorithm solves factorisation and the discrete logarithm in **polynomial** time, making it trivial to break RSA, Diffie-Hellman, and ECC on a sufficiently large quantum computer; Grover's algorithm only halves symmetric security
+8. NIST has already standardised **post-quantum** alternatives (ML-KEM, ML-DSA) based on lattices, with keys and signatures 20 to 50 times larger than those of ECC, and the first hybrid schemes are already in production
+
+## Food for Thought {#sec-11-reflexao}
+
+The "harvest now, decrypt later" scenario means that TLS traffic intercepted today may come to be decrypted in the future, once a sufficiently large quantum computer exists, even though the session key used is, today, computationally unbreakable. Given that the TLS session key derives from an ECDH exchange carried out during the handshake (Section 10.2), why does this scenario **not** threaten, in the same way, data encrypted with a long-term symmetric key that was previously exchanged over a secure physical channel, such as a USB drive delivered by hand?
+
+## References {#sec-11-referencias .unnumbered}
+
+::: {#refs}
+:::

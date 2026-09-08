@@ -1,0 +1,61 @@
+project:
+  type: book
+  output-dir: ../docs/en
+
+lang: en-GB
+bibliography: ../referencias.bib
+filters:
+  - ../filters/httpmsg-latex.lua
+
+book:
+  title: "Cryptography"
+  subtitle: "Cybersecurity Module — Master's in Electrical and Computer Engineering"
+  author:
+    - name: "João Pavão"
+      affiliation: "University of Trás-os-Montes e Alto Douro"
+  date: "2026-09-14"
+
+  chapters:
+    - index.qmd
+    - capitulos/cap01.qmd
+    - capitulos/cap02.qmd
+    - capitulos/cap03.qmd
+    - capitulos/cap04.qmd
+    - capitulos/cap05.qmd
+    - capitulos/cap06.qmd
+    - capitulos/cap07.qmd
+    - capitulos/cap08.qmd
+    - capitulos/cap09.qmd
+    - capitulos/cap10.qmd
+    - capitulos/cap11.qmd
+
+  sidebar:
+    search: true
+    tools:
+      - icon: translate
+        href: /../index.html
+        text: "Versão portuguesa"
+
+  page-footer:
+    left: "Cryptography — Cybersecurity, UTAD"
+
+format:
+  html:
+    theme:
+        light: litera
+        dark: darkly
+    css: /assets/css/custom.css
+    toc: true
+    toc-depth: 3
+    smooth-scroll: true
+    number-sections: true
+    number-depth: 3
+    highlight-style: github
+    code-fold: false
+    code-tools: true
+    fig-align: center
+
+execute:
+  echo: true
+  warning: false
+  message: false

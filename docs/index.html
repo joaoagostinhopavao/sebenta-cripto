@@ -136,6 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Criptografia</a> 
         <div class="sidebar-tools-main">
+    <a href="./en/" title="English version" class="quarto-navigation-tool px-1" aria-label="English version"><i class="bi bi-translate"></i></a>
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Alternar modo escuro"><i class="bi"></i></a>
 </div>
     </div>
@@ -290,18 +291,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Esta sebenta é um documento de estudo autónomo para o módulo de <strong>Criptografia</strong>, integrado na Unidade Curricular de Cibersegurança do Mestrado em Engenharia Eletrotécnica e de Computadores da Universidade de Trás-os-Montes e Alto Douro.</p>
 <section id="organização-da-sebenta" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="organização-da-sebenta">Organização da sebenta</h2>
-<p>Os capítulos correspondem às 10 aulas teóricas do módulo:</p>
+<p>Os capítulos seguem a estrutura das aulas teóricas do módulo (as duas últimas aulas, TLS/PGP e eficiência algorítmica/PQC, são leccionadas na mesma sessão):</p>
 <ol type="1">
 <li>Criptografia Clássica — substituição, polialfabética e transposição</li>
 <li>Cifras de Bloco — fundamentos, Feistel, DES e 3DES</li>
 <li>AES — estágios e modos de operação</li>
 <li>Cifras de Fluxo — RC4, Salsa20, ChaCha20 e padding</li>
-<li>Hashing — propriedades, ataques, SHA e HMAC</li>
-<li>Criptografia Assimétrica — fundamentos e RSA</li>
+<li>Hashing — propriedades, ataques, SHA, MAC e HMAC</li>
+<li>Criptografia Assimétrica e RSA</li>
 <li>Diffie-Hellman e Assinaturas Digitais</li>
-<li>Criptografia de Curva Elíptica (ECC)</li>
+<li>Criptografia de Curva Elíptica</li>
 <li>Infraestrutura de Chave Pública (PKI)</li>
-<li>TLS e PGP — esquemas criptográficos aplicados</li>
+<li>TLS e PGP</li>
+<li>Eficiência Algorítmica e Criptografia Pós-Quântica</li>
 </ol>
 </section>
 <section id="autor" class="level2 unnumbered">
@@ -954,22 +956,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Organização da sebenta {.unnumbered}</span></span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>Os capítulos correspondem às 10 aulas teóricas do módulo:</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>Os capítulos seguem a estrutura das aulas teóricas do módulo (as duas últimas aulas, TLS/PGP e eficiência algorítmica/PQC, são leccionadas na mesma sessão):</span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Criptografia Clássica — substituição, polialfabética e transposição</span>
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Cifras de Bloco — fundamentos, Feistel, DES e 3DES</span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>AES — estágios e modos de operação</span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Cifras de Fluxo — RC4, Salsa20, ChaCha20 e padding</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Hashing — propriedades, ataques, SHA e HMAC</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Criptografia Assimétrica — fundamentos e RSA</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Hashing — propriedades, ataques, SHA, MAC e HMAC</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Criptografia Assimétrica e RSA</span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Diffie-Hellman e Assinaturas Digitais</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>Criptografia de Curva Elíptica (ECC)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>Criptografia de Curva Elíptica</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="ss">9. </span>Infraestrutura de Chave Pública (PKI)</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">10. </span>TLS e PGP — esquemas criptográficos aplicados</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="fu">## Autor {.unnumbered}</span></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>**João Pavão** — UTAD</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">10. </span>TLS e PGP</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">11. </span>Eficiência Algorítmica e Criptografia Pós-Quântica</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## Autor {.unnumbered}</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>**João Pavão** — UTAD</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

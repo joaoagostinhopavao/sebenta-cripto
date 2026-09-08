@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="João Pavão">
+<meta name="dcterms.date" content="2026-09-14">
+
+<title>2&nbsp; Block Ciphers — Fundamentals, Feistel, DES and 3DES – Cryptography</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../capitulos/cap03.html" rel="next">
+<link href="../capitulos/cap01.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de84f8d6bb715db06a919283c2d1e787.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-9a023c9ade86a60361e96e3e3f11bc54.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-61bc4ac84974e0785b3107ee93e74bfb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-bc9f1d3aef906c45e091843ae87821a0.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap02.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Block Ciphers — Fundamentals, Feistel, DES and 3DES</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Cryptography</a> 
+        <div class="sidebar-tools-main">
+    <a href="../../index.html" title="Versão portuguesa" class="quarto-navigation-tool px-1" aria-label="Versão portuguesa"><i class="bi bi-translate"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Classical Cryptography — Substitution, Polyalphabetic and Transposition Ciphers</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap02.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Block Ciphers — Fundamentals, Feistel, DES and 3DES</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">AES — Stages and Modes of Operation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Stream Ciphers — RC4, Salsa20, ChaCha20 and Padding</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Properties, Attacks, SHA, MAC and HMAC</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Asymmetric Cryptography and RSA</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Diffie-Hellman and Digital Signatures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Elliptic Curve Cryptography</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Public Key Infrastructure (PKI)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS and PGP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Algorithmic Efficiency and Post-Quantum Cryptography</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-02-intro" id="toc-sec-02-intro" class="nav-link active" data-scroll-target="#sec-02-intro">Introduction</a></li>
+  <li><a href="#sec-02-fundamentos" id="toc-sec-02-fundamentos" class="nav-link" data-scroll-target="#sec-02-fundamentos"><span class="header-section-number">2.1</span> Foundations of Block Ciphers</a>
+  <ul class="collapse">
+  <li><a href="#sec-02-definicao" id="toc-sec-02-definicao" class="nav-link" data-scroll-target="#sec-02-definicao"><span class="header-section-number">2.1.1</span> What is a block cipher</a></li>
+  <li><a href="#sec-02-cifra-ideal" id="toc-sec-02-cifra-ideal" class="nav-link" data-scroll-target="#sec-02-cifra-ideal"><span class="header-section-number">2.1.2</span> The ideal cipher, and why it is impractical</a></li>
+  <li><a href="#sec-02-confusao-difusao" id="toc-sec-02-confusao-difusao" class="nav-link" data-scroll-target="#sec-02-confusao-difusao"><span class="header-section-number">2.1.3</span> Confusion and diffusion</a></li>
+  </ul></li>
+  <li><a href="#sec-02-feistel" id="toc-sec-02-feistel" class="nav-link" data-scroll-target="#sec-02-feistel"><span class="header-section-number">2.2</span> The Feistel Network</a>
+  <ul class="collapse">
+  <li><a href="#sec-02-feistel-exemplo" id="toc-sec-02-feistel-exemplo" class="nav-link" data-scroll-target="#sec-02-feistel-exemplo"><span class="header-section-number">2.2.1</span> Example with a reduced network</a></li>
+  </ul></li>
+  <li><a href="#sec-02-des" id="toc-sec-02-des" class="nav-link" data-scroll-target="#sec-02-des"><span class="header-section-number">2.3</span> DES — Data Encryption Standard</a>
+  <ul class="collapse">
+  <li><a href="#sec-02-des-forca" id="toc-sec-02-des-forca" class="nav-link" data-scroll-target="#sec-02-des-forca"><span class="header-section-number">2.3.1</span> The strength of DES</a></li>
+  </ul></li>
+  <li><a href="#sec-02-3des" id="toc-sec-02-3des" class="nav-link" data-scroll-target="#sec-02-3des"><span class="header-section-number">2.4</span> 3DES — Triple DES</a></li>
+  <li><a href="#sec-02-sintese" id="toc-sec-02-sintese" class="nav-link" data-scroll-target="#sec-02-sintese"><span class="header-section-number">2.5</span> Chapter Summary</a></li>
+  <li><a href="#sec-02-reflexao" id="toc-sec-02-reflexao" class="nav-link" data-scroll-target="#sec-02-reflexao"><span class="header-section-number">2.6</span> Food for Thought</a></li>
+  <li><a href="#sec-02-referencias" id="toc-sec-02-referencias" class="nav-link" data-scroll-target="#sec-02-referencias">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Block Ciphers — Fundamentals, Feistel, DES and 3DES</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>João Pavão </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">14 September 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-02-intro" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-02-intro">Introduction</h2>
+<p>The classical ciphers studied in the previous chapter operate on letters of a natural alphabet: they substitute them, they transpose them, but they always work with the structure of a language. A computer does not read letters; it reads sequences of bits. Modern ciphers start from this fact: the plaintext, whether text, image or sound, is always, ultimately, a binary sequence, and it is on that sequence that block ciphers operate.</p>
+<p>This chapter introduces the structure common to the generality of modern block ciphers, the Feistel network, and two historical algorithms built upon it: DES, for decades the dominant standard, and 3DES, the extension created to prolong its useful life after DES was deemed insecure. The next chapter deals with AES, the algorithm that today occupies the place DES once held.</p>
+</section>
+<section id="sec-02-fundamentos" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="sec-02-fundamentos"><span class="header-section-number">2.1</span> Foundations of Block Ciphers</h2>
+<section id="sec-02-definicao" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="sec-02-definicao"><span class="header-section-number">2.1.1</span> What is a block cipher</h3>
+<p>A <strong>block cipher</strong> divides the plaintext into fixed-size blocks, typically 64 or 128 bits, and encrypts each block independently, always using the same key. Formally, for a block of <span class="math inline">\(n\)</span> bits and a key <span class="math inline">\(K\)</span>, the encryption algorithm <span class="math inline">\(E_K\)</span> is a bijective function:</p>
+<p><span class="math display">\[E_K : \{0,1\}^n \rightarrow \{0,1\}^n\]</span></p>
+<p>That is, for each key <span class="math inline">\(K\)</span>, <span class="math inline">\(E_K\)</span> is a distinct permutation of the set of all possible blocks: every plaintext block has exactly one corresponding ciphertext block, and vice versa, which guarantees that decryption is always possible and unique.</p>
+<p>This directly generalises the monoalphabetic cipher from the previous chapter, which was also a permutation, but of a 26-letter alphabet. A block cipher with 64-bit blocks is a permutation of a set with <span class="math inline">\(2^{64}\)</span> elements, an immensely larger space, which by itself already hinders frequency analysis: instead of 26 possible symbols, there are <span class="math inline">\(2^{64}\)</span> possible blocks, each occurring rarely enough that counting frequencies ceases to be useful.</p>
+</section>
+<section id="sec-02-cifra-ideal" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="sec-02-cifra-ideal"><span class="header-section-number">2.1.2</span> The ideal cipher, and why it is impractical</h3>
+<p>If a block cipher is, at bottom, a permutation parameterised by the key, the most directly secure construction would be to choose, for each key, a <strong>completely arbitrary</strong> permutation between all input blocks and all output blocks, with no internal structure whatsoever that a cryptanalyst could exploit. This construction is called the <strong>ideal cipher</strong>, and the problem with it is not one of security, it is one of key size.</p>
+<p>Formally, the encryption algorithm <span class="math inline">\(E_K\)</span> of an <span class="math inline">\(n\)</span>-bit block cipher is a function</p>
+<p><span class="math display">\[E_K : \{0,1\}^n \rightarrow \{0,1\}^n\]</span></p>
+<p>that maps each of the <span class="math inline">\(2^n\)</span> possible input blocks to an output block, likewise of <span class="math inline">\(n\)</span> bits. Consider the case <span class="math inline">\(n=4\)</span>: each input block is a value between <code>0000</code> and <code>1111</code>, more conveniently written in <strong>hexadecimal</strong>, since a single hexadecimal digit represents exactly 4 bits. The 16 possible blocks correspond, one to one, to the digits <code>0</code> through <code>F</code>.</p>
+<p>An <strong>arbitrary permutation</strong> of these 16 values is any bijective reassignment of each input to a distinct output, with no repeats. For example, the following three permutations are all valid, and completely different from one another:</p>
+<div class="httpmsg">
+<pre><code>Entrada:               0 1 2 3 4 5 6 7 8 9 A B C D E F
+Permutação A (+5):     5 6 7 8 9 A B C D E F 0 1 2 3 4
+Permutação B (livre):  5 D 2 9 0 B 7 E 3 F 1 8 6 4 A C
+Permutação C (pares):  0 1 3 2 5 4 7 6 9 8 B A D C F E</code></pre>
+</div>
+<p>Permutation A is merely a shift — the same logic as the Caesar cipher, now over hexadecimal digits instead of letters. Permutations B and C follow no simple formula: they were chosen value by value, with no pattern whatsoever, only ensuring that each input has a different output and that no output repeats.</p>
+<p><strong>How many such permutations exist, in total?</strong> For the first input (<code>0</code>), there are 16 possible outputs; once that is chosen, 15 options remain for the next input (<code>1</code>), since the output chosen for <code>0</code> cannot repeat; then 14 for input <code>2</code>; and so on, until only 1 option remains for the last input (<code>F</code>). The total is:</p>
+<p><span class="math display">\[16 \times 15 \times 14 \times \cdots \times 1 = 16! \approx 2.09 \times 10^{13}\]</span></p>
+<p>This number does not depend at all on the size of the key: it is merely the count of all the ways of shuffling 16 values, whether those values are hexadecimal digits, playing cards, or letters of an alphabet.</p>
+<p><strong>This is where the key-size problem comes in.</strong> If the key <span class="math inline">\(K\)</span> were likewise 4 bits long, only 16 possible key values would exist — and each key, through the algorithm, can only determine <em>one</em> permutation. However clever the algorithm, 16 keys can never select more than 16 different permutations, out of a total of <span class="math inline">\(16! \approx 2.09\times10^{13}\)</span>: for instance, key <code>5</code> might select Permutation A, key <code>3</code> might select B, and so on, but only 16 possibilities are ever covered. The Caesar cipher is exactly this case: its 16 keys always select 16 shifts (like Permutation A), never a free permutation such as B or C. For the key to be able to reach <strong>any one</strong> of the <span class="math inline">\(16!\)</span> permutations, and not merely a small subset chosen in advance, it needs, itself, to have many more than 4 bits.</p>
+<p><strong>How much larger, exactly?</strong> There are two answers to this question: the first gives the actual key size needed to address every possible permutation of 4-bit blocks onto 4-bit blocks; the second is an estimate that bounds that value from above.</p>
+<p>Knowing that there are <span class="math inline">\(16!\)</span> valid permutations, the number of bits <span class="math inline">\(x\)</span> needed to index that many is the key size. So <span class="math inline">\(2^x = (16!)\)</span>, which gives <span class="math inline">\(x = \log_2(16!) \approx 45\)</span> bits.</p>
+<p>The second approach gives a more direct way of answering the question of key size, which is to imagine that the key <em>is</em>, literally, the complete substitution table. For example, for Permutation A (the “+5” one), the following table is obtained:</p>
+<div class="httpmsg">
+<pre><code>Entrada  Saída (4 bits) Saída (Hex.)
+  0    →   0 1 0 1         (= 5)
+  1    →   0 1 1 0         (= 6)
+  2    →   0 1 1 1         (= 7)
+  3    →   1 0 0 0         (= 8)
+  4    →   1 0 0 1         (= 9)
+  5    →   1 0 1 0         (= A)
+  6    →   1 0 1 1         (= B)
+  7    →   1 1 0 0         (= C)
+  8    →   1 1 0 1         (= D)
+  9    →   1 1 1 0         (= E)
+  A    →   1 1 1 1         (= F)
+  B    →   0 0 0 0         (= 0)
+  C    →   0 0 0 1         (= 1)
+  D    →   0 0 1 0         (= 2)
+  E    →   0 0 1 1         (= 3)
+  F    →   0 1 0 0         (= 4)</code></pre>
+</div>
+<p>From the table we can see that the key size must be such that it can address a numeric string of 16 hexadecimal characters. It must therefore have a size of <span class="math inline">\(16\)</span> characters. Since each character is 4 bits, the key size in bits is <span class="math inline">\(4 \times 16 = 64\)</span>, which corresponds to the area of the table shown:</p>
+<p><span class="math display">\[\text{height} \times \text{width} = 16 \times 4 = 64 \text{ bits}\]</span></p>
+<p>Generalising, for a block of <span class="math inline">\(n\)</span> bits, the key of the ideal cipher needs</p>
+<p><span class="math display">\[n \times 2^n \text{ bits}\]</span></p>
+<p>For <span class="math inline">\(n=4\)</span>, this is only 64 bits, perfectly manageable. But for a block of <span class="math inline">\(n=64\)</span> bits, a perfectly reasonable size for a real cipher:</p>
+<p><span class="math display">\[64 \times 2^{64} = 2^6 \times 2^{64} = 2^{70} \approx 10^{21} \text{ bits}\]</span></p>
+<p>A number with no practical application whatsoever: no system can generate, store, distribute, or even write down a key of this size. <strong>The ideal cipher is, therefore, impractical.</strong> Real block ciphers do not attempt to realise it directly; instead, they seek to <strong>approximate</strong> its unpredictable behaviour, by repeatedly combining, across several rounds, simple operations that are cheap to specify, until the final result is computationally indistinguishable from a genuinely arbitrary permutation. This is exactly what confusion and diffusion, introduced next, are for.</p>
+</section>
+<section id="sec-02-confusao-difusao" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="sec-02-confusao-difusao"><span class="header-section-number">2.1.3</span> Confusion and diffusion</h3>
+<p>Claude Shannon, the same author who proved the perfect secrecy of the One-Time Pad, identified in 1949 two properties that a robust cipher must guarantee:</p>
+<ul>
+<li><strong>Confusion</strong>: the relationship between the key and the ciphertext must be as complex and non-linear as possible, so as to hide any statistical pattern linking the two. In practice, this is achieved through non-linear substitution operations.</li>
+<li><strong>Diffusion</strong>: the influence of each bit of the plaintext (and of each bit of the key) must spread across many bits of the ciphertext, such that changing a single input bit changes, on average, half of the output bits, in an apparently random fashion. In practice, this is achieved through permutation and bit-mixing operations.</li>
+</ul>
+<p>Neither property, in isolation, is sufficient: substitution alone, as seen in the monoalphabetic cipher, is vulnerable to frequency analysis; transposition alone leaves frequency entirely intact. Modern block ciphers combine the two, repeatedly applying, across several <strong>rounds</strong>, a sequence of substitutions and permutations, until the final ciphertext betrays no useful statistical relationship with either the plaintext or the key.</p>
+</section>
+</section>
+<section id="sec-02-feistel" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="sec-02-feistel"><span class="header-section-number">2.2</span> The Feistel Network</h2>
+<p>Most classical block ciphers, DES included, organise these rounds according to a structure proposed by Horst Feistel, in the 1970s, while working at IBM. In a <strong>Feistel network</strong>, the block is split into two equal halves, <span class="math inline">\(L_i\)</span> (left) and <span class="math inline">\(R_i\)</span> (right), and each round <span class="math inline">\(i\)</span> is applied as follows:</p>
+<div id="fig-02-feistel-ronda" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-02-feistel-ronda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-feistel-ronda.png" class="img-fluid figure-img" style="width:45.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-02-feistel-ronda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: One round of a Feistel network, illustrated for a block of <span class="math inline">\(W=64\)</span> bits (the notation <span class="math inline">\(LE_i\)</span>/<span class="math inline">\(RE_i\)</span> used in the figure is equivalent to <span class="math inline">\(L_i\)</span>/<span class="math inline">\(R_i\)</span>). The right half <span class="math inline">\(RE_0\)</span> passes through a function <span class="math inline">\(F\)</span> parameterised by the round subkey <span class="math inline">\(K_1\)</span>, the result is combined by XOR with the left half <span class="math inline">\(LE_0\)</span>, and the two halves swap position for the next round (<span class="math inline">\(LE_1\)</span>/<span class="math inline">\(RE_1\)</span>).
+</figcaption>
+</figure>
+</div>
+<p><span class="math display">\[L_{i+1} = R_i\]</span> <span class="math display">\[R_{i+1} = L_i \oplus F(R_i, K_i)\]</span></p>
+<p>where <span class="math inline">\(F\)</span> is a round function, typically non-linear, parameterised by a subkey <span class="math inline">\(K_i\)</span> derived from the main key, and <span class="math inline">\(\oplus\)</span> denotes the bitwise XOR operation.</p>
+<p><strong>The fundamental property of a Feistel network</strong> is that decryption uses exactly the same structure as encryption, only with the subkeys applied in reverse order, and this holds true <strong>regardless of the function <span class="math inline">\(F\)</span> chosen</strong>, even if <span class="math inline">\(F\)</span> is not itself invertible. This considerably simplifies implementation: the same circuit or code serves both to encrypt and to decrypt, which would not necessarily be possible if <span class="math inline">\(F\)</span> had to be both applied and inverted.</p>
+<div id="fig-02-feistel-enc-dec" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-02-feistel-enc-dec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-feistel-enc-dec.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-02-feistel-enc-dec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.2: Encryption and decryption in a 16-round Feistel network (the number of rounds used by DES, presented in the next section). On the left, encryption: the plaintext enters as <span class="math inline">\(LE_0\)</span>/<span class="math inline">\(RE_0\)</span> and, round by round, the subkeys <span class="math inline">\(K_1, K_2, \dots, K_{16}\)</span> are applied in order, producing the ciphertext. On the right, decryption starts from that same ciphertext and applies exactly the same round structure, with the same function <span class="math inline">\(F\)</span>, but with the subkeys in reverse order (<span class="math inline">\(K_{16}\)</span> in the first round of decryption, <span class="math inline">\(K_1\)</span> in the last), recovering the original plaintext after the 16 rounds.
+</figcaption>
+</figure>
+</div>
+<section id="sec-02-feistel-exemplo" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="sec-02-feistel-exemplo"><span class="header-section-number">2.2.1</span> Example with a reduced network</h3>
+<p>To make this concrete, consider a drastically reduced version, with 8-bit blocks (4-bit halves) and the function <span class="math inline">\(F(R, K) = \text{ROL}_1(R) \oplus K\)</span>, where <span class="math inline">\(\text{ROL}_1\)</span> rotates the 4 bits of <span class="math inline">\(R\)</span> one place to the left. This function has no pretension of real security whatsoever, it serves only to illustrate the mechanism.</p>
+<p>With plaintext <span class="math inline">\(L_0 = 1010\)</span>, <span class="math inline">\(R_0 = 0110\)</span>, and two subkeys <span class="math inline">\(K_1 = 0011\)</span>, <span class="math inline">\(K_2 = 1100\)</span>:</p>
+<p><strong>Round 1:</strong> <span class="math inline">\(F(R_0, K_1) = \text{ROL}_1(0110) \oplus 0011 = 1100 \oplus 0011 = 1111\)</span> <span class="math inline">\(L_1 = R_0 = 0110 \qquad R_1 = L_0 \oplus F(R_0, K_1) = 1010 \oplus 1111 = 0101\)</span></p>
+<p><strong>Round 2:</strong> <span class="math inline">\(F(R_1, K_2) = \text{ROL}_1(0101) \oplus 1100 = 1010 \oplus 1100 = 0110\)</span> <span class="math inline">\(L_2 = R_1 = 0101 \qquad R_2 = L_1 \oplus F(R_1, K_2) = 0110 \oplus 0110 = 0000\)</span></p>
+<p>The ciphertext is <span class="math inline">\(L_2 R_2 = 01010000\)</span>. To decrypt, the same two rounds are applied, but with the subkeys in reverse order (<span class="math inline">\(K_2\)</span> first, then <span class="math inline">\(K_1\)</span>), recovering exactly <span class="math inline">\(L_0 = 1010\)</span>, <span class="math inline">\(R_0 = 0110\)</span> — confirmed by direct computation. Note that at no point was it necessary to invert the function <span class="math inline">\(F\)</span>: only the order of the subkeys changed.</p>
+</section>
+</section>
+<section id="sec-02-des" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="sec-02-des"><span class="header-section-number">2.3</span> DES — Data Encryption Standard</h2>
+<p><strong>DES</strong> (<em>Data Encryption Standard</em>) was developed by IBM, with contributions from the NSA, and adopted in 1977 as a United States federal standard <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>. For nearly two decades, it was the most widely used symmetric cipher algorithm in the world.</p>
+<p>DES is a Feistel network with the following characteristics:</p>
+<ul>
+<li>A block of <strong>64 bits</strong>.</li>
+<li>An effective key of <strong>56 bits</strong> (represented as 64 bits, of which 8 are parity bits, contributing nothing to security).</li>
+<li><strong>16 rounds</strong>, each with a 48-bit subkey derived from the main key through a scheme of rotations and permutations.</li>
+<li>A round function <span class="math inline">\(F\)</span> built from bit expansion, XOR with the subkey, non-linear substitution through eight fixed tables (the <strong>S-boxes</strong>, the main source of confusion in the algorithm), and a final permutation.</li>
+<li>An <strong>initial permutation</strong> (IP) before the first round, and its inverse, the <strong>final permutation</strong> (FP), after the last, both fixed and contributing nothing to cryptographic security: they serve only to rearrange the input and output bits, a remnant of DES’s original hardware implementation.</li>
+</ul>
+<p>The overall structure of DES is, therefore, exactly the Feistel network already described in the previous section, with <span class="math inline">\(n=64\)</span> and 16 rounds. What is specific to DES, and does not follow from the Feistel structure itself, is the internal construction of the function <span class="math inline">\(F\)</span>:</p>
+<div id="fig-02-des-funcao-f" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-02-des-funcao-f-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-des-funcao-f.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-02-des-funcao-f-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.3: The DES function <span class="math inline">\(F\)</span>: the 32-bit half is expanded (E) to 48 bits, combined by XOR with the round subkey, split into eight 6-bit groups that pass through the respective S-boxes (S1–S8, each returning 4 non-linear output bits), and finally rearranged by a permutation (P). Source: Wikimedia Commons, public domain.
+</figcaption>
+</figure>
+</div>
+<section id="sec-02-des-forca" class="level3" data-number="2.3.1">
+<h3 data-number="2.3.1" class="anchored" data-anchor-id="sec-02-des-forca"><span class="header-section-number">2.3.1</span> The strength of DES</h3>
+<p>The key space of DES has <span class="math inline">\(2^{56} \approx 7.2 \times 10^{16}\)</span> possible keys. This number seemed astronomically secure in 1977, but the growth of computational power made it increasingly vulnerable to a simple brute-force attack, exactly the same principle already discussed for the Caesar cipher, only with a larger key space. There was also, from early on, a second source of distrust: the S-boxes of DES, the component responsible for its confusion, were specified by the NSA without public justification of the design criteria, which fuelled decades of suspicion that they might hide a deliberate weakness, never confirmed, but also never entirely ruled out <span class="citation" data-cites="Du2022">(<a href="cap01.html#ref-Du2022" role="doc-biblioref">Du 2022</a>)</span>.</p>
+<p>The fall of DES to brute force was documented by a series of public challenges run by RSA Security. In 1997, the DESCHALL project broke a DES-encrypted message in 96 days, using the idle cycles of volunteer computers spread across the Internet. In 1998, the distributed.net project repeated the feat in only 39 days, and the <em>Electronic Frontier Foundation</em> built a dedicated machine, <em>Deep Crack</em>, capable of doing it in about 56 hours, for a cost then under 250 thousand dollars. In 1999, the combination of distributed.net with Deep Crack reduced the time to 22 hours <span class="citation" data-cites="Du2022 Stallings2020">(<a href="cap01.html#ref-Du2022" role="doc-biblioref">Du 2022</a>; <a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>. DES was formally superseded by 3DES in 1999, and is obsolete today: it should not be used to protect new information, and is only found in legacy systems still awaiting replacement.</p>
+</section>
+</section>
+<section id="sec-02-3des" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="sec-02-3des"><span class="header-section-number">2.4</span> 3DES — Triple DES</h2>
+<p>Faced with the weakness of DES, the most immediate solution, adopted in 1999 while a definitive successor was being prepared (this would turn out to be AES, presented in the next chapter), was to apply DES itself three times in a row, with different keys. <strong>3DES</strong> (or <em>Triple DES</em>) encrypts each block according to the <strong>EDE</strong> scheme (<em>Encrypt-Decrypt-Encrypt</em>):</p>
+<p><span class="math display">\[C = E_{K_3}(D_{K_2}(E_{K_1}(P)))\]</span></p>
+<p>where <span class="math inline">\(E\)</span> and <span class="math inline">\(D\)</span> are the encryption and decryption operations of the original DES. The encrypt-decrypt-encrypt alternation, rather than three encryptions in a row, exists mainly for compatibility: with <span class="math inline">\(K_1 = K_2 = K_3\)</span>, 3DES reduces exactly to a single, ordinary DES encryption, allowing older systems to continue interoperating with newer ones.</p>
+<p>Depending on the number of distinct keys used, 3DES offers:</p>
+<ul>
+<li><strong>Three distinct keys</strong> (<span class="math inline">\(K_1, K_2, K_3\)</span>): effective security of approximately 112 bits (not 168, owing to a type of attack known as <em>meet-in-the-middle</em>, which reduces the theoretical gain of applying three 56-bit keys).</li>
+<li><strong>Two distinct keys</strong> (<span class="math inline">\(K_1 = K_3\)</span>): effective security of approximately 80 bits, considered insufficient today.</li>
+</ul>
+<p>3DES solved the immediate key-space problem, but inherited the remaining structural limitations of DES (among others, a small 64-bit block), and is about three times slower than a single DES encryption, since it repeats the original algorithm three times per block. For these reasons, NIST has recommended, since 2023, that 3DES no longer be used in new applications, reserving it only for maintaining compatibility with legacy systems <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>. The next chapter introduces the algorithm that replaced it: AES.</p>
+</section>
+<section id="sec-02-sintese" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="sec-02-sintese"><span class="header-section-number">2.5</span> Chapter Summary</h2>
+<p>This chapter introduced the fundamental structure of modern block ciphers:</p>
+<ol type="1">
+<li>A <strong>block cipher</strong> is a permutation of fixed-size bit blocks, parameterised by the key, generalising the idea of permutation already seen in the monoalphabetic cipher, but over a much larger space</li>
+<li>The <strong>ideal cipher</strong>, which would realise that permutation in a completely arbitrary way, would require a key of <span class="math inline">\(n \times 2^n\)</span> bits, impractical for any realistic block size; real block ciphers approximate its behaviour by another route</li>
+<li><strong>Confusion</strong> (a complex key-ciphertext relationship) and <strong>diffusion</strong> (the spreading of each bit’s influence), proposed by Shannon, are the two properties that modern block ciphers combine across several rounds to achieve that approximation</li>
+<li>The <strong>Feistel network</strong> organises these rounds so that decryption uses exactly the same structure as encryption, with the subkeys in reverse order, even when the round function <span class="math inline">\(F\)</span> is not itself invertible</li>
+<li><strong>DES</strong>, the dominant standard between 1977 and 1999, has a 64-bit block, an effective 56-bit key and 16 Feistel rounds; its small key space made it vulnerable to brute force (from 96 days, in 1997, to 22 hours, in 1999), and it is obsolete today</li>
+<li><strong>3DES</strong>, adopted in 1999, applies DES three times (the EDE scheme), extending effective security to about 112 bits, at the cost of being about three times slower; it too is being phased out</li>
+</ol>
+</section>
+<section id="sec-02-reflexao" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="sec-02-reflexao"><span class="header-section-number">2.6</span> Food for Thought</h2>
+<p>In a Feistel network, the function <span class="math inline">\(F\)</span> does not need to be invertible for the whole system to be reversible. What practical advantage does this bring to whoever designs the algorithm, compared with a cipher in which the central function itself would have to be invertible?</p>
+</section>
+<section id="sec-02-referencias" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-02-referencias">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-Du2022" class="csl-entry" role="listitem">
+Du, Wenliang. 2022. <em>Computer Security: A Hands-on Approach</em>. 3rd ed. CreateSpace / Self-published.
+</div>
+<div id="ref-Stallings2020" class="csl-entry" role="listitem">
+Stallings, William. 2020. <em>Cryptography and Network Security: Principles and Practice</em>. 8th ed. Pearson.
+</div>
+</div>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../capitulos/cap01.html" class="pagination-link" aria-label="Classical Cryptography — Substitution, Polyalphabetic and Transposition Ciphers">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Classical Cryptography — Substitution, Polyalphabetic and Transposition Ciphers</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../capitulos/cap03.html" class="pagination-link" aria-label="AES — Stages and Modes of Operation">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">AES — Stages and Modes of Operation</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb3" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Block Ciphers — Fundamentals, Feistel, DES and 3DES"</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "João Pavão"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-09-14</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> en-GB</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction {#sec-02-intro .unnumbered}</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>The classical ciphers studied in the previous chapter operate on letters of a natural alphabet: they substitute them, they transpose them, but they always work with the structure of a language. A computer does not read letters; it reads sequences of bits. Modern ciphers start from this fact: the plaintext, whether text, image or sound, is always, ultimately, a binary sequence, and it is on that sequence that block ciphers operate.</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>This chapter introduces the structure common to the generality of modern block ciphers, the Feistel network, and two historical algorithms built upon it: DES, for decades the dominant standard, and 3DES, the extension created to prolong its useful life after DES was deemed insecure. The next chapter deals with AES, the algorithm that today occupies the place DES once held.</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Foundations of Block Ciphers {#sec-02-fundamentos}</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">### What is a block cipher {#sec-02-definicao}</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>A **block cipher** divides the plaintext into fixed-size blocks, typically 64 or 128 bits, and encrypts each block independently, always using the same key. Formally, for a block of $n$ bits and a key $K$, the encryption algorithm $E_K$ is a bijective function:</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>$$E_K : <span class="sc">\{</span>0,1<span class="sc">\}</span>^n \rightarrow <span class="sc">\{</span>0,1<span class="sc">\}</span>^n$$</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>That is, for each key $K$, $E_K$ is a distinct permutation of the set of all possible blocks: every plaintext block has exactly one corresponding ciphertext block, and vice versa, which guarantees that decryption is always possible and unique.</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>This directly generalises the monoalphabetic cipher from the previous chapter, which was also a permutation, but of a 26-letter alphabet. A block cipher with 64-bit blocks is a permutation of a set with $2^{64}$ elements, an immensely larger space, which by itself already hinders frequency analysis: instead of 26 possible symbols, there are $2^{64}$ possible blocks, each occurring rarely enough that counting frequencies ceases to be useful.</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">### The ideal cipher, and why it is impractical {#sec-02-cifra-ideal}</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>If a block cipher is, at bottom, a permutation parameterised by the key, the most directly secure construction would be to choose, for each key, a **completely arbitrary** permutation between all input blocks and all output blocks, with no internal structure whatsoever that a cryptanalyst could exploit. This construction is called the **ideal cipher**, and the problem with it is not one of security, it is one of key size.</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>Formally, the encryption algorithm $E_K$ of an $n$-bit block cipher is a function</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>$$E_K : <span class="sc">\{</span>0,1<span class="sc">\}</span>^n \rightarrow <span class="sc">\{</span>0,1<span class="sc">\}</span>^n$$</span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>that maps each of the $2^n$ possible input blocks to an output block, likewise of $n$ bits. Consider the case $n=4$: each input block is a value between <span class="in">`0000`</span> and <span class="in">`1111`</span>, more conveniently written in **hexadecimal**, since a single hexadecimal digit represents exactly 4 bits. The 16 possible blocks correspond, one to one, to the digits <span class="in">`0`</span> through <span class="in">`F`</span>.</span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>An **arbitrary permutation** of these 16 values is any bijective reassignment of each input to a distinct output, with no repeats. For example, the following three permutations are all valid, and completely different from one another:</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="in">Entrada:               0 1 2 3 4 5 6 7 8 9 A B C D E F</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="in">Permutação A (+5):     5 6 7 8 9 A B C D E F 0 1 2 3 4</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="in">Permutação B (livre):  5 D 2 9 0 B 7 E 3 F 1 8 6 4 A C</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="in">Permutação C (pares):  0 1 3 2 5 4 7 6 9 8 B A D C F E</span></span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>Permutation A is merely a shift — the same logic as the Caesar cipher, now over hexadecimal digits instead of letters. Permutations B and C follow no simple formula: they were chosen value by value, with no pattern whatsoever, only ensuring that each input has a different output and that no output repeats.</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>**How many such permutations exist, in total?** For the first input (<span class="in">`0`</span>), there are 16 possible outputs; once that is chosen, 15 options remain for the next input (<span class="in">`1`</span>), since the output chosen for <span class="in">`0`</span> cannot repeat; then 14 for input <span class="in">`2`</span>; and so on, until only 1 option remains for the last input (<span class="in">`F`</span>). The total is:</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>$$16 \times 15 \times 14 \times \cdots \times 1 = 16! \approx 2.09 \times 10^{13}$$</span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>This number does not depend at all on the size of the key: it is merely the count of all the ways of shuffling 16 values, whether those values are hexadecimal digits, playing cards, or letters of an alphabet.</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>**This is where the key-size problem comes in.** If the key $K$ were likewise 4 bits long, only 16 possible key values would exist — and each key, through the algorithm, can only determine *one* permutation. However clever the algorithm, 16 keys can never select more than 16 different permutations, out of a total of $16! \approx 2.09\times10^{13}$: for instance, key `5` might select Permutation A, key `3` might select B, and so on, but only 16 possibilities are ever covered. The Caesar cipher is exactly this case: its 16 keys always select 16 shifts (like Permutation A), never a free permutation such as B or C. For the key to be able to reach **any one** of the $16!$ permutations, and not merely a small subset chosen in advance, it needs, itself, to have many more than 4 bits.</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>**How much larger, exactly?** There are two answers to this question: the first gives the actual key size needed to address every possible permutation of 4-bit blocks onto 4-bit blocks; the second is an estimate that bounds that value from above.</span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>Knowing that there are $16!$ valid permutations, the number of bits $x$ needed to index that many is the key size. So $2^x = (16!)$, which gives $x = \log_2(16!) \approx 45$ bits.</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>The second approach gives a more direct way of answering the question of key size, which is to imagine that the key *is*, literally, the complete substitution table. For example, for Permutation A (the "+5" one), the following table is obtained:</span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="in">Entrada  Saída (4 bits) Saída (Hex.)</span></span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="in">  0    →   0 1 0 1         (= 5)</span></span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="in">  1    →   0 1 1 0         (= 6)</span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="in">  2    →   0 1 1 1         (= 7)</span></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="in">  3    →   1 0 0 0         (= 8)</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="in">  4    →   1 0 0 1         (= 9)</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="in">  5    →   1 0 1 0         (= A)</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="in">  6    →   1 0 1 1         (= B)</span></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="in">  7    →   1 1 0 0         (= C)</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="in">  8    →   1 1 0 1         (= D)</span></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="in">  9    →   1 1 1 0         (= E)</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="in">  A    →   1 1 1 1         (= F)</span></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="in">  B    →   0 0 0 0         (= 0)</span></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="in">  C    →   0 0 0 1         (= 1)</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="in">  D    →   0 0 1 0         (= 2)</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="in">  E    →   0 0 1 1         (= 3)</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="in">  F    →   0 1 0 0         (= 4)</span></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>From the table we can see that the key size must be such that it can address a numeric string of 16 hexadecimal characters. It must therefore have a size of $16$ characters. Since each character is 4 bits, the key size in bits is $4 \times 16 = 64$, which corresponds to the area of the table shown:</span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>$$\text{height} \times \text{width} = 16 \times 4 = 64 \text{ bits}$$</span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>Generalising, for a block of $n$ bits, the key of the ideal cipher needs</span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>$$n \times 2^n \text{ bits}$$</span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>For $n=4$, this is only 64 bits, perfectly manageable. But for a block of $n=64$ bits, a perfectly reasonable size for a real cipher:</span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>$$64 \times 2^{64} = 2^6 \times 2^{64} = 2^{70} \approx 10^{21} \text{ bits}$$</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>A number with no practical application whatsoever: no system can generate, store, distribute, or even write down a key of this size. **The ideal cipher is, therefore, impractical.** Real block ciphers do not attempt to realise it directly; instead, they seek to **approximate** its unpredictable behaviour, by repeatedly combining, across several rounds, simple operations that are cheap to specify, until the final result is computationally indistinguishable from a genuinely arbitrary permutation. This is exactly what confusion and diffusion, introduced next, are for.</span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a><span class="fu">### Confusion and diffusion {#sec-02-confusao-difusao}</span></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a>Claude Shannon, the same author who proved the perfect secrecy of the One-Time Pad, identified in 1949 two properties that a robust cipher must guarantee:</span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Confusion**: the relationship between the key and the ciphertext must be as complex and non-linear as possible, so as to hide any statistical pattern linking the two. In practice, this is achieved through non-linear substitution operations.</span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Diffusion**: the influence of each bit of the plaintext (and of each bit of the key) must spread across many bits of the ciphertext, such that changing a single input bit changes, on average, half of the output bits, in an apparently random fashion. In practice, this is achieved through permutation and bit-mixing operations.</span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>Neither property, in isolation, is sufficient: substitution alone, as seen in the monoalphabetic cipher, is vulnerable to frequency analysis; transposition alone leaves frequency entirely intact. Modern block ciphers combine the two, repeatedly applying, across several **rounds**, a sequence of substitutions and permutations, until the final ciphertext betrays no useful statistical relationship with either the plaintext or the key.</span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a><span class="fu">## The Feistel Network {#sec-02-feistel}</span></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>Most classical block ciphers, DES included, organise these rounds according to a structure proposed by Horst Feistel, in the 1970s, while working at IBM. In a **Feistel network**, the block is split into two equal halves, $L_i$ (left) and $R_i$ (right), and each round $i$ is applied as follows:</span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a><span class="al">![One round of a Feistel network, illustrated for a block of $W=64$ bits (the notation $LE_i$/$RE_i$ used in the figure is equivalent to $L_i$/$R_i$). The right half $RE_0$ passes through a function $F$ parameterised by the round subkey $K_1$, the result is combined by XOR with the left half $LE_0$, and the two halves swap position for the next round ($LE_1$/$RE_1$).](../assets/images/fig-feistel-ronda.png)</span>{#fig-02-feistel-ronda width=45%}</span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>$$L_{i+1} = R_i$$</span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>$$R_{i+1} = L_i \oplus F(R_i, K_i)$$</span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>where $F$ is a round function, typically non-linear, parameterised by a subkey $K_i$ derived from the main key, and $\oplus$ denotes the bitwise XOR operation.</span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>**The fundamental property of a Feistel network** is that decryption uses exactly the same structure as encryption, only with the subkeys applied in reverse order, and this holds true **regardless of the function $F$ chosen**, even if $F$ is not itself invertible. This considerably simplifies implementation: the same circuit or code serves both to encrypt and to decrypt, which would not necessarily be possible if $F$ had to be both applied and inverted.</span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="al">![Encryption and decryption in a 16-round Feistel network (the number of rounds used by DES, presented in the next section). On the left, encryption: the plaintext enters as $LE_0$/$RE_0$ and, round by round, the subkeys $K_1, K_2, \dots, K_{16}$ are applied in order, producing the ciphertext. On the right, decryption starts from that same ciphertext and applies exactly the same round structure, with the same function $F$, but with the subkeys in reverse order ($K_{16}$ in the first round of decryption, $K_1$ in the last), recovering the original plaintext after the 16 rounds.](../assets/images/fig-feistel-enc-dec.png)</span>{#fig-02-feistel-enc-dec width=70%}</span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example with a reduced network {#sec-02-feistel-exemplo}</span></span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a>To make this concrete, consider a drastically reduced version, with 8-bit blocks (4-bit halves) and the function $F(R, K) = \text{ROL}_1(R) \oplus K$, where $\text{ROL}_1$ rotates the 4 bits of $R$ one place to the left. This function has no pretension of real security whatsoever, it serves only to illustrate the mechanism.</span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>With plaintext $L_0 = 1010$, $R_0 = 0110$, and two subkeys $K_1 = 0011$, $K_2 = 1100$:</span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>**Round 1:** $F(R_0, K_1) = \text{ROL}_1(0110) \oplus 0011 = 1100 \oplus 0011 = 1111$</span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a>$L_1 = R_0 = 0110 \qquad R_1 = L_0 \oplus F(R_0, K_1) = 1010 \oplus 1111 = 0101$</span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>**Round 2:** $F(R_1, K_2) = \text{ROL}_1(0101) \oplus 1100 = 1010 \oplus 1100 = 0110$</span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a>$L_2 = R_1 = 0101 \qquad R_2 = L_1 \oplus F(R_1, K_2) = 0110 \oplus 0110 = 0000$</span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>The ciphertext is $L_2 R_2 = 01010000$. To decrypt, the same two rounds are applied, but with the subkeys in reverse order ($K_2$ first, then $K_1$), recovering exactly $L_0 = 1010$, $R_0 = 0110$ — confirmed by direct computation. Note that at no point was it necessary to invert the function $F$: only the order of the subkeys changed.</span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a><span class="fu">## DES — Data Encryption Standard {#sec-02-des}</span></span>
+<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a>**DES** (*Data Encryption Standard*) was developed by IBM, with contributions from the NSA, and adopted in 1977 as a United States federal standard <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>. For nearly two decades, it was the most widely used symmetric cipher algorithm in the world.</span>
+<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a>DES is a Feistel network with the following characteristics:</span>
+<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A block of **64 bits**.</span>
+<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>An effective key of **56 bits** (represented as 64 bits, of which 8 are parity bits, contributing nothing to security).</span>
+<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**16 rounds**, each with a 48-bit subkey derived from the main key through a scheme of rotations and permutations.</span>
+<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A round function $F$ built from bit expansion, XOR with the subkey, non-linear substitution through eight fixed tables (the **S-boxes**, the main source of confusion in the algorithm), and a final permutation.</span>
+<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>An **initial permutation** (IP) before the first round, and its inverse, the **final permutation** (FP), after the last, both fixed and contributing nothing to cryptographic security: they serve only to rearrange the input and output bits, a remnant of DES's original hardware implementation.</span>
+<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a>The overall structure of DES is, therefore, exactly the Feistel network already described in the previous section, with $n=64$ and 16 rounds. What is specific to DES, and does not follow from the Feistel structure itself, is the internal construction of the function $F$:</span>
+<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="al">![The DES function $F$: the 32-bit half is expanded (E) to 48 bits, combined by XOR with the round subkey, split into eight 6-bit groups that pass through the respective S-boxes (S1–S8, each returning 4 non-linear output bits), and finally rearranged by a permutation (P). Source: Wikimedia Commons, public domain.](../assets/images/fig-des-funcao-f.png)</span>{#fig-02-des-funcao-f width=75%}</span>
+<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a><span class="fu">### The strength of DES {#sec-02-des-forca}</span></span>
+<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a>The key space of DES has $2^{56} \approx 7.2 \times 10^{16}$ possible keys. This number seemed astronomically secure in 1977, but the growth of computational power made it increasingly vulnerable to a simple brute-force attack, exactly the same principle already discussed for the Caesar cipher, only with a larger key space. There was also, from early on, a second source of distrust: the S-boxes of DES, the component responsible for its confusion, were specified by the NSA without public justification of the design criteria, which fuelled decades of suspicion that they might hide a deliberate weakness, never confirmed, but also never entirely ruled out <span class="co">[</span><span class="ot">@Du2022</span><span class="co">]</span>.</span>
+<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a>The fall of DES to brute force was documented by a series of public challenges run by RSA Security. In 1997, the DESCHALL project broke a DES-encrypted message in 96 days, using the idle cycles of volunteer computers spread across the Internet. In 1998, the distributed.net project repeated the feat in only 39 days, and the *Electronic Frontier Foundation* built a dedicated machine, *Deep Crack*, capable of doing it in about 56 hours, for a cost then under 250 thousand dollars. In 1999, the combination of distributed.net with Deep Crack reduced the time to 22 hours <span class="co">[</span><span class="ot">@Du2022; @Stallings2020</span><span class="co">]</span>. DES was formally superseded by 3DES in 1999, and is obsolete today: it should not be used to protect new information, and is only found in legacy systems still awaiting replacement.</span>
+<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3DES — Triple DES {#sec-02-3des}</span></span>
+<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a>Faced with the weakness of DES, the most immediate solution, adopted in 1999 while a definitive successor was being prepared (this would turn out to be AES, presented in the next chapter), was to apply DES itself three times in a row, with different keys. **3DES** (or *Triple DES*) encrypts each block according to the **EDE** scheme (*Encrypt-Decrypt-Encrypt*):</span>
+<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a>$$C = E_{K_3}(D_{K_2}(E_{K_1}(P)))$$</span>
+<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a>where $E$ and $D$ are the encryption and decryption operations of the original DES. The encrypt-decrypt-encrypt alternation, rather than three encryptions in a row, exists mainly for compatibility: with $K_1 = K_2 = K_3$, 3DES reduces exactly to a single, ordinary DES encryption, allowing older systems to continue interoperating with newer ones.</span>
+<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a>Depending on the number of distinct keys used, 3DES offers:</span>
+<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Three distinct keys** ($K_1, K_2, K_3$): effective security of approximately 112 bits (not 168, owing to a type of attack known as *meet-in-the-middle*, which reduces the theoretical gain of applying three 56-bit keys).</span>
+<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Two distinct keys** ($K_1 = K_3$): effective security of approximately 80 bits, considered insufficient today.</span>
+<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a>3DES solved the immediate key-space problem, but inherited the remaining structural limitations of DES (among others, a small 64-bit block), and is about three times slower than a single DES encryption, since it repeats the original algorithm three times per block. For these reasons, NIST has recommended, since 2023, that 3DES no longer be used in new applications, reserving it only for maintaining compatibility with legacy systems <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>. The next chapter introduces the algorithm that replaced it: AES.</span>
+<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a><span class="fu">## Chapter Summary {#sec-02-sintese}</span></span>
+<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a>This chapter introduced the fundamental structure of modern block ciphers:</span>
+<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>A **block cipher** is a permutation of fixed-size bit blocks, parameterised by the key, generalising the idea of permutation already seen in the monoalphabetic cipher, but over a much larger space</span>
+<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>The **ideal cipher**, which would realise that permutation in a completely arbitrary way, would require a key of $n \times 2^n$ bits, impractical for any realistic block size; real block ciphers approximate its behaviour by another route</span>
+<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Confusion** (a complex key-ciphertext relationship) and **diffusion** (the spreading of each bit's influence), proposed by Shannon, are the two properties that modern block ciphers combine across several rounds to achieve that approximation</span>
+<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>The **Feistel network** organises these rounds so that decryption uses exactly the same structure as encryption, with the subkeys in reverse order, even when the round function $F$ is not itself invertible</span>
+<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>**DES**, the dominant standard between 1977 and 1999, has a 64-bit block, an effective 56-bit key and 16 Feistel rounds; its small key space made it vulnerable to brute force (from 96 days, in 1997, to 22 hours, in 1999), and it is obsolete today</span>
+<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>**3DES**, adopted in 1999, applies DES three times (the EDE scheme), extending effective security to about 112 bits, at the cost of being about three times slower; it too is being phased out</span>
+<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a><span class="fu">## Food for Thought {#sec-02-reflexao}</span></span>
+<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a>In a Feistel network, the function $F$ does not need to be invertible for the whole system to be reversible. What practical advantage does this bring to whoever designs the algorithm, compared with a cipher in which the central function itself would have to be invertible?</span>
+<span id="cb3-188"><a href="#cb3-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a><span class="fu">## References {#sec-02-referencias .unnumbered}</span></span>
+<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb3-192"><a href="#cb3-192" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Cryptography — Cybersecurity, UTAD</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,36 @@
+# Preface {.unnumbered}
+
+```{=html}
+<div class="hero">
+  <div class="hero-badge">UTAD · MEEC · 2026/2027</div>
+  <h1>Cryptography</h1>
+  <h2>Cybersecurity Module</h2>
+  <p>University of Trás-os-Montes e Alto Douro</p>
+</div>
+```
+
+This coursebook is a self-contained study resource for the **Cryptography**
+module, part of the Cybersecurity course unit of the Master's in Electrical
+and Computer Engineering at the University of Trás-os-Montes e Alto Douro.
+
+## Structure of the Coursebook {.unnumbered}
+
+The chapters follow the structure of the module's lectures (the last two
+lectures, TLS/PGP and algorithmic efficiency/PQC, are taught in the same
+session):
+
+1. Classical Cryptography — substitution, polyalphabetic and transposition ciphers
+2. Block Ciphers — fundamentals, Feistel, DES and 3DES
+3. AES — stages and modes of operation
+4. Stream Ciphers — RC4, Salsa20, ChaCha20 and padding
+5. Hashing — properties, attacks, SHA, MAC and HMAC
+6. Asymmetric Cryptography and RSA
+7. Diffie-Hellman and Digital Signatures
+8. Elliptic Curve Cryptography
+9. Public Key Infrastructure (PKI)
+10. TLS and PGP
+11. Algorithmic Efficiency and Post-Quantum Cryptography
+
+## Author {.unnumbered}
+
+**João Pavão** — UTAD

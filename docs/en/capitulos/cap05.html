@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="João Pavão">
+<meta name="dcterms.date" content="2026-09-14">
+
+<title>5&nbsp; Hashing — Properties, Attacks, SHA, MAC and HMAC – Cryptography</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../capitulos/cap06.html" rel="next">
+<link href="../capitulos/cap04.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-de84f8d6bb715db06a919283c2d1e787.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-9a023c9ade86a60361e96e3e3f11bc54.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-61bc4ac84974e0785b3107ee93e74bfb.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-bc9f1d3aef906c45e091843ae87821a0.min.css" rel="prefetch" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../assets/css/custom.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap05.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Properties, Attacks, SHA, MAC and HMAC</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Cryptography</a> 
+        <div class="sidebar-tools-main">
+    <a href="../../index.html" title="Versão portuguesa" class="quarto-navigation-tool px-1" aria-label="Versão portuguesa"><i class="bi bi-translate"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Classical Cryptography — Substitution, Polyalphabetic and Transposition Ciphers</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Block Ciphers — Fundamentals, Feistel, DES and 3DES</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">AES — Stages and Modes of Operation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Stream Ciphers — RC4, Salsa20, ChaCha20 and Padding</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Properties, Attacks, SHA, MAC and HMAC</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap06.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Asymmetric Cryptography and RSA</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap07.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Diffie-Hellman and Digital Signatures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap08.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Elliptic Curve Cryptography</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap09.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Public Key Infrastructure (PKI)</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS and PGP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Algorithmic Efficiency and Post-Quantum Cryptography</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#sec-05-intro" id="toc-sec-05-intro" class="nav-link active" data-scroll-target="#sec-05-intro">Introduction</a></li>
+  <li><a href="#sec-05-conceito" id="toc-sec-05-conceito" class="nav-link" data-scroll-target="#sec-05-conceito"><span class="header-section-number">5.1</span> What Is a Hash Function</a></li>
+  <li><a href="#sec-05-propriedades" id="toc-sec-05-propriedades" class="nav-link" data-scroll-target="#sec-05-propriedades"><span class="header-section-number">5.2</span> Properties of a Hash Function</a></li>
+  <li><a href="#sec-05-sha" id="toc-sec-05-sha" class="nav-link" data-scroll-target="#sec-05-sha"><span class="header-section-number">5.3</span> The SHA Family</a></li>
+  <li><a href="#sec-05-integridade" id="toc-sec-05-integridade" class="nav-link" data-scroll-target="#sec-05-integridade"><span class="header-section-number">5.4</span> Checking Integrity — and Its Limits</a></li>
+  <li><a href="#sec-05-mac" id="toc-sec-05-mac" class="nav-link" data-scroll-target="#sec-05-mac"><span class="header-section-number">5.5</span> Message Authentication: the MAC</a></li>
+  <li><a href="#sec-05-hmac" id="toc-sec-05-hmac" class="nav-link" data-scroll-target="#sec-05-hmac"><span class="header-section-number">5.6</span> HMAC</a></li>
+  <li><a href="#sec-05-sintese" id="toc-sec-05-sintese" class="nav-link" data-scroll-target="#sec-05-sintese"><span class="header-section-number">5.7</span> Chapter Summary</a></li>
+  <li><a href="#sec-05-reflexao" id="toc-sec-05-reflexao" class="nav-link" data-scroll-target="#sec-05-reflexao"><span class="header-section-number">5.8</span> Food for Thought</a></li>
+  <li><a href="#sec-05-referencias" id="toc-sec-05-referencias" class="nav-link" data-scroll-target="#sec-05-referencias">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Properties, Attacks, SHA, MAC and HMAC</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>João Pavão </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">14 September 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-05-intro" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-05-intro">Introduction</h2>
+<p>The previous chapters always dealt with <strong>confidentiality</strong>: how to transform a message so that only someone holding the right key can read it. But confidentiality is not the only property a secure communication needs to guarantee. A message can travel perfectly encrypted and still be altered along the way, or not actually come from whoever it claims to come from. This chapter changes problem: it deals with <strong>integrity</strong> (the guarantee that data has not been altered) and <strong>authentication</strong> (the guarantee that data comes from whom it is expected to), and with the tool that underlies both, the <strong>hash function</strong>.</p>
+</section>
+<section id="sec-05-conceito" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="sec-05-conceito"><span class="header-section-number">5.1</span> What Is a Hash Function</h2>
+<p>A <strong>hash function</strong> transforms an input of arbitrary size into an output of fixed size, generally much shorter:</p>
+<p><span class="math display">\[h = H(x)\]</span></p>
+<p>where <span class="math inline">\(x\)</span> is the value (or message) to be digested, <span class="math inline">\(H\)</span> is the hash function, and <span class="math inline">\(h\)</span> is the <strong>hash value</strong> (also called the <em>digest</em>). <span class="math inline">\(x\)</span> is known as the <strong>preimage</strong> of <span class="math inline">\(h\)</span>.</p>
+<p>Two, at first sight simple, characteristics define the essence of a hash function: it is <strong>deterministic</strong> (the same input always produces the same output) and it is a <strong>compression function</strong> (inputs of any size, potentially huge, always produce an output of the same fixed size, typically between 128 and 512 bits). This second characteristic has an unavoidable mathematical consequence: since the set of possible inputs is infinite and the set of outputs is finite, <strong>collisions must exist</strong>, pairs of different inputs that produce the same hash value. The security of a hash function can never rest on avoiding them altogether, that is impossible, but rather on making them computationally infeasible to find deliberately. This is exactly what the next section formalizes.</p>
+</section>
+<section id="sec-05-propriedades" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="sec-05-propriedades"><span class="header-section-number">5.2</span> Properties of a Hash Function</h2>
+<p>Not every function that compresses data is useful in cryptography. The following properties <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span> distinguish a <strong>weak</strong> hash function from a <strong>strong</strong> one:</p>
+<div id="tbl-05-propriedades" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-05-propriedades-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5.1: Properties of a hash function <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>
+</figcaption>
+<div aria-describedby="tbl-05-propriedades-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Requirement</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Variable input size</td>
+<td><span class="math inline">\(H\)</span> can be applied to a block of data of any size</td>
+</tr>
+<tr class="even">
+<td>Fixed output size</td>
+<td><span class="math inline">\(H\)</span> always produces an output of fixed length</td>
+</tr>
+<tr class="odd">
+<td>Efficiency</td>
+<td><span class="math inline">\(H(x)\)</span> is easy to compute for any <span class="math inline">\(x\)</span>, making hardware and software implementations practical</td>
+</tr>
+<tr class="even">
+<td>Preimage resistance (<em>one-way</em>)</td>
+<td>Given a hash value <span class="math inline">\(h\)</span>, it is computationally infeasible to find <span class="math inline">\(y\)</span> such that <span class="math inline">\(H(y) = h\)</span></td>
+</tr>
+<tr class="odd">
+<td>Second preimage resistance (weak collision resistance)</td>
+<td>Given a block <span class="math inline">\(x\)</span>, it is computationally infeasible to find <span class="math inline">\(y \neq x\)</span> with <span class="math inline">\(H(y) = H(x)\)</span></td>
+</tr>
+<tr class="even">
+<td>Collision resistance (strong collision resistance)</td>
+<td>It is computationally infeasible to find any pair <span class="math inline">\((x,y)\)</span>, with <span class="math inline">\(x \neq y\)</span>, such that <span class="math inline">\(H(x) = H(y)\)</span></td>
+</tr>
+<tr class="odd">
+<td>Pseudorandomness</td>
+<td>The output of <span class="math inline">\(H\)</span> meets the standard statistical tests for randomness</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The first four properties define a <strong>weak hash</strong>: sufficient to detect accidental transmission errors, but not to withstand an attacker. The last three, added on top, define a <strong>strong hash</strong>, the only kind suitable for cryptographic uses. It is worth not confusing the last two collision-resistance properties, which are easy to mix up:</p>
+<ul>
+<li><strong>Second preimage</strong>: the attacker already has a specific <span class="math inline">\(x\)</span> (for example, an original contract) and wants to find another document <span class="math inline">\(y\)</span> with the same hash, in order to substitute it without the substitution being detected.</li>
+<li><strong>Collision</strong>: the attacker has no fixed starting document, they just want to find <strong>any pair</strong> <span class="math inline">\((x,y)\)</span> that collides, which is structurally easier to achieve.</li>
+</ul>
+<p>This difference has an important practical consequence, known as the <strong>birthday paradox</strong>: finding any collision for a hash function with an <span class="math inline">\(n\)</span>-bit output costs, on average, only about <span class="math inline">\(2^{n/2}\)</span> attempts, far fewer than the <span class="math inline">\(2^n\)</span> that intuition would suggest, and far fewer still than the <span class="math inline">\(2^n\)</span> needed to break preimage or second-preimage resistance. This is why the output size of a hash function must be roughly double the intended security level: a 256-bit hash gives only <span class="math inline">\(2^{128}\)</span> of security against collisions, not <span class="math inline">\(2^{256}\)</span>.</p>
+</section>
+<section id="sec-05-sha" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="sec-05-sha"><span class="header-section-number">5.3</span> The SHA Family</h2>
+<p>Over the last three decades, several families of hash functions have competed for the position of de facto standard. The earliest, <strong>MD4</strong> and <strong>MD5</strong> (<em>Message Digest</em>, Ron Rivest, 1990 and 1992), with outputs of only 128 bits, ended up formally broken: Wang and Yu presented a practical method for generating MD5 collisions in 2005 <span class="citation" data-cites="Wang2005">(<a href="cap01.html#ref-Wang2005" role="doc-biblioref">Wang and Yu 2005</a>)</span>, and today MD5 must not be used for any cryptographic purpose, only for non-adversarial integrity checks (for example, confirming that a file transfer was not corrupted by error).</p>
+<p><strong>SHA</strong> (<em>Secure Hash Algorithm</em>), standardized by NIST, became the reference family <span class="citation" data-cites="FIPS1804">(<a href="cap01.html#ref-FIPS1804" role="doc-biblioref">National Institute of Standards and Technology 2015</a>)</span>. <strong>SHA-1</strong> (160 bits, 1995) remained in widespread use for two decades, despite theoretical weaknesses known since 2005, until Google and CWI Amsterdam published, in 2017, the first practical collision (the <strong>SHAttered</strong> attack), two distinct PDFs with the same SHA-1 hash <span class="citation" data-cites="Stevens2017">(<a href="cap01.html#ref-Stevens2017" role="doc-biblioref">Stevens et al. 2017</a>)</span>. Since then, SHA-1 has been formally discouraged for any use that relies on collision resistance, including digital certificates and signatures.</p>
+<p>The currently recommended family is <strong>SHA-2</strong>, which groups several variants according to output size and internal structure:</p>
+<div id="tbl-05-sha" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-05-sha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5.2: Parameters of the SHA family variants (all sizes in bits) <span class="citation" data-cites="FIPS1804">(<a href="cap01.html#ref-FIPS1804" role="doc-biblioref">National Institute of Standards and Technology 2015</a>)</span>
+</figcaption>
+<div aria-describedby="tbl-05-sha-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Algorithm</th>
+<th>Message size</th>
+<th>Block size</th>
+<th>Word size</th>
+<th>Digest size</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SHA-1</td>
+<td><span class="math inline">\(&lt; 2^{64}\)</span></td>
+<td>512</td>
+<td>32</td>
+<td>160</td>
+</tr>
+<tr class="even">
+<td>SHA-224</td>
+<td><span class="math inline">\(&lt; 2^{64}\)</span></td>
+<td>512</td>
+<td>32</td>
+<td>224</td>
+</tr>
+<tr class="odd">
+<td>SHA-256</td>
+<td><span class="math inline">\(&lt; 2^{64}\)</span></td>
+<td>512</td>
+<td>32</td>
+<td>256</td>
+</tr>
+<tr class="even">
+<td>SHA-384</td>
+<td><span class="math inline">\(&lt; 2^{128}\)</span></td>
+<td>1024</td>
+<td>64</td>
+<td>384</td>
+</tr>
+<tr class="odd">
+<td>SHA-512</td>
+<td><span class="math inline">\(&lt; 2^{128}\)</span></td>
+<td>1024</td>
+<td>64</td>
+<td>512</td>
+</tr>
+<tr class="even">
+<td>SHA-512/224</td>
+<td><span class="math inline">\(&lt; 2^{128}\)</span></td>
+<td>1024</td>
+<td>64</td>
+<td>224</td>
+</tr>
+<tr class="odd">
+<td>SHA-512/256</td>
+<td><span class="math inline">\(&lt; 2^{128}\)</span></td>
+<td>1024</td>
+<td>64</td>
+<td>256</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>SHA-256</strong> is today the default choice for the generality of new applications, used, among others, in TLS, Git, and Bitcoin. In practice, computing a digest is a trivial operation on any Unix system:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">"Olá Mundo!  João Pavão"</span> <span class="op">&gt;</span> hashtext.txt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl md5 hashtext.txt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">MD5</span><span class="er">(</span><span class="ex">hashtext.txt</span><span class="kw">)</span><span class="ex">=</span> dafa6ed4f172ed103c577334bdfa375d</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl sha1 hashtext.txt</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ex">SHA1</span><span class="er">(</span><span class="ex">hashtext.txt</span><span class="kw">)</span><span class="ex">=</span> f8372d55ba7ae3655ec0f886ef658f94879646c1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that the two digests, despite being computed over the same file, show no visible relationship to one another, precisely the pseudorandom behaviour required in Table <a href="#tbl-05-propriedades" class="quarto-xref"><span>5.1</span></a>.</p>
+</section>
+<section id="sec-05-integridade" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="sec-05-integridade"><span class="header-section-number">5.4</span> Checking Integrity — and Its Limits</h2>
+<p>The most direct use of a hash function is to check whether a piece of data has remained intact: the sender computes <span class="math inline">\(h = H(\text{data})\)</span> and sends both together; the receiver recomputes the hash over the data received and compares it with the value received. Any alteration to the data, even of a single bit, changes the hash value unpredictably (the pseudorandomness property), making the alteration detectable.</p>
+<p>But this scheme has a serious flaw, which only becomes visible once an active attacker, capable of intervening on the communication channel, is considered, rather than just an accidental transmission error:</p>
+<div id="fig-05-integridade-ataque" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-05-integridade-ataque-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-05-hash-integridade-ataque.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-05-integridade-ataque-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.1: A keyless hash function detects accidental errors, but does not withstand an active attacker: since anyone can compute <span class="math inline">\(H\)</span>, an attacker who alters the data can also recompute a new, valid hash, and the receiver has no way of telling this situation apart from a legitimate communication.
+</figcaption>
+</figure>
+</div>
+<p>The root of the problem: <span class="math inline">\(H\)</span> is <strong>public</strong>. There is no secret involved in computing the hash, so an attacker capable of altering data in transit is equally capable of recomputing the hash corresponding to the altered data. The hash value, on its own, proves that the data did not suffer an accidental error, but it proves neither that the data comes from whoever claims to have sent it, nor that it was not deliberately tampered with by someone along the way. What is missing is an ingredient that only the legitimate sender and receiver possess, and that an attacker cannot reproduce: a <strong>shared secret</strong>.</p>
+</section>
+<section id="sec-05-mac" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="sec-05-mac"><span class="header-section-number">5.5</span> Message Authentication: the MAC</h2>
+<p>The simplest solution to the problem identified in the previous section is to introduce a secret key <span class="math inline">\(K\)</span>, shared only between sender and receiver, into the computation of the digest itself. A <strong>MAC</strong> (<em>Message Authentication Code</em>) is exactly this: a function that takes the message <strong>and</strong> a secret key, and produces a short tag that only someone who knows the key can correctly compute or verify.</p>
+<p><span class="math display">\[T = \text{MAC}_K(\text{data})\]</span></p>
+<div id="fig-05-mac-generico" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-05-mac-generico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-05-mac-generico.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-05-mac-generico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.2: With a secret key <span class="math inline">\(K\)</span>, shared only between sender and receiver, the same attack from Figure <a href="#fig-05-integridade-ataque" class="quarto-xref"><span>5.1</span></a> fails: the attacker can alter the data, but cannot compute the corresponding tag without knowing <span class="math inline">\(K\)</span>, and the receiver rejects the tampered message.
+</figcaption>
+</figure>
+</div>
+<p>A concrete example helps fix the idea. Suppose a bank transfer order, “Transfer €100 to IBAN PT50…”, protected with <span class="math inline">\(\text{MAC}_K\)</span>. The bank receives the message and the tag, recomputes <span class="math inline">\(\text{MAC}_K\)</span> over the received message with the same key <span class="math inline">\(K\)</span> (previously agreed with the customer, for example when activating the card), and compares. If an attacker intercepts the message and changes “€100” to “€10000”, the old tag no longer matches the altered message, and computing the correct tag for the new message would require knowing <span class="math inline">\(K\)</span>, exactly what the attacker in Figure <a href="#fig-05-integridade-ataque" class="quarto-xref"><span>5.1</span></a> lacked.</p>
+<p>Note the fundamental difference from a plain hash: a MAC guarantees <strong>two</strong> properties at once, integrity (the data has not been altered) and <strong>authenticity</strong> (the data can only have come from someone who knows <span class="math inline">\(K\)</span>, that is, from the legitimate sender). This is why MACs share the same trust model as symmetric ciphers: they require a key previously agreed between the two parties, over a secure channel.</p>
+<p>The most direct idea for building a MAC from an existing hash function is to combine the message with the secret key before passing it through <span class="math inline">\(H\)</span>. It is no accident that this is exactly the logic of several classic designs: encrypting the hash of the message with a symmetric key, encrypting only the hash instead of the whole message, or, in its simplest form, computing <span class="math inline">\(H(\text{data} \Vert S)\)</span> using just a shared secret value <span class="math inline">\(S\)</span>, with no encryption involved at all, sufficient for authentication and integrity, albeit without confidentiality. This last construction, a plain hash with a secret concatenated to the message, seems to solve the problem, but it hides a trap that the next section takes apart.</p>
+</section>
+<section id="sec-05-hmac" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="sec-05-hmac"><span class="header-section-number">5.6</span> HMAC</h2>
+<p>Naively concatenating a key to a message before passing it through a hash function seems reasonable, but the two obvious ways of doing it have distinct problems <span class="citation" data-cites="PreneelOorschot1995">(<a href="cap01.html#ref-PreneelOorschot1995" role="doc-biblioref">Preneel and Oorschot 1995</a>)</span>.</p>
+<p><strong>Prefix, <span class="math inline">\(H(K \Vert M)\)</span>.</strong> The functions in the MD5/SHA family (SHA-1 and SHA-2 included) process the input in blocks, updating an internal state block by block, and the final hash value <strong>is</strong> literally that internal state, with no final closing step. This enables a <strong>length-extension attack</strong>: knowing only <span class="math inline">\(H(K \Vert M)\)</span> (not <span class="math inline">\(K\)</span>), an attacker can compute <span class="math inline">\(H(K \Vert M \Vert M')\)</span>, a valid tag for an extended message, for any <span class="math inline">\(M'\)</span> of their choosing.</p>
+<p>A simplified example makes this concrete (this is not how SHA-256 actually works internally, but it illustrates exactly the structure of the problem). Imagine a toy hash function that processes the message block by block, updating a state that starts at 0, and returns that state directly as the final result:</p>
+<p><span class="math display">\[\text{state} \leftarrow (\text{state} + \text{block}) \bmod 100\]</span></p>
+<p>Let the secret key be <span class="math inline">\(K=7\)</span> (one block) and the message <span class="math inline">\(M=42\)</span> (another block). The tag computed by the sender is:</p>
+<p><span class="math display">\[H(K \Vert M) = (0 + 7 + 42) \bmod 100 = 49\]</span></p>
+<p>An attacker who intercepts the message and the tag <span class="math inline">\(49\)</span> does not need to know <span class="math inline">\(K\)</span> to forge a valid tag for the extended message <span class="math inline">\(M \Vert M'\)</span>, with <span class="math inline">\(M'=13\)</span> of their choosing: they simply continue the same computation from the state they already know, <span class="math inline">\(49\)</span>:</p>
+<p><span class="math display">\[(49 + 13) \bmod 100 = 62\]</span></p>
+<p>which is exactly the value the receiver would obtain by computing <span class="math inline">\(H(K \Vert M \Vert M')\)</span> from scratch, with the real key (<span class="math inline">\(0+7+42+13=62\)</span>). The attacker never knew that <span class="math inline">\(K=7\)</span>: they only needed to know that the old tag <strong>was</strong> the internal state, and that continuing the computation from it is just as easy as computing it the first time. It is exactly this property, the final hash value being reusable as a starting point to continue the computation, that MD5, SHA-1 and SHA-256 genuinely share (the only real complication in these algorithms is an extra padding block, which the attacker can also reconstruct from the known length of <span class="math inline">\(K \Vert M\)</span>), and that makes this attack practical, not merely an academic exercise.</p>
+<p><strong>Suffix, <span class="math inline">\(H(M \Vert K)\)</span>.</strong> Placing the key at the end, instead of at the start, avoids the previous attack, because the attacker can no longer continue the computation from a state that already includes the key. But it trades it for another problem: finding two messages <span class="math inline">\(M_1 \neq M_2\)</span> that collide <strong>before</strong> <span class="math inline">\(K\)</span> is processed is already enough to forge a valid tag for <span class="math inline">\(M_2\)</span> from the tag of <span class="math inline">\(M_1\)</span> (the key, applied afterwards, produces the same result for both), a practical attack against hashes with weak collision resistance, such as MD5 (Section 5.3).</p>
+<p>The <strong>HMAC</strong> (<em>Hash-based MAC</em>) construction, proposed by Bellare, Canetti and Krawczyk <span class="citation" data-cites="BellareCanettiKrawczyk1996">(<a href="cap01.html#ref-BellareCanettiKrawczyk1996" role="doc-biblioref">Bellare, Canetti, and Krawczyk 1996</a>)</span> and standardized in RFC 2104 <span class="citation" data-cites="RFC2104">(<a href="cap01.html#ref-RFC2104" role="doc-biblioref">Krawczyk, Bellare, and Canetti 1997</a>)</span>, avoids both problems by applying <span class="math inline">\(H\)</span> <strong>twice</strong>, in a nested structure, instead of concatenating the key just once:</p>
+<p><span class="math display">\[\text{HMAC}(K, M) = H\big((K' \oplus \text{opad}) \,\Vert\, H((K' \oplus \text{ipad}) \,\Vert\, M)\big)\]</span></p>
+<p>where <span class="math inline">\(K'\)</span> is the key adjusted to the block size of <span class="math inline">\(H\)</span> (padded with zeros if shorter, or itself digested by <span class="math inline">\(H\)</span> if longer), and <code>ipad</code> and <code>opad</code> are two fixed, public constants (the byte <code>0x36</code> and the byte <code>0x5C</code>, repeated up to the block size), chosen simply for having a large Hamming distance between them, so that the two internal keys, <span class="math inline">\(K' \oplus \text{ipad}\)</span> and <span class="math inline">\(K' \oplus \text{opad}\)</span>, behave like two independent keys:</p>
+<div id="fig-05-hmac-construcao" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-05-hmac-construcao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-05-hmac-construcao.png" class="img-fluid figure-img" style="width:95.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-05-hmac-construcao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.3: The HMAC construction: the message is first combined with one version of the key (<span class="math inline">\(K \oplus \text{ipad}\)</span>) and passed through <span class="math inline">\(H\)</span>, producing an inner hash; this result is then combined with a second version of the key (<span class="math inline">\(K \oplus \text{opad}\)</span>) and passed through <span class="math inline">\(H\)</span> a second time, producing the final tag. Neither invocation of <span class="math inline">\(H\)</span> ever processes the original key directly.
+</figcaption>
+</figure>
+</div>
+<p>This two-layer structure resolves both attacks from the previous list: the outer hash never exposes its internal state from data known to the attacker (the inner hash has already consumed the key before that point), which eliminates length extension, and a collision in the inner hash is no longer enough to forge a tag, because the result still has to pass through the second <span class="math inline">\(H\)</span>, protected by the second key.</p>
+<p>A remarkable result from the original work of Bellare, Canetti and Krawczyk is that HMAC’s security <strong>does not depend on the collision resistance</strong> of <span class="math inline">\(H\)</span>, it depends on a weaker, more robust property of its internal compression function. This is why <strong>HMAC-MD5</strong> and <strong>HMAC-SHA1</strong> continue, in practice, to have no known attack, despite MD5 and SHA-1 being formally broken as general-purpose hash functions (Section 5.3): breaking HMAC would require a quite different, and harder, type of attack than simply finding collisions in <span class="math inline">\(H\)</span>. Even so, the practical recommendation is to always use <strong>HMAC-SHA256</strong> or higher in new systems, out of caution and to avoid depending on subtleties of this nature.</p>
+<p>HMAC is today one of the most widely used authentication mechanisms in practice: it protects records in TLS versions prior to 1.3, authenticates packets in IPsec, signs <strong>JWT</strong> tokens (<em>JSON Web Tokens</em>, in the <code>HS256</code> algorithm), and underlies request signing in APIs such as AWS’s.</p>
+</section>
+<section id="sec-05-sintese" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="sec-05-sintese"><span class="header-section-number">5.7</span> Chapter Summary</h2>
+<p>This chapter moved from confidentiality to integrity and authentication:</p>
+<ol type="1">
+<li>A <strong>hash function</strong> compresses an input of any size into a fixed output, deterministically; since the domain is infinite and the codomain finite, collisions always exist, the goal is to make them hard to find</li>
+<li>A <strong>strong</strong> hash requires, besides efficiency and fixed output size, resistance to <strong>preimage</strong>, <strong>second preimage</strong>, and <strong>collision</strong> attacks; the last of these is the weakest of the three, and falls after only <span class="math inline">\(2^{n/2}\)</span> attempts (birthday paradox), not <span class="math inline">\(2^n\)</span></li>
+<li>The <strong>SHA</strong> family is the current reference; <strong>MD5</strong> and <strong>SHA-1</strong> have known practical collisions (Wang and Yu, 2005; SHAttered, 2017) and are discouraged; <strong>SHA-256</strong> is today the recommended choice</li>
+<li>A <strong>keyless</strong> hash function does not withstand an active attacker: anyone can recompute it, so it proves neither integrity nor authenticity against an adversary capable of intervening on the channel</li>
+<li>A <strong>MAC</strong> solves this by introducing a shared secret key into the computation of the tag, giving integrity and authenticity simultaneously</li>
+<li>Naively concatenating the key to the message (<code>H(K‖M)</code> or <code>H(M‖K)</code>) has known problems, length extension in the first case, total dependence on collision resistance in the second</li>
+<li><strong>HMAC</strong> solves both by applying <span class="math inline">\(H\)</span> twice, in a nested structure with two derived keys (<code>ipad</code>/<code>opad</code>); its security does not depend on the collision resistance of <span class="math inline">\(H\)</span>, which explains why HMAC-SHA1 remains without known practical attacks, despite SHA-1 no longer being secure as a general-purpose hash</li>
+</ol>
+</section>
+<section id="sec-05-reflexao" class="level2" data-number="5.8">
+<h2 data-number="5.8" class="anchored" data-anchor-id="sec-05-reflexao"><span class="header-section-number">5.8</span> Food for Thought</h2>
+<p>SHA-1 is no longer secure against collisions, and is formally discouraged for digital signatures and certificates. Even so, HMAC-SHA1 remains in use in several legacy systems without being considered a critical flaw. Bearing in mind the distinction between the properties of a hash (Section 5.2) and what HMAC’s security proof actually requires (Section 5.6), why does breaking a hash function’s collision resistance not automatically break the MAC built on top of it?</p>
+</section>
+<section id="sec-05-referencias" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="sec-05-referencias">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-BellareCanettiKrawczyk1996" class="csl-entry" role="listitem">
+Bellare, Mihir, Ran Canetti, and Hugo Krawczyk. 1996. <span>‘Keying Hash Functions for Message Authentication’</span>. In <em>Advances in Cryptology (CRYPTO ’96)</em>.
+</div>
+<div id="ref-RFC2104" class="csl-entry" role="listitem">
+Krawczyk, Hugo, Mihir Bellare, and Ran Canetti. 1997. <span>‘<span>HMAC</span>: Keyed-Hashing for Message Authentication’</span>. RFC 2104. IETF.
+</div>
+<div id="ref-FIPS1804" class="csl-entry" role="listitem">
+National Institute of Standards and Technology. 2015. <span>‘Secure Hash Standard (SHS)’</span>. FIPS PUB 180-4. NIST.
+</div>
+<div id="ref-PreneelOorschot1995" class="csl-entry" role="listitem">
+Preneel, Bart, and Paul C. van Oorschot. 1995. <span>‘<span>MDx-MAC</span> and Building Fast <span>MAC</span>s from Hash Functions’</span>. In <em>Advances in Cryptology (CRYPTO ’95)</em>.
+</div>
+<div id="ref-Stallings2020" class="csl-entry" role="listitem">
+Stallings, William. 2020. <em>Cryptography and Network Security: Principles and Practice</em>. 8th ed. Pearson.
+</div>
+<div id="ref-Stevens2017" class="csl-entry" role="listitem">
+Stevens, Marc, Elie Bursztein, Pierre Karpman, Ange Albertini, and Yarik Markov. 2017. <span>‘The First Collision for Full <span>SHA-1</span>’</span>. In <em>Advances in Cryptology (CRYPTO 2017)</em>.
+</div>
+<div id="ref-Wang2005" class="csl-entry" role="listitem">
+Wang, Xiaoyun, and Hongbo Yu. 2005. <span>‘How to Break <span>MD5</span> and Other Hash Functions’</span>. In <em>Advances in Cryptology (EUROCRYPT 2005)</em>.
+</div>
+</div>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        // rstudio viewer pane
+        if (/\bcapabilities=\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../capitulos/cap04.html" class="pagination-link" aria-label="Stream Ciphers — RC4, Salsa20, ChaCha20 and Padding">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Stream Ciphers — RC4, Salsa20, ChaCha20 and Padding</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../capitulos/cap06.html" class="pagination-link" aria-label="Asymmetric Cryptography and RSA">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Asymmetric Cryptography and RSA</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Hashing — Properties, Attacks, SHA, MAC and HMAC"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "João Pavão"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-09-14</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> en-GB</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction {#sec-05-intro .unnumbered}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>The previous chapters always dealt with **confidentiality**: how to transform a message so that only someone holding the right key can read it. But confidentiality is not the only property a secure communication needs to guarantee. A message can travel perfectly encrypted and still be altered along the way, or not actually come from whoever it claims to come from. This chapter changes problem: it deals with **integrity** (the guarantee that data has not been altered) and **authentication** (the guarantee that data comes from whom it is expected to), and with the tool that underlies both, the **hash function**.</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## What Is a Hash Function {#sec-05-conceito}</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>A **hash function** transforms an input of arbitrary size into an output of fixed size, generally much shorter:</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>$$h = H(x)$$</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>where $x$ is the value (or message) to be digested, $H$ is the hash function, and $h$ is the **hash value** (also called the *digest*). $x$ is known as the **preimage** of $h$.</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>Two, at first sight simple, characteristics define the essence of a hash function: it is **deterministic** (the same input always produces the same output) and it is a **compression function** (inputs of any size, potentially huge, always produce an output of the same fixed size, typically between 128 and 512 bits). This second characteristic has an unavoidable mathematical consequence: since the set of possible inputs is infinite and the set of outputs is finite, **collisions must exist**, pairs of different inputs that produce the same hash value. The security of a hash function can never rest on avoiding them altogether, that is impossible, but rather on making them computationally infeasible to find deliberately. This is exactly what the next section formalizes.</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Properties of a Hash Function {#sec-05-propriedades}</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>Not every function that compresses data is useful in cryptography. The following properties <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span> distinguish a **weak** hash function from a **strong** one:</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>| Requirement | Description |</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>|---|---|</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>| Variable input size | $H$ can be applied to a block of data of any size |</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>| Fixed output size | $H$ always produces an output of fixed length |</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>| Efficiency | $H(x)$ is easy to compute for any $x$, making hardware and software implementations practical |</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>| Preimage resistance (*one-way*) | Given a hash value $h$, it is computationally infeasible to find $y$ such that $H(y) = h$ |</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>| Second preimage resistance (weak collision resistance) | Given a block $x$, it is computationally infeasible to find $y \neq x$ with $H(y) = H(x)$ |</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>| Collision resistance (strong collision resistance) | It is computationally infeasible to find any pair $(x,y)$, with $x \neq y$, such that $H(x) = H(y)$ |</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>| Pseudorandomness | The output of $H$ meets the standard statistical tests for randomness |</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>: Properties of a hash function <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span> {#tbl-05-propriedades}</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>The first four properties define a **weak hash**: sufficient to detect accidental transmission errors, but not to withstand an attacker. The last three, added on top, define a **strong hash**, the only kind suitable for cryptographic uses. It is worth not confusing the last two collision-resistance properties, which are easy to mix up:</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Second preimage**: the attacker already has a specific $x$ (for example, an original contract) and wants to find another document $y$ with the same hash, in order to substitute it without the substitution being detected.</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Collision**: the attacker has no fixed starting document, they just want to find **any pair** $(x,y)$ that collides, which is structurally easier to achieve.</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>This difference has an important practical consequence, known as the **birthday paradox**: finding any collision for a hash function with an $n$-bit output costs, on average, only about $2^{n/2}$ attempts, far fewer than the $2^n$ that intuition would suggest, and far fewer still than the $2^n$ needed to break preimage or second-preimage resistance. This is why the output size of a hash function must be roughly double the intended security level: a 256-bit hash gives only $2^{128}$ of security against collisions, not $2^{256}$.</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a><span class="fu">## The SHA Family {#sec-05-sha}</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>Over the last three decades, several families of hash functions have competed for the position of de facto standard. The earliest, **MD4** and **MD5** (*Message Digest*, Ron Rivest, 1990 and 1992), with outputs of only 128 bits, ended up formally broken: Wang and Yu presented a practical method for generating MD5 collisions in 2005 <span class="co">[</span><span class="ot">@Wang2005</span><span class="co">]</span>, and today MD5 must not be used for any cryptographic purpose, only for non-adversarial integrity checks (for example, confirming that a file transfer was not corrupted by error).</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>**SHA** (*Secure Hash Algorithm*), standardized by NIST, became the reference family [@FIPS1804]. **SHA-1** (160 bits, 1995) remained in widespread use for two decades, despite theoretical weaknesses known since 2005, until Google and CWI Amsterdam published, in 2017, the first practical collision (the **SHAttered** attack), two distinct PDFs with the same SHA-1 hash <span class="co">[</span><span class="ot">@Stevens2017</span><span class="co">]</span>. Since then, SHA-1 has been formally discouraged for any use that relies on collision resistance, including digital certificates and signatures.</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>The currently recommended family is **SHA-2**, which groups several variants according to output size and internal structure:</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>| Algorithm | Message size | Block size | Word size | Digest size |</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>|---|---|---|---|---|</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>| SHA-1 | $&lt; 2^{64}$ | 512 | 32 | 160 |</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>| SHA-224 | $&lt; 2^{64}$ | 512 | 32 | 224 |</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>| SHA-256 | $&lt; 2^{64}$ | 512 | 32 | 256 |</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>| SHA-384 | $&lt; 2^{128}$ | 1024 | 64 | 384 |</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>| SHA-512 | $&lt; 2^{128}$ | 1024 | 64 | 512 |</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>| SHA-512/224 | $&lt; 2^{128}$ | 1024 | 64 | 224 |</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>| SHA-512/256 | $&lt; 2^{128}$ | 1024 | 64 | 256 |</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>: Parameters of the SHA family variants (all sizes in bits) <span class="co">[</span><span class="ot">@FIPS1804</span><span class="co">]</span> {#tbl-05-sha}</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>**SHA-256** is today the default choice for the generality of new applications, used, among others, in TLS, Git, and Bitcoin. In practice, computing a digest is a trivial operation on any Unix system:</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> echo <span class="st">"Olá Mundo!  João Pavão"</span> <span class="op">&gt;</span> hashtext.txt</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl md5 hashtext.txt</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="ex">MD5</span><span class="er">(</span><span class="ex">hashtext.txt</span><span class="kw">)</span><span class="ex">=</span> dafa6ed4f172ed103c577334bdfa375d</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl sha1 hashtext.txt</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="ex">SHA1</span><span class="er">(</span><span class="ex">hashtext.txt</span><span class="kw">)</span><span class="ex">=</span> f8372d55ba7ae3655ec0f886ef658f94879646c1</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>Note that the two digests, despite being computed over the same file, show no visible relationship to one another, precisely the pseudorandom behaviour required in Table <span class="co">[</span><span class="ot">-@tbl-05-propriedades</span><span class="co">]</span>.</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a><span class="fu">## Checking Integrity — and Its Limits {#sec-05-integridade}</span></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>The most direct use of a hash function is to check whether a piece of data has remained intact: the sender computes $h = H(\text{data})$ and sends both together; the receiver recomputes the hash over the data received and compares it with the value received. Any alteration to the data, even of a single bit, changes the hash value unpredictably (the pseudorandomness property), making the alteration detectable.</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>But this scheme has a serious flaw, which only becomes visible once an active attacker, capable of intervening on the communication channel, is considered, rather than just an accidental transmission error:</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a><span class="al">![A keyless hash function detects accidental errors, but does not withstand an active attacker: since anyone can compute $H$, an attacker who alters the data can also recompute a new, valid hash, and the receiver has no way of telling this situation apart from a legitimate communication.](../assets/images/fig-05-hash-integridade-ataque.png)</span>{#fig-05-integridade-ataque width=100%}</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>The root of the problem: $H$ is **public**. There is no secret involved in computing the hash, so an attacker capable of altering data in transit is equally capable of recomputing the hash corresponding to the altered data. The hash value, on its own, proves that the data did not suffer an accidental error, but it proves neither that the data comes from whoever claims to have sent it, nor that it was not deliberately tampered with by someone along the way. What is missing is an ingredient that only the legitimate sender and receiver possess, and that an attacker cannot reproduce: a **shared secret**.</span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="fu">## Message Authentication: the MAC {#sec-05-mac}</span></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>The simplest solution to the problem identified in the previous section is to introduce a secret key $K$, shared only between sender and receiver, into the computation of the digest itself. A **MAC** (*Message Authentication Code*) is exactly this: a function that takes the message **and** a secret key, and produces a short tag that only someone who knows the key can correctly compute or verify.</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>$$T = \text{MAC}_K(\text{data})$$</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>!<span class="co">[</span><span class="ot">With a secret key $K$, shared only between sender and receiver, the same attack from Figure [-@fig-05-integridade-ataque] fails: the attacker can alter the data, but cannot compute the corresponding tag without knowing $K$, and the receiver rejects the tampered message.</span><span class="co">](../assets/images/fig-05-mac-generico.png)</span>{#fig-05-mac-generico width=100%}</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a>A concrete example helps fix the idea. Suppose a bank transfer order, "Transfer €100 to IBAN PT50...", protected with $\text{MAC}_K$. The bank receives the message and the tag, recomputes $\text{MAC}_K$ over the received message with the same key $K$ (previously agreed with the customer, for example when activating the card), and compares. If an attacker intercepts the message and changes "€100" to "€10000", the old tag no longer matches the altered message, and computing the correct tag for the new message would require knowing $K$, exactly what the attacker in Figure <span class="co">[</span><span class="ot">-@fig-05-integridade-ataque</span><span class="co">]</span> lacked.</span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a>Note the fundamental difference from a plain hash: a MAC guarantees **two** properties at once, integrity (the data has not been altered) and **authenticity** (the data can only have come from someone who knows $K$, that is, from the legitimate sender). This is why MACs share the same trust model as symmetric ciphers: they require a key previously agreed between the two parties, over a secure channel.</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>The most direct idea for building a MAC from an existing hash function is to combine the message with the secret key before passing it through $H$. It is no accident that this is exactly the logic of several classic designs: encrypting the hash of the message with a symmetric key, encrypting only the hash instead of the whole message, or, in its simplest form, computing $H(\text{data} \Vert S)$ using just a shared secret value $S$, with no encryption involved at all, sufficient for authentication and integrity, albeit without confidentiality. This last construction, a plain hash with a secret concatenated to the message, seems to solve the problem, but it hides a trap that the next section takes apart.</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## HMAC {#sec-05-hmac}</span></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>Naively concatenating a key to a message before passing it through a hash function seems reasonable, but the two obvious ways of doing it have distinct problems <span class="co">[</span><span class="ot">@PreneelOorschot1995</span><span class="co">]</span>.</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>**Prefix, $H(K \Vert M)$.** The functions in the MD5/SHA family (SHA-1 and SHA-2 included) process the input in blocks, updating an internal state block by block, and the final hash value **is** literally that internal state, with no final closing step. This enables a **length-extension attack**: knowing only $H(K \Vert M)$ (not $K$), an attacker can compute $H(K \Vert M \Vert M')$, a valid tag for an extended message, for any $M'$ of their choosing.</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>A simplified example makes this concrete (this is not how SHA-256 actually works internally, but it illustrates exactly the structure of the problem). Imagine a toy hash function that processes the message block by block, updating a state that starts at 0, and returns that state directly as the final result:</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>$$\text{state} \leftarrow (\text{state} + \text{block}) \bmod 100$$</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>Let the secret key be $K=7$ (one block) and the message $M=42$ (another block). The tag computed by the sender is:</span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>$$H(K \Vert M) = (0 + 7 + 42) \bmod 100 = 49$$</span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a>An attacker who intercepts the message and the tag $49$ does not need to know $K$ to forge a valid tag for the extended message $M \Vert M'$, with $M'=13$ of their choosing: they simply continue the same computation from the state they already know, $49$:</span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>$$(49 + 13) \bmod 100 = 62$$</span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a>which is exactly the value the receiver would obtain by computing $H(K \Vert M \Vert M')$ from scratch, with the real key ($0+7+42+13=62$). The attacker never knew that $K=7$: they only needed to know that the old tag **was** the internal state, and that continuing the computation from it is just as easy as computing it the first time. It is exactly this property, the final hash value being reusable as a starting point to continue the computation, that MD5, SHA-1 and SHA-256 genuinely share (the only real complication in these algorithms is an extra padding block, which the attacker can also reconstruct from the known length of $K \Vert M$), and that makes this attack practical, not merely an academic exercise.</span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a>**Suffix, $H(M \Vert K)$.** Placing the key at the end, instead of at the start, avoids the previous attack, because the attacker can no longer continue the computation from a state that already includes the key. But it trades it for another problem: finding two messages $M_1 \neq M_2$ that collide **before** $K$ is processed is already enough to forge a valid tag for $M_2$ from the tag of $M_1$ (the key, applied afterwards, produces the same result for both), a practical attack against hashes with weak collision resistance, such as MD5 (Section 5.3).</span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>The **HMAC** (*Hash-based MAC*) construction, proposed by Bellare, Canetti and Krawczyk [@BellareCanettiKrawczyk1996] and standardized in RFC 2104 [@RFC2104], avoids both problems by applying $H$ **twice**, in a nested structure, instead of concatenating the key just once:</span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>$$\text{HMAC}(K, M) = H\big((K' \oplus \text{opad}) \,\Vert\, H((K' \oplus \text{ipad}) \,\Vert\, M)\big)$$</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a>where $K'$ is the key adjusted to the block size of $H$ (padded with zeros if shorter, or itself digested by $H$ if longer), and <span class="in">`ipad`</span> and <span class="in">`opad`</span> are two fixed, public constants (the byte <span class="in">`0x36`</span> and the byte <span class="in">`0x5C`</span>, repeated up to the block size), chosen simply for having a large Hamming distance between them, so that the two internal keys, $K' \oplus \text{ipad}$ and $K' \oplus \text{opad}$, behave like two independent keys:</span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a><span class="al">![The HMAC construction: the message is first combined with one version of the key ($K \oplus \text{ipad}$) and passed through $H$, producing an inner hash; this result is then combined with a second version of the key ($K \oplus \text{opad}$) and passed through $H$ a second time, producing the final tag. Neither invocation of $H$ ever processes the original key directly.](../assets/images/fig-05-hmac-construcao.png)</span>{#fig-05-hmac-construcao width=95%}</span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a>This two-layer structure resolves both attacks from the previous list: the outer hash never exposes its internal state from data known to the attacker (the inner hash has already consumed the key before that point), which eliminates length extension, and a collision in the inner hash is no longer enough to forge a tag, because the result still has to pass through the second $H$, protected by the second key.</span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a>A remarkable result from the original work of Bellare, Canetti and Krawczyk is that HMAC's security **does not depend on the collision resistance** of $H$, it depends on a weaker, more robust property of its internal compression function. This is why **HMAC-MD5** and **HMAC-SHA1** continue, in practice, to have no known attack, despite MD5 and SHA-1 being formally broken as general-purpose hash functions (Section 5.3): breaking HMAC would require a quite different, and harder, type of attack than simply finding collisions in $H$. Even so, the practical recommendation is to always use **HMAC-SHA256** or higher in new systems, out of caution and to avoid depending on subtleties of this nature.</span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a>HMAC is today one of the most widely used authentication mechanisms in practice: it protects records in TLS versions prior to 1.3, authenticates packets in IPsec, signs **JWT** tokens (*JSON Web Tokens*, in the <span class="in">`HS256`</span> algorithm), and underlies request signing in APIs such as AWS's.</span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a><span class="fu">## Chapter Summary {#sec-05-sintese}</span></span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a>This chapter moved from confidentiality to integrity and authentication:</span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>A **hash function** compresses an input of any size into a fixed output, deterministically; since the domain is infinite and the codomain finite, collisions always exist, the goal is to make them hard to find</span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>A **strong** hash requires, besides efficiency and fixed output size, resistance to **preimage**, **second preimage**, and **collision** attacks; the last of these is the weakest of the three, and falls after only $2^{n/2}$ attempts (birthday paradox), not $2^n$</span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>The **SHA** family is the current reference; **MD5** and **SHA-1** have known practical collisions (Wang and Yu, 2005; SHAttered, 2017) and are discouraged; **SHA-256** is today the recommended choice</span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>A **keyless** hash function does not withstand an active attacker: anyone can recompute it, so it proves neither integrity nor authenticity against an adversary capable of intervening on the channel</span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>A **MAC** solves this by introducing a shared secret key into the computation of the tag, giving integrity and authenticity simultaneously</span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Naively concatenating the key to the message (<span class="in">`H(K‖M)`</span> or <span class="in">`H(M‖K)`</span>) has known problems, length extension in the first case, total dependence on collision resistance in the second</span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>**HMAC** solves both by applying $H$ twice, in a nested structure with two derived keys (<span class="in">`ipad`</span>/<span class="in">`opad`</span>); its security does not depend on the collision resistance of $H$, which explains why HMAC-SHA1 remains without known practical attacks, despite SHA-1 no longer being secure as a general-purpose hash</span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a><span class="fu">## Food for Thought {#sec-05-reflexao}</span></span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a>SHA-1 is no longer secure against collisions, and is formally discouraged for digital signatures and certificates. Even so, HMAC-SHA1 remains in use in several legacy systems without being considered a critical flaw. Bearing in mind the distinction between the properties of a hash (Section 5.2) and what HMAC's security proof actually requires (Section 5.6), why does breaking a hash function's collision resistance not automatically break the MAC built on top of it?</span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a><span class="fu">## References {#sec-05-referencias .unnumbered}</span></span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Cryptography — Cybersecurity, UTAD</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

@@ -1,0 +1,211 @@
+/* custom.css — Sebenta Cripto (paleta: carmesim) */
+
+/* ============================================================
+   HERO — capa da página principal (Prefácio)
+   ============================================================ */
+.hero {
+  background: linear-gradient(135deg, #1a0505 0%, #7a1017 55%, #b0202a 100%);
+  color: #fff;
+  border-radius: 8px;
+  padding: 3.5rem 3rem 3rem;
+  margin: 0 0 2.5rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 260px; height: 260px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 50%;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  bottom: -80px; left: -40px;
+  width: 320px; height: 320px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 50%;
+}
+
+.hero h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff !important;
+  border: none !important;
+  margin: 0 0 0.4rem;
+  line-height: 1.2;
+}
+
+.hero h2 {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: rgba(255,255,255,0.94) !important;
+  border: none !important;
+  margin: 0 0 1.4rem;
+}
+
+.hero p {
+  color: rgba(255,255,255,0.88);
+  font-size: 0.95rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.hero .hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 0.25rem 0.85rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  color: #fff;
+}
+
+/* ============================================================
+   Tipografia
+   ============================================================ */
+body {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+/* MathJax (fórmulas $...$ e $$...$$) renderiza, por omissão, maior do
+   que o texto à volta — a fonte do MathJax tem um x-height maior do
+   que a fonte de corpo do tema. Reduz para ficar proporcional. */
+mjx-container {
+  font-size: 92% !important;
+}
+
+/* Blocos de código */
+pre.sourceCode {
+  border-left: 3px solid #b0202a;
+  background-color: #fdf0f0;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   Cabeçalho de capítulo — banner colorido
+   ============================================================ */
+#title-block-header.quarto-title-block {
+  background: linear-gradient(120deg, #1a0505 0%, #b0202a 100%);
+  padding: 2rem 2.5rem 1.75rem;
+  margin: -1rem -1rem 2.5rem;
+  border-radius: 0 0 10px 10px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.18);
+}
+
+#title-block-header.quarto-title-block h1.title {
+  color: #fff !important;
+  border: none !important;
+  font-size: 1.85rem;
+  margin: 0;
+  line-height: 1.25;
+}
+
+#title-block-header.quarto-title-block h1.title .chapter-number {
+  opacity: 0.65;
+  font-weight: 300;
+}
+
+/* Ocultar autor/afiliação/data no cabeçalho de título (capítulos e
+   página de capa do livro, que usa uma estrutura HTML diferente:
+   .quarto-title-meta-author em vez de .quarto-title-meta) */
+#title-block-header .quarto-title-meta,
+#title-block-header .quarto-title-meta-author,
+#title-block-header .quarto-title-meta-heading,
+#title-block-header .quarto-title-meta-contents {
+  display: none !important;
+}
+
+/* ============================================================
+   Callouts */
+.callout-caution {
+  border-left-color: #b0202a;
+}
+
+.callout-caution .callout-title {
+  background-color: #fbe6e6;
+}
+
+.callout-note {
+  border-left-color: #b0202a !important;
+}
+
+.callout-tip {
+  border-left-color: #e2434f !important;
+}
+
+/* Tabelas */
+table {
+  font-size: 0.9rem;
+}
+
+thead {
+  background-color: #f5cfd2;
+}
+
+/* Mockup de browser */
+.browser-mockup {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.browser-bar {
+  background: #e8e8e8;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  color: #555;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.browser-bar::before {
+  content: "● ● ●";
+  color: #aaa;
+  letter-spacing: 2px;
+  font-size: 0.7rem;
+}
+
+.browser-content {
+  padding: 1rem;
+  background: #fff;
+  min-height: 80px;
+}
+
+/* Caixa de mensagem/exemplo (texto claro, texto cifrado, mensagens
+   protocolares, etc.) — mesmo padrão usado na Sebenta-ASW para
+   mensagens HTTP, reaproveitado aqui como caixa geral de exemplo.
+   Sem fundo tingido nem realce de sintaxe, só uma borda para não se
+   diluir no fundo da página. */
+div.httpmsg {
+  border: 1px solid #c3cacd;
+  border-radius: 4px;
+  padding: 0.85rem 1.1rem;
+  margin: 1.25rem 0;
+  background-color: #f2f3f4;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+div.httpmsg p {
+  margin: 0 0 0.75rem;
+  font-family: var(--bs-font-monospace, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace) !important;
+}
+
+div.httpmsg p:last-child {
+  margin-bottom: 0;
+}

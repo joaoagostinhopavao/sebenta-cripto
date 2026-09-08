@@ -16,18 +16,19 @@ Trás-os-Montes e Alto Douro.
 
 ## Organização da sebenta {.unnumbered}
 
-Os capítulos correspondem às 10 aulas teóricas do módulo:
+Os capítulos seguem a estrutura das aulas teóricas do módulo (as duas últimas aulas, TLS/PGP e eficiência algorítmica/PQC, são leccionadas na mesma sessão):
 
 1. Criptografia Clássica — substituição, polialfabética e transposição
 2. Cifras de Bloco — fundamentos, Feistel, DES e 3DES
 3. AES — estágios e modos de operação
 4. Cifras de Fluxo — RC4, Salsa20, ChaCha20 e padding
-5. Hashing — propriedades, ataques, SHA e HMAC
-6. Criptografia Assimétrica — fundamentos e RSA
+5. Hashing — propriedades, ataques, SHA, MAC e HMAC
+6. Criptografia Assimétrica e RSA
 7. Diffie-Hellman e Assinaturas Digitais
-8. Criptografia de Curva Elíptica (ECC)
+8. Criptografia de Curva Elíptica
 9. Infraestrutura de Chave Pública (PKI)
-10. TLS e PGP — esquemas criptográficos aplicados
+10. TLS e PGP
+11. Eficiência Algorítmica e Criptografia Pós-Quântica
 
 ## Autor {.unnumbered}
 

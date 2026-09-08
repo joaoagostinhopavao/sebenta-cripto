@@ -14,7 +14,7 @@
     "href": "index.html#organização-da-sebenta",
     "title": "Criptografia",
     "section": "Organização da sebenta",
-    "text": "Organização da sebenta\nOs capítulos correspondem às 10 aulas teóricas do módulo:\n\nCriptografia Clássica — substituição, polialfabética e transposição\nCifras de Bloco — fundamentos, Feistel, DES e 3DES\nAES — estágios e modos de operação\nCifras de Fluxo — RC4, Salsa20, ChaCha20 e padding\nHashing — propriedades, ataques, SHA e HMAC\nCriptografia Assimétrica — fundamentos e RSA\nDiffie-Hellman e Assinaturas Digitais\nCriptografia de Curva Elíptica (ECC)\nInfraestrutura de Chave Pública (PKI)\nTLS e PGP — esquemas criptográficos aplicados",
+    "text": "Organização da sebenta\nOs capítulos seguem a estrutura das aulas teóricas do módulo (as duas últimas aulas, TLS/PGP e eficiência algorítmica/PQC, são leccionadas na mesma sessão):\n\nCriptografia Clássica — substituição, polialfabética e transposição\nCifras de Bloco — fundamentos, Feistel, DES e 3DES\nAES — estágios e modos de operação\nCifras de Fluxo — RC4, Salsa20, ChaCha20 e padding\nHashing — propriedades, ataques, SHA, MAC e HMAC\nCriptografia Assimétrica e RSA\nDiffie-Hellman e Assinaturas Digitais\nCriptografia de Curva Elíptica\nInfraestrutura de Chave Pública (PKI)\nTLS e PGP\nEficiência Algorítmica e Criptografia Pós-Quântica",
     "crumbs": [
       "Prefácio"
     ]
