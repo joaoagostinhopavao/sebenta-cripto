@@ -54,7 +54,7 @@ RSA, presented in this chapter, is the only algorithm, alongside elliptic curve 
 
 **RSA** (Rivest, Shamir and Adleman, 1977) remains the most widely used public-key algorithm in practice, despite resting on a single hard mathematical problem: the **factorization of very large integers**. Generating the key pair follows five steps:
 
-![Key generation, encryption and decryption in RSA. The security of the whole scheme depends on $d$ being impossible to compute without knowing $p$ and $q$: anyone who only knows $n$ has to factorize it first, a problem with no known efficient solution for sufficiently large numbers.](../assets/images/fig-06-rsa-infografico.png){#fig-06-rsa-infografico width=100%}
+![Key generation, encryption and decryption in RSA. The security of the whole scheme depends on $d$ being impossible to compute without knowing $p$ and $q$: anyone who only knows $n$ has to factorize it first, a problem with no known efficient solution for sufficiently large numbers.](../assets/images/fig-06-rsa-infografico-en.png){#fig-06-rsa-infografico width=100%}
 
 1. Choose two large, random prime numbers, $p$ and $q$.
 2. Compute $n = p \cdot q$ (the **modulus**, which will be public) and $\phi(n) = (p-1)(q-1)$ (Euler's totient function, which must remain secret).
