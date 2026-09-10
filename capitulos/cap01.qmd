@@ -40,7 +40,7 @@ Formalmente:
 $$Y = E(K, X)$$
 $$X = D(K, Y)$$
 
-![O modelo de cifra simétrica: emissor e receptor partilham previamente a mesma chave secreta, através de um canal seguro. O algoritmo de cifragem usa essa chave para transformar o texto claro em texto cifrado; o algoritmo de decifragem, usando a mesma chave, reverte a transformação.](../assets/images/fig-modelo-cifra-simetrica.png){#fig-01-modelo-simetrico}
+![O modelo de cifra simétrica: emissor e receptor partilham previamente a mesma chave secreta, através de um canal seguro. O algoritmo de cifragem usa essa chave para transformar o texto claro em texto cifrado; o algoritmo de decifragem, usando a mesma chave, reverte a transformação.](../assets/images/fig-01-modelo-cifra-simetrica.png){#fig-01-modelo-simetrico}
 
 Emissor e receptor têm de ter obtido cópias da mesma chave secreta por um meio seguro e mantê-la protegida (@fig-01-modelo-simetrico). Se alguém descobrir a chave e conhecer o algoritmo, toda a comunicação cifrada com essa chave torna-se legível.
 
@@ -160,7 +160,7 @@ Apesar do espaço de chaves astronomicamente maior, a cifra monoalfabética cont
 
 Em português, a distribuição das letras está longe de ser uniforme: A, E e O dominam claramente, seguidos por um grupo intermédio (S, R, I, N, D, M, U, T, C), e um conjunto de letras raras (Z, J, X e, sobretudo, K, W, Y, praticamente ausentes em palavras portuguesas). Os valores seguintes resultam de uma contagem real, sobre os três primeiros cantos d'*Os Lusíadas*, de Luís de Camões (**cerca de 103.000 caracteres alfabéticos**), com o alfabeto normalizado para `a`–`z`, sem acentuação nem cedilha. Serve aqui apenas de exemplo aproximado. Para um trabalho profissional convirá usar um *corpus* maior e mais atualizado:
 
-![Frequência das letras em português, contada sobre os três primeiros cantos d'Os Lusíadas.](../assets/images/fig-frequencia-letras-pt.png){#fig-01-frequencia-letras}
+![Frequência das letras em português, contada sobre os três primeiros cantos d'Os Lusíadas.](../assets/images/fig-01-frequencia-letras-pt.png){#fig-01-frequencia-letras}
 
 Contando as letras do texto cifrado do exemplo anterior ("FVQRZQ MTB X ETV YTFRTZX", 20 letras):
 
@@ -290,7 +290,7 @@ A cifra de Playfair reduz o problema anterior ao cifrar **pares de letras** (dí
 
 **Construção da grelha.** Escolhe-se uma palavra-chave, escrevem-se as suas letras (sem repetições) nas primeiras posições da grelha, e completam-se as posições restantes com as letras do alfabeto por ordem, saltando as já usadas. Como a grelha só tem 25 posições para 26 letras, "I" e "J" partilham a mesma célula. Com a palavra-chave "REDIAL" (uma aldeia do concelho de Murça):
 
-![Grelha de Playfair construída a partir da palavra-chave "REDIAL".](../assets/images/fig-playfair-grelha.png){#fig-01-playfair-grelha width=44%}
+![Grelha de Playfair construída a partir da palavra-chave "REDIAL".](../assets/images/fig-01-playfair-grelha.png){#fig-01-playfair-grelha width=44%}
 
 **Regras de cifragem**, aplicadas a cada par de letras do texto claro:
 
@@ -370,7 +370,7 @@ Antes de se chegar à solução definitiva, vale a pena um passo intermédio. A 
 
 $$C_i = P_i \oplus K_{i \bmod m} \qquad P_i = C_i \oplus K_{i \bmod m}$$
 
-![A cifra de Vernam: um gerador de fluxo de chave produz a sequência $k_i$, combinada por XOR com o texto claro na cifragem, e com o texto cifrado na decifragem — a mesma operação em ambos os sentidos.](../assets/images/fig-vernam-gerador.png){#fig-01-vernam-gerador width=95%}
+![A cifra de Vernam: um gerador de fluxo de chave produz a sequência $k_i$, combinada por XOR com o texto claro na cifragem, e com o texto cifrado na decifragem — a mesma operação em ambos os sentidos.](../assets/images/fig-01-vernam-gerador.png){#fig-01-vernam-gerador width=95%}
 
 Uma chave muito mais longa dificulta consideravelmente o exame de Kasiski, já que as repetições no texto cifrado tornam-se muito mais raras. Mas o problema de fundo não desaparece: mais cedo ou mais tarde, mesmo uma fita de chave muito longa esgota-se e tem de recomeçar, voltando a introduzir um ciclo, ainda que muito maior do que o de uma palavra-chave Vigenère. A cifra de Vernam é, por isso, uma melhoria substancial sobre a Vigenère, mas não uma solução definitiva: continua vulnerável, em princípio, ao mesmo tipo de criptanálise, apenas exigindo mensagens interceptadas muito mais longas para se tornar praticável.
 
@@ -446,7 +446,7 @@ A forma mais simples de transposição é a técnica **rail fence** (cerca de ca
 
 Para o texto claro "ESCONDE BEM A CHAVE" (sem espaços, 16 letras):
 
-![A técnica rail fence: o texto claro escreve-se em ziguezague por duas linhas; o texto cifrado lê-se linha a linha.](../assets/images/fig-rail-fence.png){#fig-01-rail-fence width=80%}
+![A técnica rail fence: o texto claro escreve-se em ziguezague por duas linhas; o texto cifrado lê-se linha a linha.](../assets/images/fig-01-rail-fence.png){#fig-01-rail-fence width=80%}
 
 Lendo a Linha 1 seguida da Linha 2, obtém-se o texto cifrado `ECNEEAHVSODBMCAE`. Todas as letras do texto cifrado pertencem ao texto claro, apenas reordenadas, pelo que a criptanálise estatística sobre a frequência de letras isoladas continua perfeitamente viável, tal como se discutirá adiante nesta secção.
 
@@ -456,7 +456,7 @@ Uma técnica mais elaborada é a **transposição colunar**: o texto claro é es
 
 Usando de novo a palavra-chave "REDIAL" — agora não para deslocar nem substituir, mas para ordenar colunas — e a frase "Isto fica só entre nós" (18 letras, exactamente três linhas de seis colunas, sem necessidade de enchimento). A cada letra da chave associa-se a sua posição na ordem alfabética (A=1, D=2, E=3, I=4, L=5, R=6), e o texto claro escreve-se por linhas, coluna a coluna, por baixo da chave:
 
-![Grelha de transposição colunar com a chave "REDIAL". O número entre parêntesis, por baixo de cada letra da chave, indica a ordem alfabética dessa letra e, por isso, a ordem de leitura da respectiva coluna.](../assets/images/fig-transposicao-grelha.png){#fig-01-transposicao-grelha width=60%}
+![Grelha de transposição colunar com a chave "REDIAL". O número entre parêntesis, por baixo de cada letra da chave, indica a ordem alfabética dessa letra e, por isso, a ordem de leitura da respectiva coluna.](../assets/images/fig-01-transposicao-grelha.png){#fig-01-transposicao-grelha width=60%}
 
 O texto cifrado obtém-se lendo as colunas pela ordem numérica das suas posições (não pela ordem em que aparecem na grelha): primeiro a coluna sob "A" (posição 1), depois a coluna sob "D" (posição 2), e assim sucessivamente até à coluna sob "R" (posição 6):
 

@@ -15,7 +15,7 @@ O modo CTR, apresentado no capítulo anterior, já antecipava esta ideia: usar u
 
 $$C_i = P_i \oplus k_i$$
 
-![Uma cifra de fluxo genérica: a chave e o nonce alimentam um gerador pseudo-aleatório que produz o fluxo de chave $k_1, k_2, k_3, \dots$, combinado por XOR com o texto claro, byte a byte, produzindo o texto cifrado.](../assets/images/fig-cifra-fluxo.png){#fig-04-cifra-fluxo width=85%}
+![Uma cifra de fluxo genérica: a chave e o nonce alimentam um gerador pseudo-aleatório que produz o fluxo de chave $k_1, k_2, k_3, \dots$, combinado por XOR com o texto claro, byte a byte, produzindo o texto cifrado.](../assets/images/fig-04-cifra-fluxo.png){#fig-04-cifra-fluxo width=85%}
 
 Esta construção devia parecer familiar: é exactamente a estrutura do **One-Time Pad**, já referido no capítulo 1 e retomado no capítulo 2 como o único sistema com segredo perfeito demonstrado por Shannon. Uma cifra de fluxo pode, por isso, ser vista como o **equivalente pseudo-aleatório de um One-Time Pad** [@Martin2017; @Aumasson2017]: a diferença, e é uma diferença crucial, é que o One-Time Pad exige uma chave genuinamente aleatória, tão longa quanto a mensagem, e nunca reutilizada, enquanto uma cifra de fluxo troca essa exigência impraticável por uma chave curta e reutilizável, à custa de perder o segredo perfeito: a segurança passa a depender inteiramente da **imprevisibilidade computacional** do gerador, isto é, de ser inviável distinguir o seu fluxo de saída de uma sequência genuinamente aleatória sem conhecer a chave.
 
@@ -32,7 +32,7 @@ O **RC4**, desenhado por Ron Rivest na RSA Security em 1987, foi mantido como se
 - **KSA** (*Key Scheduling Algorithm*): a partir da chave, constrói e permuta o *array* $S$ de 256 valores (inicialmente $S[i]=i$), misturando-o repetidamente com os bytes da chave.
 - **PRGA** (*Pseudo-Random Generation Algorithm*): a cada iteração, actualiza os dois ponteiros $i$ e $j$, troca $S[i]$ com $S[j]$, e produz um byte do fluxo de chave.
 
-![O mecanismo interno do RC4: a KSA permuta o array $S$ de 256 bytes a partir da chave; a PRGA, a cada iteração, actualiza os índices $i$ e $j$, troca $S[i]$ com $S[j]$, e extrai um byte do fluxo de chave, combinado por XOR com o texto claro.](../assets/images/fig-rc4-prga.png){#fig-04-rc4-prga width=95%}
+![O mecanismo interno do RC4: a KSA permuta o array $S$ de 256 bytes a partir da chave; a PRGA, a cada iteração, actualiza os índices $i$ e $j$, troca $S[i]$ com $S[j]$, e extrai um byte do fluxo de chave, combinado por XOR com o texto claro.](../assets/images/fig-04-rc4-prga.png){#fig-04-rc4-prga width=95%}
 
 Um detalhe do desenho do RC4 vale a pena assinalar: **não existe nenhum mecanismo de *nonce* incorporado no algoritmo** — "como não acontece numa cifra de fluxo decente", nas palavras do criptógrafo Jean-Philippe Aumasson [@Aumasson2017]. Qualquer *nonce* tem de ser adicionado externamente, por quem implementa o protocolo, e foi precisamente aqui que o WEP falhou: prefixava a chave com um *nonce* curto e previsível antes de cada KSA, tornando o sistema vulnerável ao **ataque de Fluhrer, Mantin e Shamir** (2001) [@FMS2001], que explora o facto de os primeiros bytes do fluxo de chave do RC4 não serem estatisticamente uniformes. O caso mais conhecido: o **segundo byte** do fluxo de chave vale zero com uma probabilidade de $1/128$, o dobro do que seria de esperar ($1/256$) num byte verdadeiramente aleatório [@Aumasson2017] — um desvio pequeno, mas suficiente para, com milhões de mensagens interceptadas, distinguir estatisticamente o RC4 de uma fonte aleatória e, em certas condições, recuperar bytes do texto claro sem nunca descobrir a chave. A mitigação proposta, descartar os primeiros 3072 bytes do fluxo antes de o usar (RC4-drop3072), reduz mas não elimina o problema. Um segundo ataque prático, contra o próprio TLS, foi publicado em 2013 [@AlFardan2013]. Confrontado com estas fragilidades acumuladas, o RC4 foi formalmente banido do TLS pela *Internet Engineering Task Force* em 2015 [@RFC7465], e não deve ser usado em nenhum sistema novo.
 
@@ -42,11 +42,11 @@ Antes de avançar para o Salsa20 e o ChaCha20, vale a pena situar o RC4 numa cla
 
 Uma **cifra de fluxo com estado** (*stateful*) inicializa um estado interno a partir da chave e do *nonce* (a fase `Init`), e depois vai **actualizando esse estado** a cada novo bloco do fluxo de chave (a fase `Update`, repetida), de forma sequencial: cada actualização depende da anterior. O RC4, já apresentado, é exactamente disto: a KSA inicializa o *array* $S$, e cada iteração da PRGA actualiza $S$ antes de produzir o byte seguinte do fluxo.
 
-![Uma cifra de fluxo com estado: a fase Init prepara um estado interno a partir da chave e do nonce; cada fase Update seguinte modifica esse estado e produz um novo troço do fluxo de chave, de forma sequencial.](../assets/images/fig-cifra-fluxo-stateful.png){#fig-04-fluxo-stateful width=90%}
+![Uma cifra de fluxo com estado: a fase Init prepara um estado interno a partir da chave e do nonce; cada fase Update seguinte modifica esse estado e produz um novo troço do fluxo de chave, de forma sequencial.](../assets/images/fig-04-cifra-fluxo-stateful.png){#fig-04-fluxo-stateful width=90%}
 
 Uma **cifra de fluxo por contador** (*counter-based*) segue uma lógica diferente: não mantém nenhum estado secreto entre blocos, para além do valor de um contador público. Cada bloco do fluxo de chave calcula-se de novo, directamente a partir da chave, do *nonce* e do valor do contador nesse bloco — sem depender do resultado do bloco anterior.
 
-![Uma cifra de fluxo por contador: cada bloco do fluxo de chave é calculado independentemente, a partir da chave, do nonce e do valor do contador nesse bloco.](../assets/images/fig-cifra-fluxo-contador.png){#fig-04-fluxo-contador width=90%}
+![Uma cifra de fluxo por contador: cada bloco do fluxo de chave é calculado independentemente, a partir da chave, do nonce e do valor do contador nesse bloco.](../assets/images/fig-04-cifra-fluxo-contador.png){#fig-04-fluxo-contador width=90%}
 
 Esta diferença arquitectural tem uma consequência prática directa, já referida a propósito do modo CTR no capítulo anterior: como cada bloco de uma cifra por contador é independente dos restantes, pode calcular-se **em paralelo**, ao contrário de uma cifra com estado, em que cada actualização tem de esperar pela anterior. O Salsa20 e o ChaCha20, apresentados de seguida, seguem exactamente esta segunda arquitectura.
 
@@ -56,7 +56,7 @@ Em resposta às fragilidades do RC4, Daniel J. Bernstein desenhou o **Salsa20** 
 
 Ao contrário do RC4, o Salsa20 não mantém um estado que evolui byte a byte, nem usa S-boxes ou tabelas de substituição. Baseia-se exclusivamente em três operações, **soma, rotação de bits e XOR** — por isso chamada uma construção **ARX** (*Add-Rotate-XOR*). O seu estado interno é uma matriz $4\times4$ de palavras de 32 bits (512 bits, 64 bytes no total), organizada em quatro grupos: quatro **constantes** fixas ($c_0$–$c_3$), a **chave** de 128 ou 256 bits, dividida em oito palavras ($k_0$–$k_7$), o ***nonce*** de 64 bits, em duas palavras ($v_0$, $v_1$), e um **contador** de 64 bits, também em duas palavras ($t_0$, $t_1$):
 
-![A matriz de estado do Salsa20: 16 palavras de 32 bits, dispostas em 4 grupos fixos de posições — 4 constantes, 8 palavras de chave, 2 de nonce e 2 de contador — nunca misturados entre si.](../assets/images/fig-salsa20-matriz-estado.png){#fig-04-salsa20-matriz width=55%}
+![A matriz de estado do Salsa20: 16 palavras de 32 bits, dispostas em 4 grupos fixos de posições — 4 constantes, 8 palavras de chave, 2 de nonce e 2 de contador — nunca misturados entre si.](../assets/images/fig-04-salsa20-matriz-estado.png){#fig-04-salsa20-matriz width=55%}
 
 As quatro constantes ($c_0,c_1,c_2,c_3$) não fazem parte da chave nem do *nonce*: são valores fixos, iguais para todas as execuções do algoritmo (a constante ASCII `expand 32-byte k`, repartida pelas quatro palavras), e a sua função é puramente estrutural, garantir que o estado inicial nunca é todo ele previsível a partir apenas de chave e *nonce*, mesmo antes de qualquer ronda ser aplicada. Para gerar cada bloco de 64 bytes de fluxo de chave, aplicam-se 20 rondas de uma **função de quarto de ronda**, $Q_R(a,b,c,d)$ (10 sobre as linhas e 10 sobre as colunas):
 
@@ -65,7 +65,7 @@ $$d \mathrel{\oplus}= (c+b) \lll 13 \qquad a \mathrel{\oplus}= (d+c) \lll 18$$
 
 e o resultado final soma-se (módulo $2^{32}$, palavra a palavra) ao estado inicial.
 
-![O esquema de cifragem do Salsa20 para um bloco de texto claro: o núcleo Salsa20 transforma $K \Vert N \Vert \mathrm{Ctr}$, o resultado soma-se (módulo $2^{32}$, quadrado com "+") ao estado inicial para formar o bloco de fluxo de chave, que finalmente se combina por XOR (círculo com "+") com o texto claro.](../assets/images/fig-salsa20-esquema.png){#fig-04-salsa20-esquema width=45%}
+![O esquema de cifragem do Salsa20 para um bloco de texto claro: o núcleo Salsa20 transforma $K \Vert N \Vert \mathrm{Ctr}$, o resultado soma-se (módulo $2^{32}$, quadrado com "+") ao estado inicial para formar o bloco de fluxo de chave, que finalmente se combina por XOR (círculo com "+") com o texto claro.](../assets/images/fig-04-salsa20-esquema.png){#fig-04-salsa20-esquema width=45%}
 
 Repare-se na distinção entre as duas operações da figura: a soma final ao estado inicial (quadrado) é **adição modular**, não XOR, e é precisamente o que torna a transformação impossível de inverter sem conhecer a chave. Porquê, porque a soma binária modular não é uma operação linear.
  Ora, se o Salsa20 devolvesse directamente a permutação do núcleo, sem esta soma, seria trivialmente invertível. Só depois desta soma é que o resultado se combina por XOR (círculo) com o texto claro. 
@@ -91,7 +91,7 @@ A particularidade mais importante do Poly1305, mesmo sem entrar em detalhe sobre
 
 Por ser apenas multiplicação e redução modular, sem S-boxes nem rondas de cifra, o Poly1305 é extremamente rápido mesmo em software puro, sem hardware dedicado — ao contrário do AES-GCM, que tipicamente depende de instruções como o AES-NI para atingir bom desempenho. Foi esta vantagem que levou a Google a promover o ChaCha20-Poly1305 no TLS antes de o AES-NI se ter tornado universal em dispositivos móveis.
 
-![A construção ChaCha20-Poly1305 (RFC 8439): a partir da chave (256 bits) e do nonce (96 bits), o bloco 0 do ChaCha20 deriva a chave do Poly1305, enquanto os blocos 1 a $N$ fornecem o fluxo de chave que cifra a mensagem por XOR; o Poly1305 autentica os dados associados (AAD) em conjunto com o texto cifrado, produzindo uma marca de 128 bits que acompanha a saída final.](../assets/images/fig-chacha20-poly1305.png){#fig-04-chacha20-poly1305 width=90%}
+![A construção ChaCha20-Poly1305 (RFC 8439): a partir da chave (256 bits) e do nonce (96 bits), o bloco 0 do ChaCha20 deriva a chave do Poly1305, enquanto os blocos 1 a $N$ fornecem o fluxo de chave que cifra a mensagem por XOR; o Poly1305 autentica os dados associados (AAD) em conjunto com o texto cifrado, produzindo uma marca de 128 bits que acompanha a saída final.](../assets/images/fig-04-chacha20-poly1305.png){#fig-04-chacha20-poly1305 width=90%}
 
 Esta é uma **cifra autenticada** (*AEAD*, *Authenticated Encryption with Associated Data*), o mesmo conceito já introduzido a propósito do modo GCM no capítulo anterior: garante simultaneamente confidencialidade e integridade, numa única construção. O ChaCha20, tal como o Salsa20, não tem, até hoje, nenhuma fragilidade estatística conhecida que o torne distinguível de uma fonte aleatória.
 

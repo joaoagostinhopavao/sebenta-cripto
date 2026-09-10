@@ -414,7 +414,7 @@ Permutação C (pares):  0 1 3 2 5 4 7 6 9 8 B A D C F E</code></pre>
 <div id="fig-02-feistel-ronda" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-02-feistel-ronda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-feistel-ronda.png" class="img-fluid figure-img" style="width:45.0%">
+<img src="../assets/images/fig-02-feistel-ronda.png" class="img-fluid figure-img" style="width:45.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-02-feistel-ronda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;2.1: Uma ronda de uma rede de Feistel, exemplificada para um bloco de <span class="math inline">\(W=64\)</span> bits (a notação <span class="math inline">\(LE_i\)</span>/<span class="math inline">\(RE_i\)</span> usada na figura é equivalente a <span class="math inline">\(L_i\)</span>/<span class="math inline">\(R_i\)</span>). A metade direita <span class="math inline">\(RE_0\)</span> atravessa uma função <span class="math inline">\(F\)</span> parametrizada pela subchave da ronda <span class="math inline">\(K_1\)</span>, o resultado combina-se por XOR com a metade esquerda <span class="math inline">\(LE_0\)</span>, e as duas metades trocam de posição para a ronda seguinte (<span class="math inline">\(LE_1\)</span>/<span class="math inline">\(RE_1\)</span>).
@@ -427,7 +427,7 @@ Figura&nbsp;2.1: Uma ronda de uma rede de Feistel, exemplificada para um bloco d
 <div id="fig-02-feistel-enc-dec" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-02-feistel-enc-dec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-feistel-enc-dec.png" class="img-fluid figure-img" style="width:70.0%">
+<img src="../assets/images/fig-02-feistel-enc-dec.png" class="img-fluid figure-img" style="width:70.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-02-feistel-enc-dec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;2.2: Cifragem e decifragem numa rede de Feistel de 16 rondas (o número de rondas do DES, apresentado na secção seguinte). À esquerda, a cifragem: o texto claro entra como <span class="math inline">\(LE_0\)</span>/<span class="math inline">\(RE_0\)</span> e, ronda a ronda, as subchaves <span class="math inline">\(K_1, K_2, \dots, K_{16}\)</span> são aplicadas por ordem, produzindo o texto cifrado. À direita, a decifragem parte desse mesmo texto cifrado e aplica exactamente a mesma estrutura de rondas, com a mesma função <span class="math inline">\(F\)</span>, mas com as subchaves por ordem inversa (<span class="math inline">\(K_{16}\)</span> na primeira ronda da decifragem, <span class="math inline">\(K_1\)</span> na última), recuperando ao fim das 16 rondas o texto claro original.
@@ -458,7 +458,7 @@ Figura&nbsp;2.2: Cifragem e decifragem numa rede de Feistel de 16 rondas (o núm
 <div id="fig-02-des-funcao-f" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-02-des-funcao-f-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-des-funcao-f.png" class="img-fluid figure-img" style="width:75.0%">
+<img src="../assets/images/fig-02-des-funcao-f.png" class="img-fluid figure-img" style="width:75.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-02-des-funcao-f-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;2.3: A função <span class="math inline">\(F\)</span> do DES: a metade de 32 bits é expandida (E) para 48 bits, combinada por XOR com a subchave da ronda, dividida em oito grupos de 6 bits que atravessam as respectivas S-boxes (S1–S8, cada uma devolvendo 4 bits de saída não linear), e finalmente reorganizada por uma permutação (P).
@@ -1251,7 +1251,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>A generalidade das cifras de bloco clássicas, incluindo o DES, organiza estas rondas segundo uma estrutura proposta por Horst Feistel, nos anos 1970, enquanto trabalhava na IBM. Numa **rede de Feistel**, o bloco divide-se em duas metades iguais, $L_i$ (esquerda) e $R_i$ (direita), e cada ronda $i$ aplica-se assim:</span>
 <span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a><span class="al">![Uma ronda de uma rede de Feistel, exemplificada para um bloco de $W=64$ bits (a notação $LE_i$/$RE_i$ usada na figura é equivalente a $L_i$/$R_i$). A metade direita $RE_0$ atravessa uma função $F$ parametrizada pela subchave da ronda $K_1$, o resultado combina-se por XOR com a metade esquerda $LE_0$, e as duas metades trocam de posição para a ronda seguinte ($LE_1$/$RE_1$).](../assets/images/fig-feistel-ronda.png)</span>{#fig-02-feistel-ronda width=45%}</span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a><span class="al">![Uma ronda de uma rede de Feistel, exemplificada para um bloco de $W=64$ bits (a notação $LE_i$/$RE_i$ usada na figura é equivalente a $L_i$/$R_i$). A metade direita $RE_0$ atravessa uma função $F$ parametrizada pela subchave da ronda $K_1$, o resultado combina-se por XOR com a metade esquerda $LE_0$, e as duas metades trocam de posição para a ronda seguinte ($LE_1$/$RE_1$).](../assets/images/fig-02-feistel-ronda.png)</span>{#fig-02-feistel-ronda width=45%}</span>
 <span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>$$L_{i+1} = R_i$$</span>
 <span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>$$R_{i+1} = L_i \oplus F(R_i, K_i)$$</span>
@@ -1260,7 +1260,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>**A propriedade fundamental de uma rede de Feistel** é que a decifragem usa exactamente a mesma estrutura da cifragem, apenas com as subchaves aplicadas em ordem inversa, e isto é verdade **independentemente da função $F$ escolhida**, mesmo que $F$ não seja, em si, invertível. Isto simplifica consideravelmente a implementação: o mesmo circuito ou código serve para cifrar e para decifrar, o que não seria necessariamente possível caso $F$ tivesse de ser tanto aplicada como invertida.</span>
 <span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="al">![Cifragem e decifragem numa rede de Feistel de 16 rondas (o número de rondas do DES, apresentado na secção seguinte). À esquerda, a cifragem: o texto claro entra como $LE_0$/$RE_0$ e, ronda a ronda, as subchaves $K_1, K_2, \dots, K_{16}$ são aplicadas por ordem, produzindo o texto cifrado. À direita, a decifragem parte desse mesmo texto cifrado e aplica exactamente a mesma estrutura de rondas, com a mesma função $F$, mas com as subchaves por ordem inversa ($K_{16}$ na primeira ronda da decifragem, $K_1$ na última), recuperando ao fim das 16 rondas o texto claro original.](../assets/images/fig-feistel-enc-dec.png)</span>{#fig-02-feistel-enc-dec width=70%}</span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="al">![Cifragem e decifragem numa rede de Feistel de 16 rondas (o número de rondas do DES, apresentado na secção seguinte). À esquerda, a cifragem: o texto claro entra como $LE_0$/$RE_0$ e, ronda a ronda, as subchaves $K_1, K_2, \dots, K_{16}$ são aplicadas por ordem, produzindo o texto cifrado. À direita, a decifragem parte desse mesmo texto cifrado e aplica exactamente a mesma estrutura de rondas, com a mesma função $F$, mas com as subchaves por ordem inversa ($K_{16}$ na primeira ronda da decifragem, $K_1$ na última), recuperando ao fim das 16 rondas o texto claro original.](../assets/images/fig-02-feistel-enc-dec.png)</span>{#fig-02-feistel-enc-dec width=70%}</span>
 <span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exemplo com uma rede reduzida {#sec-02-feistel-exemplo}</span></span>
 <span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a></span>
@@ -1290,7 +1290,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a>A estrutura geral do DES é, portanto, exactamente a rede de Feistel já descrita na secção anterior, com $n=64$ e 16 rondas. O que é específico do DES, e não decorre da estrutura de Feistel em si, é a construção interna da função $F$:</span>
 <span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="al">![A função $F$ do DES: a metade de 32 bits é expandida (E) para 48 bits, combinada por XOR com a subchave da ronda, dividida em oito grupos de 6 bits que atravessam as respectivas S-boxes (S1–S8, cada uma devolvendo 4 bits de saída não linear), e finalmente reorganizada por uma permutação (P). ](../assets/images/fig-des-funcao-f.png)</span>{#fig-02-des-funcao-f width=75%}</span>
+<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="al">![A função $F$ do DES: a metade de 32 bits é expandida (E) para 48 bits, combinada por XOR com a subchave da ronda, dividida em oito grupos de 6 bits que atravessam as respectivas S-boxes (S1–S8, cada uma devolvendo 4 bits de saída não linear), e finalmente reorganizada por uma permutação (P). ](../assets/images/fig-02-des-funcao-f.png)</span>{#fig-02-des-funcao-f width=75%}</span>
 <span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a><span class="fu">### A força do DES {#sec-02-des-forca}</span></span>
 <span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a></span>

@@ -415,7 +415,7 @@ Permutação C (pares):  0 1 3 2 5 4 7 6 9 8 B A D C F E</code></pre>
 <div id="fig-02-feistel-ronda" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-02-feistel-ronda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-feistel-ronda.png" class="img-fluid figure-img" style="width:45.0%">
+<img src="../assets/images/fig-02-feistel-ronda.png" class="img-fluid figure-img" style="width:45.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-02-feistel-ronda-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.1: One round of a Feistel network, illustrated for a block of <span class="math inline">\(W=64\)</span> bits (the notation <span class="math inline">\(LE_i\)</span>/<span class="math inline">\(RE_i\)</span> used in the figure is equivalent to <span class="math inline">\(L_i\)</span>/<span class="math inline">\(R_i\)</span>). The right half <span class="math inline">\(RE_0\)</span> passes through a function <span class="math inline">\(F\)</span> parameterised by the round subkey <span class="math inline">\(K_1\)</span>, the result is combined by XOR with the left half <span class="math inline">\(LE_0\)</span>, and the two halves swap position for the next round (<span class="math inline">\(LE_1\)</span>/<span class="math inline">\(RE_1\)</span>).
@@ -428,7 +428,7 @@ Figure&nbsp;2.1: One round of a Feistel network, illustrated for a block of <spa
 <div id="fig-02-feistel-enc-dec" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-02-feistel-enc-dec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-feistel-enc-dec-en.png" class="img-fluid figure-img" style="width:70.0%">
+<img src="../assets/images/fig-02-feistel-enc-dec-en.png" class="img-fluid figure-img" style="width:70.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-02-feistel-enc-dec-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.2: Encryption and decryption in a 16-round Feistel network (the number of rounds used by DES, presented in the next section). On the left, encryption: the plaintext enters as <span class="math inline">\(LE_0\)</span>/<span class="math inline">\(RE_0\)</span> and, round by round, the subkeys <span class="math inline">\(K_1, K_2, \dots, K_{16}\)</span> are applied in order, producing the ciphertext. On the right, decryption starts from that same ciphertext and applies exactly the same round structure, with the same function <span class="math inline">\(F\)</span>, but with the subkeys in reverse order (<span class="math inline">\(K_{16}\)</span> in the first round of decryption, <span class="math inline">\(K_1\)</span> in the last), recovering the original plaintext after the 16 rounds.
@@ -459,7 +459,7 @@ Figure&nbsp;2.2: Encryption and decryption in a 16-round Feistel network (the nu
 <div id="fig-02-des-funcao-f" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-02-des-funcao-f-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-des-funcao-f-en.png" class="img-fluid figure-img" style="width:75.0%">
+<img src="../assets/images/fig-02-des-funcao-f-en.png" class="img-fluid figure-img" style="width:75.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-02-des-funcao-f-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2.3: The DES function <span class="math inline">\(F\)</span>: the 32-bit half is expanded (E) to 48 bits, combined by XOR with the round subkey, split into eight 6-bit groups that pass through the respective S-boxes (S1–S8, each returning 4 non-linear output bits), and finally rearranged by a permutation (P).
@@ -1252,7 +1252,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a>Most classical block ciphers, DES included, organise these rounds according to a structure proposed by Horst Feistel, in the 1970s, while working at IBM. In a **Feistel network**, the block is split into two equal halves, $L_i$ (left) and $R_i$ (right), and each round $i$ is applied as follows:</span>
 <span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a><span class="al">![One round of a Feistel network, illustrated for a block of $W=64$ bits (the notation $LE_i$/$RE_i$ used in the figure is equivalent to $L_i$/$R_i$). The right half $RE_0$ passes through a function $F$ parameterised by the round subkey $K_1$, the result is combined by XOR with the left half $LE_0$, and the two halves swap position for the next round ($LE_1$/$RE_1$).](../assets/images/fig-feistel-ronda.png)</span>{#fig-02-feistel-ronda width=45%}</span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a><span class="al">![One round of a Feistel network, illustrated for a block of $W=64$ bits (the notation $LE_i$/$RE_i$ used in the figure is equivalent to $L_i$/$R_i$). The right half $RE_0$ passes through a function $F$ parameterised by the round subkey $K_1$, the result is combined by XOR with the left half $LE_0$, and the two halves swap position for the next round ($LE_1$/$RE_1$).](../assets/images/fig-02-feistel-ronda.png)</span>{#fig-02-feistel-ronda width=45%}</span>
 <span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a>$$L_{i+1} = R_i$$</span>
 <span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a>$$R_{i+1} = L_i \oplus F(R_i, K_i)$$</span>
@@ -1261,7 +1261,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>**The fundamental property of a Feistel network** is that decryption uses exactly the same structure as encryption, only with the subkeys applied in reverse order, and this holds true **regardless of the function $F$ chosen**, even if $F$ is not itself invertible. This considerably simplifies implementation: the same circuit or code serves both to encrypt and to decrypt, which would not necessarily be possible if $F$ had to be both applied and inverted.</span>
 <span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="al">![Encryption and decryption in a 16-round Feistel network (the number of rounds used by DES, presented in the next section). On the left, encryption: the plaintext enters as $LE_0$/$RE_0$ and, round by round, the subkeys $K_1, K_2, \dots, K_{16}$ are applied in order, producing the ciphertext. On the right, decryption starts from that same ciphertext and applies exactly the same round structure, with the same function $F$, but with the subkeys in reverse order ($K_{16}$ in the first round of decryption, $K_1$ in the last), recovering the original plaintext after the 16 rounds.](../assets/images/fig-feistel-enc-dec-en.png)</span>{#fig-02-feistel-enc-dec width=70%}</span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="al">![Encryption and decryption in a 16-round Feistel network (the number of rounds used by DES, presented in the next section). On the left, encryption: the plaintext enters as $LE_0$/$RE_0$ and, round by round, the subkeys $K_1, K_2, \dots, K_{16}$ are applied in order, producing the ciphertext. On the right, decryption starts from that same ciphertext and applies exactly the same round structure, with the same function $F$, but with the subkeys in reverse order ($K_{16}$ in the first round of decryption, $K_1$ in the last), recovering the original plaintext after the 16 rounds.](../assets/images/fig-02-feistel-enc-dec-en.png)</span>{#fig-02-feistel-enc-dec width=70%}</span>
 <span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a><span class="fu">### Example with a reduced network {#sec-02-feistel-exemplo}</span></span>
 <span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a></span>
@@ -1291,7 +1291,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a>The overall structure of DES is, therefore, exactly the Feistel network already described in the previous section, with $n=64$ and 16 rounds. What is specific to DES, and does not follow from the Feistel structure itself, is the internal construction of the function $F$:</span>
 <span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="al">![The DES function $F$: the 32-bit half is expanded (E) to 48 bits, combined by XOR with the round subkey, split into eight 6-bit groups that pass through the respective S-boxes (S1–S8, each returning 4 non-linear output bits), and finally rearranged by a permutation (P). ](../assets/images/fig-des-funcao-f-en.png)</span>{#fig-02-des-funcao-f width=75%}</span>
+<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="al">![The DES function $F$: the 32-bit half is expanded (E) to 48 bits, combined by XOR with the round subkey, split into eight 6-bit groups that pass through the respective S-boxes (S1–S8, each returning 4 non-linear output bits), and finally rearranged by a permutation (P). ](../assets/images/fig-02-des-funcao-f-en.png)</span>{#fig-02-des-funcao-f width=75%}</span>
 <span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a><span class="fu">### The strength of DES {#sec-02-des-forca}</span></span>
 <span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a></span>

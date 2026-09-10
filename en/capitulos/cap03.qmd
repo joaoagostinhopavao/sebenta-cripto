@@ -27,7 +27,7 @@ Unlike DES, in which the block size (64 bits) and the key size (56 effective bit
 
 Internally, the 128-bit block is organised into a $4 \times 4$ matrix of bytes, called the **state**, filled column by column: the first 4 bytes of the block occupy the first column, the next 4 the second, and so on. All round transformations operate on this matrix.
 
-![The AES state: the 128-bit block (16 bytes) is organised into a $4\times4$ matrix, filled column by column (byte 0 to byte 3 in the first column, byte 4 to byte 7 in the second, and so on).](../assets/images/fig-aes-estado.png){#fig-03-aes-estado width=45%}
+![The AES state: the 128-bit block (16 bytes) is organised into a $4\times4$ matrix, filled column by column (byte 0 to byte 3 in the first column, byte 4 to byte 7 in the second, and so on).](../assets/images/fig-03-aes-estado.png){#fig-03-aes-estado width=45%}
 
 Pure AES is **deterministic**: the same plaintext block, with the same key, always produces the same ciphertext block. This predictability is unacceptable in practice — it is precisely the problem that, as will be seen later, requires resorting to a mode of operation, which introduces randomness through an initialization vector or *nonce*.
 
@@ -39,31 +39,31 @@ Each round of AES (except the last) applies, in this order, four transformations
 
 `SubBytes` is the only non-linear operation in AES, and it is the one that provides **confusion**: each byte of the state is replaced by the corresponding byte in a fixed substitution table, the **S-box**, constructed from the multiplicative inverse in the finite field $GF(2^8)$ followed by an affine transformation. Unlike DES, which uses eight different S-boxes (one per group of 6 bits), AES uses a **single S-box**, reapplied byte by byte across the entire state matrix.
 
-![In the SubBytes step, each byte of the state is replaced by the corresponding byte in a fixed S-box. Source: Wikimedia Commons, public domain.](../assets/images/fig-AES-SubBytes.png){#fig-03-subbytes width=60%}
+![In the SubBytes step, each byte of the state is replaced by the corresponding byte in a fixed S-box. Source: Wikimedia Commons, public domain.](../assets/images/fig-03-AES-SubBytes.png){#fig-03-subbytes width=60%}
 
 ### ShiftRows {#sec-03-shiftrows}
 
 `ShiftRows` cyclically shifts each row of the state matrix to the left: row 0 is unchanged, row 1 shifts by 1 position, row 2 by 2 positions, row 3 by 3 positions. This operation is simple, but essential: it ensures that the bytes of a column no longer all belong to the same column, spreading the influence of each byte across several columns in subsequent rounds.
 
-![In the ShiftRows step, each row of the state matrix is cyclically shifted to the left, by a different number of positions per row. Source: Wikimedia Commons, public domain.](../assets/images/fig-AES-ShiftRows.png){#fig-03-shiftrows width=75%}
+![In the ShiftRows step, each row of the state matrix is cyclically shifted to the left, by a different number of positions per row. Source: Wikimedia Commons, public domain.](../assets/images/fig-03-AES-ShiftRows.png){#fig-03-shiftrows width=75%}
 
 ### MixColumns {#sec-03-mixcolumns}
 
 `MixColumns` operates on each column of the state matrix independently, treating it as a degree-3 polynomial over $GF(2^8)$ and multiplying it by a fixed polynomial $c(x)$, modulo $x^4+1$. The practical effect is that each output byte of a column comes to depend on all four input bytes of that same column. Combined with the preceding `ShiftRows`, this ensures that, after just a few rounds, each output byte depends on every input byte of the block: this is the **diffusion** of AES. This transformation is omitted in the last round.
 
-![In the MixColumns step, each column of the state matrix is multiplied by a fixed polynomial $c(x)$, mixing its four bytes. Source: Wikimedia Commons, public domain.](../assets/images/fig-AES-MixColumns.png){#fig-03-mixcolumns width=75%}
+![In the MixColumns step, each column of the state matrix is multiplied by a fixed polynomial $c(x)$, mixing its four bytes. Source: Wikimedia Commons, public domain.](../assets/images/fig-03-AES-MixColumns.png){#fig-03-mixcolumns width=75%}
 
 ### AddRoundKey {#sec-03-addroundkey}
 
 `AddRoundKey` is the only transformation that involves the key: each byte of the state is combined by XOR with the corresponding byte of that round's subkey, derived from the main key by the **key expansion schedule** (*key schedule*). It is also the only transformation that, in isolation, would be trivial to invert without knowing the key, which confirms that the security of AES depends on the combination of all four transformations, not on any single one in isolation.
 
-![In the AddRoundKey step, each byte of the state is combined by XOR with the corresponding byte of the round's subkey. Source: Wikimedia Commons, public domain.](../assets/images/fig-AES-AddRoundKey.png){#fig-03-addroundkey width=60%}
+![In the AddRoundKey step, each byte of the state is combined by XOR with the corresponding byte of the round's subkey. Source: Wikimedia Commons, public domain.](../assets/images/fig-03-AES-AddRoundKey.png){#fig-03-addroundkey width=60%}
 
 ## The Complete Round and Key Expansion {#sec-03-ronda-expansao}
 
 An intermediate AES round applies, in this order, `SubBytes`, `ShiftRows`, `MixColumns` and `AddRoundKey`. The last round omits `MixColumns`, and there is also an initial `AddRoundKey`, before any round, using the original key itself, unexpanded.
 
-![The complete structure of AES: an initial `AddRoundKey`, followed by $N_r-1$ intermediate rounds (`SubBytes`, `ShiftRows`, `MixColumns`, `AddRoundKey`), and a final round that omits `MixColumns`.](../assets/images/fig-aes-rondas-estrutura.png){#fig-03-rondas-estrutura width=75%}
+![The complete structure of AES: an initial `AddRoundKey`, followed by $N_r-1$ intermediate rounds (`SubBytes`, `ShiftRows`, `MixColumns`, `AddRoundKey`), and a final round that omits `MixColumns`.](../assets/images/fig-03-aes-rondas-estrutura.png){#fig-03-rondas-estrutura width=75%}
 
 This means that an AES with $N_r$ rounds needs $N_r+1$ 128-bit subkeys: one for the initial `AddRoundKey`, plus one per round. These subkeys are not independent fragments of the original key, but are generated by a **key expansion schedule**: the original key is processed word by word (groups of 4 bytes), involving rotations, substitutions through the same S-box used in `SubBytes`, and combination with fixed round constants, producing the complete sequence of subkeys required. The exact detail of this schedule falls outside the scope of this chapter; what matters is to retain that all subkeys derive from a single secret key, and that their generation is deterministic and public, just like the rest of the algorithm's structure — the security of AES resides entirely in the key, never in the secrecy of the design, exactly as Kerckhoffs's principle demands.
 
@@ -83,9 +83,9 @@ A block cipher, whether AES or DES, encrypts exactly one block at a time. A real
 
 The simplest mode splits the message into blocks and encrypts each one independently, with the same key: $C_i = E_K(P_i)$. It is simple and parallelisable, but has a serious flaw: **identical plaintext blocks always produce identical ciphertext blocks**. This is exactly the same underlying problem already seen in the monoalphabetic cipher, only at the level of 128-bit blocks instead of individual letters: any pattern or structural repetition in the original message remains visible in the ciphertext, even without decrypting anything.
 
-![The ECB mode: each plaintext block is encrypted (or decrypted) completely independently of the others, always with the same key $K$ — hence the absence of any link between consecutive blocks.](../assets/images/fig-modo-ecb.png){#fig-03-modo-ecb width=90%}
+![The ECB mode: each plaintext block is encrypted (or decrypted) completely independently of the others, always with the same key $K$ — hence the absence of any link between consecutive blocks.](../assets/images/fig-03-modo-ecb.png){#fig-03-modo-ecb width=90%}
 
-![A plaintext organised into blocks, with an obvious structural pattern (frame, cross), encrypted in ECB mode and in CBC mode. Under ECB, identical plaintext blocks generate identical ciphertext blocks: the original pattern remains perfectly visible, only with different colours (values). Under CBC, the same pattern disappears completely.](../assets/images/fig-ecb-vs-cbc-en.png){#fig-03-ecb-cbc width=95%}
+![A plaintext organised into blocks, with an obvious structural pattern (frame, cross), encrypted in ECB mode and in CBC mode. Under ECB, identical plaintext blocks generate identical ciphertext blocks: the original pattern remains perfectly visible, only with different colours (values). Under CBC, the same pattern disappears completely.](../assets/images/fig-03-ecb-vs-cbc-en.png){#fig-03-ecb-cbc width=95%}
 
 ### CBC — Cipher Block Chaining {#sec-03-cbc}
 
@@ -95,7 +95,7 @@ $$C_i = E_K(P_i \oplus C_{i-1})$$
 
 Since there is no "previous block" for the first block of the message, an **initialization vector** (IV) is used: a random block, generated afresh for each message, which stands in for $C_0$. The IV need not be secret, only unique and unpredictable, and is normally transmitted in the clear alongside the ciphertext.
 
-![The CBC mode: during encryption (top), each plaintext block is combined by XOR with the previous ciphertext block before entering the block cipher, with the IV standing in for that previous block for the first block of the message. During decryption (bottom), the process is reversed: each ciphertext block is decrypted and the result is combined by XOR with the previous ciphertext block (or the IV) to recover the plaintext.](../assets/images/fig-modo-cbc.png){#fig-03-modo-cbc width=95%}
+![The CBC mode: during encryption (top), each plaintext block is combined by XOR with the previous ciphertext block before entering the block cipher, with the IV standing in for that previous block for the first block of the message. During decryption (bottom), the process is reversed: each ciphertext block is decrypted and the result is combined by XOR with the previous ciphertext block (or the IV) to recover the plaintext.](../assets/images/fig-03-modo-cbc.png){#fig-03-modo-cbc width=95%}
 
 Since each encrypted block depends on all the preceding plaintext blocks (through the chain of XORs), identical plaintext blocks no longer produce identical ciphertext blocks, as seen in Figure [-@fig-03-ecb-cbc]: the original pattern disappears completely. Decryption reverses exactly this process:
 
@@ -111,7 +111,7 @@ $$C_i = P_i \oplus E_K(C_{i-1})$$
 
 with $C_0 = \text{IV}$. As in CBC, the IV cannot be reused, but it may be public.
 
-![The CFB mode: at each step, the previous ciphertext block (or the IV, at the first step) is encrypted — never the plaintext directly — and the result is combined by XOR with the plaintext (top) or the ciphertext (bottom, during decryption) to produce the next block.](../assets/images/fig-modo-cfb.png){#fig-03-modo-cfb width=95%}
+![The CFB mode: at each step, the previous ciphertext block (or the IV, at the first step) is encrypted — never the plaintext directly — and the result is combined by XOR with the plaintext (top) or the ciphertext (bottom, during decryption) to produce the next block.](../assets/images/fig-03-modo-cfb.png){#fig-03-modo-cfb width=95%}
  In practice, CFB behaves like a **pseudo-stream cipher**: instead of encrypting complete blocks, it can operate on smaller segments (for example, byte by byte), which makes it useful for data streams of variable length. As in CBC, encryption is not parallelisable, but decryption is.
 
 ### CTR — Counter Mode {#sec-03-ctr}
@@ -120,7 +120,7 @@ with $C_0 = \text{IV}$. As in CBC, the IV cannot be reused, but it may be public
 
 $$C_i = P_i \oplus E_K(\text{nonce} \mathbin\Vert i)$$
 
-![The CTR mode: each counter $T_i = \text{nonce} \Vert i$ is encrypted independently of the others, and the result is combined by XOR with the corresponding plaintext block (top) or ciphertext block (bottom) — encryption and decryption use exactly the same operation, `Block Cipher Encryption`.](../assets/images/fig-modo-ctr.png){#fig-03-modo-ctr width=95%}
+![The CTR mode: each counter $T_i = \text{nonce} \Vert i$ is encrypted independently of the others, and the result is combined by XOR with the corresponding plaintext block (top) or ciphertext block (bottom) — encryption and decryption use exactly the same operation, `Block Cipher Encryption`.](../assets/images/fig-03-modo-ctr.png){#fig-03-modo-ctr width=95%}
 
 This effectively turns a block cipher into a stream cipher, the subject of the next chapter: each output block of $E_K$ acts as a pseudo-random bit sequence, generated independently of the plaintext. The most relevant practical advantage is that, unlike CBC and CFB, both encryption and decryption in CTR are entirely **parallelisable**: block $i$ does not depend on block $i-1$, only on the counter itself, which translates into significantly higher performance on modern, multi-core hardware.
 

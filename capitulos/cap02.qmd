@@ -109,7 +109,7 @@ Nenhuma das duas propriedades, isoladamente, é suficiente: a substituição soz
 
 A generalidade das cifras de bloco clássicas, incluindo o DES, organiza estas rondas segundo uma estrutura proposta por Horst Feistel, nos anos 1970, enquanto trabalhava na IBM. Numa **rede de Feistel**, o bloco divide-se em duas metades iguais, $L_i$ (esquerda) e $R_i$ (direita), e cada ronda $i$ aplica-se assim:
 
-![Uma ronda de uma rede de Feistel, exemplificada para um bloco de $W=64$ bits (a notação $LE_i$/$RE_i$ usada na figura é equivalente a $L_i$/$R_i$). A metade direita $RE_0$ atravessa uma função $F$ parametrizada pela subchave da ronda $K_1$, o resultado combina-se por XOR com a metade esquerda $LE_0$, e as duas metades trocam de posição para a ronda seguinte ($LE_1$/$RE_1$).](../assets/images/fig-feistel-ronda.png){#fig-02-feistel-ronda width=45%}
+![Uma ronda de uma rede de Feistel, exemplificada para um bloco de $W=64$ bits (a notação $LE_i$/$RE_i$ usada na figura é equivalente a $L_i$/$R_i$). A metade direita $RE_0$ atravessa uma função $F$ parametrizada pela subchave da ronda $K_1$, o resultado combina-se por XOR com a metade esquerda $LE_0$, e as duas metades trocam de posição para a ronda seguinte ($LE_1$/$RE_1$).](../assets/images/fig-02-feistel-ronda.png){#fig-02-feistel-ronda width=45%}
 
 $$L_{i+1} = R_i$$
 $$R_{i+1} = L_i \oplus F(R_i, K_i)$$
@@ -118,7 +118,7 @@ onde $F$ é uma função de ronda, tipicamente não linear, parametrizada por um
 
 **A propriedade fundamental de uma rede de Feistel** é que a decifragem usa exactamente a mesma estrutura da cifragem, apenas com as subchaves aplicadas em ordem inversa, e isto é verdade **independentemente da função $F$ escolhida**, mesmo que $F$ não seja, em si, invertível. Isto simplifica consideravelmente a implementação: o mesmo circuito ou código serve para cifrar e para decifrar, o que não seria necessariamente possível caso $F$ tivesse de ser tanto aplicada como invertida.
 
-![Cifragem e decifragem numa rede de Feistel de 16 rondas (o número de rondas do DES, apresentado na secção seguinte). À esquerda, a cifragem: o texto claro entra como $LE_0$/$RE_0$ e, ronda a ronda, as subchaves $K_1, K_2, \dots, K_{16}$ são aplicadas por ordem, produzindo o texto cifrado. À direita, a decifragem parte desse mesmo texto cifrado e aplica exactamente a mesma estrutura de rondas, com a mesma função $F$, mas com as subchaves por ordem inversa ($K_{16}$ na primeira ronda da decifragem, $K_1$ na última), recuperando ao fim das 16 rondas o texto claro original.](../assets/images/fig-feistel-enc-dec.png){#fig-02-feistel-enc-dec width=70%}
+![Cifragem e decifragem numa rede de Feistel de 16 rondas (o número de rondas do DES, apresentado na secção seguinte). À esquerda, a cifragem: o texto claro entra como $LE_0$/$RE_0$ e, ronda a ronda, as subchaves $K_1, K_2, \dots, K_{16}$ são aplicadas por ordem, produzindo o texto cifrado. À direita, a decifragem parte desse mesmo texto cifrado e aplica exactamente a mesma estrutura de rondas, com a mesma função $F$, mas com as subchaves por ordem inversa ($K_{16}$ na primeira ronda da decifragem, $K_1$ na última), recuperando ao fim das 16 rondas o texto claro original.](../assets/images/fig-02-feistel-enc-dec.png){#fig-02-feistel-enc-dec width=70%}
 
 ### Exemplo com uma rede reduzida {#sec-02-feistel-exemplo}
 
@@ -148,7 +148,7 @@ O DES é uma rede de Feistel com as seguintes características:
 
 A estrutura geral do DES é, portanto, exactamente a rede de Feistel já descrita na secção anterior, com $n=64$ e 16 rondas. O que é específico do DES, e não decorre da estrutura de Feistel em si, é a construção interna da função $F$:
 
-![A função $F$ do DES: a metade de 32 bits é expandida (E) para 48 bits, combinada por XOR com a subchave da ronda, dividida em oito grupos de 6 bits que atravessam as respectivas S-boxes (S1–S8, cada uma devolvendo 4 bits de saída não linear), e finalmente reorganizada por uma permutação (P). ](../assets/images/fig-des-funcao-f.png){#fig-02-des-funcao-f width=75%}
+![A função $F$ do DES: a metade de 32 bits é expandida (E) para 48 bits, combinada por XOR com a subchave da ronda, dividida em oito grupos de 6 bits que atravessam as respectivas S-boxes (S1–S8, cada uma devolvendo 4 bits de saída não linear), e finalmente reorganizada por uma permutação (P). ](../assets/images/fig-02-des-funcao-f.png){#fig-02-des-funcao-f width=75%}
 
 ### A força do DES {#sec-02-des-forca}
 
