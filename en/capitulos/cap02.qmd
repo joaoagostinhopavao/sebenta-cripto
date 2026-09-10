@@ -148,7 +148,7 @@ DES is a Feistel network with the following characteristics:
 
 The overall structure of DES is, therefore, exactly the Feistel network already described in the previous section, with $n=64$ and 16 rounds. What is specific to DES, and does not follow from the Feistel structure itself, is the internal construction of the function $F$:
 
-![The DES function $F$: the 32-bit half is expanded (E) to 48 bits, combined by XOR with the round subkey, split into eight 6-bit groups that pass through the respective S-boxes (S1–S8, each returning 4 non-linear output bits), and finally rearranged by a permutation (P). Source: Wikimedia Commons, public domain.](../assets/images/fig-des-funcao-f.png){#fig-02-des-funcao-f width=75%}
+![The DES function $F$: the 32-bit half is expanded (E) to 48 bits, combined by XOR with the round subkey, split into eight 6-bit groups that pass through the respective S-boxes (S1–S8, each returning 4 non-linear output bits), and finally rearranged by a permutation (P). ](../assets/images/fig-des-funcao-f-en.png){#fig-02-des-funcao-f width=75%}
 
 ### The strength of DES {#sec-02-des-forca}
 
