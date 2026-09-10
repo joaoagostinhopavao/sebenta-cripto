@@ -33,20 +33,11 @@ $$E_K : \{0,1\}^n \rightarrow \{0,1\}^n$$
 
 que mapeia cada um dos $2^n$ blocos de entrada possíveis a um bloco de saída, também de $n$ bits. Considere-se o caso $n=4$: cada bloco de entrada é um valor entre `0000` e `1111`, mais convenientemente escrito em **hexadecimal**, já que um único algarismo hexadecimal representa exactamente 4 bits. Os 16 blocos possíveis correspondem, um a um, aos algarismos `0` a `F`.
 
-Uma **permutação arbitrária** destes 16 valores é qualquer reatribuição bijectiva de cada entrada a uma saída distinta, sem repetições. Por exemplo, estas três permutações são todas válidas, e completamente diferentes entre si:
-
-::: {.httpmsg}
-```
-Entrada:               0 1 2 3 4 5 6 7 8 9 A B C D E F
-Permutação A (+5):     5 6 7 8 9 A B C D E F 0 1 2 3 4
-Permutação B (livre):  5 D 2 9 0 B 7 E 3 F 1 8 6 4 A C
-Permutação C (pares):  0 1 3 2 5 4 7 6 9 8 B A D C F E
-```
-:::
-
-A Permutação A é apenas um deslocamento — a mesma lógica da cifra de César, agora sobre hexadecimais em vez de letras. As permutações B e C não seguem nenhuma fórmula simples: foram escolhidas valor a valor, sem qualquer padrão, apenas garantindo que cada entrada tem uma saída diferente e que nenhuma saída se repete.
+Uma **permutação arbitrária** destes 16 valores é qualquer reatribuição bijectiva de cada entrada a uma saída distinta, sem repetições. A @fig-02-permutacoes-16 mostra duas permutações válidas, completamente diferentes entre si, ligando cada valor de entrada à sua saída.
 
 ![Duas das $16!$ permutações possíveis do conjunto de 16 valores. As ligações da Permutação A, um simples deslocamento, seguem um padrão regular; as da Permutação B, escolhida livremente, cruzam-se sem qualquer estrutura. As duas mostradas aqui são uma fracção insignificante do total.](../assets/images/fig-02-permutacoes-16.png){#fig-02-permutacoes-16 width=90%}
+
+Na Permutação A, as ligações formam esse padrão regular porque é apenas um deslocamento — a mesma lógica da cifra de César, agora sobre hexadecimais em vez de letras. Na Permutação B, as ligações cruzam-se sem qualquer estrutura porque foi escolhida livremente, valor a valor, sem seguir fórmula nenhuma, apenas garantindo que cada entrada tem uma saída diferente e que nenhuma saída se repete.
 
 **Quantas permutações destas existem, ao todo?** Para a primeira entrada (`0`), há 16 saídas possíveis; escolhida essa, sobram 15 opções para a entrada seguinte (`1`), já que a saída escolhida para `0` não pode repetir-se; depois 14 para a entrada `2`; e assim sucessivamente, até restar apenas 1 opção para a última entrada (`F`). O total é:
 
@@ -54,13 +45,13 @@ $$16 \times 15 \times 14 \times \cdots \times 1 = 16! \approx 2{,}09 \times 10^{
 
 Este número não depende em nada do tamanho da chave: é apenas a contagem de todas as formas de baralhar 16 valores, quer esses valores sejam algarismos hexadecimais, cartas de um baralho, ou letras de um alfabeto.
 
-**É aqui que entra o problema da chave.** Se a chave $K$ tivesse também 4 bits, existiriam apenas 16 valores de chave possíveis — e cada chave, através do algoritmo, só consegue determinar *uma* permutação. Por muito engenhoso que seja o algoritmo, 16 chaves nunca conseguem seleccionar mais do que 16 permutações diferentes, de um total de $16! \approx 2{,}09\times10^{13}$: por exemplo, a chave `5` podia seleccionar a Permutação A, a chave `3` a B, e assim por diante, mas ficam sempre só 16 possibilidades cobertas. A cifra de César é exactamente este caso: as suas 16 chaves seleccionam sempre 16 deslocamentos (como a Permutação A), nunca uma permutação livre como a B ou a C. Para a chave conseguir alcançar **qualquer uma** das $16!$ permutações, e não apenas um pequeno subconjunto escolhido à partida, precisa de ter, ela própria, muitos mais de 4 bits.
+**É aqui que entra o problema da chave.** Se a chave $K$ tivesse também 4 bits, existiriam apenas 16 valores de chave possíveis — e cada chave, através do algoritmo, só consegue determinar *uma* permutação. Por muito engenhoso que seja o algoritmo, 16 chaves nunca conseguem seleccionar mais do que 16 permutações diferentes, de um total de $16! \approx 2{,}09\times10^{13}$: por exemplo, a chave `5` podia seleccionar a Permutação A, a chave `3` a B, e assim por diante, mas ficam sempre só 16 possibilidades cobertas. A cifra de César é exactamente este caso: as suas 16 chaves seleccionam sempre 16 deslocamentos (como a Permutação A), nunca uma permutação livre como a B. Para a chave conseguir alcançar **qualquer uma** das $16!$ permutações, e não apenas um pequeno subconjunto escolhido à partida, precisa de ter, ela própria, muitos mais de 4 bits.
 
 **Quão maior, exactamente?** Há duas respostas para esta pergunta: a primeira dá o tamanho REAL da chave para endereçar todas as permutações possíveis de blocos de 4 bits para blocos de 4 bits; a segunda é uma estimativa que maximiza esse valor.
 
 Sabendo que há $16!$ permutações válidas o número de bits, $x$ necessário para mapear esse número é o tamanho da chave. Então $2^x = (16!)$ o que nos dá $x = \log_2(16!) \approx 45$ bits.
 
-A segunda maneira dá uma forma mais directa de responder ao tamanho da chave, que é imaginar que esta *é*, literalmente, a tabela de substituição completa. Por exemplo, para a Permutação A (a de "+5") têm-se a seguinte tabela:
+A segunda maneira dá uma forma mais directa de responder ao tamanho da chave, que é imaginar que esta *é*, literalmente, a tabela de substituição completa. Por exemplo, para a Permutação A têm-se a seguinte tabela:
 
 ::: {.httpmsg}
 ```

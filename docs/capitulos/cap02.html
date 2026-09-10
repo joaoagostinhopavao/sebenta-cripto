@@ -356,14 +356,7 @@ window.Quarto = {
 <p>Formalmente, o algoritmo de cifragem <span class="math inline">\(E_K\)</span> de uma cifra de bloco de <span class="math inline">\(n\)</span> bits é uma função</p>
 <p><span class="math display">\[E_K : \{0,1\}^n \rightarrow \{0,1\}^n\]</span></p>
 <p>que mapeia cada um dos <span class="math inline">\(2^n\)</span> blocos de entrada possíveis a um bloco de saída, também de <span class="math inline">\(n\)</span> bits. Considere-se o caso <span class="math inline">\(n=4\)</span>: cada bloco de entrada é um valor entre <code>0000</code> e <code>1111</code>, mais convenientemente escrito em <strong>hexadecimal</strong>, já que um único algarismo hexadecimal representa exactamente 4 bits. Os 16 blocos possíveis correspondem, um a um, aos algarismos <code>0</code> a <code>F</code>.</p>
-<p>Uma <strong>permutação arbitrária</strong> destes 16 valores é qualquer reatribuição bijectiva de cada entrada a uma saída distinta, sem repetições. Por exemplo, estas três permutações são todas válidas, e completamente diferentes entre si:</p>
-<div class="httpmsg">
-<pre><code>Entrada:               0 1 2 3 4 5 6 7 8 9 A B C D E F
-Permutação A (+5):     5 6 7 8 9 A B C D E F 0 1 2 3 4
-Permutação B (livre):  5 D 2 9 0 B 7 E 3 F 1 8 6 4 A C
-Permutação C (pares):  0 1 3 2 5 4 7 6 9 8 B A D C F E</code></pre>
-</div>
-<p>A Permutação A é apenas um deslocamento — a mesma lógica da cifra de César, agora sobre hexadecimais em vez de letras. As permutações B e C não seguem nenhuma fórmula simples: foram escolhidas valor a valor, sem qualquer padrão, apenas garantindo que cada entrada tem uma saída diferente e que nenhuma saída se repete.</p>
+<p>Uma <strong>permutação arbitrária</strong> destes 16 valores é qualquer reatribuição bijectiva de cada entrada a uma saída distinta, sem repetições. A <a href="#fig-02-permutacoes-16" class="quarto-xref">Figura&nbsp;<span>2.1</span></a> mostra duas permutações válidas, completamente diferentes entre si, ligando cada valor de entrada à sua saída.</p>
 <div id="fig-02-permutacoes-16" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-02-permutacoes-16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -374,13 +367,14 @@ Figura&nbsp;2.1: Duas das <span class="math inline">\(16!\)</span> permutações
 </figcaption>
 </figure>
 </div>
+<p>Na Permutação A, as ligações formam esse padrão regular porque é apenas um deslocamento — a mesma lógica da cifra de César, agora sobre hexadecimais em vez de letras. Na Permutação B, as ligações cruzam-se sem qualquer estrutura porque foi escolhida livremente, valor a valor, sem seguir fórmula nenhuma, apenas garantindo que cada entrada tem uma saída diferente e que nenhuma saída se repete.</p>
 <p><strong>Quantas permutações destas existem, ao todo?</strong> Para a primeira entrada (<code>0</code>), há 16 saídas possíveis; escolhida essa, sobram 15 opções para a entrada seguinte (<code>1</code>), já que a saída escolhida para <code>0</code> não pode repetir-se; depois 14 para a entrada <code>2</code>; e assim sucessivamente, até restar apenas 1 opção para a última entrada (<code>F</code>). O total é:</p>
 <p><span class="math display">\[16 \times 15 \times 14 \times \cdots \times 1 = 16! \approx 2{,}09 \times 10^{13}\]</span></p>
 <p>Este número não depende em nada do tamanho da chave: é apenas a contagem de todas as formas de baralhar 16 valores, quer esses valores sejam algarismos hexadecimais, cartas de um baralho, ou letras de um alfabeto.</p>
-<p><strong>É aqui que entra o problema da chave.</strong> Se a chave <span class="math inline">\(K\)</span> tivesse também 4 bits, existiriam apenas 16 valores de chave possíveis — e cada chave, através do algoritmo, só consegue determinar <em>uma</em> permutação. Por muito engenhoso que seja o algoritmo, 16 chaves nunca conseguem seleccionar mais do que 16 permutações diferentes, de um total de <span class="math inline">\(16! \approx 2{,}09\times10^{13}\)</span>: por exemplo, a chave <code>5</code> podia seleccionar a Permutação A, a chave <code>3</code> a B, e assim por diante, mas ficam sempre só 16 possibilidades cobertas. A cifra de César é exactamente este caso: as suas 16 chaves seleccionam sempre 16 deslocamentos (como a Permutação A), nunca uma permutação livre como a B ou a C. Para a chave conseguir alcançar <strong>qualquer uma</strong> das <span class="math inline">\(16!\)</span> permutações, e não apenas um pequeno subconjunto escolhido à partida, precisa de ter, ela própria, muitos mais de 4 bits.</p>
+<p><strong>É aqui que entra o problema da chave.</strong> Se a chave <span class="math inline">\(K\)</span> tivesse também 4 bits, existiriam apenas 16 valores de chave possíveis — e cada chave, através do algoritmo, só consegue determinar <em>uma</em> permutação. Por muito engenhoso que seja o algoritmo, 16 chaves nunca conseguem seleccionar mais do que 16 permutações diferentes, de um total de <span class="math inline">\(16! \approx 2{,}09\times10^{13}\)</span>: por exemplo, a chave <code>5</code> podia seleccionar a Permutação A, a chave <code>3</code> a B, e assim por diante, mas ficam sempre só 16 possibilidades cobertas. A cifra de César é exactamente este caso: as suas 16 chaves seleccionam sempre 16 deslocamentos (como a Permutação A), nunca uma permutação livre como a B. Para a chave conseguir alcançar <strong>qualquer uma</strong> das <span class="math inline">\(16!\)</span> permutações, e não apenas um pequeno subconjunto escolhido à partida, precisa de ter, ela própria, muitos mais de 4 bits.</p>
 <p><strong>Quão maior, exactamente?</strong> Há duas respostas para esta pergunta: a primeira dá o tamanho REAL da chave para endereçar todas as permutações possíveis de blocos de 4 bits para blocos de 4 bits; a segunda é uma estimativa que maximiza esse valor.</p>
 <p>Sabendo que há <span class="math inline">\(16!\)</span> permutações válidas o número de bits, <span class="math inline">\(x\)</span> necessário para mapear esse número é o tamanho da chave. Então <span class="math inline">\(2^x = (16!)\)</span> o que nos dá <span class="math inline">\(x = \log_2(16!) \approx 45\)</span> bits.</p>
-<p>A segunda maneira dá uma forma mais directa de responder ao tamanho da chave, que é imaginar que esta <em>é</em>, literalmente, a tabela de substituição completa. Por exemplo, para a Permutação A (a de “+5”) têm-se a seguinte tabela:</p>
+<p>A segunda maneira dá uma forma mais directa de responder ao tamanho da chave, que é imaginar que esta <em>é</em>, literalmente, a tabela de substituição completa. Por exemplo, para a Permutação A têm-se a seguinte tabela:</p>
 <div class="httpmsg">
 <pre><code>Entrada  Saída (4 bits) Saída (Hex.)
   0    →   0 1 0 1         (= 5)
@@ -1150,200 +1144,191 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Código fonte</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb3" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Cifras de Bloco — Fundamentos, Feistel, DES e 3DES"</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "João Pavão"</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-09-14</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-PT</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução {#sec-02-intro .unnumbered}</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>As cifras clássicas estudadas no capítulo anterior operam sobre letras de um alfabeto natural: substituem-nas, transpõem-nas, mas trabalham sempre com a estrutura de uma língua. Um computador não lê letras; lê sequências de bits. As cifras modernas partem deste facto: o texto claro, seja ele texto, imagem ou som, é sempre, em última análise, uma sequência binária, e é sobre essa sequência que as cifras de bloco operam.</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>Este capítulo introduz a estrutura comum à generalidade das cifras de bloco modernas, a rede de Feistel, e dois algoritmos históricos construídos sobre ela: o DES, durante décadas o padrão dominante, e o 3DES, a extensão criada para prolongar a sua vida útil depois de o DES ter sido considerado inseguro. O capítulo seguinte trata do AES, o algoritmo que hoje ocupa o lugar que o DES ocupou.</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fundamentos das Cifras de Bloco {#sec-02-fundamentos}</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">### O que é uma cifra de bloco {#sec-02-definicao}</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>Uma **cifra de bloco** divide o texto claro em blocos de tamanho fixo, tipicamente 64 ou 128 bits, e cifra cada bloco independentemente, usando sempre a mesma chave. Formalmente, para um bloco de $n$ bits e uma chave $K$, o algoritmo de cifragem $E_K$ é uma função bijectiva:</span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>$$E_K : <span class="sc">\{</span>0,1<span class="sc">\}</span>^n \rightarrow <span class="sc">\{</span>0,1<span class="sc">\}</span>^n$$</span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>Ou seja, para cada chave $K$, $E_K$ é uma permutação distinta do conjunto de todos os blocos possíveis: cada bloco de texto claro tem exactamente um bloco de texto cifrado correspondente, e vice-versa, o que garante que a decifragem é sempre possível e única.</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>Isto generaliza directamente a cifra monoalfabética do capítulo anterior, que também era uma permutação, mas do alfabeto de 26 letras. Uma cifra de bloco com blocos de 64 bits é uma permutação de um conjunto com $2^{64}$ elementos, um espaço imensamente maior, o que por si só já dificulta a análise de frequência: em vez de 26 símbolos possíveis, há $2^{64}$ blocos possíveis, cada um ocorrendo raramente o suficiente para que contar frequências deixe de ser útil.</span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a><span class="fu">### A cifra ideal, e porque é impraticável {#sec-02-cifra-ideal}</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>Se uma cifra de bloco é, no fundo, uma permutação parametrizada pela chave, a construção mais directamente segura seria escolher, para cada chave, uma permutação **completamente arbitrária** entre todos os blocos de entrada e todos os blocos de saída, sem qualquer estrutura interna que um criptanalista pudesse explorar. A esta construção chama-se a **cifra ideal**, e o problema com ela não é de segurança, é de tamanho da chave.</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>Formalmente, o algoritmo de cifragem $E_K$ de uma cifra de bloco de $n$ bits é uma função</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>$$E_K : <span class="sc">\{</span>0,1<span class="sc">\}</span>^n \rightarrow <span class="sc">\{</span>0,1<span class="sc">\}</span>^n$$</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>que mapeia cada um dos $2^n$ blocos de entrada possíveis a um bloco de saída, também de $n$ bits. Considere-se o caso $n=4$: cada bloco de entrada é um valor entre <span class="in">`0000`</span> e <span class="in">`1111`</span>, mais convenientemente escrito em **hexadecimal**, já que um único algarismo hexadecimal representa exactamente 4 bits. Os 16 blocos possíveis correspondem, um a um, aos algarismos <span class="in">`0`</span> a <span class="in">`F`</span>.</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>Uma **permutação arbitrária** destes 16 valores é qualquer reatribuição bijectiva de cada entrada a uma saída distinta, sem repetições. Por exemplo, estas três permutações são todas válidas, e completamente diferentes entre si:</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="in">Entrada:               0 1 2 3 4 5 6 7 8 9 A B C D E F</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="in">Permutação A (+5):     5 6 7 8 9 A B C D E F 0 1 2 3 4</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="in">Permutação B (livre):  5 D 2 9 0 B 7 E 3 F 1 8 6 4 A C</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="in">Permutação C (pares):  0 1 3 2 5 4 7 6 9 8 B A D C F E</span></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>A Permutação A é apenas um deslocamento — a mesma lógica da cifra de César, agora sobre hexadecimais em vez de letras. As permutações B e C não seguem nenhuma fórmula simples: foram escolhidas valor a valor, sem qualquer padrão, apenas garantindo que cada entrada tem uma saída diferente e que nenhuma saída se repete.</span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="al">![Duas das $16!$ permutações possíveis do conjunto de 16 valores. As ligações da Permutação A, um simples deslocamento, seguem um padrão regular; as da Permutação B, escolhida livremente, cruzam-se sem qualquer estrutura. As duas mostradas aqui são uma fracção insignificante do total.](../assets/images/fig-02-permutacoes-16.png)</span>{#fig-02-permutacoes-16 width=90%}</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>**Quantas permutações destas existem, ao todo?** Para a primeira entrada (<span class="in">`0`</span>), há 16 saídas possíveis; escolhida essa, sobram 15 opções para a entrada seguinte (<span class="in">`1`</span>), já que a saída escolhida para <span class="in">`0`</span> não pode repetir-se; depois 14 para a entrada <span class="in">`2`</span>; e assim sucessivamente, até restar apenas 1 opção para a última entrada (<span class="in">`F`</span>). O total é:</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>$$16 \times 15 \times 14 \times \cdots \times 1 = 16! \approx 2{,}09 \times 10^{13}$$</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>Este número não depende em nada do tamanho da chave: é apenas a contagem de todas as formas de baralhar 16 valores, quer esses valores sejam algarismos hexadecimais, cartas de um baralho, ou letras de um alfabeto.</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>**É aqui que entra o problema da chave.** Se a chave $K$ tivesse também 4 bits, existiriam apenas 16 valores de chave possíveis — e cada chave, através do algoritmo, só consegue determinar *uma* permutação. Por muito engenhoso que seja o algoritmo, 16 chaves nunca conseguem seleccionar mais do que 16 permutações diferentes, de um total de $16! \approx 2{,}09\times10^{13}$: por exemplo, a chave `5` podia seleccionar a Permutação A, a chave `3` a B, e assim por diante, mas ficam sempre só 16 possibilidades cobertas. A cifra de César é exactamente este caso: as suas 16 chaves seleccionam sempre 16 deslocamentos (como a Permutação A), nunca uma permutação livre como a B ou a C. Para a chave conseguir alcançar **qualquer uma** das $16!$ permutações, e não apenas um pequeno subconjunto escolhido à partida, precisa de ter, ela própria, muitos mais de 4 bits.</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>**Quão maior, exactamente?** Há duas respostas para esta pergunta: a primeira dá o tamanho REAL da chave para endereçar todas as permutações possíveis de blocos de 4 bits para blocos de 4 bits; a segunda é uma estimativa que maximiza esse valor.</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>Sabendo que há $16!$ permutações válidas o número de bits, $x$ necessário para mapear esse número é o tamanho da chave. Então $2^x = (16!)$ o que nos dá $x = \log_2(16!) \approx 45$ bits.</span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>A segunda maneira dá uma forma mais directa de responder ao tamanho da chave, que é imaginar que esta *é*, literalmente, a tabela de substituição completa. Por exemplo, para a Permutação A (a de "+5") têm-se a seguinte tabela:</span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="in">Entrada  Saída (4 bits) Saída (Hex.)</span></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="in">  0    →   0 1 0 1         (= 5)</span></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="in">  1    →   0 1 1 0         (= 6)</span></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="in">  2    →   0 1 1 1         (= 7)</span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="in">  3    →   1 0 0 0         (= 8)</span></span>
-<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="in">  4    →   1 0 0 1         (= 9)</span></span>
-<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="in">  5    →   1 0 1 0         (= A)</span></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="in">  6    →   1 0 1 1         (= B)</span></span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="in">  7    →   1 1 0 0         (= C)</span></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a><span class="in">  8    →   1 1 0 1         (= D)</span></span>
-<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="in">  9    →   1 1 1 0         (= E)</span></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="in">  A    →   1 1 1 1         (= F)</span></span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="in">  B    →   0 0 0 0         (= 0)</span></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a><span class="in">  C    →   0 0 0 1         (= 1)</span></span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="in">  D    →   0 0 1 0         (= 2)</span></span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="in">  E    →   0 0 1 1         (= 3)</span></span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="in">  F    →   0 1 0 0         (= 4)</span></span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a>Da tabela vemos que o tamanho da chave tem que ser tal que possa endereçar uma *string* numérica de 16 caracteres hexadecimais. Portanto tem que ter o tamanho de $16$ caracteres. Como cada caractere tem 4 bits, o tamanho da chave em bits é $4 \times 16 = 64$ o que corresponde à área da tabela mostrada:</span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a>$$\text{altura} \times \text{largura} = 16 \times 4 = 64 \text{ bits}$$</span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a>Generalizando, para um bloco de $n$ bits, a chave da cifra ideal precisa de</span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>$$n \times 2^n \text{ bits}$$</span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>Para $n=4$, isto são apenas 64 bits, perfeitamente gerível. Mas para um bloco de $n=64$ bits, um tamanho perfeitamente razoável para uma cifra real:</span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a>$$64 \times 2^{64} = 2^6 \times 2^{64} = 2^{70} \approx 10^{21} \text{ bits}$$</span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a>Um número sem qualquer aplicação prática: nenhum sistema consegue gerar, armazenar, distribuir ou sequer escrever uma chave desta dimensão. **A cifra ideal é, por isso, impraticável.** As cifras de bloco reais não tentam realizá-la directamente; em vez disso, procuram **aproximar-se** do seu comportamento imprevisível, combinando repetidamente, ao longo de várias rondas, operações simples e eficientes de especificar, até que o resultado final seja computacionalmente indistinguível de uma permutação verdadeiramente arbitrária. É exactamente para isto que servem a confusão e a difusão, apresentadas de seguida.</span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a><span class="fu">### Confusão e difusão {#sec-02-confusao-difusao}</span></span>
-<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a>Claude Shannon, o mesmo autor que demonstrou o segredo perfeito do One-Time Pad, identificou em 1949 duas propriedades que uma cifra robusta deve garantir:</span>
-<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Confusão**: a relação entre a chave e o texto cifrado deve ser o mais complexa e não linear possível, de modo a esconder qualquer padrão estatístico que ligue os dois. Na prática, obtém-se através de operações de substituição não lineares.</span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Difusão**: a influência de cada bit do texto claro (e de cada bit da chave) deve espalhar-se por muitos bits do texto cifrado, de forma que alterar um único bit de entrada altere, em média, metade dos bits de saída, de forma aparentemente aleatória. Na prática, obtém-se através de operações de permutação e mistura de bits.</span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a>Nenhuma das duas propriedades, isoladamente, é suficiente: a substituição sozinha, como se viu na cifra monoalfabética, é vulnerável à frequência; a transposição sozinha mantém a frequência inteiramente intacta. As cifras de bloco modernas combinam as duas, aplicando repetidamente, ao longo de várias **rondas**, uma sequência de substituições e permutações, até que o texto cifrado final não deixe transparecer nenhuma relação estatística útil com o texto claro ou com a chave.</span>
-<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## A Rede de Feistel {#sec-02-feistel}</span></span>
-<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a>A generalidade das cifras de bloco clássicas, incluindo o DES, organiza estas rondas segundo uma estrutura proposta por Horst Feistel, nos anos 1970, enquanto trabalhava na IBM. Numa **rede de Feistel**, o bloco divide-se em duas metades iguais, $L_i$ (esquerda) e $R_i$ (direita), e cada ronda $i$ aplica-se assim:</span>
-<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a><span class="al">![Uma ronda de uma rede de Feistel, exemplificada para um bloco de $W=64$ bits (a notação $LE_i$/$RE_i$ usada na figura é equivalente a $L_i$/$R_i$). A metade direita $RE_0$ atravessa uma função $F$ parametrizada pela subchave da ronda $K_1$, o resultado combina-se por XOR com a metade esquerda $LE_0$, e as duas metades trocam de posição para a ronda seguinte ($LE_1$/$RE_1$).](../assets/images/fig-02-feistel-ronda.png)</span>{#fig-02-feistel-ronda width=45%}</span>
-<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a>$$L_{i+1} = R_i$$</span>
-<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a>$$R_{i+1} = L_i \oplus F(R_i, K_i)$$</span>
-<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a>onde $F$ é uma função de ronda, tipicamente não linear, parametrizada por uma subchave $K_i$ derivada da chave principal, e $\oplus$ representa a operação XOR bit a bit.</span>
-<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a>**A propriedade fundamental de uma rede de Feistel** é que a decifragem usa exactamente a mesma estrutura da cifragem, apenas com as subchaves aplicadas em ordem inversa, e isto é verdade **independentemente da função $F$ escolhida**, mesmo que $F$ não seja, em si, invertível. Isto simplifica consideravelmente a implementação: o mesmo circuito ou código serve para cifrar e para decifrar, o que não seria necessariamente possível caso $F$ tivesse de ser tanto aplicada como invertida.</span>
-<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a><span class="al">![Cifragem e decifragem numa rede de Feistel de 16 rondas (o número de rondas do DES, apresentado na secção seguinte). À esquerda, a cifragem: o texto claro entra como $LE_0$/$RE_0$ e, ronda a ronda, as subchaves $K_1, K_2, \dots, K_{16}$ são aplicadas por ordem, produzindo o texto cifrado. À direita, a decifragem parte desse mesmo texto cifrado e aplica exactamente a mesma estrutura de rondas, com a mesma função $F$, mas com as subchaves por ordem inversa ($K_{16}$ na primeira ronda da decifragem, $K_1$ na última), recuperando ao fim das 16 rondas o texto claro original.](../assets/images/fig-02-feistel-enc-dec.png)</span>{#fig-02-feistel-enc-dec width=70%}</span>
-<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exemplo com uma rede reduzida {#sec-02-feistel-exemplo}</span></span>
-<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a>Para tornar isto concreto, considere-se uma versão drasticamente reduzida, com blocos de apenas 8 bits (metades de 4 bits) e a função $F(R, K) = \text{ROL}_1(R) \oplus K$, onde $\text{ROL}_1$ roda os 4 bits de $R$ um lugar para a esquerda. Esta função não tem qualquer pretensão de segurança real, serve apenas para ilustrar o mecanismo.</span>
-<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a>Com texto claro $L_0 = 1010$, $R_0 = 0110$, e duas subchaves $K_1 = 0011$, $K_2 = 1100$:</span>
-<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a>**Ronda 1:** $F(R_0, K_1) = \text{ROL}_1(0110) \oplus 0011 = 1100 \oplus 0011 = 1111$</span>
-<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>$L_1 = R_0 = 0110 \qquad R_1 = L_0 \oplus F(R_0, K_1) = 1010 \oplus 1111 = 0101$</span>
-<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a>**Ronda 2:** $F(R_1, K_2) = \text{ROL}_1(0101) \oplus 1100 = 1010 \oplus 1100 = 0110$</span>
-<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a>$L_2 = R_1 = 0101 \qquad R_2 = L_1 \oplus F(R_1, K_2) = 0110 \oplus 0110 = 0000$</span>
-<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a>O texto cifrado é $L_2 R_2 = 01010000$. Para decifrar, aplicam-se as mesmas duas rondas, mas com as subchaves por ordem inversa ($K_2$ primeiro, depois $K_1$), recuperando exactamente $L_0 = 1010$, $R_0 = 0110$ — confirmado por computação directa. Repare-se que em nenhum momento foi necessário inverter a função $F$: só a ordem das subchaves mudou.</span>
-<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a><span class="fu">## DES — Data Encryption Standard {#sec-02-des}</span></span>
-<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a>O **DES** (*Data Encryption Standard*) foi desenvolvido pela IBM, com contributos da NSA, e adoptado em 1977 como padrão federal dos Estados Unidos <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>. Durante quase duas décadas, foi o algoritmo de cifra simétrica mais usado no mundo.</span>
-<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a>O DES é uma rede de Feistel com as seguintes características:</span>
-<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Bloco de **64 bits**.</span>
-<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Chave de **56 bits** efectivos (representada como 64 bits, dos quais 8 são bits de paridade, sem contribuição para a segurança).</span>
-<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**16 rondas**, cada uma com uma subchave de 48 bits derivada da chave principal por um esquema de rotações e permutações.</span>
-<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Função de ronda $F$ construída a partir de expansão de bits, XOR com a subchave, substituição não linear através de oito tabelas fixas (as **S-boxes**, a principal fonte de confusão do algoritmo) e uma permutação final.</span>
-<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Uma **permutação inicial** (IP) antes da primeira ronda e a sua inversa, a **permutação final** (FP), depois da última, ambas fixas e sem qualquer contribuição para a segurança criptográfica: servem apenas para reorganizar os bits de entrada e saída, um resquício da implementação em hardware original do DES.</span>
-<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a>A estrutura geral do DES é, portanto, exactamente a rede de Feistel já descrita na secção anterior, com $n=64$ e 16 rondas. O que é específico do DES, e não decorre da estrutura de Feistel em si, é a construção interna da função $F$:</span>
-<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a><span class="al">![A função $F$ do DES: a metade de 32 bits é expandida (E) para 48 bits, combinada por XOR com a subchave da ronda, dividida em oito grupos de 6 bits que atravessam as respectivas S-boxes (S1–S8, cada uma devolvendo 4 bits de saída não linear), e finalmente reorganizada por uma permutação (P). ](../assets/images/fig-02-des-funcao-f.png)</span>{#fig-02-des-funcao-f width=75%}</span>
-<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a><span class="fu">### A força do DES {#sec-02-des-forca}</span></span>
-<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a>O espaço de chaves do DES tem $2^{56} \approx 7,2 \times 10^{16}$ chaves possíveis. Este número pareceu astronomicamente seguro em 1977, mas a evolução do poder computacional tornou-o cada vez mais vulnerável a um ataque de força bruta simples, exactamente o mesmo princípio já discutido para a cifra de César, apenas com um espaço de chaves maior. Houve ainda, desde cedo, uma segunda fonte de desconfiança: as S-boxes do DES, a componente responsável pela sua confusão, foram especificadas pela NSA sem justificação pública do critério de desenho, o que alimentou décadas de suspeitas de que pudessem esconder uma fraqueza deliberada, nunca confirmada, mas também nunca inteiramente afastada <span class="co">[</span><span class="ot">@Du2022</span><span class="co">]</span>.</span>
-<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-159"><a href="#cb3-159" aria-hidden="true" tabindex="-1"></a>A queda do DES por força bruta ficou documentada por uma série de desafios públicos da RSA Security. Em 1997, o projecto DESCHALL quebrou uma mensagem cifrada com DES em 96 dias, usando ciclos ociosos de computadores voluntários espalhados pela Internet. Em 1998, o projecto distributed.net repetiu o feito em apenas 39 dias, e a *Electronic Frontier Foundation* construiu uma máquina dedicada, a *Deep Crack*, capaz de o fazer em cerca de 56 horas, por um custo então inferior a 250 mil dólares. Em 1999, a combinação de distributed.net com a Deep Crack reduziu o tempo a 22 horas <span class="co">[</span><span class="ot">@Du2022; @Stallings2020</span><span class="co">]</span>. O DES foi formalmente substituído pelo 3DES em 1999, e está hoje obsoleto: não deve ser usado para proteger informação nova, apenas encontrado em sistemas legados ainda por substituir.</span>
-<span id="cb3-160"><a href="#cb3-160" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-161"><a href="#cb3-161" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3DES — Triple DES {#sec-02-3des}</span></span>
-<span id="cb3-162"><a href="#cb3-162" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-163"><a href="#cb3-163" aria-hidden="true" tabindex="-1"></a>Perante a fragilidade do DES, a solução mais imediata, adoptada em 1999 enquanto se preparava um sucessor definitivo (viria a ser o AES, apresentado no capítulo seguinte), foi aplicar o próprio DES três vezes seguidas, com chaves diferentes. O **3DES** (ou *Triple DES*) cifra cada bloco segundo o esquema **EDE** (*Encrypt-Decrypt-Encrypt*):</span>
-<span id="cb3-164"><a href="#cb3-164" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-165"><a href="#cb3-165" aria-hidden="true" tabindex="-1"></a>$$C = E_{K_3}(D_{K_2}(E_{K_1}(P)))$$</span>
-<span id="cb3-166"><a href="#cb3-166" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-167"><a href="#cb3-167" aria-hidden="true" tabindex="-1"></a>onde $E$ e $D$ são as operações de cifragem e decifragem do DES original. A alternância cifra-decifra-cifra, em vez de três cifragens seguidas, existe sobretudo por compatibilidade: com $K_1 = K_2 = K_3$, o 3DES reduz-se exactamente a uma única cifragem DES normal, permitindo que sistemas antigos continuem a interoperar com sistemas novos.</span>
-<span id="cb3-168"><a href="#cb3-168" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-169"><a href="#cb3-169" aria-hidden="true" tabindex="-1"></a>Consoante o número de chaves distintas usadas, o 3DES oferece:</span>
-<span id="cb3-170"><a href="#cb3-170" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-171"><a href="#cb3-171" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Três chaves distintas** ($K_1, K_2, K_3$): segurança efectiva de aproximadamente 112 bits (não 168, devido a um tipo de ataque conhecido como *meet-in-the-middle*, que reduz o ganho teórico de aplicar três chaves de 56 bits).</span>
-<span id="cb3-172"><a href="#cb3-172" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Duas chaves distintas** ($K_1 = K_3$): segurança efectiva de aproximadamente 80 bits, hoje considerada insuficiente.</span>
-<span id="cb3-173"><a href="#cb3-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-174"><a href="#cb3-174" aria-hidden="true" tabindex="-1"></a>O 3DES resolveu o problema imediato do espaço de chaves, mas herdou as restantes limitações estruturais do DES (bloco pequeno de 64 bits, entre outras), e é cerca de três vezes mais lento do que uma única cifragem DES, uma vez que repete o algoritmo original três vezes por bloco. Por estas razões, o NIST recomenda, desde 2023, que o 3DES deixe de ser usado em aplicações novas, reservando-o apenas para manter a compatibilidade com sistemas legados <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>. O capítulo seguinte introduz o algoritmo que o substituiu: o AES.</span>
-<span id="cb3-175"><a href="#cb3-175" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-176"><a href="#cb3-176" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-02-sintese}</span></span>
-<span id="cb3-177"><a href="#cb3-177" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-178"><a href="#cb3-178" aria-hidden="true" tabindex="-1"></a>Este capítulo introduziu a estrutura fundamental das cifras de bloco modernas:</span>
-<span id="cb3-179"><a href="#cb3-179" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-180"><a href="#cb3-180" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Uma **cifra de bloco** é uma permutação de blocos de bits de tamanho fixo, parametrizada pela chave, generalizando a ideia de permutação já vista na cifra monoalfabética, mas num espaço muito maior</span>
-<span id="cb3-181"><a href="#cb3-181" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>A **cifra ideal**, que realizaria essa permutação de forma completamente arbitrária, exigiria uma chave de $n \times 2^n$ bits, impraticável para qualquer bloco realista; as cifras de bloco reais aproximam-se do seu comportamento por outra via</span>
-<span id="cb3-182"><a href="#cb3-182" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Confusão** (relação complexa chave-texto cifrado) e **difusão** (espalhamento da influência de cada bit), propostas por Shannon, são as duas propriedades que as cifras de bloco modernas combinam ao longo de várias rondas para conseguir essa aproximação</span>
-<span id="cb3-183"><a href="#cb3-183" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>A **rede de Feistel** organiza estas rondas de forma a que a decifragem use exactamente a mesma estrutura da cifragem, com as subchaves por ordem inversa, mesmo que a função de ronda $F$ não seja, em si, invertível</span>
-<span id="cb3-184"><a href="#cb3-184" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>O **DES**, padrão dominante entre 1977 e 1999, tem bloco de 64 bits, chave efectiva de 56 bits e 16 rondas de Feistel; o seu espaço de chaves reduzido tornou-o vulnerável a força bruta (de 96 dias, em 1997, a 22 horas, em 1999), e está hoje obsoleto</span>
-<span id="cb3-185"><a href="#cb3-185" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>O **3DES**, adoptado em 1999, aplica o DES três vezes (esquema EDE), estendendo a segurança efectiva até cerca de 112 bits, ao custo de ser cerca de três vezes mais lento; está também a caminho da descontinuação</span>
-<span id="cb3-186"><a href="#cb3-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-187"><a href="#cb3-187" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-02-reflexao}</span></span>
-<span id="cb3-188"><a href="#cb3-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-189"><a href="#cb3-189" aria-hidden="true" tabindex="-1"></a>Na rede de Feistel, a função $F$ não precisa de ser invertível para que todo o sistema seja reversível. Que vantagem prática traz isto a quem desenha o algoritmo, comparando com uma cifra em que a função central tivesse de ser, ela própria, invertível?</span>
-<span id="cb3-190"><a href="#cb3-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-191"><a href="#cb3-191" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-02-referencias .unnumbered}</span></span>
-<span id="cb3-192"><a href="#cb3-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-193"><a href="#cb3-193" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb3-194"><a href="#cb3-194" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Cifras de Bloco — Fundamentos, Feistel, DES e 3DES"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "João Pavão"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-09-14</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-PT</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução {#sec-02-intro .unnumbered}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>As cifras clássicas estudadas no capítulo anterior operam sobre letras de um alfabeto natural: substituem-nas, transpõem-nas, mas trabalham sempre com a estrutura de uma língua. Um computador não lê letras; lê sequências de bits. As cifras modernas partem deste facto: o texto claro, seja ele texto, imagem ou som, é sempre, em última análise, uma sequência binária, e é sobre essa sequência que as cifras de bloco operam.</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>Este capítulo introduz a estrutura comum à generalidade das cifras de bloco modernas, a rede de Feistel, e dois algoritmos históricos construídos sobre ela: o DES, durante décadas o padrão dominante, e o 3DES, a extensão criada para prolongar a sua vida útil depois de o DES ter sido considerado inseguro. O capítulo seguinte trata do AES, o algoritmo que hoje ocupa o lugar que o DES ocupou.</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fundamentos das Cifras de Bloco {#sec-02-fundamentos}</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">### O que é uma cifra de bloco {#sec-02-definicao}</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>Uma **cifra de bloco** divide o texto claro em blocos de tamanho fixo, tipicamente 64 ou 128 bits, e cifra cada bloco independentemente, usando sempre a mesma chave. Formalmente, para um bloco de $n$ bits e uma chave $K$, o algoritmo de cifragem $E_K$ é uma função bijectiva:</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>$$E_K : <span class="sc">\{</span>0,1<span class="sc">\}</span>^n \rightarrow <span class="sc">\{</span>0,1<span class="sc">\}</span>^n$$</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>Ou seja, para cada chave $K$, $E_K$ é uma permutação distinta do conjunto de todos os blocos possíveis: cada bloco de texto claro tem exactamente um bloco de texto cifrado correspondente, e vice-versa, o que garante que a decifragem é sempre possível e única.</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>Isto generaliza directamente a cifra monoalfabética do capítulo anterior, que também era uma permutação, mas do alfabeto de 26 letras. Uma cifra de bloco com blocos de 64 bits é uma permutação de um conjunto com $2^{64}$ elementos, um espaço imensamente maior, o que por si só já dificulta a análise de frequência: em vez de 26 símbolos possíveis, há $2^{64}$ blocos possíveis, cada um ocorrendo raramente o suficiente para que contar frequências deixe de ser útil.</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="fu">### A cifra ideal, e porque é impraticável {#sec-02-cifra-ideal}</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>Se uma cifra de bloco é, no fundo, uma permutação parametrizada pela chave, a construção mais directamente segura seria escolher, para cada chave, uma permutação **completamente arbitrária** entre todos os blocos de entrada e todos os blocos de saída, sem qualquer estrutura interna que um criptanalista pudesse explorar. A esta construção chama-se a **cifra ideal**, e o problema com ela não é de segurança, é de tamanho da chave.</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>Formalmente, o algoritmo de cifragem $E_K$ de uma cifra de bloco de $n$ bits é uma função</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>$$E_K : <span class="sc">\{</span>0,1<span class="sc">\}</span>^n \rightarrow <span class="sc">\{</span>0,1<span class="sc">\}</span>^n$$</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>que mapeia cada um dos $2^n$ blocos de entrada possíveis a um bloco de saída, também de $n$ bits. Considere-se o caso $n=4$: cada bloco de entrada é um valor entre <span class="in">`0000`</span> e <span class="in">`1111`</span>, mais convenientemente escrito em **hexadecimal**, já que um único algarismo hexadecimal representa exactamente 4 bits. Os 16 blocos possíveis correspondem, um a um, aos algarismos <span class="in">`0`</span> a <span class="in">`F`</span>.</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>Uma **permutação arbitrária** destes 16 valores é qualquer reatribuição bijectiva de cada entrada a uma saída distinta, sem repetições. A @fig-02-permutacoes-16 mostra duas permutações válidas, completamente diferentes entre si, ligando cada valor de entrada à sua saída.</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="al">![Duas das $16!$ permutações possíveis do conjunto de 16 valores. As ligações da Permutação A, um simples deslocamento, seguem um padrão regular; as da Permutação B, escolhida livremente, cruzam-se sem qualquer estrutura. As duas mostradas aqui são uma fracção insignificante do total.](../assets/images/fig-02-permutacoes-16.png)</span>{#fig-02-permutacoes-16 width=90%}</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>Na Permutação A, as ligações formam esse padrão regular porque é apenas um deslocamento — a mesma lógica da cifra de César, agora sobre hexadecimais em vez de letras. Na Permutação B, as ligações cruzam-se sem qualquer estrutura porque foi escolhida livremente, valor a valor, sem seguir fórmula nenhuma, apenas garantindo que cada entrada tem uma saída diferente e que nenhuma saída se repete.</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>**Quantas permutações destas existem, ao todo?** Para a primeira entrada (<span class="in">`0`</span>), há 16 saídas possíveis; escolhida essa, sobram 15 opções para a entrada seguinte (<span class="in">`1`</span>), já que a saída escolhida para <span class="in">`0`</span> não pode repetir-se; depois 14 para a entrada <span class="in">`2`</span>; e assim sucessivamente, até restar apenas 1 opção para a última entrada (<span class="in">`F`</span>). O total é:</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>$$16 \times 15 \times 14 \times \cdots \times 1 = 16! \approx 2{,}09 \times 10^{13}$$</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>Este número não depende em nada do tamanho da chave: é apenas a contagem de todas as formas de baralhar 16 valores, quer esses valores sejam algarismos hexadecimais, cartas de um baralho, ou letras de um alfabeto.</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>**É aqui que entra o problema da chave.** Se a chave $K$ tivesse também 4 bits, existiriam apenas 16 valores de chave possíveis — e cada chave, através do algoritmo, só consegue determinar *uma* permutação. Por muito engenhoso que seja o algoritmo, 16 chaves nunca conseguem seleccionar mais do que 16 permutações diferentes, de um total de $16! \approx 2{,}09\times10^{13}$: por exemplo, a chave `5` podia seleccionar a Permutação A, a chave `3` a B, e assim por diante, mas ficam sempre só 16 possibilidades cobertas. A cifra de César é exactamente este caso: as suas 16 chaves seleccionam sempre 16 deslocamentos (como a Permutação A), nunca uma permutação livre como a B. Para a chave conseguir alcançar **qualquer uma** das $16!$ permutações, e não apenas um pequeno subconjunto escolhido à partida, precisa de ter, ela própria, muitos mais de 4 bits.</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>**Quão maior, exactamente?** Há duas respostas para esta pergunta: a primeira dá o tamanho REAL da chave para endereçar todas as permutações possíveis de blocos de 4 bits para blocos de 4 bits; a segunda é uma estimativa que maximiza esse valor.</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>Sabendo que há $16!$ permutações válidas o número de bits, $x$ necessário para mapear esse número é o tamanho da chave. Então $2^x = (16!)$ o que nos dá $x = \log_2(16!) \approx 45$ bits.</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>A segunda maneira dá uma forma mais directa de responder ao tamanho da chave, que é imaginar que esta *é*, literalmente, a tabela de substituição completa. Por exemplo, para a Permutação A têm-se a seguinte tabela:</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="in">Entrada  Saída (4 bits) Saída (Hex.)</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="in">  0    →   0 1 0 1         (= 5)</span></span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="in">  1    →   0 1 1 0         (= 6)</span></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a><span class="in">  2    →   0 1 1 1         (= 7)</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a><span class="in">  3    →   1 0 0 0         (= 8)</span></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="in">  4    →   1 0 0 1         (= 9)</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a><span class="in">  5    →   1 0 1 0         (= A)</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a><span class="in">  6    →   1 0 1 1         (= B)</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="in">  7    →   1 1 0 0         (= C)</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="in">  8    →   1 1 0 1         (= D)</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="in">  9    →   1 1 1 0         (= E)</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="in">  A    →   1 1 1 1         (= F)</span></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="in">  B    →   0 0 0 0         (= 0)</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a><span class="in">  C    →   0 0 0 1         (= 1)</span></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="in">  D    →   0 0 1 0         (= 2)</span></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a><span class="in">  E    →   0 0 1 1         (= 3)</span></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="in">  F    →   0 1 0 0         (= 4)</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a>Da tabela vemos que o tamanho da chave tem que ser tal que possa endereçar uma *string* numérica de 16 caracteres hexadecimais. Portanto tem que ter o tamanho de $16$ caracteres. Como cada caractere tem 4 bits, o tamanho da chave em bits é $4 \times 16 = 64$ o que corresponde à área da tabela mostrada:</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>$$\text{altura} \times \text{largura} = 16 \times 4 = 64 \text{ bits}$$</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>Generalizando, para um bloco de $n$ bits, a chave da cifra ideal precisa de</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>$$n \times 2^n \text{ bits}$$</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>Para $n=4$, isto são apenas 64 bits, perfeitamente gerível. Mas para um bloco de $n=64$ bits, um tamanho perfeitamente razoável para uma cifra real:</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>$$64 \times 2^{64} = 2^6 \times 2^{64} = 2^{70} \approx 10^{21} \text{ bits}$$</span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>Um número sem qualquer aplicação prática: nenhum sistema consegue gerar, armazenar, distribuir ou sequer escrever uma chave desta dimensão. **A cifra ideal é, por isso, impraticável.** As cifras de bloco reais não tentam realizá-la directamente; em vez disso, procuram **aproximar-se** do seu comportamento imprevisível, combinando repetidamente, ao longo de várias rondas, operações simples e eficientes de especificar, até que o resultado final seja computacionalmente indistinguível de uma permutação verdadeiramente arbitrária. É exactamente para isto que servem a confusão e a difusão, apresentadas de seguida.</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a><span class="fu">### Confusão e difusão {#sec-02-confusao-difusao}</span></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a>Claude Shannon, o mesmo autor que demonstrou o segredo perfeito do One-Time Pad, identificou em 1949 duas propriedades que uma cifra robusta deve garantir:</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Confusão**: a relação entre a chave e o texto cifrado deve ser o mais complexa e não linear possível, de modo a esconder qualquer padrão estatístico que ligue os dois. Na prática, obtém-se através de operações de substituição não lineares.</span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Difusão**: a influência de cada bit do texto claro (e de cada bit da chave) deve espalhar-se por muitos bits do texto cifrado, de forma que alterar um único bit de entrada altere, em média, metade dos bits de saída, de forma aparentemente aleatória. Na prática, obtém-se através de operações de permutação e mistura de bits.</span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>Nenhuma das duas propriedades, isoladamente, é suficiente: a substituição sozinha, como se viu na cifra monoalfabética, é vulnerável à frequência; a transposição sozinha mantém a frequência inteiramente intacta. As cifras de bloco modernas combinam as duas, aplicando repetidamente, ao longo de várias **rondas**, uma sequência de substituições e permutações, até que o texto cifrado final não deixe transparecer nenhuma relação estatística útil com o texto claro ou com a chave.</span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a><span class="fu">## A Rede de Feistel {#sec-02-feistel}</span></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>A generalidade das cifras de bloco clássicas, incluindo o DES, organiza estas rondas segundo uma estrutura proposta por Horst Feistel, nos anos 1970, enquanto trabalhava na IBM. Numa **rede de Feistel**, o bloco divide-se em duas metades iguais, $L_i$ (esquerda) e $R_i$ (direita), e cada ronda $i$ aplica-se assim:</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a><span class="al">![Uma ronda de uma rede de Feistel, exemplificada para um bloco de $W=64$ bits (a notação $LE_i$/$RE_i$ usada na figura é equivalente a $L_i$/$R_i$). A metade direita $RE_0$ atravessa uma função $F$ parametrizada pela subchave da ronda $K_1$, o resultado combina-se por XOR com a metade esquerda $LE_0$, e as duas metades trocam de posição para a ronda seguinte ($LE_1$/$RE_1$).](../assets/images/fig-02-feistel-ronda.png)</span>{#fig-02-feistel-ronda width=45%}</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>$$L_{i+1} = R_i$$</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>$$R_{i+1} = L_i \oplus F(R_i, K_i)$$</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>onde $F$ é uma função de ronda, tipicamente não linear, parametrizada por uma subchave $K_i$ derivada da chave principal, e $\oplus$ representa a operação XOR bit a bit.</span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a>**A propriedade fundamental de uma rede de Feistel** é que a decifragem usa exactamente a mesma estrutura da cifragem, apenas com as subchaves aplicadas em ordem inversa, e isto é verdade **independentemente da função $F$ escolhida**, mesmo que $F$ não seja, em si, invertível. Isto simplifica consideravelmente a implementação: o mesmo circuito ou código serve para cifrar e para decifrar, o que não seria necessariamente possível caso $F$ tivesse de ser tanto aplicada como invertida.</span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a><span class="al">![Cifragem e decifragem numa rede de Feistel de 16 rondas (o número de rondas do DES, apresentado na secção seguinte). À esquerda, a cifragem: o texto claro entra como $LE_0$/$RE_0$ e, ronda a ronda, as subchaves $K_1, K_2, \dots, K_{16}$ são aplicadas por ordem, produzindo o texto cifrado. À direita, a decifragem parte desse mesmo texto cifrado e aplica exactamente a mesma estrutura de rondas, com a mesma função $F$, mas com as subchaves por ordem inversa ($K_{16}$ na primeira ronda da decifragem, $K_1$ na última), recuperando ao fim das 16 rondas o texto claro original.](../assets/images/fig-02-feistel-enc-dec.png)</span>{#fig-02-feistel-enc-dec width=70%}</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a><span class="fu">### Exemplo com uma rede reduzida {#sec-02-feistel-exemplo}</span></span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-118"><a href="#cb2-118" aria-hidden="true" tabindex="-1"></a>Para tornar isto concreto, considere-se uma versão drasticamente reduzida, com blocos de apenas 8 bits (metades de 4 bits) e a função $F(R, K) = \text{ROL}_1(R) \oplus K$, onde $\text{ROL}_1$ roda os 4 bits de $R$ um lugar para a esquerda. Esta função não tem qualquer pretensão de segurança real, serve apenas para ilustrar o mecanismo.</span>
+<span id="cb2-119"><a href="#cb2-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-120"><a href="#cb2-120" aria-hidden="true" tabindex="-1"></a>Com texto claro $L_0 = 1010$, $R_0 = 0110$, e duas subchaves $K_1 = 0011$, $K_2 = 1100$:</span>
+<span id="cb2-121"><a href="#cb2-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-122"><a href="#cb2-122" aria-hidden="true" tabindex="-1"></a>**Ronda 1:** $F(R_0, K_1) = \text{ROL}_1(0110) \oplus 0011 = 1100 \oplus 0011 = 1111$</span>
+<span id="cb2-123"><a href="#cb2-123" aria-hidden="true" tabindex="-1"></a>$L_1 = R_0 = 0110 \qquad R_1 = L_0 \oplus F(R_0, K_1) = 1010 \oplus 1111 = 0101$</span>
+<span id="cb2-124"><a href="#cb2-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-125"><a href="#cb2-125" aria-hidden="true" tabindex="-1"></a>**Ronda 2:** $F(R_1, K_2) = \text{ROL}_1(0101) \oplus 1100 = 1010 \oplus 1100 = 0110$</span>
+<span id="cb2-126"><a href="#cb2-126" aria-hidden="true" tabindex="-1"></a>$L_2 = R_1 = 0101 \qquad R_2 = L_1 \oplus F(R_1, K_2) = 0110 \oplus 0110 = 0000$</span>
+<span id="cb2-127"><a href="#cb2-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-128"><a href="#cb2-128" aria-hidden="true" tabindex="-1"></a>O texto cifrado é $L_2 R_2 = 01010000$. Para decifrar, aplicam-se as mesmas duas rondas, mas com as subchaves por ordem inversa ($K_2$ primeiro, depois $K_1$), recuperando exactamente $L_0 = 1010$, $R_0 = 0110$ — confirmado por computação directa. Repare-se que em nenhum momento foi necessário inverter a função $F$: só a ordem das subchaves mudou.</span>
+<span id="cb2-129"><a href="#cb2-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-130"><a href="#cb2-130" aria-hidden="true" tabindex="-1"></a><span class="fu">## DES — Data Encryption Standard {#sec-02-des}</span></span>
+<span id="cb2-131"><a href="#cb2-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-132"><a href="#cb2-132" aria-hidden="true" tabindex="-1"></a>O **DES** (*Data Encryption Standard*) foi desenvolvido pela IBM, com contributos da NSA, e adoptado em 1977 como padrão federal dos Estados Unidos <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>. Durante quase duas décadas, foi o algoritmo de cifra simétrica mais usado no mundo.</span>
+<span id="cb2-133"><a href="#cb2-133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-134"><a href="#cb2-134" aria-hidden="true" tabindex="-1"></a>O DES é uma rede de Feistel com as seguintes características:</span>
+<span id="cb2-135"><a href="#cb2-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-136"><a href="#cb2-136" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Bloco de **64 bits**.</span>
+<span id="cb2-137"><a href="#cb2-137" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Chave de **56 bits** efectivos (representada como 64 bits, dos quais 8 são bits de paridade, sem contribuição para a segurança).</span>
+<span id="cb2-138"><a href="#cb2-138" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**16 rondas**, cada uma com uma subchave de 48 bits derivada da chave principal por um esquema de rotações e permutações.</span>
+<span id="cb2-139"><a href="#cb2-139" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Função de ronda $F$ construída a partir de expansão de bits, XOR com a subchave, substituição não linear através de oito tabelas fixas (as **S-boxes**, a principal fonte de confusão do algoritmo) e uma permutação final.</span>
+<span id="cb2-140"><a href="#cb2-140" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Uma **permutação inicial** (IP) antes da primeira ronda e a sua inversa, a **permutação final** (FP), depois da última, ambas fixas e sem qualquer contribuição para a segurança criptográfica: servem apenas para reorganizar os bits de entrada e saída, um resquício da implementação em hardware original do DES.</span>
+<span id="cb2-141"><a href="#cb2-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-142"><a href="#cb2-142" aria-hidden="true" tabindex="-1"></a>A estrutura geral do DES é, portanto, exactamente a rede de Feistel já descrita na secção anterior, com $n=64$ e 16 rondas. O que é específico do DES, e não decorre da estrutura de Feistel em si, é a construção interna da função $F$:</span>
+<span id="cb2-143"><a href="#cb2-143" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-144"><a href="#cb2-144" aria-hidden="true" tabindex="-1"></a><span class="al">![A função $F$ do DES: a metade de 32 bits é expandida (E) para 48 bits, combinada por XOR com a subchave da ronda, dividida em oito grupos de 6 bits que atravessam as respectivas S-boxes (S1–S8, cada uma devolvendo 4 bits de saída não linear), e finalmente reorganizada por uma permutação (P). ](../assets/images/fig-02-des-funcao-f.png)</span>{#fig-02-des-funcao-f width=75%}</span>
+<span id="cb2-145"><a href="#cb2-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-146"><a href="#cb2-146" aria-hidden="true" tabindex="-1"></a><span class="fu">### A força do DES {#sec-02-des-forca}</span></span>
+<span id="cb2-147"><a href="#cb2-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-148"><a href="#cb2-148" aria-hidden="true" tabindex="-1"></a>O espaço de chaves do DES tem $2^{56} \approx 7,2 \times 10^{16}$ chaves possíveis. Este número pareceu astronomicamente seguro em 1977, mas a evolução do poder computacional tornou-o cada vez mais vulnerável a um ataque de força bruta simples, exactamente o mesmo princípio já discutido para a cifra de César, apenas com um espaço de chaves maior. Houve ainda, desde cedo, uma segunda fonte de desconfiança: as S-boxes do DES, a componente responsável pela sua confusão, foram especificadas pela NSA sem justificação pública do critério de desenho, o que alimentou décadas de suspeitas de que pudessem esconder uma fraqueza deliberada, nunca confirmada, mas também nunca inteiramente afastada <span class="co">[</span><span class="ot">@Du2022</span><span class="co">]</span>.</span>
+<span id="cb2-149"><a href="#cb2-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-150"><a href="#cb2-150" aria-hidden="true" tabindex="-1"></a>A queda do DES por força bruta ficou documentada por uma série de desafios públicos da RSA Security. Em 1997, o projecto DESCHALL quebrou uma mensagem cifrada com DES em 96 dias, usando ciclos ociosos de computadores voluntários espalhados pela Internet. Em 1998, o projecto distributed.net repetiu o feito em apenas 39 dias, e a *Electronic Frontier Foundation* construiu uma máquina dedicada, a *Deep Crack*, capaz de o fazer em cerca de 56 horas, por um custo então inferior a 250 mil dólares. Em 1999, a combinação de distributed.net com a Deep Crack reduziu o tempo a 22 horas <span class="co">[</span><span class="ot">@Du2022; @Stallings2020</span><span class="co">]</span>. O DES foi formalmente substituído pelo 3DES em 1999, e está hoje obsoleto: não deve ser usado para proteger informação nova, apenas encontrado em sistemas legados ainda por substituir.</span>
+<span id="cb2-151"><a href="#cb2-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-152"><a href="#cb2-152" aria-hidden="true" tabindex="-1"></a><span class="fu">## 3DES — Triple DES {#sec-02-3des}</span></span>
+<span id="cb2-153"><a href="#cb2-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-154"><a href="#cb2-154" aria-hidden="true" tabindex="-1"></a>Perante a fragilidade do DES, a solução mais imediata, adoptada em 1999 enquanto se preparava um sucessor definitivo (viria a ser o AES, apresentado no capítulo seguinte), foi aplicar o próprio DES três vezes seguidas, com chaves diferentes. O **3DES** (ou *Triple DES*) cifra cada bloco segundo o esquema **EDE** (*Encrypt-Decrypt-Encrypt*):</span>
+<span id="cb2-155"><a href="#cb2-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-156"><a href="#cb2-156" aria-hidden="true" tabindex="-1"></a>$$C = E_{K_3}(D_{K_2}(E_{K_1}(P)))$$</span>
+<span id="cb2-157"><a href="#cb2-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-158"><a href="#cb2-158" aria-hidden="true" tabindex="-1"></a>onde $E$ e $D$ são as operações de cifragem e decifragem do DES original. A alternância cifra-decifra-cifra, em vez de três cifragens seguidas, existe sobretudo por compatibilidade: com $K_1 = K_2 = K_3$, o 3DES reduz-se exactamente a uma única cifragem DES normal, permitindo que sistemas antigos continuem a interoperar com sistemas novos.</span>
+<span id="cb2-159"><a href="#cb2-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-160"><a href="#cb2-160" aria-hidden="true" tabindex="-1"></a>Consoante o número de chaves distintas usadas, o 3DES oferece:</span>
+<span id="cb2-161"><a href="#cb2-161" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-162"><a href="#cb2-162" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Três chaves distintas** ($K_1, K_2, K_3$): segurança efectiva de aproximadamente 112 bits (não 168, devido a um tipo de ataque conhecido como *meet-in-the-middle*, que reduz o ganho teórico de aplicar três chaves de 56 bits).</span>
+<span id="cb2-163"><a href="#cb2-163" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Duas chaves distintas** ($K_1 = K_3$): segurança efectiva de aproximadamente 80 bits, hoje considerada insuficiente.</span>
+<span id="cb2-164"><a href="#cb2-164" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-165"><a href="#cb2-165" aria-hidden="true" tabindex="-1"></a>O 3DES resolveu o problema imediato do espaço de chaves, mas herdou as restantes limitações estruturais do DES (bloco pequeno de 64 bits, entre outras), e é cerca de três vezes mais lento do que uma única cifragem DES, uma vez que repete o algoritmo original três vezes por bloco. Por estas razões, o NIST recomenda, desde 2023, que o 3DES deixe de ser usado em aplicações novas, reservando-o apenas para manter a compatibilidade com sistemas legados <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>. O capítulo seguinte introduz o algoritmo que o substituiu: o AES.</span>
+<span id="cb2-166"><a href="#cb2-166" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-167"><a href="#cb2-167" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-02-sintese}</span></span>
+<span id="cb2-168"><a href="#cb2-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-169"><a href="#cb2-169" aria-hidden="true" tabindex="-1"></a>Este capítulo introduziu a estrutura fundamental das cifras de bloco modernas:</span>
+<span id="cb2-170"><a href="#cb2-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-171"><a href="#cb2-171" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Uma **cifra de bloco** é uma permutação de blocos de bits de tamanho fixo, parametrizada pela chave, generalizando a ideia de permutação já vista na cifra monoalfabética, mas num espaço muito maior</span>
+<span id="cb2-172"><a href="#cb2-172" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>A **cifra ideal**, que realizaria essa permutação de forma completamente arbitrária, exigiria uma chave de $n \times 2^n$ bits, impraticável para qualquer bloco realista; as cifras de bloco reais aproximam-se do seu comportamento por outra via</span>
+<span id="cb2-173"><a href="#cb2-173" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>**Confusão** (relação complexa chave-texto cifrado) e **difusão** (espalhamento da influência de cada bit), propostas por Shannon, são as duas propriedades que as cifras de bloco modernas combinam ao longo de várias rondas para conseguir essa aproximação</span>
+<span id="cb2-174"><a href="#cb2-174" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>A **rede de Feistel** organiza estas rondas de forma a que a decifragem use exactamente a mesma estrutura da cifragem, com as subchaves por ordem inversa, mesmo que a função de ronda $F$ não seja, em si, invertível</span>
+<span id="cb2-175"><a href="#cb2-175" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>O **DES**, padrão dominante entre 1977 e 1999, tem bloco de 64 bits, chave efectiva de 56 bits e 16 rondas de Feistel; o seu espaço de chaves reduzido tornou-o vulnerável a força bruta (de 96 dias, em 1997, a 22 horas, em 1999), e está hoje obsoleto</span>
+<span id="cb2-176"><a href="#cb2-176" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>O **3DES**, adoptado em 1999, aplica o DES três vezes (esquema EDE), estendendo a segurança efectiva até cerca de 112 bits, ao custo de ser cerca de três vezes mais lento; está também a caminho da descontinuação</span>
+<span id="cb2-177"><a href="#cb2-177" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-178"><a href="#cb2-178" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-02-reflexao}</span></span>
+<span id="cb2-179"><a href="#cb2-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-180"><a href="#cb2-180" aria-hidden="true" tabindex="-1"></a>Na rede de Feistel, a função $F$ não precisa de ser invertível para que todo o sistema seja reversível. Que vantagem prática traz isto a quem desenha o algoritmo, comparando com uma cifra em que a função central tivesse de ser, ela própria, invertível?</span>
+<span id="cb2-181"><a href="#cb2-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-182"><a href="#cb2-182" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-02-referencias .unnumbered}</span></span>
+<span id="cb2-183"><a href="#cb2-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-184"><a href="#cb2-184" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb2-185"><a href="#cb2-185" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">
