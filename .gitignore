@@ -24,3 +24,7 @@ assets/slides-fonte/
 # regenerar com `quarto render --to pdf` / `quarto render en/ --to pdf`
 docs/*.pdf
 docs/en/*.pdf
+
+# Ficheiros temporários/backup do draw.io
+assets/draw-io/.$*.bkp
+assets/draw-io/.$*.dtmp

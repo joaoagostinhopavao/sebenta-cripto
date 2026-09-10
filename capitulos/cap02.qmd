@@ -46,6 +46,8 @@ Permutação C (pares):  0 1 3 2 5 4 7 6 9 8 B A D C F E
 
 A Permutação A é apenas um deslocamento — a mesma lógica da cifra de César, agora sobre hexadecimais em vez de letras. As permutações B e C não seguem nenhuma fórmula simples: foram escolhidas valor a valor, sem qualquer padrão, apenas garantindo que cada entrada tem uma saída diferente e que nenhuma saída se repete.
 
+![Duas das $16!$ permutações possíveis do conjunto de 16 valores. As ligações da Permutação A, um simples deslocamento, seguem um padrão regular; as da Permutação B, escolhida livremente, cruzam-se sem qualquer estrutura. As duas mostradas aqui são uma fracção insignificante do total.](../assets/images/fig-02-permutacoes-16.png){#fig-02-permutacoes-16 width=90%}
+
 **Quantas permutações destas existem, ao todo?** Para a primeira entrada (`0`), há 16 saídas possíveis; escolhida essa, sobram 15 opções para a entrada seguinte (`1`), já que a saída escolhida para `0` não pode repetir-se; depois 14 para a entrada `2`; e assim sucessivamente, até restar apenas 1 opção para a última entrada (`F`). O total é:
 
 $$16 \times 15 \times 14 \times \cdots \times 1 = 16! \approx 2{,}09 \times 10^{13}$$
