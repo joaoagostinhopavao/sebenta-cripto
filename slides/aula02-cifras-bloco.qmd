@@ -54,7 +54,7 @@ $$E_K : \{0,1\}^n \rightarrow \{0,1\}^n$$
 
 <span class="eyebrow">Fundamentos</span>
 
-![](../assets/images/fig-02-permutacoes-16.png){width="78%"}
+![](../assets/images/fig-02-permutacoes-16.png){height="340px"}
 
 - Duas permutações possíveis dos 16 valores, escolhidas sem qualquer padrão
 - Quantas permutações destas existem ao todo? Quantos bits de chave são precisos para as endereçar todas?

@@ -8,7 +8,7 @@
 }
 
 .reveal {
-  font-size: 30px;
+  font-size: 27px;
 }
 
 .reveal h1,
@@ -69,6 +69,10 @@
 .reveal .footer-note {
   font-size: 0.5em;
   color: #888;
+}
+
+.reveal .slides section {
+  padding-bottom: 0.4em;
 }
 
 .reveal blockquote {

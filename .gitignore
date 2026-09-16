@@ -32,3 +32,4 @@ assets/draw-io/.$*.dtmp
 # Slides revealjs gerados (autocontidos, incluem imagens embutidas em
 # base64 — binários grandes); regenerar com `quarto render slides/*.qmd`
 slides/*.html
+slides/*.pdf
