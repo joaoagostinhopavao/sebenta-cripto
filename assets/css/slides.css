@@ -1,0 +1,78 @@
+/* slides.css — tema revealjs da Sebenta Cripto (paleta: carmesim, partilhada com custom.css) */
+
+:root {
+  --cripto-dark: #1a0505;
+  --cripto-mid: #7a1017;
+  --cripto-red: #b0202a;
+  --cripto-accent: #e2434f;
+}
+
+.reveal {
+  font-size: 30px;
+}
+
+.reveal h1,
+.reveal h2,
+.reveal h3 {
+  color: var(--cripto-mid);
+  font-weight: 700;
+}
+
+.reveal .slide-number {
+  color: var(--cripto-red);
+}
+
+.reveal a {
+  color: var(--cripto-red);
+}
+
+.reveal #title-slide h1,
+.reveal #title-slide .subtitle,
+.reveal #title-slide .quarto-title-author-name,
+.reveal #title-slide .date {
+  color: #fff !important;
+}
+
+.reveal #title-slide .subtitle {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 0.75em;
+}
+
+.reveal .slide-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 0.15em 0.9em;
+  font-size: 0.5em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.6em;
+}
+
+.reveal .eyebrow {
+  display: block;
+  font-size: 0.42em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cripto-red);
+  font-weight: 600;
+  margin-bottom: 0.2em;
+}
+
+.reveal figcaption,
+.reveal .fig-caption {
+  font-size: 0.55em;
+  color: #666;
+  font-style: italic;
+}
+
+.reveal .footer-note {
+  font-size: 0.5em;
+  color: #888;
+}
+
+.reveal blockquote {
+  border-left: 4px solid var(--cripto-red);
+  background-color: #fdf0f0;
+  padding: 0.4em 1em;
+}
