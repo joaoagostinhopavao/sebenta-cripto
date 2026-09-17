@@ -1,0 +1,135 @@
+---
+title: "Criptografia Assimétrica"
+subtitle: "e RSA"
+author: "João Pavão"
+date: 2026-09-14
+lang: pt-PT
+format:
+  revealjs:
+    embed-resources: true
+    css: ../assets/css/slides.css
+    slide-number: true
+    transition: fade
+    center: false
+    footer: "Criptografia — Cibersegurança, UTAD"
+    fig-align: center
+    auto-stretch: false
+    logo: ""
+    title-slide-attributes:
+      data-background-gradient: "linear-gradient(135deg, #1a0505 0%, #7a1017 55%, #b0202a 100%)"
+---
+
+## Introdução {.unnumbered}
+
+<span class="eyebrow">Criptografia Assimétrica</span>
+
+- Todos os capítulos anteriores exigem uma chave secreta **partilhada previamente**
+- Como combinam essa chave dois desconhecidos, sem canal seguro entre si? O **problema da distribuição de chaves**
+- Diffie e Hellman (1976) e Rivest, Shamir e Adleman (1977): cada participante passa a ter **duas chaves matematicamente relacionadas**, uma pública e outra privada
+
+## Criptografia Assimétrica: o Conceito {.unnumbered}
+
+<span class="eyebrow">Fundamentos</span>
+
+![](../assets/images/fig-06-confidencialidade-autenticacao.png){height="280px"}
+
+- Seis componentes: cifragem, decifragem, texto claro, texto cifrado, **chave pública** ($PU$) e **chave privada** ($PR$)
+- O que se cifra com uma das chaves de um par só se decifra com a outra, nunca com a mesma
+
+## Confidencialidade e Autenticação {.unnumbered}
+
+<span class="eyebrow">Fundamentos</span>
+
+- **Confidencialidade:** Alice cifra com a chave pública de Bob $\Rightarrow$ só Bob decifra
+
+$$Y = E[PU_b, X] \qquad X = D[PR_b, Y]$$
+
+- **Autenticação:** Alice cifra com a sua própria chave privada $\Rightarrow$ qualquer pessoa verifica, mas só Alice podia ter produzido $Y$
+
+$$Y = E[PR_a, X] \qquad X = D[PU_a, Y]$$
+
+- Combinando os dois esquemas obtêm-se ambas as propriedades ao mesmo tempo
+
+## Categorias e Aplicações {.unnumbered}
+
+<span class="eyebrow">Fundamentos</span>
+
+| Algoritmo | Encriptação | Assinatura | Troca de Chaves |
+|---|---|---|---|
+| RSA | Sim | Sim | Sim |
+| Curva Elíptica | Sim | Sim | Sim |
+| Diffie-Hellman | Não | Não | Sim |
+| DSS | Não | Sim | Não |
+
+Só o RSA e a curva elíptica servem os três papéis em simultâneo
+
+## RSA: Geração de Chaves {.unnumbered}
+
+<span class="eyebrow">RSA</span>
+
+![](../assets/images/fig-06-rsa-infografico.png){height="300px"}
+
+1. Escolhem-se dois primos grandes e aleatórios, $p$ e $q$
+2. $n = p \cdot q$ (módulo, público); $\phi(n) = (p-1)(q-1)$ (secreto)
+3. Escolhe-se $e$ com $1<e<\phi(n)$ e $\text{mdc}(e,\phi(n))=1$
+4. Calcula-se $d$: o inverso modular de $e$, $d \cdot e \equiv 1 \pmod{\phi(n)}$
+5. **Chave pública:** $(e,n)$; **chave privada:** $(d,n)$
+
+## RSA: Cifragem e Decifragem {.unnumbered}
+
+<span class="eyebrow">RSA</span>
+
+$$C = M^e \bmod n \qquad M = C^d \bmod n = M^{e \cdot d} \bmod n$$
+
+- Funciona porque $e$ e $d$ são **inversos multiplicativos módulo $\phi(n)$**
+- Elevar a $e$ e depois a $d$ (ou vice-versa) devolve sempre o valor original
+
+## RSA: um Exemplo Completo {.unnumbered}
+
+<span class="eyebrow">RSA</span>
+
+![](../assets/images/fig-06-rsa-exemplo.png){height="220px"}
+
+- $p=17$, $q=11$ $\Rightarrow$ $n=187$, $\phi(n)=160$
+- $e=7$ (coprimo com 160); $d=23$, porque $(23 \times 7) \bmod 160 = 1$
+- Chave pública $=\{7,187\}$; chave privada $=\{23,187\}$
+- Para $M=88$: $C = 88^7 \bmod 187 = 11$; e $M = 11^{23} \bmod 187 = 88$
+
+## Segurança do RSA {.unnumbered}
+
+<span class="eyebrow">RSA</span>
+
+- Com $n=187$ (8 bits), factorizar de volta em 17 e 11 é trivial: anula a segurança
+- Na prática recomenda-se $n$ com **2048 a 4096 bits**
+- O melhor algoritmo conhecido de factorização, o *general number field sieve*, é **subexponencial**: mais rápido que a força bruta, mas não polinomial
+- É esse atalho que obriga o RSA a chaves muito maiores do que uma cifra simétrica para segurança equivalente
+
+## RSA na Prática {.unnumbered}
+
+<span class="eyebrow">RSA</span>
+
+- O **RSA "textbook"**, exatamente como descrito, não é seguro: é determinístico e não tem segurança semântica
+- **Encriptação:** usa-se **RSA-OAEP**, que introduz aleatoriedade
+- **Assinaturas:** usa-se **RSA-PSS**, que garante segurança contra falsificação
+- Desempenho: substituir $\phi(n)$ por $\lambda(n)$ e usar o **Teorema Chinês do Resto** acelera a decifragem
+
+## Síntese do Capítulo {.unnumbered}
+
+<span class="eyebrow">Síntese</span>
+
+1. A **criptografia assimétrica** resolve a distribuição de chaves: chave pública livremente distribuída, chave privada nunca partilhada
+2. Cifrar com a **chave pública** do destinatário garante confidencialidade; com a **chave privada** do próprio, autenticação
+3. Só o RSA e a curva elíptica servem encriptação, assinatura e troca de chaves em simultâneo
+4. O **RSA** gera as chaves a partir de dois primos $p$, $q$; cifra e decifra por exponenciação modular
+5. A segurança depende da dificuldade de **factorizar** $n$; a norma exige 2048 a 4096 bits
+6. O RSA "textbook" não é seguro: usos reais exigem **RSA-OAEP** e **RSA-PSS**
+
+## Para Pensar {.unnumbered}
+
+<span class="eyebrow">Reflexão</span>
+
+O expoente público $e$ é normalmente um número pequeno e fixo ($e=65537$ é o mais comum), reutilizado em milhões de chaves diferentes, sem comprometer a segurança de nenhuma.
+
+::: {.fragment}
+Tendo em conta de onde vem toda a segurança do RSA, porque é que aumentar o tamanho de $e$, mantendo $n$ pequeno, não tornaria o exemplo anterior mais seguro?
+:::
