@@ -1,0 +1,126 @@
+---
+title: "Criptografia de Curva Elíptica"
+subtitle: "ECC, ECDH e ECDSA"
+author: "João Pavão"
+date: 2026-09-14
+lang: pt-PT
+format:
+  revealjs:
+    embed-resources: true
+    css: ../assets/css/slides.css
+    slide-number: true
+    transition: fade
+    center: false
+    footer: "Criptografia — Cibersegurança, UTAD"
+    fig-align: center
+    auto-stretch: false
+    logo: ""
+    title-slide-attributes:
+      data-background-gradient: "linear-gradient(135deg, #1a0505 0%, #7a1017 55%, #b0202a 100%)"
+---
+
+## Introdução {.unnumbered}
+
+<span class="eyebrow">Curva Elíptica</span>
+
+- RSA e Diffie-Hellman assentam em problemas com ataques **subexponenciais**, obrigando a chaves cada vez maiores (2048 a 4096 bits)
+- A **criptografia de curva elíptica (ECC)**, de Koblitz e Miller, assenta num problema diferente, sem ataque subexponencial conhecido
+- Resultado: segurança equivalente com chaves ordens de grandeza mais pequenas, decisivo em dispositivos com poucos recursos
+
+## Curvas Elípticas sobre Corpos Finitos {.unnumbered}
+
+<span class="eyebrow">Fundamentos</span>
+
+$$y^2 = x^3 + ax + b$$
+
+- $a$ e $b$ definem a curva, com $4a^3+27b^2 \neq 0$ (sem singularidades)
+- Para uso criptográfico, resolve-se sobre um **corpo finito** $\mathbb{Z}_p$: $x$ e $y$ são inteiros entre 0 e $p-1$, toda a aritmética é módulo $p$
+- Junta-se um elemento especial, o **ponto no infinito** $\mathcal{O}$, que funciona como elemento neutro
+
+## A Soma de Pontos: uma Lei de Grupo {.unnumbered}
+
+<span class="eyebrow">Fundamentos</span>
+
+![](../assets/images/fig-08-curva-soma-pontos.png){height="320px"}
+
+- Traça-se a reta que passa por $P$ e $Q$; interseta a curva num terceiro ponto; refletindo-o obtém-se $R=P+Q$
+- Para somar um ponto a si próprio, usa-se a tangente à curva nesse ponto
+- Os pontos de uma curva elíptica, com esta soma, formam um **grupo abeliano**
+
+## Porque Importa Ser um Grupo Abeliano {.unnumbered}
+
+<span class="eyebrow">Fundamentos</span>
+
+- Fechado, associativo, com elemento neutro ($\mathcal{O}$), inverso e **comutativo**
+- A comutatividade garante diretamente a igualdade central do ECDH: $d_A(d_B G) = d_B(d_A G)$
+- A associatividade permite calcular $kP$ eficientemente por duplicações sucessivas
+
+## Multiplicação Escalar e o ECDLP {.unnumbered}
+
+<span class="eyebrow">Segurança</span>
+
+- A operação fundamental é a **multiplicação escalar:** $kP = P+P+\dots+P$ ($k$ vezes), calculável em $\log_2 k$ operações
+- A segurança assenta no **problema do logaritmo discreto em curvas elípticas (ECDLP):** dados $P$ e $Q=kP$, recuperar $k$
+- No sentido inverso não há nenhum equivalente de "dividir": um grupo só garante soma e inverso aditivo
+
+## Porque é Difícil Inverter {.unnumbered}
+
+<span class="eyebrow">Segurança</span>
+
+- O melhor ataque genérico conhecido, o **algoritmo rho de Pollard**, tem complexidade $O(\sqrt{n})$
+- O **cálculo de índice**, que quebra a factorização e o logaritmo discreto módulo um primo em tempo subexponencial, explora a decomposição em fatores primos pequenos
+- Os pontos de uma curva elíptica **não têm** nenhuma noção equivalente: não há "base de pontos primos", por isso o cálculo de índice não se aplica ao ECDLP
+
+## Comparação de Tamanhos de Chave {.unnumbered}
+
+<span class="eyebrow">Segurança</span>
+
+| Nível de segurança (bits) | RSA / Diffie-Hellman | ECC |
+|---|---|---|
+| 80 | 1024 | 160 |
+| 112 | 2048 | 224 |
+| 128 | 3072 | 256 |
+| 192 | 7680 | 384 |
+| 256 | 15360 | 521 |
+
+Para 256 bits de segurança, o RSA exigiria uma chave 30 vezes maior do que a ECC
+
+## ECDH: Diffie-Hellman em Curva Elíptica {.unnumbered}
+
+<span class="eyebrow">ECDH</span>
+
+- Mesma lógica do Diffie-Hellman clássico, substituindo exponenciação modular por multiplicação escalar de pontos
+- Alice escolhe $d_A$, calcula $Q_A=d_A \cdot G$; Bob escolhe $d_B$, calcula $Q_B=d_B \cdot G$
+
+$$K = d_A \cdot Q_B = (d_A d_B) \cdot G = d_B \cdot Q_A$$
+
+- A dificuldade de recuperar $d_A$ ou $d_B$ a partir de $Q_A$, $Q_B$ e $G$ é o ECDLP
+
+## ECDSA e Curvas Usadas na Prática {.unnumbered}
+
+<span class="eyebrow">ECDSA</span>
+
+- **ECDSA:** versão em curva elíptica do DSA; $r$ deriva da coordenada $x$ de um múltiplo escalar de $G$
+- **P-256** (*secp256r1*), do NIST: a mais usada em certificados TLS e ECDSA
+- **Curve25519**, de Bernstein: construída para evitar erros de implementação; curva de referência para troca de chaves (**X25519**) no TLS 1.3, Signal e SSH
+
+## Síntese do Capítulo {.unnumbered}
+
+<span class="eyebrow">Síntese</span>
+
+1. Uma **curva elíptica** é o conjunto de pontos que satisfazem $y^2=x^3+ax+b$ sobre $\mathbb{Z}_p$, mais o ponto no infinito
+2. Os seus pontos formam um **grupo abeliano** sob uma soma definida geometricamente
+3. A segurança assenta no **ECDLP**: o melhor ataque genérico é $O(\sqrt{n})$, sem atalho subexponencial conhecido
+4. A ECC atinge o mesmo nível de segurança do RSA/DH com chaves muito mais pequenas
+5. **ECDH** e **ECDSA** replicam o Diffie-Hellman e o DSA com multiplicação escalar de pontos
+6. Na prática predominam a **P-256** e a **Curve25519**
+
+## Para Pensar {.unnumbered}
+
+<span class="eyebrow">Reflexão</span>
+
+O melhor ataque genérico conhecido contra o ECDLP tem complexidade $O(\sqrt{n})$, em que $n$ é a ordem do grupo de pontos.
+
+::: {.fragment}
+Porque é que uma curva com pontos de ordem $n \approx 2^{256}$ corresponde a um nível de segurança de 128 bits, e não de 256?
+:::
