@@ -68,38 +68,118 @@ $$\frac{3{,}4 \times 10^{38}}{10^{11}} \approx 3{,}4 \times 10^{27} \text{ segun
 | Metade do espaço | $2^{64}$ | $2^{-64}$ |
 | Todo o espaço | $2^{128}$ | $1$ |
 
-## Classes de Complexidade {.unnumbered}
+## Limite Inferior vs. Limite Real {.unnumbered}
 
 <span class="eyebrow">Segurança</span>
 
-- **Polinomial**, $O(n^k)$: cresce como potência de $n$; problema **tratável**
-- **Exponencial**, $O(c^n)$: cresce de forma explosiva; a pesquisa exaustiva, $O(2^n)$, é o exemplo paradigmático
-- **Subexponencial:** entre as duas; é a classe do *general number field sieve* (factorização, logaritmo discreto módulo um primo)
-- Um sistema como o RSA só funciona porque a operação legítima é **polinomial**, e o ataque sem o segredo é subexponencial ou exponencial
+- **Limite inferior** (*lower bound*): são necessárias pelo menos $t$ operações para comprometer o esquema; o esforço real pode ser maior
+- **Limite real** (*real bound*): o esforço exato conhecido para quebrar o esquema com probabilidade $\varepsilon$, usando exatamente $t$ operações
+- A força bruta nunca deixa de funcionar: o objetivo não é tornar um esquema absolutamente inquebrável, mas garantir que continua a ser o **melhor ataque conhecido**
 
-## Eficiência dos Algoritmos Apresentados {.unnumbered}
+## Classes de Complexidade: Polinomial e Exponencial {.unnumbered}
+
+<span class="eyebrow">Segurança</span>
+
+- **Tempo polinomial**, $O(n^k)$: duplicar $n$ multiplica o custo por um fator fixo, por maior que $k$ seja. Um problema **tratável** admite um algoritmo polinomial
+- **Tempo exponencial**, $O(c^n)$: duplicar $n$ eleva o custo ao **quadrado**. A pesquisa exaustiva de uma chave de $n$ bits, $O(2^n)$, é o exemplo paradigmático
+- Algoritmos como o de Grover ou o rho de Pollard reduzem a *constante* no expoente ($O(2^{n/2})$), mas não mudam de classe
+
+## Classes de Complexidade: Subexponencial {.unnumbered}
+
+<span class="eyebrow">Segurança</span>
+
+- Estritamente entre as duas anteriores: cresce mais depressa do que qualquer polinómio, mas mais devagar do que qualquer exponencial
+- É a classe do *general number field sieve*, com a forma característica $L_n[\alpha,c] = \exp\!\big((c+o(1))(\ln n)^{\alpha}(\ln\ln n)^{1-\alpha}\big)$
+- $\alpha=\tfrac{1}{3}$ para a factorização e para o logaritmo discreto módulo um primo
+
+## Porque a Escala Explica os Tamanhos de Chave {.unnumbered}
+
+<span class="eyebrow">Segurança</span>
+
+- Contra um problema **subexponencial** (factorização, log discreto), aumentar $n$ ainda ajuda, mas cada vez menos por bit acrescentado: é preciso compensar com módulos muito maiores
+- Contra um problema puramente **exponencial** (ECDLP, pesquisa exaustiva), cada bit acrescentado duplica sempre o esforço: um crescimento modesto de $n$ já basta
+
+## A Assimetria que Torna a Criptografia Assimétrica Possível {.unnumbered}
+
+<span class="eyebrow">Segurança</span>
+
+- Um sistema como o RSA ou o ECDH só funciona porque a operação legítima (cifrar, decifrar, assinar, verificar) é sempre **polinomial**: rápida, praticável em qualquer computador comum
+- O ataque correspondente, sem conhecer o segredo, é **subexponencial ou exponencial**: impraticável para valores suficientemente grandes
+- Esta assimetria, e não nenhuma propriedade misteriosa, é o que torna útil toda a criptografia assimétrica
+
+## Eficiência dos Algoritmos: Segurança Clássica e Quântica {.unnumbered}
 
 <span class="eyebrow">Comparação</span>
 
-| Algoritmo | Segurança clássica | Efeito de um computador quântico |
-|---|---|---|
-| AES-256 | 256 bits | Grover reduz para ~128 bits; ainda seguro |
-| ChaCha20-Poly1305 | 256 bits | Idêntico ao AES-256 |
-| RSA-3072 | 128 bits | Quebrado por Shor (tempo polinomial) |
-| ECDSA P-256 / X25519 | 128 bits | Quebrado por Shor (tempo polinomial) |
-| ML-KEM-768 (PQC) | ~128 bits | Sem ataque quântico eficiente conhecido |
-| ML-DSA-65 (PQC) | ~128 bits | Sem ataque quântico eficiente conhecido |
+| Algoritmo | Família | Segurança clássica | Efeito de um computador quântico |
+|---|---|---|---|
+| AES-256 | Simétrica | 256 bits | Grover reduz para ~128 bits; ainda seguro |
+| ChaCha20-Poly1305 | Simétrica | 256 bits | Idêntico ao AES-256 |
+| RSA-3072 | Assimétrica (factorização) | 128 bits | Quebrado por Shor em tempo polinomial |
+| ECDSA P-256 / X25519 | Assimétrica (curva elíptica) | 128 bits | Quebrado por Shor em tempo polinomial |
+| ML-KEM-768 / ML-DSA-65 | Pós-quântica (reticulados) | ~128 bits | Sem ataque quântico eficiente conhecido |
 
-A ECC é a família clássica mais eficiente; a PQC troca eficiência por resistência ao algoritmo de Shor
+## Eficiência dos Algoritmos: Tamanho e Desempenho {.unnumbered}
 
-## Criptografia Pós-Quântica: Ameaça e Migração {.unnumbered}
+<span class="eyebrow">Comparação</span>
+
+- **AES-256 / ChaCha20-Poly1305:** chave de 256 bits; velocidade de referência
+- **RSA-3072:** chave e assinatura de 3072 bits; cifragem rápida, mas decifragem e assinatura lentas
+- **ECDSA P-256 / X25519:** chave de 256 bits, assinatura ~512 bits; ordens de grandeza mais rápido e compacto que o RSA equivalente
+- **ML-KEM-768 / ML-DSA-65:** chaves e assinaturas de milhares de bytes; operações rápidas, mas muito maiores que a ECC
+
+## O Padrão que Emerge: ECC vs. Pós-Quântica {.unnumbered}
+
+<span class="eyebrow">Comparação</span>
+
+- A curva elíptica é, de longe, a mais eficiente das famílias clássicas: chaves e assinaturas pequenas, operações rápidas
+- A criptografia pós-quântica troca precisamente essa eficiência por resistência ao algoritmo de Shor
+- As suas chaves e assinaturas são tipicamente vinte a cinquenta vezes maiores do que as equivalentes em ECC, para o mesmo nível de segurança clássica
+
+## O Algoritmo de Shor {.unnumbered}
 
 <span class="eyebrow">Pós-Quântica</span>
 
-- **Shor (1997):** um computador quântico suficientemente grande resolve factorização e logaritmo discreto em tempo **polinomial**
-- **Grover:** reduz a segurança simétrica a metade; resolve-se duplicando o tamanho da chave
-- Cenário **"colher agora, decifrar depois"**: tráfego cifrado hoje pode ser decifrado retroativamente no futuro
-- NIST (2024): **ML-KEM** (Kyber) e **ML-DSA** (Dilithium), baseados em reticulados; já há esquemas **híbridos** (clássico + pós-quântico) em produção
+- Peter Shor mostrou, em 1997, que um computador quântico suficientemente grande resolve a factorização e o logaritmo discreto em tempo **polinomial**
+- Tornaria trivial quebrar qualquer chave RSA, Diffie-Hellman ou ECC, independentemente do seu tamanho
+
+## O Algoritmo de Grover {.unnumbered}
+
+<span class="eyebrow">Pós-Quântica</span>
+
+- Tem um efeito muito mais limitado sobre a criptografia **simétrica**
+- Reduz para metade o número efetivo de bits de segurança
+- Resolve-se de forma simples: duplicar o tamanho da chave (AES-256 em vez de AES-128)
+
+## A Ameaça Não É (Ainda) Prática {.unnumbered}
+
+<span class="eyebrow">Pós-Quântica</span>
+
+- Construir um computador quântico suficientemente estável e grande para executar o algoritmo de Shor contra chaves do tamanho usado hoje continua a ser um desafio de engenharia em aberto
+- Ainda assim, a migração para alternativas resistentes a computadores quânticos já está em curso
+
+## Colher Agora, Decifrar Depois {.unnumbered}
+
+<span class="eyebrow">Pós-Quântica</span>
+
+- Cenário "**colher agora, decifrar depois**" (*harvest now, decrypt later*): tráfego cifrado hoje, intercetado e armazenado, pode ser decifrado retroativamente assim que existir um computador quântico capaz
+- Já é hoje uma preocupação real para dados que precisem de permanecer confidenciais durante décadas
+
+## As Novas Normas do NIST {.unnumbered}
+
+<span class="eyebrow">Pós-Quântica</span>
+
+- O NIST concluiu, em 2024, a normalização das primeiras normas de **criptografia pós-quântica**
+- **ML-KEM** (antigo Kyber, FIPS 203) para troca de chaves; **ML-DSA** (antigo Dilithium, FIPS 204) para assinaturas digitais
+- Ambos assentes em problemas sobre **reticulados** (*lattices*), não em factorização nem em logaritmos discretos: não conhecidamente vulneráveis ao algoritmo de Shor
+
+## Esquemas Híbridos de Transição {.unnumbered}
+
+<span class="eyebrow">Pós-Quântica</span>
+
+- Protocolos como o TLS 1.3 já suportam hoje esquemas **híbridos**: combinam um mecanismo clássico (como o X25519) com um mecanismo pós-quântico no mesmo *handshake*
+- A ligação só fica vulnerável se **ambos** os mecanismos forem quebrados
+- Uma estratégia de transição prudente enquanto a confiança nos novos algoritmos amadurece
 
 ## Síntese do Capítulo {.unnumbered}
 
