@@ -220,7 +220,7 @@ $$C_i = P_i \oplus E_K(\text{nonce} \mathbin\Vert i)$$
 - Quando o último bloco de uma mensagem não está completo, o **padding** acrescenta bytes extra antes da cifragem
 - **PKCS#7:** se faltam $n$ bytes, preenchem-se com o valor $n$; a decifragem lê o último byte para saber quantos remover
 - Só os modos que cifram diretamente bloco a bloco (**ECB**, **CBC**) precisam de padding; **CTR** e **GCM** dispensam-no
-- Uma validação de padding mal implementada permite o **ataque de oráculo de padding**
+- **Ataque de oráculo de padding:** se uma implementação revelar, por uma mensagem de erro ou por uma diferença de tempo de resposta, se o padding recebido era válido, um atacante explora essa fuga para decifrar a mensagem inteira, byte a byte, sem nunca conhecer a chave
 
 ## Síntese do Capítulo {.unnumbered}
 
