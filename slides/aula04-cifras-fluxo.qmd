@@ -19,58 +19,89 @@ format:
       data-background-gradient: "linear-gradient(135deg, #1a0505 0%, #7a1017 55%, #b0202a 100%)"
 ---
 
-## Introdução {.unnumbered}
+## Cifras de Bloco vs. Cifras de Fluxo {.unnumbered}
 
 <span class="eyebrow">Cifras de Fluxo</span>
 
 - DES e AES são **cifras de bloco**: processam a mensagem em fragmentos de tamanho fixo, precisando de um modo de operação
 - As **cifras de fluxo** geram uma sequência pseudo-aleatória de bits, byte a byte, e combinam-na com o texto claro por XOR, sem noção de bloco
-- Relevantes por serem rápidas em fluxos contínuos e em dispositivos com poucos recursos (sensores, RFID, IoT)
-- O descrédito das cifras de bloco em modo CBC (ataques de oráculo de padding) também empurrou muitos sistemas para cifras de fluxo
 
-## Cifras de Fluxo: o Conceito Geral {.unnumbered}
+## Porque Cifras de Fluxo Hoje {.unnumbered}
+
+<span class="eyebrow">Cifras de Fluxo</span>
+
+- Rápidas em fluxos contínuos e eficientes em dispositivos com poucos recursos (sensores, RFID, IoT)
+- O descrédito das cifras de bloco em modo CBC, pelos ataques de oráculo de *padding*, empurrou muitos sistemas para cifras de fluxo, e para construções AEAD baseadas nelas
+
+## O Mecanismo Geral de uma Cifra de Fluxo {.unnumbered}
 
 <span class="eyebrow">Cifras de Fluxo</span>
 
 ![](../assets/images/fig-04-cifra-fluxo.png){height="280px"}
 
-- Recebe dois valores: a chave $K$ (secreta) e o *nonce* $N$ (não secreto, único por chave)
+- Recebe dois valores: a chave $K$ (secreta, tipicamente 128 ou 256 bits) e o *nonce* $N$ (não secreto, único por chave, 64-128 bits)
 - Um **gerador de fluxo de chave** produz $k_1, k_2, k_3, \dots$, tão longo quanto necessário
 
 $$C_i = P_i \oplus k_i$$
 
-- É o **equivalente pseudo-aleatório do One-Time Pad**: troca a chave genuinamente aleatória e do tamanho da mensagem por uma chave curta e reutilizável, perdendo o segredo perfeito
+## Equivalente Pseudo-Aleatório do One-Time Pad {.unnumbered}
+
+<span class="eyebrow">Cifras de Fluxo</span>
+
+- É a mesma estrutura do **One-Time Pad**, o único sistema clássico com segredo perfeito demonstrado por Shannon
+- Troca a chave genuinamente aleatória e do tamanho da mensagem por uma chave curta e reutilizável: perde-se o segredo perfeito
+- A segurança passa a depender da **imprevisibilidade computacional** do gerador: ser inviável distinguir o seu fluxo de saída de uma sequência genuinamente aleatória sem conhecer a chave
+
+## A Regra: Nunca Reutilizar (Chave, Nonce) {.unnumbered}
+
+<span class="eyebrow">Cifras de Fluxo</span>
+
+- O par (chave, *nonce*) **nunca pode ser reutilizado**
+- Reutilizar $K_1$ com um $N_1$ diferente é seguro; reutilizar exatamente o mesmo par $(K_1, N_1)$ já usado antes não é
+- Se o mesmo par se repetir, o gerador produz exatamente o mesmo fluxo de chave para duas mensagens diferentes
 
 ## O Ataque do Two-Time Pad {.unnumbered}
 
 <span class="eyebrow">Cifras de Fluxo</span>
 
-- O par (chave, *nonce*) **nunca pode ser reutilizado**: reutilizar $K_1$ com um $N_1$ diferente é seguro; reutilizar exatamente o mesmo par $(K_1, N_1)$ não é
-- Se o mesmo par se repetir, o gerador produz o mesmo fluxo de chave para duas mensagens diferentes
-
 $$C_1 \oplus C_2 = (P_1 \oplus k) \oplus (P_2 \oplus k) = P_1 \oplus P_2$$
 
-- O resultado já não depende da chave e é frequentemente suficiente para recuperar ambas as mensagens por análise estatística
-- Foi exatamente este tipo de falha que tornou o protocolo **WEP** praticamente inútil
+- O resultado, o XOR dos dois textos claros, já não depende da chave
+- Frequentemente suficiente para recuperar ambas as mensagens por análise estatística da língua
+- Foi exatamente este tipo de falha, na reutilização de valores de inicialização, que tornou o protocolo **WEP** praticamente inútil
 
-## RC4 {.unnumbered}
+## RC4: Origem e Parâmetros {.unnumbered}
+
+<span class="eyebrow">RC4</span>
+
+- Desenhado por Ron Rivest na RSA Security em 1987; mantido secreto comercialmente até ser divulgado sem autorização em 1994
+- Aceita chaves de comprimento variável, entre 40 e 2048 bits
+- Mantém um estado interno de 256 bytes (*array* $S$, com dois ponteiros auxiliares $i$ e $j$), orientado a byte
+
+## RC4: KSA e PRGA {.unnumbered}
 
 <span class="eyebrow">RC4</span>
 
 ![](../assets/images/fig-04-rc4-prga.png){height="280px"}
 
-- Desenhado por Ron Rivest em 1987; chaves de 40 a 2048 bits; estado interno de 256 bytes
-- **KSA** (*Key Scheduling Algorithm*): constrói e permuta o *array* $S$ a partir da chave
-- **PRGA** (*Pseudo-Random Generation Algorithm*): a cada iteração, troca $S[i]$ com $S[j]$ e produz um byte do fluxo de chave
+- **KSA** (*Key Scheduling Algorithm*): a partir da chave, constrói e permuta o *array* $S$ de 256 valores
+- **PRGA** (*Pseudo-Random Generation Algorithm*): a cada iteração, atualiza $i$ e $j$, troca $S[i]$ com $S[j]$, e produz um byte do fluxo de chave
 
-## RC4: Fragilidades e Fim de Vida {.unnumbered}
+## RC4: a Falha do Nonce e o Ataque FMS {.unnumbered}
 
 <span class="eyebrow">RC4</span>
 
-- **Não existe nenhum mecanismo de *nonce* incorporado**: tem de ser adicionado externamente
-- O WEP prefixava a chave com um *nonce* curto e previsível: vulnerável ao **ataque de Fluhrer, Mantin e Shamir** (2001)
-- Os primeiros bytes do fluxo de chave não são estatisticamente uniformes (o segundo byte vale zero com probabilidade $1/128$, não $1/256$)
-- Um segundo ataque prático contra o TLS foi publicado em 2013; o RC4 foi banido do TLS pela IETF em 2015
+- **Não existe nenhum mecanismo de *nonce* incorporado**: tem de ser adicionado externamente por quem implementa o protocolo
+- O WEP prefixava a chave com um *nonce* curto e previsível, gerando muitas chaves RC4 relacionadas entre si
+- **Ataque de Fluhrer, Mantin e Shamir** (2001): explora o facto de os primeiros bytes do fluxo de chave não serem estatisticamente uniformes (o segundo byte vale zero com probabilidade $1/128$, o dobro do esperado); capturando milhões de pacotes WEP, esse desvio estatístico permite recuperar a própria chave
+
+## RC4: Banimento e Legado {.unnumbered}
+
+<span class="eyebrow">RC4</span>
+
+- A mitigação RC4-drop3072 (descartar os primeiros 3072 bytes) reduz mas não elimina o problema
+- **Ataque de 2013 contra o TLS:** explora vieses estatísticos semelhantes nos primeiros bytes do fluxo de chave para recuperar texto repetido em muitas sessões (como *cookies* HTTP), sem nunca descobrir a chave
+- O RC4 foi formalmente banido do TLS pela IETF em 2015: não deve ser usado em nenhum sistema novo
 
 ## Duas Arquiteturas: Cifra com Estado {.unnumbered}
 
@@ -90,7 +121,15 @@ $$C_1 \oplus C_2 = (P_1 \oplus k) \oplus (P_2 \oplus k) = P_1 \oplus P_2$$
 
 - Não mantém nenhum estado secreto entre blocos, além do valor de um contador público
 - Cada bloco calcula-se de novo, diretamente a partir da chave, do *nonce* e do contador, **sem depender do bloco anterior**
-- Pode calcular-se **em paralelo**; o Salsa20 e o ChaCha20 seguem esta arquitetura
+- O Salsa20 e o ChaCha20 seguem esta arquitetura
+
+## Comparação: Estado vs. Contador {.unnumbered}
+
+<span class="eyebrow">Arquiteturas</span>
+
+- Cifra com estado: cada atualização depende da anterior, processamento **sequencial**
+- Cifra por contador: cada bloco é independente dos restantes
+- Só a arquitetura por contador pode calcular-se **em paralelo**, tanto na cifragem como na decifragem
 
 ## Salsa20 {.unnumbered}
 
@@ -99,8 +138,15 @@ $$C_1 \oplus C_2 = (P_1 \oplus k) \oplus (P_2 \oplus k) = P_1 \oplus P_2$$
 ![](../assets/images/fig-04-salsa20-matriz-estado.png){height="300px"}
 
 - Desenhado por Daniel J. Bernstein em 2005, submetido ao concurso *eSTREAM*
-- Construção **ARX** (*Add-Rotate-XOR*): sem S-boxes nem tabelas de substituição
+- Construção **ARX** (*Add-Rotate-XOR*): apenas soma, rotação de bits e XOR, sem S-boxes nem tabelas de substituição
 - Estado interno: matriz $4 \times 4$ de palavras de 32 bits (4 constantes fixas, 8 de chave, 2 de *nonce*, 2 de contador)
+
+## Salsa20: Porque as Constantes Fixas {.unnumbered}
+
+<span class="eyebrow">Salsa20</span>
+
+- As quatro constantes ($c_0$–$c_3$) não fazem parte da chave nem do *nonce*: são valores fixos, iguais em todas as execuções (a constante ASCII "expand 32-byte k")
+- Função puramente estrutural: garantir que o estado inicial nunca é todo ele previsível a partir só de chave e *nonce*, mesmo antes de qualquer ronda ser aplicada
 
 ## Salsa20: Função de Ronda e Segurança {.unnumbered}
 
@@ -134,15 +180,23 @@ $$a \mathrel{+}= b;\ d \mathrel{\oplus}= a;\ d \lll 8 \qquad c \mathrel{+}= d;\ 
 - Constantes de rotação e ordem das operações diferentes do Salsa20, para conseguir difusão mais rápida
 - *Nonce* de 96 bits (RFC), contador de 32 bits; hoje a cifra de fluxo de referência (TLS 1.3, QUIC, WireGuard, SSH)
 
-## ChaCha20-Poly1305 {.unnumbered}
+## Poly1305: Autenticador de Utilização Única {.unnumbered}
+
+<span class="eyebrow">ChaCha20</span>
+
+- Não cifra nada: o seu único trabalho é calcular uma marca de autenticação (*tag*) de 128 bits sobre o texto cifrado e dados associados (AAD)
+- A sua chave **só pode ser usada uma única vez, para uma única mensagem**: um autenticador de utilização única
+- Reutilizar a mesma chave do Poly1305 em duas mensagens permite a um atacante falsificar marcas futuras sob essa chave
+
+## ChaCha20-Poly1305: a Construção AEAD {.unnumbered}
 
 <span class="eyebrow">ChaCha20</span>
 
 ![](../assets/images/fig-04-chacha20-poly1305.png){height="300px"}
 
-- **Poly1305:** não cifra nada, só calcula uma marca de autenticação de 128 bits: um **autenticador de utilização única**
-- O bloco 0 do ChaCha20 deriva a chave do Poly1305; os blocos 1 a $N$ fornecem o fluxo de chave
-- Resulta numa **cifra autenticada (AEAD)**, mais rápida que o AES-GCM em software puro, sem hardware dedicado
+- O bloco 0 do ChaCha20 deriva uma chave de Poly1305 nova por mensagem; os blocos 1 a $N$ fornecem o fluxo de chave que cifra por XOR
+- Resulta numa **cifra autenticada (AEAD)**: confidencialidade e integridade numa única construção
+- Mais rápido que o AES-GCM em software puro, sem hardware dedicado (AES-NI)
 
 ## Síntese do Capítulo {.unnumbered}
 
