@@ -231,6 +231,14 @@ $$C = E_{K_3}(D_{K_2}(E_{K_1}(P)))$$
 
 - Com $K_1 = K_2 = K_3$, o 3DES reduz-se a uma única cifragem DES: permite compatibilidade com sistemas antigos
 
+## O Ataque Meet-in-the-Middle {.unnumbered}
+
+<span class="eyebrow">3DES</span>
+
+- Cifra o texto claro sob todas as $2^{56}$ chaves $K_1$ possíveis e guarda os resultados numa tabela
+- Decifra o texto cifrado sob todas as $2^{56}$ chaves $K_3$ possíveis, procurando correspondência na tabela
+- Troca memória por tempo: o esforço efetivo cai de $2^{168}$ para cerca de $2^{112}$, muito abaixo do que as três chaves sugerem à primeira vista
+
 ## 3DES — Variantes e Segurança Efetiva {.unnumbered}
 
 <span class="eyebrow">3DES</span>
