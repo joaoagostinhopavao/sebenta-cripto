@@ -59,11 +59,29 @@ $$E_K : \{0,1\}^n \rightarrow \{0,1\}^n$$
 - Duas permutações possíveis dos 16 valores, escolhidas sem qualquer padrão
 - Quantas permutações destas existem ao todo? Quantos bits de chave são precisos para as endereçar todas?
 
-## Tamanho da Chave — Generalização {.unnumbered}
+## Duas Estimativas do Tamanho da Chave {.unnumbered}
 
 <span class="eyebrow">Fundamentos</span>
 
 - Total de permutações de 16 valores: $16! \approx 2{,}09 \times 10^{13}$
+- **Tamanho exato:** $2^x = 16!$, logo $x = \log_2(16!) \approx 45$ bits
+- **Estimativa mais direta** (usada a seguir): imaginar a chave como a própria tabela de substituição completa, o que dá um valor que maximiza este resultado
+
+## A Chave como Tabela de Substituição Completa {.unnumbered}
+
+<span class="eyebrow">Fundamentos</span>
+
+- Para a Permutação A, a tabela completa tem 16 entradas, cada uma com uma saída de 4 bits
+- O tamanho da chave é a área da própria tabela:
+
+$$\text{altura} \times \text{largura} = 16 \times 4 = 64 \text{ bits}$$
+
+- 16 caracteres hexadecimais × 4 bits cada = 64 bits para endereçar toda a tabela
+
+## Tamanho da Chave — Generalização {.unnumbered}
+
+<span class="eyebrow">Fundamentos</span>
+
 - Para um bloco de $n$ bits, a chave da cifra ideal precisa de:
 
 $$n \times 2^n \text{ bits}$$
@@ -134,19 +152,45 @@ O mesmo circuito serve para cifrar e para decifrar
 :::
 :::
 
-## DES — Data Encryption Standard {.unnumbered}
+## Exemplo com uma Rede Reduzida {.unnumbered}
+
+<span class="eyebrow">Rede de Feistel</span>
+
+- Bloco de 8 bits (metades de 4 bits), função $F(R, K) = \text{ROL}_1(R) \oplus K$ (rotação de 1 bit à esquerda, sem pretensão de segurança real)
+- Texto claro: $L_0 = 1010$, $R_0 = 0110$
+- Subchaves: $K_1 = 0011$, $K_2 = 1100$
+
+Serve apenas para ilustrar o mecanismo com números concretos
+
+## Exemplo: Duas Rondas de Cifragem {.unnumbered}
+
+<span class="eyebrow">Rede de Feistel</span>
+
+**Ronda 1:** $F(R_0, K_1) = \text{ROL}_1(0110) \oplus 0011 = 1111$
+$L_1 = 0110 \qquad R_1 = 1010 \oplus 1111 = 0101$
+
+**Ronda 2:** $F(R_1, K_2) = \text{ROL}_1(0101) \oplus 1100 = 0110$
+$L_2 = 0101 \qquad R_2 = 0110 \oplus 0110 = 0000$
+
+- Texto cifrado: $L_2 R_2 = 01010000$
+- Decifrar aplica as mesmas rondas com as subchaves invertidas ($K_2$, depois $K_1$), recuperando $L_0/R_0$ sem nunca inverter $F$
+
+## DES — Contexto Histórico {.unnumbered}
 
 <span class="eyebrow">DES</span>
 
 - Desenvolvido pela IBM, com contributos da NSA; adotado em 1977 como padrão federal dos EUA
 - Durante quase duas décadas, foi o algoritmo de cifra simétrica mais usado no mundo
+- A sua estrutura geral é exatamente a rede de Feistel já descrita, com $n=64$ e 16 rondas
 
-**Características:**
+## DES — Características Técnicas {.unnumbered}
+
+<span class="eyebrow">DES</span>
 
 - Bloco de **64 bits**
 - Chave de **56 bits** efetivos (representada como 64 bits, dos quais 8 são bits de paridade)
 - **16 rondas** de Feistel, cada uma com uma subchave de 48 bits
-- Permutação inicial (IP) e final (FP): fixas, sem contribuição criptográfica
+- Permutação inicial (IP) e final (FP): fixas, sem contribuição criptográfica, resquício da implementação em hardware original
 
 ## A Função F do DES {.unnumbered}
 
@@ -159,38 +203,42 @@ O mesmo circuito serve para cifrar e para decifrar
 3. **S-boxes (S1–S8):** 8 grupos de 6 bits, cada um devolve 4 bits não lineares: principal fonte de confusão
 4. **Permutação (P):** reorganização fixa dos 32 bits resultantes: fonte de difusão
 
-## A Queda do DES por Força Bruta {.unnumbered}
+## A Queda do DES: Fragilidades {.unnumbered}
 
 <span class="eyebrow">DES</span>
 
 - Espaço de chaves: $2^{56} \approx 7{,}2 \times 10^{16}$: astronomicamente seguro em 1977, vulnerável décadas depois
-- S-boxes especificadas pela NSA sem justificação pública: suspeitas nunca confirmadas, nunca inteiramente afastadas
+- S-boxes especificadas pela NSA sem justificação pública do critério de desenho: suspeitas de fraqueza deliberada, nunca confirmadas, nunca inteiramente afastadas
 
-**Cronologia dos ataques:**
+## A Queda do DES: Cronologia dos Ataques {.unnumbered}
 
-- 1997: DESCHALL, 96 dias (ciclos ociosos voluntários)
-- 1998: distributed.net, 39 dias; EFF constrói a *Deep Crack* (< 250 mil dólares), quebra o DES em ~56 horas
-- 1999: distributed.net + Deep Crack, 22 horas
+<span class="eyebrow">DES</span>
 
-O DES foi substituído em 1999. Está hoje obsoleto
+- 1997: DESCHALL quebra o DES em 96 dias, usando ciclos ociosos de computadores voluntários
+- 1998: distributed.net repete o feito em 39 dias; a EFF constrói a *Deep Crack* (< 250 mil dólares), que o quebra em ~56 horas
+- 1999: distributed.net + Deep Crack combinados reduzem o tempo a 22 horas
 
-## 3DES — Triple DES {.unnumbered}
+O DES foi formalmente substituído pelo 3DES em 1999. Está hoje obsoleto: não deve proteger informação nova
+
+## 3DES — Esquema EDE {.unnumbered}
 
 <span class="eyebrow">3DES</span>
 
 - Adotado em 1999 como solução de transição enquanto se preparava o AES
-- Aplica o DES três vezes, com chaves diferentes, segundo o esquema **EDE**:
+- Aplica o DES três vezes, com chaves diferentes, segundo o esquema **Encrypt-Decrypt-Encrypt**:
 
 $$C = E_{K_3}(D_{K_2}(E_{K_1}(P)))$$
 
-- Com $K_1 = K_2 = K_3$, o 3DES reduz-se a uma única cifragem DES (compatibilidade)
+- Com $K_1 = K_2 = K_3$, o 3DES reduz-se a uma única cifragem DES: permite compatibilidade com sistemas antigos
 
-**Variantes:**
+## 3DES — Variantes e Segurança Efetiva {.unnumbered}
 
-- Três chaves distintas: segurança efetiva de ~112 bits (não 168, por ataque *meet-in-the-middle*)
-- Duas chaves distintas: segurança efetiva de ~80 bits, hoje insuficiente
+<span class="eyebrow">3DES</span>
 
-O NIST recomenda, desde 2023, a descontinuação do 3DES em aplicações novas
+- **Três chaves distintas:** segurança efetiva de ~112 bits, não 168, devido ao ataque *meet-in-the-middle*
+- **Duas chaves distintas** ($K_1 = K_3$): segurança efetiva de ~80 bits, hoje insuficiente
+- Cerca de três vezes mais lento do que uma única cifragem DES
+- O NIST recomenda, desde 2023, a descontinuação do 3DES em aplicações novas
 
 ## Síntese do Capítulo {.unnumbered}
 
