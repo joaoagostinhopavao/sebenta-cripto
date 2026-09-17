@@ -1,0 +1,107 @@
+---
+title: "Infraestrutura de Chave Pública"
+subtitle: "PKI"
+author: "João Pavão"
+date: 2026-09-14
+lang: pt-PT
+format:
+  revealjs:
+    embed-resources: true
+    css: ../assets/css/slides.css
+    slide-number: true
+    transition: fade
+    center: false
+    footer: "Criptografia — Cibersegurança, UTAD"
+    fig-align: center
+    auto-stretch: false
+    logo: ""
+    title-slide-attributes:
+      data-background-gradient: "linear-gradient(135deg, #1a0505 0%, #7a1017 55%, #b0202a 100%)"
+---
+
+## Introdução {.unnumbered}
+
+<span class="eyebrow">PKI</span>
+
+- Como sabe alguém que uma chave pública pertence mesmo a quem diz pertencer?
+- Sem resposta, todo o edifício da criptografia assimétrica fica exposto a um único tipo de ataque
+- Este capítulo examina esse ataque e a solução que se tornou o padrão da indústria: a **infraestrutura de chave pública**
+
+## O Ataque do Intermediário em Detalhe {.unnumbered}
+
+<span class="eyebrow">MITM</span>
+
+![](../assets/images/fig-09-mitm.png){height="300px"}
+
+- Um atacante posicionado na rede intercepta e substitui as chaves públicas trocadas
+- Funciona porque uma chave pública é apenas um número, sem nada que a ligue de forma inseparável ao seu dono
+- Quebra **qualquer** algoritmo de chave pública, não é uma fraqueza específica do RSA, DH ou DSA
+
+## A Solução: uma Entidade de Confiança {.unnumbered}
+
+<span class="eyebrow">PKI</span>
+
+- Introduzir uma **entidade de confiança**, reconhecida antecipadamente por ambas as partes, que testemunhe a ligação entre uma identidade e uma chave pública
+- Uma **infraestrutura de chave pública (PKI)** liga formalmente identidades a chaves públicas, através de **certificados digitais**
+- Um certificado é assinado, verificável de forma independente e reutilizável por qualquer parte que confie no emissor
+
+## O Certificado X.509 {.unnumbered}
+
+<span class="eyebrow">PKI</span>
+
+![](../assets/images/fig-09-x509.png){height="300px"}
+
+- **Identidade** (*Subject*), **chave pública**, **validade**, **emissor** (*Issuer*), **número de série**
+- **Assinatura da CA:** a entidade certificadora assina, com a sua chave privada, o hash de todos os campos anteriores
+- É esta assinatura que transforma os dados de identificação numa afirmação verificável
+
+## A Cadeia de Certificação {.unnumbered}
+
+<span class="eyebrow">PKI</span>
+
+![](../assets/images/fig-09-cadeia-ca.png){height="300px"}
+
+- Um único par de chaves de CA a certificar diretamente cada site seria impraticável e frágil
+- A confiança organiza-se numa **cadeia**: cada certificado é assinado por outro, até uma **CA raiz**, pré-instalada no sistema
+- Confiar numa dezena de CAs raiz basta para validar qualquer certificado emitido em qualquer ponto da cadeia
+
+## Como Funciona a Verificação {.unnumbered}
+
+<span class="eyebrow">PKI</span>
+
+1. Lê o campo **Emissor**, identificando qual CA assinou
+2. Obtém a chave pública dessa CA (seguindo a cadeia até uma raiz confiada)
+3. Verifica a assinatura sobre os dados do certificado
+4. Confirma o **período de validade**
+5. Confirma o estado de **revogação** (CRL ou OCSP) e o **uso permitido**
+
+## Na Prática: Inspecionar um Certificado {.unnumbered}
+
+<span class="eyebrow">PKI</span>
+
+```bash
+$ openssl s_client -showcerts -connect www.exemplo.com:443 >> cert.pem
+$ openssl x509 -in cert.pem -text -noout
+```
+
+O primeiro comando regista a cadeia de certificados enviada pelo servidor; o segundo apresenta, em texto legível, o titular, o emissor, a validade e o algoritmo de assinatura
+
+## Síntese do Capítulo {.unnumbered}
+
+<span class="eyebrow">Síntese</span>
+
+1. O **ataque do intermediário (MITM)** quebra qualquer algoritmo de chave pública
+2. A solução é introduzir uma **entidade de confiança** partilhada
+3. Um **certificado X.509** liga uma identidade a uma chave pública, assinado por um emissor
+4. A confiança organiza-se numa **cadeia de certificação**, da CA raiz até ao titular final
+5. Verificar um certificado exige confirmar a assinatura, a validade **e** o estado de revogação
+
+## Para Pensar {.unnumbered}
+
+<span class="eyebrow">Reflexão</span>
+
+A cadeia de certificação resolve o problema de confiar numa chave pública introduzindo confiança numa CA raiz pré-instalada.
+
+::: {.fragment}
+Isto desloca o problema original para um problema ligeiramente diferente. Qual é esse novo problema, e porque é que confiar numa dezena de CAs raiz é mais praticável do que pedir a cada utilizador que confirme manualmente a chave pública de cada site?
+:::
