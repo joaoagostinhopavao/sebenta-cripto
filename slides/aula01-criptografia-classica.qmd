@@ -80,6 +80,24 @@ $$C = E(k, p) = (p + k) \bmod 26 \qquad p = D(k, C) = (C - k) \bmod 26$$
 - **Espaço de chaves:** apenas 25 valores distintos, trivialmente vulnerável a força bruta
 - **Criptanálise:** análise de frequência, ou identificação de blocos repetidos correspondentes a palavras curtas frequentes ("que", "se")
 
+## Criptanálise por Dígrafos e Trígrafos {.unnumbered}
+
+<span class="eyebrow">Cifras de Substituição</span>
+
+Texto cifrado, com dois blocos repetidos:
+
+```
+V  XBL  ZL  VBCL  UHV  L  V  XBL  ZL  CL
+```
+
+- **XBL** e **ZL** aparecem cada um 2 vezes
+- Em português, "QUE" é o trígrafo isolado mais comum, "SE" um dos dígrafos mais comuns: testa-se XBL→QUE, ZL→SE
+
+$$k = (\text{X} - \text{Q}) \bmod 26 = 7 \qquad k = (\text{Z} - \text{S}) \bmod 26 = 7$$
+
+- As duas hipóteses concordam no mesmo $k$: confirma-se sem qualquer força bruta
+- Resultado: "O que se ouve não é o que se vê."
+
 ## Cifra Monoalfabética {.unnumbered}
 
 <span class="eyebrow">Cifras de Substituição</span>
@@ -89,15 +107,53 @@ $$C = E(k, p) = (p + k) \bmod 26 \qquad p = D(k, C) = (C - k) \bmod 26$$
 - Ainda assim, cada letra do texto claro corresponde sempre à mesma letra cifrada: a distribuição de frequências transporta-se intacta para o texto cifrado
 - Vulnerável a análise de frequência: basta comparar a frequência das letras cifradas com a frequência conhecida da língua
 
-## Frequência de Letras em Português {.unnumbered}
+## A Distribuição de Letras em Português {.unnumbered}
 
 <span class="eyebrow">Cifras de Substituição</span>
 
 ![](../assets/images/fig-01-frequencia-letras-pt.png){height="300px"}
 
-- Em português, A, E e O dominam claramente; K, W e Y são praticamente ausentes
-- Textos curtos distorcem a análise: poucas ocorrências tornam cada letra estatisticamente instável
-- Combinando frequência de letras isoladas, repetição de blocos (dígrafos e trígrafos) e conhecimento da língua, um criptanalista recupera a chave mesmo quando a frequência isolada não basta
+- A, E e O dominam claramente; K, W e Y são praticamente ausentes
+- Contagem real sobre os três primeiros cantos d'*Os Lusíadas* (~103.000 caracteres)
+
+## Análise de Frequência: Um Texto Curto {.unnumbered}
+
+<span class="eyebrow">Cifras de Substituição</span>
+
+Texto cifrado (20 letras): `FVQRZQ MTB X ETV YTFRTZX`
+
+| Letra cifrada | Ocorrências | Observado |
+|:-:|:-:|:-:|
+| T | 4 | 20,0% |
+| F, V, Q, R, Z, X | 2 cada | 10,0% |
+
+- T seria candidato a A ou E, mas seis letras empatam logo a seguir, a 10%
+- Com apenas 20 letras, cada ocorrência vale 5 pontos percentuais: dados insuficientes para uma análise fiável
+
+## Análise de Frequência: Um Texto Longo {.unnumbered}
+
+<span class="eyebrow">Cifras de Substituição</span>
+
+Mesma chave, agora sobre 221 letras (primeira estrofe d'*Os Lusíadas*, de Camões)
+
+| Letra cifrada | Ocorrências | Observado |
+|:-:|:-:|:-:|
+| Q | 42 | 19,00% |
+| T | 25 | 11,31% |
+| Y, R, X | 18-19 | ~8% |
+
+- O par dominante do texto cifrado (Q, T) corresponde de imediato ao par dominante da língua (A, E): a distância ao terceiro colocado é grande o suficiente para não deixar dúvidas
+- A partir da 3.ª posição, vários valores ficam muito próximos: 221 letras ainda não bastam para os distinguir com segurança
+
+## Dígrafos, Trígrafos e o Resultado Final {.unnumbered}
+
+<span class="eyebrow">Cifras de Substituição</span>
+
+- Correspondência direta posição a posição: apenas 5 das 14 letras mais frequentes (36%) coincidem com a chave real
+- Blocos repetidos no texto cifrado: **CVT** (3×, "que"), **QZXY** (3×, sufixo "-ados"), **QRQB** (3×, sufixo "-aram")
+- Sabendo já que Q→A, as três hipóteses confirmam-se pela letra inicial comum: revela 11 letras da chave de uma só vez, sem qualquer força bruta
+
+Resultado: "As armas e os barões assinalados, / Que da ocidental praia Lusitana,"
 
 ## Cifra de Playfair {.unnumbered}
 
@@ -115,6 +171,19 @@ $$C = E(k, p) = (p + k) \bmod 26 \qquad p = D(k, C) = (C - k) \bmod 26$$
 ![](../assets/images/fig-01-playfair-grelha.png){height="320px"}
 :::
 :::
+
+## Exemplo: Cifrar com Playfair {.unnumbered}
+
+<span class="eyebrow">Cifras de Substituição</span>
+
+Frase "UTAD É FIXE", dividida em pares (X de enchimento no fim): `UT AD EF IX EX`
+
+- **UT**: mesma linha → PU
+- **AD**: mesma linha → RI
+- **EF**: sem linha nem coluna comum → forma-se um retângulo → IB
+- **IX**, **EX**: também em retângulo → DY, DW
+
+Texto cifrado: `PURIIBDYDW`
 
 ## Cifra Polialfabética: Vigenère {.unnumbered}
 
@@ -142,6 +211,21 @@ $$C_i = (p_i + k_{i \bmod m}) \bmod 26 \qquad p_i = (C_i - k_{i \bmod m}) \bmod 
 :::
 :::
 
+## Vigenère na Prática: o Exame de Kasiski {.unnumbered}
+
+<span class="eyebrow">Cifras de Substituição</span>
+
+Chave "REDIAL" (6 letras) sobre "Três tigres tristes dormem":
+
+```
+Chave:   R E D I A L R E D I A L R E D I A
+Claro:   T R E S T I G R E S T R I S T E S
+Cifrado: K V H A T T X V H A T C Z W W M S
+```
+
+- O bloco **VHA** repete-se: "RES" aparece em "T**RES**" e "tig**RES**", 6 posições depois, o mesmo comprimento da chave
+- Repetições a distâncias múltiplas do comprimento da chave revelam esse comprimento; cada grupo de posições (1,7,13,...; 2,8,14,...) resolve-se depois como uma César isolada
+
 ## Cifra de Vernam {.unnumbered}
 
 <span class="eyebrow">Cifras de Substituição</span>
@@ -161,6 +245,21 @@ $$C_i = P_i \oplus K_{i \bmod m} \qquad P_i = C_i \oplus K_{i \bmod m}$$
 - Shannon (1949): quando usado corretamente, é **matematicamente inquebrável**, segredo perfeito
 - Para qualquer texto cifrado, existe sempre uma chave que o decifra em qualquer texto claro do mesmo comprimento
 - Impraticável: chave tão longa quanto a mensagem, genuinamente aleatória, nunca reutilizada nem parcialmente
+
+## Segredo Perfeito: Um Exemplo Concreto {.unnumbered}
+
+<span class="eyebrow">Cifras de Substituição</span>
+
+Texto cifrado fixo (16 letras): `QXBZRPPNMNRSXSNJ`
+
+| Chave | Decifra para |
+|:--|:--|
+| QFXMKPLVTNZORYWJ | A SENHA ESTÁ SEGURA |
+| QVUZWLKZEWDYWSKJ | A CHAVE FOI ROUBADA |
+| CENPNCCTZLRGDPZP | O TOKEN NUNCA MUDOU |
+
+- As três decifragens são igualmente válidas: sem a chave, nada no texto cifrado distingue qual é a verdadeira
+- É esta impossibilidade que define o segredo perfeito
 
 ## A Máquina Enigma {.unnumbered}
 
