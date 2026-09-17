@@ -1,0 +1,124 @@
+---
+title: "Eficiência Algorítmica"
+subtitle: "e Criptografia Pós-Quântica"
+author: "João Pavão"
+date: 2026-09-14
+lang: pt-PT
+format:
+  revealjs:
+    embed-resources: true
+    css: ../assets/css/slides.css
+    slide-number: true
+    transition: fade
+    center: false
+    footer: "Criptografia — Cibersegurança, UTAD"
+    fig-align: center
+    auto-stretch: false
+    logo: ""
+    title-slide-attributes:
+      data-background-gradient: "linear-gradient(135deg, #1a0505 0%, #7a1017 55%, #b0202a 100%)"
+---
+
+## Introdução {.unnumbered}
+
+<span class="eyebrow">Eficiência e PQC</span>
+
+- O que significa, com rigor de engenharia, dizer que um esquema criptográfico é "seguro"?
+- Que preço em eficiência se paga por essa segurança?
+- E que preço adicional se paga agora que a computação quântica obriga a repensar praticamente tudo o que foi construído até aqui?
+
+## Quantificar a Segurança {.unnumbered}
+
+<span class="eyebrow">Segurança</span>
+
+- Segurança de software tradicional: um conceito **binário**, está segura ou não está
+- A criptografia mede segurança de forma diferente: como o **esforço quantificável** necessário para quebrar um esquema
+- Transforma a segurança de um conceito binário numa **ciência mensurável**
+
+## Segurança Informacional vs. Computacional {.unnumbered}
+
+<span class="eyebrow">Segurança</span>
+
+- **Segurança informacional:** impossibilidade teórica, absoluta, independente do poder de computação. Único exemplo do livro: o **One-Time Pad**
+- **Segurança computacional:** impossibilidade prática, não absoluta; não pode ser quebrado num tempo e recursos razoáveis
+- Com essa única exceção, **todos** os restantes esquemas (AES, RC4, ChaCha20, SHA-256, HMAC, RSA, DH, DSA, ECC) dependem de segurança computacional
+
+## Limites Razoáveis: 128 Bits em Números {.unnumbered}
+
+<span class="eyebrow">Segurança</span>
+
+- Uma chave de 128 bits admite $2^{128} \approx 3{,}4 \times 10^{38}$ valores
+- A $10^{11}$ chaves testadas por segundo, pesquisar todo o espaço demoraria:
+
+$$\frac{3{,}4 \times 10^{38}}{10^{11}} \approx 3{,}4 \times 10^{27} \text{ segundos} \approx 10^{20} \text{ anos}$$
+
+- Não é informacionalmente seguro, mas é, para qualquer efeito prático, computacionalmente inquebrável
+
+## O Enquadramento $(t,\varepsilon)$ {.unnumbered}
+
+<span class="eyebrow">Segurança</span>
+
+- $t$: número **máximo de operações** que um atacante realiza
+- $\varepsilon$: limite superior à **probabilidade de sucesso** desse atacante
+- Um esquema é **$(t,\varepsilon)$-seguro** se nenhum atacante com no máximo $t$ operações tiver sucesso com probabilidade superior a $\varepsilon$
+
+| Cenário | Operações ($t$) | Probabilidade ($\varepsilon$) |
+|---|---|---|
+| Uma tentativa | $1$ | $2^{-128}$ |
+| Metade do espaço | $2^{64}$ | $2^{-64}$ |
+| Todo o espaço | $2^{128}$ | $1$ |
+
+## Classes de Complexidade {.unnumbered}
+
+<span class="eyebrow">Segurança</span>
+
+- **Polinomial**, $O(n^k)$: cresce como potência de $n$; problema **tratável**
+- **Exponencial**, $O(c^n)$: cresce de forma explosiva; a pesquisa exaustiva, $O(2^n)$, é o exemplo paradigmático
+- **Subexponencial:** entre as duas; é a classe do *general number field sieve* (factorização, logaritmo discreto módulo um primo)
+- Um sistema como o RSA só funciona porque a operação legítima é **polinomial**, e o ataque sem o segredo é subexponencial ou exponencial
+
+## Eficiência dos Algoritmos Apresentados {.unnumbered}
+
+<span class="eyebrow">Comparação</span>
+
+| Algoritmo | Segurança clássica | Efeito de um computador quântico |
+|---|---|---|
+| AES-256 | 256 bits | Grover reduz para ~128 bits; ainda seguro |
+| ChaCha20-Poly1305 | 256 bits | Idêntico ao AES-256 |
+| RSA-3072 | 128 bits | Quebrado por Shor (tempo polinomial) |
+| ECDSA P-256 / X25519 | 128 bits | Quebrado por Shor (tempo polinomial) |
+| ML-KEM-768 (PQC) | ~128 bits | Sem ataque quântico eficiente conhecido |
+| ML-DSA-65 (PQC) | ~128 bits | Sem ataque quântico eficiente conhecido |
+
+A ECC é a família clássica mais eficiente; a PQC troca eficiência por resistência ao algoritmo de Shor
+
+## Criptografia Pós-Quântica: Ameaça e Migração {.unnumbered}
+
+<span class="eyebrow">Pós-Quântica</span>
+
+- **Shor (1997):** um computador quântico suficientemente grande resolve factorização e logaritmo discreto em tempo **polinomial**
+- **Grover:** reduz a segurança simétrica a metade; resolve-se duplicando o tamanho da chave
+- Cenário **"colher agora, decifrar depois"**: tráfego cifrado hoje pode ser decifrado retroativamente no futuro
+- NIST (2024): **ML-KEM** (Kyber) e **ML-DSA** (Dilithium), baseados em reticulados; já há esquemas **híbridos** (clássico + pós-quântico) em produção
+
+## Síntese do Capítulo {.unnumbered}
+
+<span class="eyebrow">Síntese</span>
+
+1. A criptografia mede segurança como **esforço quantificável**, não como propriedade binária
+2. **Segurança informacional** (só o One-Time Pad) vs. **segurança computacional** (todo o resto)
+3. O enquadramento **$(t,\varepsilon)$** formaliza a segurança computacional
+4. As **classes de complexidade** explicam porque problemas subexponenciais exigem chaves maiores que problemas exponenciais
+5. Toda a criptografia de chave pública depende de uma assimetria: operação legítima polinomial, ataque sem segredo subexponencial ou exponencial
+6. **Shor** quebra RSA, DH e ECC num computador quântico; **Grover** só reduz a segurança simétrica a metade
+7. O NIST já normalizou alternativas **pós-quânticas** (ML-KEM, ML-DSA), com chaves maiores; os primeiros híbridos já estão em produção
+
+## Para Pensar {.unnumbered}
+
+<span class="eyebrow">Reflexão</span>
+
+O cenário "colher agora, decifrar depois" ameaça o tráfego TLS, cuja chave de sessão deriva de um ECDH executado durante o *handshake*.
+
+::: {.fragment}
+Porque é que este cenário **não** ameaça da mesma forma dados cifrados com uma chave simétrica de longo prazo já combinada por um canal físico seguro, como uma pen USB entregue em mão?
+:::
