@@ -1,0 +1,123 @@
+---
+title: "Diffie-Hellman"
+subtitle: "e Assinaturas Digitais"
+author: "João Pavão"
+date: 2026-09-14
+lang: pt-PT
+format:
+  revealjs:
+    embed-resources: true
+    css: ../assets/css/slides.css
+    slide-number: true
+    transition: fade
+    center: false
+    footer: "Criptografia — Cibersegurança, UTAD"
+    fig-align: center
+    auto-stretch: false
+    logo: ""
+    title-slide-attributes:
+      data-background-gradient: "linear-gradient(135deg, #1a0505 0%, #7a1017 55%, #b0202a 100%)"
+---
+
+## Introdução {.unnumbered}
+
+<span class="eyebrow">Diffie-Hellman e Assinaturas</span>
+
+- Como combinar uma **chave simétrica partilhada** entre duas pessoas que nunca se encontraram? O **Diffie-Hellman** resolve isto
+- Como provar, de forma verificável, que um documento foi mesmo produzido por quem diz tê-lo produzido? As **assinaturas digitais** resolvem isto
+
+## Diffie-Hellman: o Problema do Logaritmo Discreto {.unnumbered}
+
+<span class="eyebrow">Diffie-Hellman</span>
+
+- Método para combinar em segurança uma chave partilhada, mesmo através de um canal completamente aberto
+- Calcular $A = g^x \bmod n$ é fácil; recuperar $x$ a partir de $A$ e $g$ é, para valores grandes, computacionalmente inviável: o **problema do logaritmo discreto**
+- Tal como a factorização, admite um ataque **subexponencial** (*general number field sieve*): por isso $p$ precisa de pelo menos 2048 a 3072 bits
+
+## O Algoritmo Diffie-Hellman {.unnumbered}
+
+<span class="eyebrow">Diffie-Hellman</span>
+
+![](../assets/images/fig-07-diffie-hellman.png){height="300px"}
+
+- Alice e Bob combinam publicamente $g$ e $p$; cada um escolhe um segredo, $x$ (Alice) e $y$ (Bob), nunca revelado
+- Trocam $A=g^x \bmod p$ e $B=g^y \bmod p$, em claro
+
+$$K = B^x \bmod p = g^{xy} \bmod p = A^y \bmod p$$
+
+- Ambos chegam ao mesmo segredo $K$, sem que $x$, $y$ ou $K$ tenham atravessado o canal
+
+## Assinaturas Digitais: o Conceito {.unnumbered}
+
+<span class="eyebrow">Assinaturas Digitais</span>
+
+- Cifrar com a **chave privada** do emissor, verificável por qualquer pessoa com a chave pública
+- Na prática, cifra-se o **hash** da mensagem, não a mensagem inteira (muito mais rápido)
+- O **DSA** (*Digital Signature Algorithm*) é dedicado só a isto: baseia-se no logaritmo discreto e garante **autenticação**, **integridade** e **não repúdio**
+
+## DSA: Parâmetros e Chaves {.unnumbered}
+
+<span class="eyebrow">DSA</span>
+
+1. Escolher uma função de hash aprovada $H$ (por exemplo, SHA-512)
+2. Escolher $(L,N)$: pares normalizados $(1024,160)$, $(2048,224)$, $(2048,256)$ ou $(3072,256)$
+3. Escolher $q$ (primo de $N$ bits) e $p$ (primo de $L$ bits, com $p-1$ múltiplo de $q$)
+4. Calcular $g = h^{(p-1)/q} \bmod p$
+
+$p$, $q$ e $g$ são públicos; a **chave privada** é $x$ aleatório; a **chave pública** é $y=g^x \bmod p$
+
+## DSA: Assinar e Verificar {.unnumbered}
+
+<span class="eyebrow">DSA</span>
+
+::: {.columns}
+::: {.column width="55%"}
+- Escolhe-se $k$, **efémero**, secreto e usado uma única vez
+
+$$r = (g^k \bmod p) \bmod q$$
+$$s = k^{-1}(H(m) + xr) \bmod q$$
+
+- A assinatura é o par $(r,s)$
+- O recetor calcula $v$ a partir de $p$, $q$, $g$, $y$ e $(r,s)$; se $v=r$, a assinatura é válida
+:::
+::: {.column width="45%"}
+![](../assets/images/fig-07-dsa-assinar-verificar.png){height="380px"}
+:::
+:::
+
+## Um Problema em Aberto: Confiar na Chave Pública {.unnumbered}
+
+<span class="eyebrow">Confiança</span>
+
+- Bob verifica a assinatura de Alice com a chave pública dela: mas como sabe que essa chave é mesmo de Alice?
+- Um atacante posicionado na rede pode interceptar e substituir-se a cada parte: o **ataque do intermediário** (*man-in-the-middle*, MITM)
+- Este ataque quebra qualquer algoritmo de chave pública que não confirme, de forma independente, a quem pertence uma chave
+
+## Síntese do Capítulo {.unnumbered}
+
+<span class="eyebrow">Síntese</span>
+
+1. O **Diffie-Hellman** combina uma chave secreta comum através de um canal aberto, sem nunca a transmitir
+2. A sua segurança assenta no **problema do logaritmo discreto**
+3. Cada parte troca um valor público calculado a partir de um segredo nunca revelado; ambas chegam ao mesmo $K=g^{xy} \bmod p$
+4. Uma **assinatura digital** cifra o hash de uma mensagem com a chave privada do autor, com RSA ou com um algoritmo dedicado, o **DSA**
+5. O DSA assina com $x$ e um valor efémero $k$, usado uma única vez
+6. Nenhum dos dois resolve, sozinho, o problema de **confiar** numa chave pública: sem isso, o MITM continua possível
+
+## Para Pensar {.unnumbered}
+
+<span class="eyebrow">Reflexão</span>
+
+No DSA, reutilizar o mesmo $k$ em duas assinaturas produz o mesmo $r$. Um atacante fica com duas equações, $s_1$ e $s_2$, e duas incógnitas, $k$ e $x$.
+
+::: {.fragment}
+Que operação simples entre estas duas equações elimina $k$ e permite isolar diretamente a chave privada $x$?
+:::
+
+::: {.fragment}
+**Solução:** subtrair as duas equações cancela o termo $xr$, comum a ambas, isolando $k$:
+
+$$k = \big(H(m_1)-H(m_2)\big)(s_1-s_2)^{-1} \bmod q \qquad x = (s_1 k - H(m_1))\,r^{-1} \bmod q$$
+
+Foi exatamente assim que a Sony perdeu, em 2010, a chave privada de assinatura de código da PlayStation 3: reutilizava sempre o mesmo $k$
+:::
