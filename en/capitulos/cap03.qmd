@@ -132,6 +132,14 @@ None of the modes presented so far, ECB, CBC, CFB or CTR, protects the **integri
 
 **GCM** (*Galois/Counter Mode*) solves this: it extends CTR mode (from which it inherits confidentiality and full parallelisation) with an authentication mechanism based on a hash function over a finite field, **GHASH**. The result is an **authenticated cipher** (*AEAD*, *Authenticated Encryption with Associated Data*): it produces, besides the ciphertext, a 128-bit authentication tag, computed not only over the ciphertext but also over any unencrypted **associated data** (*additional authenticated data*, AAD), such as network headers or metadata that need to be authenticated but not hidden. Any alteration, to either the ciphertext or the AAD, invalidates the tag.
 
+@fig-03-modo-gcm shows how the two parts fit together. At the top is the familiar CTR mode: the counters $\text{nonce} \Vert 2$, $\text{nonce} \Vert 3$, ... are encrypted under key $K$ and combined by XOR with the plaintext blocks. At the bottom, GHASH runs as a chain over the AAD, each ciphertext block and, finally, a block holding the lengths of both; between steps, the accumulated value is multiplied by $H = E_K(0^{128})$ in the finite field $GF(2^{128})$. The first counter, $J_0 = \text{nonce} \Vert 1$, encrypts no data: its encryption serves only to mask, by XOR, the output of GHASH, and that is what produces the tag.
+
+![GCM mode (NIST SP 800-38D), for a 96-bit *nonce*. At the top, CTR-mode encryption starting from counter 2; at the bottom, the GHASH chain over the AAD, the ciphertext blocks and their lengths. The tag is the XOR of the GHASH output with $E_K(J_0)$.](../assets/images/fig-03-modo-gcm-en.png){#fig-03-modo-gcm width="100%"}
+
+What travels on the channel is therefore three components (@fig-03-gcm-pacote): the AAD, in the clear but authenticated; the ciphertext, confidential and authenticated; and the tag. The receiver, who knows the key, repeats the GHASH computation over the received AAD and ciphertext and compares the result with the tag: if they differ in a single bit, the message is rejected before it is decrypted.
+
+![What travels on the channel in a GCM message: the AAD (visible, authenticated), the ciphertext (confidential, authenticated) and the 128-bit tag.](../assets/images/fig-03-gcm-pacote-en.png){#fig-03-gcm-pacote width="85%"}
+
 As in CTR, reusing the *nonce* (recommended at 96 bits) in GCM is catastrophic, and has already been exploited in practical forgery attacks against real TLS implementations [@Bock2016]. By combining confidentiality, integrity and full parallelisation, GCM is today the **recommended** mode for the generality of new applications, used, among others, in TLS 1.3, SSH, IPsec and QUIC.
 
 ### Comparison of modes of operation {#sec-03-modos-comparacao}

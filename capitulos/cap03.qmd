@@ -132,6 +132,14 @@ Nenhum dos modos apresentados até aqui, ECB, CBC, CFB ou CTR, protege a **integ
 
 O **GCM** (*Galois/Counter Mode*) resolve isto: estende o modo CTR (do qual herda a confidencialidade e a total paralelização) com um mecanismo de autenticação baseado numa função de hash sobre um corpo finito, o **GHASH**. O resultado é uma **cifra autenticada** (*AEAD*, *Authenticated Encryption with Associated Data*): produz, além do texto cifrado, uma marca de autenticação (*tag*) de 128 bits, calculada não só sobre o texto cifrado mas também sobre eventuais **dados associados** não cifrados (*additional authenticated data*, AAD), como cabeçalhos de rede ou metadados que precisam de ser autenticados mas não escondidos. Qualquer alteração, ao texto cifrado ou ao AAD, invalida a marca.
 
+A @fig-03-modo-gcm mostra como as duas partes se articulam. Na parte de cima está o CTR já conhecido: os contadores $\text{nonce} \Vert 2$, $\text{nonce} \Vert 3$, ... são cifrados com a chave $K$ e combinados por XOR com os blocos de texto claro. Na parte de baixo, o GHASH percorre em cadeia o AAD, cada bloco de texto cifrado e, no fim, um bloco com os comprimentos de ambos; entre cada passo, o valor acumulado é multiplicado por $H = E_K(0^{128})$ no corpo finito $GF(2^{128})$. O primeiro contador, $J_0 = \text{nonce} \Vert 1$, não cifra dados: o resultado de o cifrar serve apenas para mascarar, por XOR, a saída do GHASH, e é daí que sai a *tag*.
+
+![O modo GCM (NIST SP 800-38D), para um *nonce* de 96 bits. Em cima, a cifragem em modo CTR a partir do contador 2; em baixo, a cadeia GHASH sobre o AAD, os blocos de texto cifrado e os respetivos comprimentos. A *tag* resulta do XOR entre a saída do GHASH e $E_K(J_0)$.](../assets/images/fig-03-modo-gcm.png){#fig-03-modo-gcm width="100%"}
+
+O que segue no canal são, assim, três componentes (@fig-03-gcm-pacote): o AAD, em claro mas autenticado; o texto cifrado, confidencial e autenticado; e a *tag*. O recetor, que conhece a chave, repete o cálculo do GHASH sobre o AAD e o texto cifrado recebidos e compara o resultado com a *tag*: se diferirem num único bit, a mensagem é rejeitada antes de ser decifrada.
+
+![O que segue no canal numa mensagem GCM: o AAD (visível, autenticado), o texto cifrado (confidencial, autenticado) e a *tag* de 128 bits.](../assets/images/fig-03-gcm-pacote.png){#fig-03-gcm-pacote width="85%"}
+
 Tal como no CTR, a reutilização do *nonce* (recomendado a 96 bits) em GCM é catastrófica, e já foi explorada em ataques práticos de falsificação contra implementações reais de TLS [@Bock2016]. Por combinar confidencialidade, integridade e paralelização total, o GCM é hoje o modo **recomendado** para a generalidade das aplicações novas, usado, entre outros, no TLS 1.3, no SSH, no IPsec e no QUIC.
 
 ### Comparação dos modos de operação {#sec-03-modos-comparacao}
