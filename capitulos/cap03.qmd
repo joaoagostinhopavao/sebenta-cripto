@@ -126,17 +126,30 @@ Isto transforma, na prática, uma cifra de bloco numa cifra de fluxo, tema do pr
 
 Este ganho de desempenho tem duas contrapartidas importantes. Primeiro, **reutilizar o mesmo nonce é catastrófico**: tal como numa cifra de fluxo genuína (capítulo seguinte), reutilizá-lo produz o mesmo fluxo pseudo-aleatório para duas mensagens diferentes, expondo-as ao ataque do *two-time pad*. Segundo, o CTR é **maleável**: como a cifragem actua sobre o contador, não sobre o texto claro, a propriedade de difusão do AES nunca chega a actuar sobre a relação entre texto cifrado e texto claro. Um atacante que altere um bit do texto cifrado altera exactamente o bit correspondente do texto claro decifrado, de forma previsível, sem que nada no CTR o detecte.
 
+::: {.callout-important}
+## Confidencialidade não é integridade
+
+Nenhum dos modos apresentados até aqui, ECB, CBC, CFB ou CTR, protege a **integridade** da mensagem. A própria norma que os define chama-lhes *modos de confidencialidade* [@NIST80038A]: impedem que um atacante leia a mensagem, mas não que a altere. Um atacante que intercepte o texto cifrado pode modificá-lo, e o receptor decifra a versão adulterada sem dar por nada.
+
+O CTR é o caso extremo. Trocar um bit do texto cifrado troca exactamente o mesmo bit do texto claro decifrado, e nenhum outro [@NIST80038A, Apêndice D]: o atacante escolhe, bit a bit, o efeito que quer produzir. É por isso que a norma do AES-CTR no IPsec considera trivial falsificar um texto cifrado AES-CTR e **obriga** a usá-lo com autenticação [@RFC3686]. O CBC também não está protegido: um bit trocado num bloco estraga esse bloco ao decifrar, mas troca de forma previsível o mesmo bit do bloco seguinte [@NIST80038A, Apêndice D].
+
+**Regra prática: um modo de confidencialidade nunca se usa sozinho.** Há duas formas correctas de lhe juntar integridade:
+
+- usar um modo de **cifra autenticada** (*AEAD*), que faz as duas coisas numa só construção, como o GCM (secção seguinte) ou o ChaCha20-Poly1305;
+- cifrar primeiro e calcular depois um **MAC** sobre o texto cifrado, com uma chave própria, verificando-o antes de decifrar (*encrypt-then-MAC*) [@BellareNamprempre2000].
+
+Os protocolos actuais seguem esta regra: o TLS 1.3 só aceita algoritmos AEAD [@RFC8446], e o SRTP, usado em chamadas de voz e vídeo, combina por omissão o AES em modo contador com o HMAC-SHA1, sublinhando que a cifragem, por si só, não fornece autenticação da mensagem [@RFC3711].
+:::
+
 ### GCM — Galois/Counter Mode {#sec-03-gcm}
 
-Nenhum dos modos apresentados até aqui, ECB, CBC, CFB ou CTR, protege a **integridade** da mensagem: um atacante que intercepte o texto cifrado pode alterá-lo (o CTR, como se viu, é particularmente vulnerável a isto), e nenhum destes modos detecta a alteração — só garantem que o atacante não consegue ler o conteúdo original, não que não o consiga adulterar.
-
-O **GCM** (*Galois/Counter Mode*) resolve isto: estende o modo CTR (do qual herda a confidencialidade e a total paralelização) com um mecanismo de autenticação baseado numa função de hash sobre um corpo finito, o **GHASH**. O resultado é uma **cifra autenticada** (*AEAD*, *Authenticated Encryption with Associated Data*): produz, além do texto cifrado, uma marca de autenticação (*tag*) de 128 bits, calculada não só sobre o texto cifrado mas também sobre eventuais **dados associados** não cifrados (*additional authenticated data*, AAD), como cabeçalhos de rede ou metadados que precisam de ser autenticados mas não escondidos. Qualquer alteração, ao texto cifrado ou ao AAD, invalida a marca.
+O **GCM** (*Galois/Counter Mode*) resolve o problema da integridade dentro do próprio modo de operação: estende o modo CTR (do qual herda a confidencialidade e a total paralelização) com um mecanismo de autenticação baseado numa função de hash sobre um corpo finito, o **GHASH**. O resultado é uma **cifra autenticada** (*AEAD*, *Authenticated Encryption with Associated Data*): produz, além do texto cifrado, uma marca de autenticação (*tag*) de 128 bits, calculada não só sobre o texto cifrado mas também sobre eventuais **dados associados** não cifrados (*additional authenticated data*, AAD), como cabeçalhos de rede ou metadados que precisam de ser autenticados mas não escondidos. Qualquer alteração, ao texto cifrado ou ao AAD, invalida a marca.
 
 A @fig-03-modo-gcm mostra como as duas partes se articulam. Na parte de cima está o CTR já conhecido: os contadores $\text{nonce} \Vert 2$, $\text{nonce} \Vert 3$, ... são cifrados com a chave $K$ e combinados por XOR com os blocos de texto claro. Na parte de baixo, o GHASH percorre em cadeia o AAD, cada bloco de texto cifrado e, no fim, um bloco com os comprimentos de ambos; entre cada passo, o valor acumulado é multiplicado por $H = E_K(0^{128})$ no corpo finito $GF(2^{128})$. O primeiro contador, $J_0 = \text{nonce} \Vert 1$, não cifra dados: o resultado de o cifrar serve apenas para mascarar, por XOR, a saída do GHASH, e é daí que sai a *tag*.
 
-![O modo GCM (NIST SP 800-38D), para um *nonce* de 96 bits. Em cima, a cifragem em modo CTR a partir do contador 2; em baixo, a cadeia GHASH sobre o AAD, os blocos de texto cifrado e os respetivos comprimentos. A *tag* resulta do XOR entre a saída do GHASH e $E_K(J_0)$.](../assets/images/fig-03-modo-gcm.png){#fig-03-modo-gcm width="100%"}
+![O modo GCM (NIST SP 800-38D), para um *nonce* de 96 bits. Em cima, a cifragem em modo CTR a partir do contador 2; em baixo, a cadeia GHASH sobre o AAD, os blocos de texto cifrado e os respectivos comprimentos. A *tag* resulta do XOR entre a saída do GHASH e $E_K(J_0)$.](../assets/images/fig-03-modo-gcm.png){#fig-03-modo-gcm width="100%"}
 
-O que segue no canal são, assim, três componentes (@fig-03-gcm-pacote): o AAD, em claro mas autenticado; o texto cifrado, confidencial e autenticado; e a *tag*. O recetor, que conhece a chave, repete o cálculo do GHASH sobre o AAD e o texto cifrado recebidos e compara o resultado com a *tag*: se diferirem num único bit, a mensagem é rejeitada antes de ser decifrada.
+O que segue no canal são, assim, três componentes (@fig-03-gcm-pacote): o AAD, em claro mas autenticado; o texto cifrado, confidencial e autenticado; e a *tag*. O receptor, que conhece a chave, repete o cálculo do GHASH sobre o AAD e o texto cifrado recebidos e compara o resultado com a *tag*: se diferirem num único bit, a mensagem é rejeitada antes de ser decifrada.
 
 ![O que segue no canal numa mensagem GCM: o AAD (visível, autenticado), o texto cifrado (confidencial, autenticado) e a *tag* de 128 bits.](../assets/images/fig-03-gcm-pacote.png){#fig-03-gcm-pacote width="85%"}
 
@@ -174,8 +187,9 @@ Este capítulo apresentou o algoritmo que hoje ocupa o lugar do DES, e a forma c
 4. Cada ronda aplica quatro transformações: **SubBytes** (confusão, via S-box não linear), **ShiftRows** e **MixColumns** (difusão, entre e dentro de colunas), e **AddRoundKey** (mistura com a subchave)
 5. Não existe, até hoje, nenhum ataque criptanalítico prático contra o AES; as vulnerabilidades reais são de implementação (ataques de canal lateral), não do algoritmo em si
 6. Um **modo de operação** define como aplicar uma cifra de bloco a mensagens maiores do que um bloco: o **ECB** é simples mas revela padrões estruturais; o **CBC** e o **CFB** encadeiam os blocos e eliminam-os, à custa da cifragem não ser paralelizável; o **CTR** transforma a cifra de bloco numa cifra de fluxo, totalmente paralelizável, mas maleável
-7. Nenhum destes modos protege a integridade da mensagem; o **GCM** resolve isto combinando o CTR com autenticação (GHASH), numa construção **AEAD** que é hoje o modo recomendado para a generalidade das aplicações novas
-8. O **padding** (nomeadamente o esquema PKCS#7) permite aos modos que cifram directamente bloco a bloco, como o ECB e o CBC, processar mensagens de qualquer comprimento; o CTR e o GCM dispensam-no. Uma implementação incorrecta da validação de *padding* pode originar ataques de oráculo de *padding*
+7. **Confidencialidade não é integridade:** nenhum destes modos impede que o texto cifrado seja alterado sem detecção (no CTR, o atacante troca exactamente os bits que quer); por isso, um modo de confidencialidade **nunca se usa sozinho**, mas sim num modo AEAD ou seguido de um MAC (*encrypt-then-MAC*)
+8. O **GCM** combina o CTR com autenticação (GHASH), numa construção **AEAD** que é hoje o modo recomendado para a generalidade das aplicações novas
+9. O **padding** (nomeadamente o esquema PKCS#7) permite aos modos que cifram directamente bloco a bloco, como o ECB e o CBC, processar mensagens de qualquer comprimento; o CTR e o GCM dispensam-no. Uma implementação incorrecta da validação de *padding* pode originar ataques de oráculo de *padding*
 
 ## Para Pensar {#sec-03-reflexao}
 
