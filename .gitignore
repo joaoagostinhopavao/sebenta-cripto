@@ -33,3 +33,6 @@ assets/draw-io/.$*.dtmp
 # base64 — binários grandes); regenerar com `quarto render slides/*.qmd`
 slides/*.html
 slides/*.pdf
+
+# Slides: ficam só locais, fora do repositório remoto
+slides/
