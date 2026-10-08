@@ -29,14 +29,14 @@ Esta é exactamente a função de uma **infraestrutura de chave pública** (*Pub
 
 A norma **X.509**, hoje universal na Web, define a estrutura de um certificado de chave pública. Um certificado X.509 contém, no essencial, os dados de identificação do titular e a assinatura de quem os certifica [@RFC5280]:
 
-![Estrutura essencial de um certificado X.509: os dados do titular (identidade, chave pública, período de validade, emissor e número de série), e a assinatura da entidade certificadora sobre o hash desses dados.](../assets/images/fig-09-x509.png){#fig-09-x509 width=55%}
+![Estrutura essencial de um certificado X.509: os dados do titular (identidade, chave pública, período de validade, emissor e número de série), e a assinatura da entidade certificadora sobre o *hash* desses dados.](../assets/images/fig-09-x509.png){#fig-09-x509 width=55%}
 
 - **Identidade** (*Subject*): a quem pertence o certificado, tipicamente um domínio, uma organização, ou uma pessoa.
 - **Chave pública**: a chave que o certificado atesta pertencer a essa identidade.
 - **Validade**: um intervalo de datas fora do qual o certificado deixa de ser considerado válido.
 - **Emissor** (*Issuer*): a identidade da entidade certificadora que o assinou.
 - **Número de série**: um identificador único do certificado, essencial para o processo de revogação.
-- **Assinatura da CA**: a **entidade certificadora** (*Certificate Authority*, CA) assina, com a sua própria chave privada, o hash de todos os campos anteriores: $\mathrm{Sign}(sk_{CA}, H(\text{dados do titular}))$.
+- **Assinatura da CA**: a **entidade certificadora** (*Certificate Authority*, CA) assina, com a sua própria chave privada, o *hash* de todos os campos anteriores: $\mathrm{Sign}(sk_{CA}, H(\text{dados do titular}))$.
 
 Esta última linha é o que transforma os dados de identificação numa afirmação verificável: qualquer pessoa com a chave pública da CA consegue confirmar que foi mesmo aquela CA, e não outra entidade, a atestar a ligação entre aquela identidade e aquela chave pública.
 
@@ -77,7 +77,7 @@ Este capítulo resolveu o problema deixado em aberto no capítulo anterior:
 
 1. O **ataque do intermediário** (MITM) quebra qualquer algoritmo de chave pública, substituindo as chaves trocadas por outras, controladas pelo atacante, sem que nenhuma das vítimas o perceba
 2. A solução é introduzir uma **entidade de confiança** partilhada, capaz de atestar formalmente a ligação entre uma identidade e uma chave pública
-3. Um **certificado X.509** contém a identidade do titular, a sua chave pública, um período de validade, o emissor, e a assinatura desse emissor sobre um hash de todos estes dados
+3. Um **certificado X.509** contém a identidade do titular, a sua chave pública, um período de validade, o emissor, e a assinatura desse emissor sobre um *hash* de todos estes dados
 4. A confiança organiza-se numa **cadeia de certificação**, da CA raiz (pré-instalada no sistema) até ao titular final, através de CAs intermédias
 5. Verificar um certificado exige confirmar a assinatura da CA emissora, o período de validade, e o estado de revogação, não basta confirmar só a assinatura
 

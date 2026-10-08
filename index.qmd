@@ -22,7 +22,7 @@ Os capítulos seguem a estrutura das aulas teóricas do módulo (as duas última
 2. Cifras de Bloco — fundamentos, Feistel, DES e 3DES
 3. AES — estágios e modos de operação
 4. Cifras de Fluxo — RC4, Salsa20, ChaCha20 e padding
-5. Hashing — propriedades, ataques, SHA, MAC e HMAC
+5. *Hashing* — propriedades, ataques, SHA, MAC e HMAC
 6. Criptografia Assimétrica e RSA
 7. Diffie-Hellman e Assinaturas Digitais
 8. Criptografia de Curva Elíptica

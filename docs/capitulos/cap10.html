@@ -231,7 +231,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA, MAC e HMAC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><em>Hashing</em> — Propriedades, Ataques, SHA, MAC e HMAC</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -327,7 +327,7 @@ window.Quarto = {
 
 <section id="sec-10-intro" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-10-intro">Introdução</h2>
-<p>Este capítulo mostra como as ferramentas apresentadas ao longo do livro, cifras simétricas, funções de hash, MACs, RSA, Diffie-Hellman, curva elíptica e certificados X.509, se combinam em dois protocolos reais de largo uso: o <strong>TLS</strong>, que protege praticamente todo o tráfego web actual, e o <strong>PGP</strong>, um dos primeiros sistemas de criptografia de utilização generalizada para correio electrónico. Outros esquemas de interesse prático, à medida que forem sendo incorporados no programa da UC, terão naturalmente lugar aqui.</p>
+<p>Este capítulo mostra como as ferramentas apresentadas ao longo do livro, cifras simétricas, funções de <em>hash</em>, MACs, RSA, Diffie-Hellman, curva elíptica e certificados X.509, se combinam em dois protocolos reais de largo uso: o <strong>TLS</strong>, que protege praticamente todo o tráfego web actual, e o <strong>PGP</strong>, um dos primeiros sistemas de criptografia de utilização generalizada para correio electrónico. Outros esquemas de interesse prático, à medida que forem sendo incorporados no programa da UC, terão naturalmente lugar aqui.</p>
 </section>
 <section id="sec-10-tls-objetivos" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="sec-10-tls-objetivos"><span class="header-section-number">10.1</span> TLS: Objectivos e Camadas</h2>
@@ -351,7 +351,7 @@ Figura&nbsp;10.1: O handshake do TLS 1.3: cliente e servidor trocam um valor de 
 </section>
 <section id="sec-10-tls-cifras" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="sec-10-tls-cifras"><span class="header-section-number">10.3</span> Cifras Modernas em TLS</h2>
-<p>Uma <strong>cifra combinada</strong> (<em>cipher suite</em>) do TLS 1.3 especifica o algoritmo AEAD e a função de hash usada para derivar chaves e autenticar o <em>handshake</em>. As duas combinações dominantes na prática actual já foram ambas apresentadas neste livro:</p>
+<p>Uma <strong>cifra combinada</strong> (<em>cipher suite</em>) do TLS 1.3 especifica o algoritmo AEAD e a função de <em>hash</em> usada para derivar chaves e autenticar o <em>handshake</em>. As duas combinações dominantes na prática actual já foram ambas apresentadas neste livro:</p>
 <ul>
 <li><code>TLS_AES_128_GCM_SHA256</code>: AES em modo GCM (Secção 3.6) com SHA-256 (Secção 5.3), beneficia de aceleração de hardware (AES-NI) na generalidade dos processadores modernos.</li>
 <li><code>TLS_CHACHA20_POLY1305_SHA256</code>: ChaCha20-Poly1305 (Secção 4.5) com SHA-256, preferido em dispositivos sem aceleração de hardware para AES, como muitos telemóveis, exactamente pela razão de desempenho já discutida no Capítulo 4.</li>
@@ -370,7 +370,7 @@ Figura&nbsp;10.2: O esquema híbrido do PGP: a mensagem é assinada com a chave 
 </figcaption>
 </figure>
 </div>
-<p>Do lado do emissor: a mensagem <span class="math inline">\(M\)</span> é primeiro assinada (hash mais cifra com a chave privada do emissor, tal como na Secção 7.4); o resultado é cifrado com uma <strong>chave de sessão</strong> <span class="math inline">\(K_s\)</span>, gerada ao acaso e usada uma única vez, através de uma cifra simétrica rápida; e essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário, usando RSA. O que é transmitido é o par (texto cifrado, chave de sessão cifrada). Do lado do receptor, o processo inverte-se: a chave privada do destinatário decifra <span class="math inline">\(K_s\)</span>, que decifra o texto, revelando a mensagem e a assinatura, que se verifica por fim com a chave pública do emissor.</p>
+<p>Do lado do emissor: a mensagem <span class="math inline">\(M\)</span> é primeiro assinada (<em>hash</em> mais cifra com a chave privada do emissor, tal como na Secção 7.4); o resultado é cifrado com uma <strong>chave de sessão</strong> <span class="math inline">\(K_s\)</span>, gerada ao acaso e usada uma única vez, através de uma cifra simétrica rápida; e essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário, usando RSA. O que é transmitido é o par (texto cifrado, chave de sessão cifrada). Do lado do receptor, o processo inverte-se: a chave privada do destinatário decifra <span class="math inline">\(K_s\)</span>, que decifra o texto, revelando a mensagem e a assinatura, que se verifica por fim com a chave pública do emissor.</p>
 <p>Uma diferença de fundo em relação ao modelo do Capítulo 9 é o modelo de confiança: em vez de uma hierarquia de CAs, o PGP assenta numa <strong>rede de confiança</strong> (<em>Web of Trust</em>), em que cada utilizador assina as chaves públicas de outros em quem confia directamente, e a confiança propaga-se de forma descentralizada através dessa rede de assinaturas <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>.</p>
 </section>
 <section id="sec-10-sintese" class="level2" data-number="10.5">
@@ -1043,7 +1043,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução {#sec-10-intro .unnumbered}</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Este capítulo mostra como as ferramentas apresentadas ao longo do livro, cifras simétricas, funções de hash, MACs, RSA, Diffie-Hellman, curva elíptica e certificados X.509, se combinam em dois protocolos reais de largo uso: o **TLS**, que protege praticamente todo o tráfego web actual, e o **PGP**, um dos primeiros sistemas de criptografia de utilização generalizada para correio electrónico. Outros esquemas de interesse prático, à medida que forem sendo incorporados no programa da UC, terão naturalmente lugar aqui.</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Este capítulo mostra como as ferramentas apresentadas ao longo do livro, cifras simétricas, funções de *hash*, MACs, RSA, Diffie-Hellman, curva elíptica e certificados X.509, se combinam em dois protocolos reais de largo uso: o **TLS**, que protege praticamente todo o tráfego web actual, e o **PGP**, um dos primeiros sistemas de criptografia de utilização generalizada para correio electrónico. Outros esquemas de interesse prático, à medida que forem sendo incorporados no programa da UC, terão naturalmente lugar aqui.</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## TLS: Objectivos e Camadas {#sec-10-tls-objetivos}</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
@@ -1061,7 +1061,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cifras Modernas em TLS {#sec-10-tls-cifras}</span></span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Uma **cifra combinada** (*cipher suite*) do TLS 1.3 especifica o algoritmo AEAD e a função de hash usada para derivar chaves e autenticar o *handshake*. As duas combinações dominantes na prática actual já foram ambas apresentadas neste livro:</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Uma **cifra combinada** (*cipher suite*) do TLS 1.3 especifica o algoritmo AEAD e a função de *hash* usada para derivar chaves e autenticar o *handshake*. As duas combinações dominantes na prática actual já foram ambas apresentadas neste livro:</span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`TLS_AES_128_GCM_SHA256`</span>: AES em modo GCM (Secção 3.6) com SHA-256 (Secção 5.3), beneficia de aceleração de hardware (AES-NI) na generalidade dos processadores modernos.</span>
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`TLS_CHACHA20_POLY1305_SHA256`</span>: ChaCha20-Poly1305 (Secção 4.5) com SHA-256, preferido em dispositivos sem aceleração de hardware para AES, como muitos telemóveis, exactamente pela razão de desempenho já discutida no Capítulo 4.</span>
@@ -1072,7 +1072,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="al">![O esquema híbrido do PGP: a mensagem é assinada com a chave privada do emissor e cifrada com uma chave de sessão gerada ao acaso; essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário. Só quem tiver a chave privada correspondente consegue recuperar a chave de sessão, e por essa via a mensagem.](../assets/images/fig-10-pgp.png)</span>{#fig-10-pgp width=100%}</span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>Do lado do emissor: a mensagem $M$ é primeiro assinada (hash mais cifra com a chave privada do emissor, tal como na Secção 7.4); o resultado é cifrado com uma **chave de sessão** $K_s$, gerada ao acaso e usada uma única vez, através de uma cifra simétrica rápida; e essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário, usando RSA. O que é transmitido é o par (texto cifrado, chave de sessão cifrada). Do lado do receptor, o processo inverte-se: a chave privada do destinatário decifra $K_s$, que decifra o texto, revelando a mensagem e a assinatura, que se verifica por fim com a chave pública do emissor.</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>Do lado do emissor: a mensagem $M$ é primeiro assinada (*hash* mais cifra com a chave privada do emissor, tal como na Secção 7.4); o resultado é cifrado com uma **chave de sessão** $K_s$, gerada ao acaso e usada uma única vez, através de uma cifra simétrica rápida; e essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário, usando RSA. O que é transmitido é o par (texto cifrado, chave de sessão cifrada). Do lado do receptor, o processo inverte-se: a chave privada do destinatário decifra $K_s$, que decifra o texto, revelando a mensagem e a assinatura, que se verifica por fim com a chave pública do emissor.</span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>Uma diferença de fundo em relação ao modelo do Capítulo 9 é o modelo de confiança: em vez de uma hierarquia de CAs, o PGP assenta numa **rede de confiança** (*Web of Trust*), em que cada utilizador assina as chaves públicas de outros em quem confia directamente, e a confiança propaga-se de forma descentralizada através dessa rede de assinaturas <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>.</span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>

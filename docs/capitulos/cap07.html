@@ -231,7 +231,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA, MAC e HMAC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><em>Hashing</em> — Propriedades, Ataques, SHA, MAC e HMAC</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -360,14 +360,14 @@ Figura&nbsp;7.1: O algoritmo de Diffie-Hellman: <span class="math inline">\(g\)<
 </section>
 <section id="sec-07-assinaturas-conceito" class="level2" data-number="7.4">
 <h2 data-number="7.4" class="anchored" data-anchor-id="sec-07-assinaturas-conceito"><span class="header-section-number">7.4</span> Assinaturas Digitais: o Conceito</h2>
-<p>O capítulo anterior já introduziu a ideia essencial de uma assinatura digital: cifrar com a <strong>chave privada</strong> do emissor, de forma que qualquer pessoa a consiga verificar com a sua chave pública, mas só o dono da chave privada a consiga produzir. A forma mais directa de aplicar isto a uma mensagem é cifrar o seu <strong>hash</strong> com a chave privada, em vez da mensagem inteira (o que seria muito mais lento): usar, por exemplo, o RSA para cifrar <span class="math inline">\(H(m)\)</span>.</p>
+<p>O capítulo anterior já introduziu a ideia essencial de uma assinatura digital: cifrar com a <strong>chave privada</strong> do emissor, de forma que qualquer pessoa a consiga verificar com a sua chave pública, mas só o dono da chave privada a consiga produzir. A forma mais directa de aplicar isto a uma mensagem é cifrar o seu <strong><em>hash</em></strong> com a chave privada, em vez da mensagem inteira (o que seria muito mais lento): usar, por exemplo, o RSA para cifrar <span class="math inline">\(H(m)\)</span>.</p>
 <p>Existe também um algoritmo desenhado especificamente para este único propósito, sem servir para encriptação, o <strong>DSA</strong> (<em>Digital Signature Algorithm</em>). Tal como o Diffie-Hellman, usa criptografia de chave pública baseada nas propriedades da exponenciação modular e no problema do logaritmo discreto, é computacionalmente complexo, e fornece três garantias em simultâneo: <strong>autenticação</strong> (o receptor consegue verificar a origem da mensagem), <strong>integridade</strong>, e <strong>não repúdio</strong> (o autor não consegue negar credivelmente ter assinado).</p>
 </section>
 <section id="sec-07-dsa-parametros" class="level2" data-number="7.5">
 <h2 data-number="7.5" class="anchored" data-anchor-id="sec-07-dsa-parametros"><span class="header-section-number">7.5</span> DSA: Parâmetros e Chaves</h2>
 <p>A definição dos parâmetros iniciais do DSA segue estes passos:</p>
 <ol type="1">
-<li>Escolher uma <strong>função de hash aprovada</strong> <span class="math inline">\(H\)</span> (por exemplo, SHA-512).</li>
+<li>Escolher uma <strong>função de <em>hash</em> aprovada</strong> <span class="math inline">\(H\)</span> (por exemplo, SHA-512).</li>
 <li>Escolher um comprimento de chave <span class="math inline">\(L\)</span> e um comprimento de módulo <span class="math inline">\(N\)</span>, com <span class="math inline">\(N&lt;L\)</span> e <span class="math inline">\(L \le\)</span> o comprimento da saída de <span class="math inline">\(H\)</span>. Os pares <span class="math inline">\((L,N)\)</span> normalizados são <span class="math inline">\((1024,160)\)</span>, <span class="math inline">\((2048,224)\)</span>, <span class="math inline">\((2048,256)\)</span> ou <span class="math inline">\((3072,256)\)</span>.</li>
 <li>Escolher <span class="math inline">\(q\)</span>, um primo de <span class="math inline">\(N\)</span> bits.</li>
 <li>Escolher <span class="math inline">\(p\)</span>, um primo de <span class="math inline">\(L\)</span> bits, tal que <span class="math inline">\(p-1\)</span> seja múltiplo de <span class="math inline">\(q\)</span>.</li>
@@ -411,7 +411,7 @@ Figura&nbsp;7.2: Alice assina <span class="math inline">\(m\)</span> com a sua c
 <li>O <strong>Diffie-Hellman</strong> permite a duas partes combinarem uma chave secreta comum através de um canal completamente aberto, sem nunca a transmitir directamente</li>
 <li>A sua segurança assenta no <strong>problema do logaritmo discreto</strong>: calcular <span class="math inline">\(g^x \bmod p\)</span> é fácil, mas recuperar <span class="math inline">\(x\)</span> a partir do resultado é computacionalmente inviável para valores suficientemente grandes</li>
 <li>Cada parte troca um valor público (<span class="math inline">\(g^x \bmod p\)</span> ou <span class="math inline">\(g^y \bmod p\)</span>), calculado a partir de um segredo que nunca revela; ambas chegam ao mesmo segredo comum <span class="math inline">\(g^{xy} \bmod p\)</span></li>
-<li>Uma <strong>assinatura digital</strong> pode ser construída cifrando o hash de uma mensagem com a chave privada do autor (usando RSA, por exemplo), ou com um algoritmo dedicado como o <strong>DSA</strong></li>
+<li>Uma <strong>assinatura digital</strong> pode ser construída cifrando o <em>hash</em> de uma mensagem com a chave privada do autor (usando RSA, por exemplo), ou com um algoritmo dedicado como o <strong>DSA</strong></li>
 <li>O DSA assina com uma chave privada <span class="math inline">\(x\)</span> e um valor efémero <span class="math inline">\(k\)</span>, usado uma única vez por assinatura; qualquer pessoa verifica depois com a chave pública correspondente, sem nunca ter acesso a <span class="math inline">\(x\)</span> nem a <span class="math inline">\(k\)</span></li>
 <li>Nenhum destes dois mecanismos resolve, sozinho, o problema de <strong>confiar</strong> que uma chave pública pertence mesmo a quem diz pertencer: sem essa garantia, um atacante posicionado no meio do canal (MITM) consegue substituir-se a qualquer uma das partes</li>
 </ol>
@@ -1116,7 +1116,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">## Assinaturas Digitais: o Conceito {#sec-07-assinaturas-conceito}</span></span>
 <span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>O capítulo anterior já introduziu a ideia essencial de uma assinatura digital: cifrar com a **chave privada** do emissor, de forma que qualquer pessoa a consiga verificar com a sua chave pública, mas só o dono da chave privada a consiga produzir. A forma mais directa de aplicar isto a uma mensagem é cifrar o seu **hash** com a chave privada, em vez da mensagem inteira (o que seria muito mais lento): usar, por exemplo, o RSA para cifrar $H(m)$.</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>O capítulo anterior já introduziu a ideia essencial de uma assinatura digital: cifrar com a **chave privada** do emissor, de forma que qualquer pessoa a consiga verificar com a sua chave pública, mas só o dono da chave privada a consiga produzir. A forma mais directa de aplicar isto a uma mensagem é cifrar o seu ***hash*** com a chave privada, em vez da mensagem inteira (o que seria muito mais lento): usar, por exemplo, o RSA para cifrar $H(m)$.</span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>Existe também um algoritmo desenhado especificamente para este único propósito, sem servir para encriptação, o **DSA** (*Digital Signature Algorithm*). Tal como o Diffie-Hellman, usa criptografia de chave pública baseada nas propriedades da exponenciação modular e no problema do logaritmo discreto, é computacionalmente complexo, e fornece três garantias em simultâneo: **autenticação** (o receptor consegue verificar a origem da mensagem), **integridade**, e **não repúdio** (o autor não consegue negar credivelmente ter assinado).</span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
@@ -1124,7 +1124,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>A definição dos parâmetros iniciais do DSA segue estes passos:</span>
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Escolher uma **função de hash aprovada** $H$ (por exemplo, SHA-512).</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Escolher uma **função de *hash* aprovada** $H$ (por exemplo, SHA-512).</span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Escolher um comprimento de chave $L$ e um comprimento de módulo $N$, com $N&lt;L$ e $L \le$ o comprimento da saída de $H$. Os pares $(L,N)$ normalizados são $(1024,160)$, $(2048,224)$, $(2048,256)$ ou $(3072,256)$.</span>
 <span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Escolher $q$, um primo de $N$ bits.</span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Escolher $p$, um primo de $L$ bits, tal que $p-1$ seja múltiplo de $q$.</span>
@@ -1163,7 +1163,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>O **Diffie-Hellman** permite a duas partes combinarem uma chave secreta comum através de um canal completamente aberto, sem nunca a transmitir directamente</span>
 <span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>A sua segurança assenta no **problema do logaritmo discreto**: calcular $g^x \bmod p$ é fácil, mas recuperar $x$ a partir do resultado é computacionalmente inviável para valores suficientemente grandes</span>
 <span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Cada parte troca um valor público ($g^x \bmod p$ ou $g^y \bmod p$), calculado a partir de um segredo que nunca revela; ambas chegam ao mesmo segredo comum $g^{xy} \bmod p$</span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Uma **assinatura digital** pode ser construída cifrando o hash de uma mensagem com a chave privada do autor (usando RSA, por exemplo), ou com um algoritmo dedicado como o **DSA**</span>
+<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Uma **assinatura digital** pode ser construída cifrando o *hash* de uma mensagem com a chave privada do autor (usando RSA, por exemplo), ou com um algoritmo dedicado como o **DSA**</span>
 <span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>O DSA assina com uma chave privada $x$ e um valor efémero $k$, usado uma única vez por assinatura; qualquer pessoa verifica depois com a chave pública correspondente, sem nunca ter acesso a $x$ nem a $k$</span>
 <span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Nenhum destes dois mecanismos resolve, sozinho, o problema de **confiar** que uma chave pública pertence mesmo a quem diz pertencer: sem essa garantia, um atacante posicionado no meio do canal (MITM) consegue substituir-se a qualquer uma das partes</span>
 <span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a></span>

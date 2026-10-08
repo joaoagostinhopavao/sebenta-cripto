@@ -34,7 +34,7 @@ Ambos chegam exactamente ao mesmo valor, $K = g^{xy} \bmod p$, a **chave secreta
 
 ## Assinaturas Digitais: o Conceito {#sec-07-assinaturas-conceito}
 
-O capítulo anterior já introduziu a ideia essencial de uma assinatura digital: cifrar com a **chave privada** do emissor, de forma que qualquer pessoa a consiga verificar com a sua chave pública, mas só o dono da chave privada a consiga produzir. A forma mais directa de aplicar isto a uma mensagem é cifrar o seu **hash** com a chave privada, em vez da mensagem inteira (o que seria muito mais lento): usar, por exemplo, o RSA para cifrar $H(m)$.
+O capítulo anterior já introduziu a ideia essencial de uma assinatura digital: cifrar com a **chave privada** do emissor, de forma que qualquer pessoa a consiga verificar com a sua chave pública, mas só o dono da chave privada a consiga produzir. A forma mais directa de aplicar isto a uma mensagem é cifrar o seu ***hash*** com a chave privada, em vez da mensagem inteira (o que seria muito mais lento): usar, por exemplo, o RSA para cifrar $H(m)$.
 
 Existe também um algoritmo desenhado especificamente para este único propósito, sem servir para encriptação, o **DSA** (*Digital Signature Algorithm*). Tal como o Diffie-Hellman, usa criptografia de chave pública baseada nas propriedades da exponenciação modular e no problema do logaritmo discreto, é computacionalmente complexo, e fornece três garantias em simultâneo: **autenticação** (o receptor consegue verificar a origem da mensagem), **integridade**, e **não repúdio** (o autor não consegue negar credivelmente ter assinado).
 
@@ -42,7 +42,7 @@ Existe também um algoritmo desenhado especificamente para este único propósit
 
 A definição dos parâmetros iniciais do DSA segue estes passos:
 
-1. Escolher uma **função de hash aprovada** $H$ (por exemplo, SHA-512).
+1. Escolher uma **função de *hash* aprovada** $H$ (por exemplo, SHA-512).
 2. Escolher um comprimento de chave $L$ e um comprimento de módulo $N$, com $N<L$ e $L \le$ o comprimento da saída de $H$. Os pares $(L,N)$ normalizados são $(1024,160)$, $(2048,224)$, $(2048,256)$ ou $(3072,256)$.
 3. Escolher $q$, um primo de $N$ bits.
 4. Escolher $p$, um primo de $L$ bits, tal que $p-1$ seja múltiplo de $q$.
@@ -81,7 +81,7 @@ Este capítulo respondeu a duas perguntas deixadas em aberto pela criptografia a
 1. O **Diffie-Hellman** permite a duas partes combinarem uma chave secreta comum através de um canal completamente aberto, sem nunca a transmitir directamente
 2. A sua segurança assenta no **problema do logaritmo discreto**: calcular $g^x \bmod p$ é fácil, mas recuperar $x$ a partir do resultado é computacionalmente inviável para valores suficientemente grandes
 3. Cada parte troca um valor público ($g^x \bmod p$ ou $g^y \bmod p$), calculado a partir de um segredo que nunca revela; ambas chegam ao mesmo segredo comum $g^{xy} \bmod p$
-4. Uma **assinatura digital** pode ser construída cifrando o hash de uma mensagem com a chave privada do autor (usando RSA, por exemplo), ou com um algoritmo dedicado como o **DSA**
+4. Uma **assinatura digital** pode ser construída cifrando o *hash* de uma mensagem com a chave privada do autor (usando RSA, por exemplo), ou com um algoritmo dedicado como o **DSA**
 5. O DSA assina com uma chave privada $x$ e um valor efémero $k$, usado uma única vez por assinatura; qualquer pessoa verifica depois com a chave pública correspondente, sem nunca ter acesso a $x$ nem a $k$
 6. Nenhum destes dois mecanismos resolve, sozinho, o problema de **confiar** que uma chave pública pertence mesmo a quem diz pertencer: sem essa garantia, um atacante posicionado no meio do canal (MITM) consegue substituir-se a qualquer uma das partes
 

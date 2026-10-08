@@ -231,7 +231,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Hashing — Propriedades, Ataques, SHA, MAC e HMAC</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title"><em>Hashing</em> — Propriedades, Ataques, SHA, MAC e HMAC</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -361,7 +361,7 @@ Figura&nbsp;9.1: O atacante (Mallory) intercepta as chaves públicas de Alice e 
 <img src="../assets/images/fig-09-x509.png" class="img-fluid figure-img" style="width:55.0%">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-09-x509-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;9.2: Estrutura essencial de um certificado X.509: os dados do titular (identidade, chave pública, período de validade, emissor e número de série), e a assinatura da entidade certificadora sobre o hash desses dados.
+Figura&nbsp;9.2: Estrutura essencial de um certificado X.509: os dados do titular (identidade, chave pública, período de validade, emissor e número de série), e a assinatura da entidade certificadora sobre o <em>hash</em> desses dados.
 </figcaption>
 </figure>
 </div>
@@ -371,7 +371,7 @@ Figura&nbsp;9.2: Estrutura essencial de um certificado X.509: os dados do titula
 <li><strong>Validade</strong>: um intervalo de datas fora do qual o certificado deixa de ser considerado válido.</li>
 <li><strong>Emissor</strong> (<em>Issuer</em>): a identidade da entidade certificadora que o assinou.</li>
 <li><strong>Número de série</strong>: um identificador único do certificado, essencial para o processo de revogação.</li>
-<li><strong>Assinatura da CA</strong>: a <strong>entidade certificadora</strong> (<em>Certificate Authority</em>, CA) assina, com a sua própria chave privada, o hash de todos os campos anteriores: <span class="math inline">\(\mathrm{Sign}(sk_{CA}, H(\text{dados do titular}))\)</span>.</li>
+<li><strong>Assinatura da CA</strong>: a <strong>entidade certificadora</strong> (<em>Certificate Authority</em>, CA) assina, com a sua própria chave privada, o <em>hash</em> de todos os campos anteriores: <span class="math inline">\(\mathrm{Sign}(sk_{CA}, H(\text{dados do titular}))\)</span>.</li>
 </ul>
 <p>Esta última linha é o que transforma os dados de identificação numa afirmação verificável: qualquer pessoa com a chave pública da CA consegue confirmar que foi mesmo aquela CA, e não outra entidade, a atestar a ligação entre aquela identidade e aquela chave pública.</p>
 </section>
@@ -415,7 +415,7 @@ Figura&nbsp;9.3: A cadeia de certificação: a CA raiz assina certificados de CA
 <ol type="1">
 <li>O <strong>ataque do intermediário</strong> (MITM) quebra qualquer algoritmo de chave pública, substituindo as chaves trocadas por outras, controladas pelo atacante, sem que nenhuma das vítimas o perceba</li>
 <li>A solução é introduzir uma <strong>entidade de confiança</strong> partilhada, capaz de atestar formalmente a ligação entre uma identidade e uma chave pública</li>
-<li>Um <strong>certificado X.509</strong> contém a identidade do titular, a sua chave pública, um período de validade, o emissor, e a assinatura desse emissor sobre um hash de todos estes dados</li>
+<li>Um <strong>certificado X.509</strong> contém a identidade do titular, a sua chave pública, um período de validade, o emissor, e a assinatura desse emissor sobre um <em>hash</em> de todos estes dados</li>
 <li>A confiança organiza-se numa <strong>cadeia de certificação</strong>, da CA raiz (pré-instalada no sistema) até ao titular final, através de CAs intermédias</li>
 <li>Verificar um certificado exige confirmar a assinatura da CA emissora, o período de validade, e o estado de revogação, não basta confirmar só a assinatura</li>
 </ol>
@@ -1099,14 +1099,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>A norma **X.509**, hoje universal na Web, define a estrutura de um certificado de chave pública. Um certificado X.509 contém, no essencial, os dados de identificação do titular e a assinatura de quem os certifica <span class="co">[</span><span class="ot">@RFC5280</span><span class="co">]</span>:</span>
 <span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="al">![Estrutura essencial de um certificado X.509: os dados do titular (identidade, chave pública, período de validade, emissor e número de série), e a assinatura da entidade certificadora sobre o hash desses dados.](../assets/images/fig-09-x509.png)</span>{#fig-09-x509 width=55%}</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="al">![Estrutura essencial de um certificado X.509: os dados do titular (identidade, chave pública, período de validade, emissor e número de série), e a assinatura da entidade certificadora sobre o *hash* desses dados.](../assets/images/fig-09-x509.png)</span>{#fig-09-x509 width=55%}</span>
 <span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Identidade** (*Subject*): a quem pertence o certificado, tipicamente um domínio, uma organização, ou uma pessoa.</span>
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Chave pública**: a chave que o certificado atesta pertencer a essa identidade.</span>
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Validade**: um intervalo de datas fora do qual o certificado deixa de ser considerado válido.</span>
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Emissor** (*Issuer*): a identidade da entidade certificadora que o assinou.</span>
 <span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Número de série**: um identificador único do certificado, essencial para o processo de revogação.</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Assinatura da CA**: a **entidade certificadora** (*Certificate Authority*, CA) assina, com a sua própria chave privada, o hash de todos os campos anteriores: $\mathrm{Sign}(sk_{CA}, H(\text{dados do titular}))$.</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Assinatura da CA**: a **entidade certificadora** (*Certificate Authority*, CA) assina, com a sua própria chave privada, o *hash* de todos os campos anteriores: $\mathrm{Sign}(sk_{CA}, H(\text{dados do titular}))$.</span>
 <span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>Esta última linha é o que transforma os dados de identificação numa afirmação verificável: qualquer pessoa com a chave pública da CA consegue confirmar que foi mesmo aquela CA, e não outra entidade, a atestar a ligação entre aquela identidade e aquela chave pública.</span>
 <span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
@@ -1147,7 +1147,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>O **ataque do intermediário** (MITM) quebra qualquer algoritmo de chave pública, substituindo as chaves trocadas por outras, controladas pelo atacante, sem que nenhuma das vítimas o perceba</span>
 <span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>A solução é introduzir uma **entidade de confiança** partilhada, capaz de atestar formalmente a ligação entre uma identidade e uma chave pública</span>
-<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Um **certificado X.509** contém a identidade do titular, a sua chave pública, um período de validade, o emissor, e a assinatura desse emissor sobre um hash de todos estes dados</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Um **certificado X.509** contém a identidade do titular, a sua chave pública, um período de validade, o emissor, e a assinatura desse emissor sobre um *hash* de todos estes dados</span>
 <span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>A confiança organiza-se numa **cadeia de certificação**, da CA raiz (pré-instalada no sistema) até ao titular final, através de CAs intermédias</span>
 <span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Verificar um certificado exige confirmar a assinatura da CA emissora, o período de validade, e o estado de revogação, não basta confirmar só a assinatura</span>
 <span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a></span>

@@ -7,7 +7,7 @@ lang: pt-PT
 
 ## Introdução {#sec-10-intro .unnumbered}
 
-Este capítulo mostra como as ferramentas apresentadas ao longo do livro, cifras simétricas, funções de hash, MACs, RSA, Diffie-Hellman, curva elíptica e certificados X.509, se combinam em dois protocolos reais de largo uso: o **TLS**, que protege praticamente todo o tráfego web actual, e o **PGP**, um dos primeiros sistemas de criptografia de utilização generalizada para correio electrónico. Outros esquemas de interesse prático, à medida que forem sendo incorporados no programa da UC, terão naturalmente lugar aqui.
+Este capítulo mostra como as ferramentas apresentadas ao longo do livro, cifras simétricas, funções de *hash*, MACs, RSA, Diffie-Hellman, curva elíptica e certificados X.509, se combinam em dois protocolos reais de largo uso: o **TLS**, que protege praticamente todo o tráfego web actual, e o **PGP**, um dos primeiros sistemas de criptografia de utilização generalizada para correio electrónico. Outros esquemas de interesse prático, à medida que forem sendo incorporados no programa da UC, terão naturalmente lugar aqui.
 
 ## TLS: Objectivos e Camadas {#sec-10-tls-objetivos}
 
@@ -25,7 +25,7 @@ Um detalhe do desenho do TLS 1.3 vale a pena assinalar: o valor *key_share* de c
 
 ## Cifras Modernas em TLS {#sec-10-tls-cifras}
 
-Uma **cifra combinada** (*cipher suite*) do TLS 1.3 especifica o algoritmo AEAD e a função de hash usada para derivar chaves e autenticar o *handshake*. As duas combinações dominantes na prática actual já foram ambas apresentadas neste livro:
+Uma **cifra combinada** (*cipher suite*) do TLS 1.3 especifica o algoritmo AEAD e a função de *hash* usada para derivar chaves e autenticar o *handshake*. As duas combinações dominantes na prática actual já foram ambas apresentadas neste livro:
 
 - `TLS_AES_128_GCM_SHA256`: AES em modo GCM (Secção 3.6) com SHA-256 (Secção 5.3), beneficia de aceleração de hardware (AES-NI) na generalidade dos processadores modernos.
 - `TLS_CHACHA20_POLY1305_SHA256`: ChaCha20-Poly1305 (Secção 4.5) com SHA-256, preferido em dispositivos sem aceleração de hardware para AES, como muitos telemóveis, exactamente pela razão de desempenho já discutida no Capítulo 4.
@@ -36,7 +36,7 @@ O **PGP** (*Pretty Good Privacy*), e o seu sucessor normalizado, o OpenPGP [@RFC
 
 ![O esquema híbrido do PGP: a mensagem é assinada com a chave privada do emissor e cifrada com uma chave de sessão gerada ao acaso; essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário. Só quem tiver a chave privada correspondente consegue recuperar a chave de sessão, e por essa via a mensagem.](../assets/images/fig-10-pgp.png){#fig-10-pgp width=100%}
 
-Do lado do emissor: a mensagem $M$ é primeiro assinada (hash mais cifra com a chave privada do emissor, tal como na Secção 7.4); o resultado é cifrado com uma **chave de sessão** $K_s$, gerada ao acaso e usada uma única vez, através de uma cifra simétrica rápida; e essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário, usando RSA. O que é transmitido é o par (texto cifrado, chave de sessão cifrada). Do lado do receptor, o processo inverte-se: a chave privada do destinatário decifra $K_s$, que decifra o texto, revelando a mensagem e a assinatura, que se verifica por fim com a chave pública do emissor.
+Do lado do emissor: a mensagem $M$ é primeiro assinada (*hash* mais cifra com a chave privada do emissor, tal como na Secção 7.4); o resultado é cifrado com uma **chave de sessão** $K_s$, gerada ao acaso e usada uma única vez, através de uma cifra simétrica rápida; e essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário, usando RSA. O que é transmitido é o par (texto cifrado, chave de sessão cifrada). Do lado do receptor, o processo inverte-se: a chave privada do destinatário decifra $K_s$, que decifra o texto, revelando a mensagem e a assinatura, que se verifica por fim com a chave pública do emissor.
 
 Uma diferença de fundo em relação ao modelo do Capítulo 9 é o modelo de confiança: em vez de uma hierarquia de CAs, o PGP assenta numa **rede de confiança** (*Web of Trust*), em que cada utilizador assina as chaves públicas de outros em quem confia directamente, e a confiança propaga-se de forma descentralizada através dessa rede de assinaturas [@Stallings2020].
 
