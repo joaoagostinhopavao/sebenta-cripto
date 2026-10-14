@@ -261,7 +261,18 @@ A solução é acrescentar aleatoriedade antes de cifrar. No **RSA-OAEP** (*Opti
 
 ![A estrutura do RSA-OAEP com uma chave de 2048 bits e o SHA-256.](../assets/images/fig-06-oaep.png){#fig-06-oaep width=80%}
 
-O Bob decifra com $d$, obtém $X$ e desfaz os dois XOR pela ordem inversa; se o enchimento não bater certo, rejeita a mensagem. Como a semente é nova a cada cifragem, as máscaras também o são, e $X$ e $C$ ficam completamente diferentes de uma vez para a outra. O Darth pode cifrar "S" e "N" quantas vezes quiser, e nunca obtém o $C$ da Alice. Para **assinaturas**, a versão correspondente chama-se **RSA-PSS** (*Probabilistic Signature Scheme*).
+Para decifrar, o Bob desfaz estes passos pela ordem inversa:
+
+1. Calcula $X = C^d \bmod n$ e parte-o nas posições fixas: o byte 00, a semente mascarada (32 bytes) e o DB mascarado (223 bytes).
+2. Recupera a semente: a MGF1 aplicada ao DB mascarado dá a máscara da semente, e semente = semente mascarada $\oplus$ máscara.
+3. Recupera o DB: a MGF1 aplicada à semente dá a máscara do DB, e DB = DB mascarado $\oplus$ máscara.
+4. Verifica o enchimento: o DB tem de começar pelo *hash* de $L$, seguido de bytes 00 e de um byte 01, e o primeiro byte de $X$ tem de ser 00. Se tudo bater certo, o que vem depois do 01 é a mensagem; caso contrário, rejeita-a.
+
+Isto funciona porque o XOR se anula a si próprio, $(a \oplus m) \oplus m = a$, e porque a MGF1 não tem segredo nenhum: com a mesma entrada, o Bob obtém exatamente as mesmas máscaras que a Alice. A ordem é obrigatória, porque a máscara do DB só se calcula depois de recuperada a semente. Os dois XOR não protegem nada por si: quem tivesse $X$ desfazia-os da mesma forma. O que impede o Darth de chegar a $X$ é a camada RSA, porque só o Bob tem $d$.
+
+A etiqueta $L$ não viaja dentro de $C$: é combinada previamente entre a Alice e o Bob, como parte do protocolo que usam, e é quase sempre vazia. O Bob não a lê da mensagem; calcula o *hash* do $L$ que espera e compara-o com os primeiros 32 bytes do DB. A etiqueta serve para amarrar o texto cifrado a um contexto: com $L$ = "Eleição AE 2026", um $C$ reaproveitado noutra votação, com outra etiqueta, é rejeitado, embora a decifragem RSA corra bem. Mesmo com $L$ vazio, esses 32 bytes fixos funcionam como uma marca conhecida, que um $C$ forjado ou corrompido praticamente nunca acerta por acaso. No `openssl`, a etiqueta define-se com `-pkeyopt rsa_oaep_label:` seguido do valor em hexadecimal, tanto ao cifrar como ao decifrar.
+
+Como a semente é nova a cada cifragem, as máscaras também o são, e $X$ e $C$ ficam completamente diferentes de uma vez para a outra. O Darth pode cifrar "S" e "N" quantas vezes quiser, e nunca obtém o $C$ da Alice. Para **assinaturas**, a versão correspondente chama-se **RSA-PSS** (*Probabilistic Signature Scheme*).
 
 O `openssl` mostra o efeito: o mesmo ficheiro `voto.txt`, que contém só "S", cifrado duas vezes com OAEP, dá dois resultados sem nada em comum:
 

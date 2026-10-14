@@ -261,7 +261,18 @@ The solution is to add randomness before encrypting. In **RSA-OAEP** (*Optimal A
 
 ![The structure of RSA-OAEP with a 2048-bit key and SHA-256.](../assets/images/fig-06-oaep-en.png){#fig-06-oaep width=80%}
 
-Bob decrypts with $d$, obtains $X$ and undoes the two XORs in reverse order; if the padding does not check out, he rejects the message. Because the seed is new for every encryption, so are the masks, and $X$ and $C$ come out completely different each time. Darth can encrypt "Y" and "N" as often as he likes and will never obtain Alice's $C$. For **signatures**, the corresponding scheme is called **RSA-PSS** (*Probabilistic Signature Scheme*).
+To decrypt, Bob undoes these steps in reverse order:
+
+1. He computes $X = C^d \bmod n$ and splits it at fixed positions: the 00 byte, the masked seed (32 bytes) and the masked DB (223 bytes).
+2. He recovers the seed: MGF1 applied to the masked DB gives the seed mask, and seed = masked seed $\oplus$ mask.
+3. He recovers the DB: MGF1 applied to the seed gives the DB mask, and DB = masked DB $\oplus$ mask.
+4. He checks the padding: the DB must start with the hash of $L$, followed by 00 bytes and a 01 byte, and the first byte of $X$ must be 00. If everything checks out, whatever follows the 01 is the message; otherwise, he rejects it.
+
+This works because XOR cancels itself out, $(a \oplus m) \oplus m = a$, and because MGF1 has no secret at all: with the same input, Bob obtains exactly the same masks as Alice. The order is mandatory, because the DB mask can only be computed once the seed has been recovered. The two XORs protect nothing on their own: anyone holding $X$ could undo them in the same way. What stops Darth from reaching $X$ is the RSA layer, because only Bob has $d$.
+
+The label $L$ does not travel inside $C$: it is agreed beforehand between Alice and Bob, as part of the protocol they use, and it is almost always empty. Bob does not read it from the message; he computes the hash of the $L$ he expects and compares it with the first 32 bytes of the DB. The label serves to bind the ciphertext to a context: with $L$ = "Student Union Election 2026", a $C$ reused in another vote, with another label, is rejected, even though the RSA decryption itself succeeds. Even with an empty $L$, those 32 fixed bytes act as a known marker, which a forged or corrupted $C$ will practically never hit by chance. In `openssl`, the label is set with `-pkeyopt rsa_oaep_label:` followed by its value in hexadecimal, both when encrypting and when decrypting.
+
+Because the seed is new for every encryption, so are the masks, and $X$ and $C$ come out completely different each time. Darth can encrypt "Y" and "N" as often as he likes and will never obtain Alice's $C$. For **signatures**, the corresponding scheme is called **RSA-PSS** (*Probabilistic Signature Scheme*).
 
 `openssl` shows the effect: the same file `vote.txt`, containing only "Y", encrypted twice with OAEP, gives two results with nothing in common:
 
