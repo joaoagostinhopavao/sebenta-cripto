@@ -7,40 +7,70 @@ lang: pt-PT
 
 ## Introdução {#sec-06-intro .unnumbered}
 
-Todos os capítulos anteriores, das cifras clássicas ao HMAC, partilham uma limitação estrutural: exigem uma chave secreta **partilhada previamente** entre emissor e receptor. Mas como é que dois desconhecidos, que nunca se encontraram e não têm nenhum canal seguro entre si, combinam essa chave em primeiro lugar? Este é o **problema da distribuição de chaves**, e durante décadas não teve resposta satisfatória. A solução, proposta por Diffie e Hellman em 1976 e concretizada por Rivest, Shamir e Adleman em 1977 com o algoritmo que dá nome a este capítulo, é radical: em vez de uma chave partilhada, cada participante passa a ter **duas chaves matematicamente relacionadas**, uma que pode divulgar livremente e outra que nunca revela a ninguém.
+As cifras simétricas, das cifras clássicas ao AES, e também o HMAC, partilham uma limitação estrutural: exigem uma chave secreta **partilhada previamente** entre emissor e recetor. Suponha-se que a Alice, em Vila Real, quer enviar ao Bob, em Lisboa, um ficheiro cifrado com AES:
+
+1. O AES precisa de uma chave $K$ que os **dois** conheçam.
+2. Se a Alice enviar $K$ pela Internet, sem proteção, um atacante (o Darth) lê-a pelo caminho.
+3. Para cifrar $K$, a Alice precisaria de outra chave, já combinada com o Bob, e o problema repete-se.
+4. Encontrarem-se pessoalmente não escala: numa empresa com 1000 pessoas, cada par precisa da sua própria chave, ou seja, $1000 \times 999 / 2 = 499\,500$ chaves.
+
+Este é o **problema da distribuição de chaves**, e durante décadas não teve resposta satisfatória. A solução, proposta por Diffie e Hellman em 1976 e concretizada por Rivest, Shamir e Adleman em 1977 com o algoritmo que dá nome a este capítulo, é radical: em vez de uma chave partilhada, cada participante passa a ter **duas chaves matematicamente relacionadas**, uma que pode divulgar livremente e outra que nunca revela a ninguém.
 
 ## Criptografia Assimétrica: o Conceito {#sec-06-conceito}
 
-Um sistema de chave pública assenta em seis componentes [@Stallings2020]: um algoritmo de cifragem, um algoritmo de decifragem, uma mensagem em texto claro, uma mensagem cifrada, e as duas chaves de cada participante, a **chave pública** ($PU$), livremente distribuída, e a **chave privada** ($PR$), mantida secreta pelo seu dono. A propriedade que torna isto útil é puramente matemática: o que quer que se cifre com uma das chaves de um par, só se decifra com a outra, nunca com a mesma.
+Uma analogia ajuda a perceber a ideia. O Bob compra muitos cadeados iguais e distribui-os **abertos** a quem os pedir, mas guarda só para si a chave que os abre. A Alice mete a mensagem numa caixa e fecha-a com um dos cadeados do Bob: para fechar basta carregar, não é precisa chave nenhuma. Depois de fechada, nem a própria Alice consegue abrir a caixa; só o Bob.
 
-Esta simples inversão de "que chave usar para quê" dá origem a dois esquemas distintos, com propósitos opostos:
+Na criptografia assimétrica, o cadeado aberto é a **chave pública** ($PU$), que se divulga a toda a gente, e a chave do cadeado é a **chave privada** ($PR$), que nunca sai do dono. Um sistema de chave pública assenta em seis componentes [@Stallings2020]:
 
-![Nos dois esquemas, uma mensagem $X$ é cifrada numa das pontas e decifrada na outra, mas o par de chaves usado, e o que cada esquema garante, são opostos. Na confidencialidade, cifra-se com a chave pública do destinatário; na autenticação, cifra-se com a chave privada do próprio emissor.](../assets/images/fig-06-confidencialidade-autenticacao.png){#fig-06-confid-autent width=100%}
+| Componente | Papel |
+|---|---|
+| Texto claro $X$ | a mensagem original |
+| Algoritmo de cifragem $E$ | transforma $X$ usando uma das chaves |
+| Texto cifrado $Y$ | o que viaja pela rede |
+| Algoritmo de decifragem $D$ | recupera $X$ usando a outra chave |
+| Chave pública $PU$ | conhecida por todos |
+| Chave privada $PR$ | conhecida só pelo dono |
 
-**Confidencialidade.** Para enviar uma mensagem confidencial a Bob, Alice cifra-a com a **chave pública de Bob** ($PU_b$), que qualquer pessoa conhece:
+: Os seis componentes de um sistema de chave pública {#tbl-06-componentes}
+
+A propriedade que torna isto útil é puramente matemática: o que se cifrar com uma das chaves de um par só se decifra com a outra, nunca com a mesma. Na notação usada a seguir, $PU_b$ e $PR_b$ são as chaves do Bob, e $PU_a$ e $PR_a$ as da Alice. Escolher que chave usar para quê dá origem a dois esquemas distintos, com propósitos opostos.
+
+**Confidencialidade.** Para enviar uma mensagem confidencial ao Bob, a Alice cifra-a com a **chave pública do Bob** ($PU_b$), que qualquer pessoa conhece:
 
 $$Y = E[PU_b, X] \qquad X = D[PR_b, Y]$$
 
-Só Bob consegue decifrar $Y$, porque só ele tem $PR_b$. Note-se que isto resolve exactamente o problema identificado na introdução: Alice nunca precisou de combinar nenhum segredo com Bob antecipadamente, só precisou de conhecer uma chave pública dele.
+![Confidencialidade: a Alice cifra com a chave pública do Bob, e só a chave privada do Bob decifra. Chaves públicas a verde, chaves privadas a carmesim.](../assets/images/fig-06-confidencialidade.png){#fig-06-confidencialidade width=100%}
 
-**Autenticação.** Para provar que uma mensagem vem mesmo de Alice, ela cifra-a com a sua própria **chave privada** ($PR_a$):
+Só o Bob consegue decifrar $Y$, porque só ele tem $PR_b$. O Darth também conhece $PU_b$, mas com ela não consegue desfazer a cifragem. Isto resolve exatamente o problema identificado na introdução: a Alice nunca precisou de combinar nenhum segredo com o Bob, só precisou de conhecer uma chave que está à vista de todos.
+
+**Autenticação.** Para provar que uma mensagem vem mesmo da Alice, as chaves trocam de papel: ela cifra-a com a sua própria **chave privada** ($PR_a$):
 
 $$Y = E[PR_a, X] \qquad X = D[PU_a, Y]$$
 
-Qualquer pessoa pode decifrar $Y$ com a chave pública de Alice, $PU_a$, que também é livremente conhecida, mas é precisamente por isso que este esquema não dá confidencialidade nenhuma. O que dá é a garantia de que **só Alice** podia ter produzido $Y$, já que só ela possui $PR_a$: é a base conceptual da assinatura digital, retomada num capítulo posterior.
+![Autenticação: a Alice cifra com a sua própria chave privada, e qualquer pessoa decifra com a chave pública da Alice.](../assets/images/fig-06-autenticacao.png){#fig-06-autenticacao width=100%}
 
-Nada impede combinar os dois esquemas para obter ambas as propriedades ao mesmo tempo: Alice primeiro cifra com a sua própria chave privada (assina), e depois cifra o resultado com a chave pública de Bob (garante confidencialidade):
+Qualquer pessoa pode decifrar $Y$ com a chave pública da Alice, $PU_a$, que também é livremente conhecida, e é precisamente por isso que este esquema não dá confidencialidade nenhuma. O que dá é a garantia de quem enviou: se $PU_a$ decifra $Y$, então $Y$ foi produzido com $PR_a$, e só a Alice a possui. É esta a ideia por trás da **assinatura digital**.
 
-$$Z = E[PU_b,\, E[PR_a, X]]$$
+**As duas ao mesmo tempo.** Nada impede combinar os dois esquemas. A Alice primeiro cifra com a sua própria chave privada (assina) e depois cifra o resultado com a chave pública do Bob (garante a confidencialidade):
 
-Bob inverte as duas operações pela ordem inversa, $X = D[PU_a,\, D[PR_b, Z]]$, obtendo simultaneamente a certeza de que a mensagem só podia ter vindo de Alice, e a garantia de que mais ninguém a conseguiu ler pelo caminho.
+$$Z = E[PU_b,\, E[PR_a, X]] \qquad X = D[PU_a,\, D[PR_b, Z]]$$
+
+![Confidencialidade e autenticação combinadas: cada lado desfaz as operações pela ordem inversa.](../assets/images/fig-06-combinado.png){#fig-06-combinado width=100%}
+
+Só o Bob consegue abrir $Z$, e lá dentro encontra um $Y$ que só a Alice podia ter produzido: fica com a certeza de que a mensagem veio da Alice e com a garantia de que mais ninguém a leu pelo caminho.
 
 ## Categorias e Aplicações {#sec-06-categorias}
 
-Nem todos os algoritmos de chave pública servem os três usos possíveis (encriptação, assinatura digital, troca de chaves) igualmente bem:
+Os algoritmos de chave pública têm três utilizações possíveis:
 
-| Algoritmo | Encriptação/Decriptação | Assinatura Digital | Troca de Chaves |
-|---|---|---|---|
+- **Cifrar e decifrar**, para obter confidencialidade;
+- **Assinatura digital**, para provar quem produziu uma mensagem;
+- **Troca de chaves**, para que as duas partes fiquem a partilhar uma chave secreta (por exemplo, uma chave de AES).
+
+Nem todos os algoritmos servem as três:
+
+| Algoritmo | Cifrar/Decifrar | Assinatura Digital | Troca de Chaves |
+|---|:---:|:---:|:---:|
 | RSA | Sim | Sim | Sim |
 | Curva Elíptica | Sim | Sim | Sim |
 | Diffie-Hellman | Não | Não | Sim |
@@ -48,67 +78,239 @@ Nem todos os algoritmos de chave pública servem os três usos possíveis (encri
 
 : Aplicações dos principais algoritmos de chave pública [@Stallings2020] {#tbl-06-aplicacoes}
 
-O RSA, apresentado neste capítulo, é o único, ao lado da criptografia de curva elíptica, capaz de servir os três papéis. O Diffie-Hellman, capítulo seguinte, serve apenas para combinar uma chave partilhada; o DSS existe apenas para assinar.
+O RSA, apresentado neste capítulo, é, ao lado da criptografia de curva elíptica, capaz de servir os três papéis. O Diffie-Hellman serve apenas para combinar uma chave partilhada; o DSS existe apenas para assinar.
+
+## A Matemática Necessária {#sec-06-matematica}
+
+O RSA usa apenas três ideias de aritmética, apresentadas aqui antes do algoritmo.
+
+**O resto da divisão.** $a \bmod n$ é o **resto** da divisão inteira de $a$ por $n$. Um relógio faz isto: 14 horas são as 2 da tarde, porque $14 \bmod 12 = 2$. Da mesma forma, $200 \bmod 187 = 13$, porque $200 = 1 \times 187 + 13$, e $161 \bmod 160 = 1$, porque $161 = 1 \times 160 + 1$. Uma consequência importante: o resultado de "$\bmod\ n$" está **sempre entre $0$ e $n-1$**, por maior que seja o número de partida.
+
+**Primos e números coprimos.** Um **número primo** só é divisível por 1 e por si próprio (2, 3, 5, 7, 11, 13, 17, ...). O **máximo divisor comum**, $\text{mdc}(a, b)$, é o maior número que divide $a$ e $b$ ao mesmo tempo, e $a$ e $b$ dizem-se **coprimos** quando $\text{mdc}(a, b) = 1$, ou seja, quando não partilham nenhum fator:
+
+| Par | Fatores | mdc | Coprimos? |
+|---|---|:---:|:---:|
+| 6 e 160 | $6 = 2 \times 3$; $160 = 2^5 \times 5$ | 2 | Não |
+| 7 e 160 | $7$ é primo e não divide 160 | 1 | Sim |
+
+: Exemplos de pares coprimos e não coprimos {#tbl-06-coprimos}
+
+**O inverso modular.** Na aritmética normal, o inverso de 3 é $\frac{1}{3}$, porque $3 \times \frac{1}{3} = 1$. Em aritmética módulo 160 não há frações: o **inverso de 7 módulo 160** é o número inteiro $d$ tal que
+
+$$7 \times d \bmod 160 = 1$$
+
+Procura-se, portanto, um múltiplo de 7 que fique uma unidade acima de um múltiplo de 160:
+
+| $d$ | 1 | 2 | ... | 22 | 23 |
+|---|:---:|:---:|:---:|:---:|:---:|
+| $7 \times d$ | 7 | 14 | ... | 154 | 161 |
+| $7 \times d \bmod 160$ | 7 | 14 | ... | 154 | **1** |
+
+: Procura do inverso de 7 módulo 160 {#tbl-06-inverso}
+
+O inverso de 7 módulo 160 é 23. Este inverso só existe porque 7 e 160 são coprimos: com 6, que partilha o fator 2 com 160, os produtos $6 \times d$ são sempre pares, e um número par menos um múltiplo de 160 nunca dá 1.
 
 ## RSA: Geração de Chaves {#sec-06-rsa-geracao}
 
-O **RSA** (Rivest, Shamir e Adleman, 1977) continua a ser o algoritmo de chave pública mais usado na prática, apesar de assentar num único problema matemático difícil: a **factorização de números inteiros muito grandes**. A geração do par de chaves segue cinco passos:
-
-![Geração de chaves, cifragem e decifragem no RSA. A segurança de todo o esquema depende de $d$ ser impossível de calcular sem conhecer $p$ e $q$: quem só conhece $n$ tem de o factorizar primeiro, um problema sem solução eficiente conhecida para números suficientemente grandes.](../assets/images/fig-06-rsa-infografico.png){#fig-06-rsa-infografico width=100%}
+O **RSA** (Rivest, Shamir e Adleman, 1977) continua a ser o algoritmo de chave pública mais usado na prática. A geração do par de chaves segue cinco passos:
 
 1. Escolhem-se dois números primos grandes e aleatórios, $p$ e $q$.
-2. Calcula-se $n = p \cdot q$ (o **módulo**, que será público) e $\phi(n) = (p-1)(q-1)$ (a função totiente de Euler, que tem de se manter secreta).
-3. Escolhe-se $e$ tal que $1 < e < \phi(n)$ e $\text{mdc}(e, \phi(n)) = 1$ (isto garante que $e$ é invertível módulo $\phi(n)$).
-4. Calcula-se $d$, o inverso modular de $e$: $d \cdot e \equiv 1 \pmod{\phi(n)}$.
-5. A **chave pública** é o par $(e, n)$; a **chave privada** é o par $(d, n)$. O módulo $n$ é público, mas $p$, $q$, $\phi(n)$ e $d$ nunca são revelados.
+2. Calcula-se o **módulo** $n = p \times q$, que será público.
+3. Calcula-se $\phi(n) = (p-1)(q-1)$, que tem de se manter secreto.
+4. Escolhe-se $e$, coprimo com $\phi(n)$, com $1 < e < \phi(n)$.
+5. Calcula-se $d$, o **inverso** de $e$ módulo $\phi(n)$: $e \times d \bmod \phi(n) = 1$.
+
+A **chave pública** é o par $(e, n)$; a **chave privada** é o par $(d, n)$. O módulo $n$ é público, mas $p$, $q$ e $\phi(n)$ nunca são divulgados: quem os conhecer consegue calcular $d$.
+
+Um exemplo completo, com números pequenos apenas para se conseguir fazer as contas à mão:
+
+1. $p = 17$ e $q = 11$.
+2. $n = 17 \times 11 = 187$.
+3. $\phi(n) = 16 \times 10 = 160$.
+4. $e = 7$, porque $\text{mdc}(7, 160) = 1$.
+5. $d = 23$, porque $7 \times 23 = 161$ e $161 \bmod 160 = 1$ (@tbl-06-inverso).
+
+A chave pública do Bob é $(7, 187)$ e a chave privada é $(23, 187)$.
 
 ## RSA: Cifragem e Decifragem {#sec-06-rsa-cifra}
 
-Com as chaves geradas, cifrar e decifrar um bloco $M$ (um número, $0 \le M < n$) resume-se a uma exponenciação modular:
+No RSA, a mensagem é um **número** $M$, entre $0$ e $n-1$; um texto converte-se em números, por exemplo, pelos códigos dos seus carateres. Cifrar e decifrar resume-se a uma exponenciação modular:
 
-$$C = M^e \bmod n \qquad\qquad M = C^d \bmod n = (M^e)^d \bmod n = M^{e \cdot d} \bmod n$$
+$$C = M^e \bmod n \qquad\qquad M = C^d \bmod n$$
 
-Isto funciona porque $e$ e $d$ foram escolhidos de forma a serem **inversos multiplicativos módulo $\phi(n)$** ($e \cdot d \equiv 1 \bmod \phi(n)$), tal como, na aritmética normal, $3$ e $\frac{1}{3}$ são inversos porque $3 \cdot \frac{1}{3} = 1$: elevar a $e$ e depois a $d$ (ou vice-versa) devolve sempre o valor original.
+![A mensagem $M = 88$ cifra-se com a chave pública do Bob, $(7, 187)$, obtendo $C = 11$; decifra-se com a chave privada, $(23, 187)$, recuperando $M = 88$.](../assets/images/fig-06-exemplo-88.png){#fig-06-exemplo-88 width=100%}
 
-Um exemplo completo, com números pequenos apenas para ilustrar o mecanismo:
+No exemplo, a Alice cifra $M = 88$ com a chave pública do Bob, $C = 88^7 \bmod 187 = 11$, e o Bob decifra com a sua chave privada, $M = 11^{23} \bmod 187 = 88$.
 
-1. Escolhem-se $p=17$ e $q=11$.
-2. $n = 17 \times 11 = 187$; $\phi(n) = 16 \times 10 = 160$.
-3. Escolhe-se $e=7$ (relativamente primo com 160).
-4. Calcula-se $d=23$, porque $(23 \times 7) \bmod 160 = 161 \bmod 160 = 1$.
-5. Chave pública $= \{7, 187\}$; chave privada $= \{23, 187\}$.
+### Calcular as Potências à Mão {#sec-06-quadrados}
 
-![O mesmo exemplo em acção: a mensagem $M=88$ cifra-se com a chave pública $(7,187)$, obtendo $C=11$; decifra-se com a chave privada $(23,187)$, recuperando $M=88$.](../assets/images/fig-06-rsa-exemplo.png){#fig-06-rsa-exemplo width=100%}
+$88^7 = 40\,867\,559\,636\,992$ já é um número grande, e com expoentes de centenas de algarismos o cálculo direto seria impossível. O truque é **reduzir módulo $n$ a cada passo**:
 
-Para enviar a mensagem $M=88$: $C = 88^7 \bmod 187 = 11$. Para a recuperar: $M = 11^{23} \bmod 187 = 88$.
+1. Decompõe-se o expoente em potências de 2: $7 = 4 + 2 + 1$, logo $88^7 = 88^4 \times 88^2 \times 88^1$.
+2. $88^1 \bmod 187 = 88$.
+3. $88^2 = 7744$, e $7744 \bmod 187 = 77$.
+4. $88^4 = (88^2)^2$, logo basta calcular $77^2 = 5929$, e $5929 \bmod 187 = 132$.
+5. Multiplica-se tudo: $132 \times 77 \times 88 = 894\,432$, e $894\,432 \bmod 187 = 11$.
 
-## Segurança: o que Torna o RSA Difícil de Quebrar — e Fácil de Usar Mal {#sec-06-rsa-seguranca}
+Os números intermédios nunca passam muito de $187^2$. É assim que os computadores fazem, mesmo com $n$ de milhares de bits, e o método chama-se **exponenciação por quadrados sucessivos** (*square-and-multiply*).
 
-O exemplo da secção anterior usa números pequenos só para tornar as contas possíveis à mão, mas isso tem um preço: com $n=187$ (8 bits), factorizar $n$ de volta em $p=17$ e $q=11$ é trivial, o que anula por completo a segurança do esquema. Na prática, recomenda-se $n$ com pelo menos 2048 a 4096 bits, tornando a factorização computacionalmente inviável com os métodos e o poder de computação actualmente conhecidos, o **problema da factorização de inteiros**, do qual depende toda a segurança do RSA.
+Para decifrar, o Bob faz o mesmo com o expoente $d = 23 = 16 + 4 + 2 + 1$, elevando sempre ao quadrado o resultado anterior:
 
-Vale a pena perceber porque é que este tamanho de chave é tão maior do que o de uma cifra simétrica (128 ou 256 bits, capítulos 3 e 4) para um nível de segurança comparável. O melhor algoritmo conhecido para factorizar inteiros grandes, o *general number field sieve* (GNFS), tem complexidade **subexponencial**: cresce mais lentamente do que uma pesquisa exaustiva (que custaria $2^n$ operações para um valor de $n$ bits), mas mais depressa do que um algoritmo polinomial, o que o torna significativamente mais rápido do que a força bruta pura, ainda que continue impraticável para módulos de milhares de bits [@Stallings2020]. É precisamente esta existência de um atalho, mais rápido do que a força bruta mas não polinomial, que obriga o RSA a compensar com chaves muito maiores do que as de uma cifra simétrica: um módulo de 3072 bits é necessário para atingir o mesmo nível de segurança prático de uma chave simétrica de apenas 128 bits (Tabela [-@tbl-08-tamanhos], Capítulo 8).
+| Potência | $11^1$ | $11^2$ | $11^4$ | $11^8$ | $11^{16}$ |
+|---|:---:|:---:|:---:|:---:|:---:|
+| $\bmod 187$ | **11** | **121** | **55** | 33 | **154** |
 
-Mesmo com um $n$ suficientemente grande, usar o RSA exactamente como descrito acima, o chamado **RSA "textbook"**, não é seguro: é determinístico (a mesma mensagem produz sempre o mesmo texto cifrado, permitindo a um atacante reconhecer mensagens repetidas) e não oferece segurança semântica. Por isso, nenhuma biblioteca criptográfica séria implementa o RSA cru:
+: Quadrados sucessivos de 11 módulo 187 {#tbl-06-quadrados}
 
-- Para **encriptação**, usa-se um esquema de *padding* como o **RSA-OAEP** (*Optimal Asymmetric Encryption Padding*), que introduz aleatoriedade antes de cifrar, garantindo que a mesma mensagem nunca produz o mesmo texto cifrado duas vezes.
-- Para **assinaturas**, usa-se o **RSA-PSS** (*Probabilistic Signature Scheme*), que garante segurança contra falsificação de assinaturas, uma propriedade que o esquema simples da Secção 6.2 não oferece por si só.
+$$11^{23} = 11^{16} \times 11^4 \times 11^2 \times 11^1 \;\rightarrow\; 154 \times 55 \times 121 \times 11 = 11\,273\,570, \qquad 11\,273\,570 \bmod 187 = 88$$
 
-Do lado do desempenho, é comum substituir $\phi(n)$ por $\lambda(n) = \text{mmc}(p-1, q-1)$ (a condição $e \cdot d \equiv 1 \bmod \lambda(n)$ também é suficiente, e produz um $d$ tipicamente mais pequeno), e usar o **Teorema Chinês do Resto** para acelerar a decifragem, resolvendo $M = C^d \bmod n$ separadamente módulo $p$ e módulo $q$, e combinando os resultados, uma operação várias vezes mais rápida do que a exponenciação directa módulo $n$.
+O Bob recuperou a mensagem da Alice.
+
+### Porque Volta a Dar 88? {#sec-06-porque}
+
+Cifrar e decifrar seguidos é elevar a $e$ e depois a $d$:
+
+$$(M^e)^d = M^{e \times d} = M^{161}$$
+
+$e$ e $d$ foram escolhidos de modo que $e \times d = 161 = 160 + 1$, ou seja, $e \times d \bmod \phi(n) = 1$. Com $n = 187$, elevar a 161 devolve sempre o número de partida, $M^{161} \bmod 187 = M$:
+
+| $M$ | 2 | 5 | 88 |
+|---|:---:|:---:|:---:|
+| $C = M^7 \bmod 187$ | 128 | 146 | 11 |
+| $C^{23} \bmod 187$ | 2 | 5 | 88 |
+
+: Cifrar com $e = 7$ e decifrar com $d = 23$ devolve a mensagem original {#tbl-06-volta}
+
+A propriedade verifica-se para todos os $M$ de 0 a 186. A demonstração geral vem da teoria dos números (teorema de Euler) [@Stallings2020].
+
+## Segurança: Fatorizar $n$ {#sec-06-rsa-seguranca}
+
+No exemplo, o Darth conhece a chave pública, $e = 7$ e $n = 187$, o algoritmo RSA e o texto cifrado $C = 11$. Não conhece $d = 23$, nem $p = 17$ e $q = 11$, nem $\phi(n) = 160$. A cadeia de dependências é a seguinte: para calcular $d$, precisa de $\phi(n)$; para calcular $\phi(n) = (p-1)(q-1)$, precisa de $p$ e $q$; e para obter $p$ e $q$, tem de **fatorizar** $n$, isto é, descobrir que primos, multiplicados, dão 187.
+
+Com $n = 187$, o ataque é imediato. O Darth divide 187 por cada primo, por ordem:
+
+1. $187 \div 2$, $187 \div 3$, $187 \div 5$ e $187 \div 7$: nenhuma divisão é exata.
+2. $187 \div 11 = 17$: encontrou $p = 17$ e $q = 11$.
+3. Calcula $\phi(n) = 16 \times 10 = 160$.
+4. Calcula o inverso de $e = 7$ módulo 160: $d = 23$.
+5. Decifra tudo o que for enviado ao Bob: $11^{23} \bmod 187 = 88$.
+
+Basta testar primos até $\sqrt{187} \approx 13{,}7$, porque, se os dois fatores fossem maiores do que isso, o produto passaria de 187. São no máximo seis divisões (2, 3, 5, 7, 11 e 13). Qualquer $n$ de 8 bits (menor do que 256) cai assim: a segurança é nula.
+
+Na prática, $n$ tem **2048 a 4096 bits**, um número de 617 a 1234 algarismos. Os primos até $\sqrt{n}$ são mais de $10^{305}$, e testá-los um a um é impossível. Multiplicar $p \times q$ é instantâneo, mas desfazer a multiplicação não tem nenhum método rápido conhecido: é o **problema da fatorização de inteiros**, do qual depende toda a segurança do RSA.
+
+Isto não quer dizer que a fatorização só se faça por tentativa. Em 1991, a empresa RSA Laboratories publicou uma lista de módulos como desafio público, com nomes do tipo RSA-*número de algarismos*. O recorde atual é o **RSA-250**, com 250 algarismos (829 bits), fatorizado em 2020: um único processador levaria cerca de 2700 anos, e repartido por milhares de computadores demorou alguns meses. O melhor método conhecido, o *General Number Field Sieve* (GNFS), tem complexidade **subexponencial**: cresce mais lentamente do que uma pesquisa exaustiva, mas mais depressa do que um algoritmo polinomial [@Stallings2020]. É a existência deste atalho, muito mais rápido do que tentar divisões, que obriga o RSA a usar chaves muito maiores do que as de uma cifra simétrica para o mesmo nível de segurança:
+
+| Segurança equivalente (bits) | 112 (3DES) | 128 | 192 | 256 |
+|---|:---:|:---:|:---:|:---:|
+| Módulo RSA equivalente (bits) | 2048 | 3072 | 7680 | 15 360 |
+
+: Tamanho do módulo RSA para cada nível de segurança [@NIST80057] {#tbl-06-tamanhos}
+
+## Uma Chave RSA Real {#sec-06-chave-real}
+
+O `openssl` gera e mostra um par de chaves RSA de 2048 bits:
+
+```bash
+$ openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -out bob.pem
+$ openssl pkey -in bob.pem -text -noout
+Private-Key: (2048 bit, 2 primes)
+modulus:
+    00:da:2c:3c:33:c6:c3:1a:7d:7a:e2:cc:af:74:48: ...
+publicExponent: 65537 (0x10001)
+privateExponent:
+    61:44:4b:6a:c1:f8:85:bc:df:a6:71:9e:df:76:fa: ...
+prime1:
+    00:ee:f1:6c:4f:11:2f:fd:f9:8e:ba:17:29:c6:93: ...
+prime2:
+    00:e9:bf:3e:ad:10:df:07:59:b3:ff:48:88:88:b0: ...
+```
+
+| Comando ou campo | Significado |
+|---|---|
+| `genpkey -algorithm RSA` | gera um par de chaves RSA novo |
+| `-pkeyopt rsa_keygen_bits:2048` | com um módulo $n$ de 2048 bits |
+| `-out bob.pem` | grava a chave privada (que inclui a pública) em `bob.pem` |
+| `pkey -in bob.pem -text -noout` | mostra os números da chave em texto |
+| `modulus`, `publicExponent`, `privateExponent`, `prime1`, `prime2` | $n$, $e$, $d$, $p$ e $q$ |
+
+: Comandos e campos do exemplo {#tbl-06-openssl-chave}
+
+Os valores estão em **hexadecimal**: cada par de carateres é um byte, e os ":" só separam os bytes para facilitar a leitura; o `00` inicial apenas indica que o número é positivo. Lido seguido, o `modulus` é um único número inteiro de 2048 bits, que em decimal teria 617 algarismos. `prime1` e `prime2` são $p$ e $q$: quem os tiver calcula $d$, e por isso o ficheiro da chave privada **nunca** se partilha.
+
+O expoente público é $e = 65\,537$ em quase todas as chaves do mundo. Fixa-se primeiro o $e$ e só se aceitam primos $p$ e $q$ em que $p-1$ e $q-1$ não sejam múltiplos de 65 537, para que $e$ seja coprimo com $\phi(n)$. Falha cerca de um primo em cada 65 536, que simplesmente se troca por outro.
+
+## O RSA "à Letra" e o RSA-OAEP {#sec-06-oaep}
+
+Usar o RSA exatamente como descrito, o chamado ***textbook* RSA**, tem um problema: $C = M^e \bmod n$ dá **sempre** o mesmo $C$ para o mesmo $M$. Considere-se um voto cifrado com a chave pública do Bob, $(7, 187)$:
+
+1. A Alice vota "S" (código 83) ou "N" (código 78) e envia $C$ ao Bob.
+2. O Darth interceta $C = 8$.
+3. O Darth também tem a chave pública: calcula $83^7 \bmod 187 = 8$ e $78^7 \bmod 187 = 56$.
+4. Compara: $8 = 8$, a Alice votou "S".
+
+O Darth não fatorizou nada, não descobriu $d$, e mesmo assim leu a mensagem. Quando há poucas mensagens possíveis, cifrar cada uma com a chave pública e comparar é suficiente. Por isso, nenhuma biblioteca criptográfica séria usa o RSA desta forma.
+
+A solução é acrescentar aleatoriedade antes de cifrar. No **RSA-OAEP** (*Optimal Asymmetric Encryption Padding*), a mensagem é escondida com um **XOR** com bytes que dependem de um valor aleatório. Com uma chave de 2048 bits e o SHA-256:
+
+1. A Alice gera 32 bytes aleatórios novos, a **semente**, só para esta mensagem.
+2. Prepara o bloco **DB** (223 bytes): o voto "S", precedido de enchimento (o *hash* de uma etiqueta $L$, normalmente vazia, bytes 00 e um byte 01 que marca o início da mensagem).
+3. Aplica o *hash* à semente repetidamente (função **MGF1**) até ter 223 bytes, a **máscara**, e faz o XOR: DB mascarado = DB $\oplus$ máscara.
+4. Esconde também a semente, com um XOR com uma máscara calculada da mesma forma a partir do DB mascarado.
+5. Concatena 00, a semente mascarada e o DB mascarado: 256 bytes, lidos como um único número $X$, que se cifra com o RSA normal, $C = X^e \bmod n$.
+
+![A estrutura do RSA-OAEP com uma chave de 2048 bits e o SHA-256.](../assets/images/fig-06-oaep.png){#fig-06-oaep width=80%}
+
+O Bob decifra com $d$, obtém $X$ e desfaz os dois XOR pela ordem inversa; se o enchimento não bater certo, rejeita a mensagem. Como a semente é nova a cada cifragem, as máscaras também o são, e $X$ e $C$ ficam completamente diferentes de uma vez para a outra. O Darth pode cifrar "S" e "N" quantas vezes quiser, e nunca obtém o $C$ da Alice. Para **assinaturas**, a versão correspondente chama-se **RSA-PSS** (*Probabilistic Signature Scheme*).
+
+O `openssl` mostra o efeito: o mesmo ficheiro `voto.txt`, que contém só "S", cifrado duas vezes com OAEP, dá dois resultados sem nada em comum:
+
+```bash
+$ openssl pkey -in bob.pem -pubout -out bob_pub.pem
+$ openssl pkeyutl -encrypt -pubin -inkey bob_pub.pem \
+      -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256 \
+      -in voto.txt | xxd -p | head -c 48
+7803e1d4fadef723e52938326ed6eeab43a7a0922a22d101
+$ openssl pkeyutl -encrypt -pubin -inkey bob_pub.pem \
+      -pkeyopt rsa_padding_mode:oaep -pkeyopt rsa_oaep_md:sha256 \
+      -in voto.txt | xxd -p | head -c 48
+2a682c7aca614db890b0c996708e3cb9d9fc67cae73cee1f
+```
+
+| Comando ou opção | Significado |
+|---|---|
+| `pkey -in bob.pem -pubout` | extrai do ficheiro da chave privada só a parte pública, $(e, n)$, e grava-a em `bob_pub.pem` |
+| `pkeyutl -encrypt` | cifra um ficheiro com uma chave |
+| `-pubin -inkey bob_pub.pem` | a chave a usar é pública e está em `bob_pub.pem` |
+| `-pkeyopt rsa_padding_mode:oaep` | aplica o OAEP antes de cifrar |
+| `-pkeyopt rsa_oaep_md:sha256` | o OAEP usa o SHA-256 (sem esta opção, o `openssl` usa o SHA-1) |
+| `-in voto.txt` | o ficheiro a cifrar |
+| `xxd -p` \| `head -c 48` | mostra o resultado em hexadecimal, só os primeiros 24 dos 256 bytes |
+| `\` no fim da linha | o comando continua na linha seguinte |
+
+: Comandos e opções do exemplo OAEP {#tbl-06-openssl-oaep}
+
+## Na Prática: o RSA Transporta a Chave do AES {#sec-06-hibrido}
+
+O RSA é **muito mais lento** do que o AES, e cada bloco tem de ser um número menor do que $n$: com 2048 bits, menos de 256 bytes. Por isso, na prática, o RSA cifra **só a chave $K$** do AES, uma vez, e os dados seguem cifrados com AES:
+
+![Esquema híbrido: o RSA cifra apenas a chave $K$ do AES; o AES cifra os dados.](../assets/images/fig-06-hibrido.png){#fig-06-hibrido width=100%}
+
+É esta a resposta ao problema da introdução: a Alice gera uma chave $K$ aleatória, envia-a ao Bob cifrada com a chave pública dele, e a partir daí os dois usam a cifra simétrica, rápida, com uma chave que nunca viajou às claras.
 
 ## Síntese do Capítulo {#sec-06-sintese}
 
-Este capítulo introduziu a segunda grande família da criptografia moderna:
-
-1. A **criptografia assimétrica** resolve o problema da distribuição de chaves: cada participante tem uma chave pública, livremente distribuída, e uma chave privada, nunca partilhada
-2. Cifrar com a **chave pública** do destinatário garante **confidencialidade**; cifrar com a **chave privada** do próprio garante **autenticação**; combinar as duas garante ambas
-3. O RSA, a curva elíptica, o Diffie-Hellman e o DSS não servem todos os mesmos propósitos: só o RSA e a curva elíptica servem encriptação, assinatura e troca de chaves em simultâneo
-4. O **RSA** gera as suas chaves a partir de dois primos grandes $p$ e $q$: $n=pq$, $\phi(n)=(p-1)(q-1)$, $e$ coprimo com $\phi(n)$, e $d$ o seu inverso modular; cifra e decifra por exponenciação modular, $C=M^e \bmod n$ e $M=C^d \bmod n$
-5. A segurança do RSA depende inteiramente da dificuldade de **factorizar** $n$ em $p$ e $q$; com $n$ pequeno (como no exemplo didáctico $n=187$), a factorização é trivial, por isso a norma actual exige $n$ de pelo menos 2048 a 4096 bits
-6. O **RSA "textbook"** não é seguro por si só: usos reais exigem **RSA-OAEP** para encriptação e **RSA-PSS** para assinaturas
+1. Cada participante tem uma **chave pública**, divulgada, e uma **chave privada**, secreta; o que uma cifra, só a outra decifra
+2. Cifrar com a chave pública do **destinatário** dá confidencialidade; cifrar com a chave privada **própria** prova quem enviou; combinar as duas dá ambas
+3. O RSA e a curva elíptica servem para cifrar, assinar e trocar chaves; o Diffie-Hellman só para trocar chaves, e o DSS só para assinar
+4. **RSA**: $n = p \times q$, $e$ coprimo com $\phi(n) = (p-1)(q-1)$, $d$ inverso de $e$ módulo $\phi(n)$; $C = M^e \bmod n$ e $M = C^d \bmod n$, calculados por quadrados sucessivos
+5. A segurança depende de ser impraticável **fatorizar** $n$; com $n = 187$ bastam seis divisões, por isso na prática $n$ tem 2048 a 4096 bits
+6. O *textbook* RSA é determinístico: usa-se **RSA-OAEP** para cifrar e **RSA-PSS** para assinar
+7. Na prática, o RSA cifra uma chave de AES, e o AES cifra os dados
 
 ## Para Pensar {#sec-06-reflexao}
 
-O exemplo resolvido da Secção 6.4 usa $n=187$ (8 bits), trivialmente factorizável, o que anula a sua segurança; a norma actual recomenda $n$ de 2048 a 4096 bits. Em implementações reais de RSA, o expoente público $e$ é normalmente um número pequeno e fixo (o valor $e=65537$ é o mais comum), o mesmo em milhões de chaves diferentes por esse mundo fora, sem que isso comprometa a segurança de nenhuma delas. Tendo em conta de onde vem toda a segurança do RSA (Secção 6.5), porque é que aumentar o tamanho de $e$, mantendo $n$ pequeno, não tornaria o exemplo da Secção 6.4 mais seguro?
+O expoente público $e = 65\,537$ é o mesmo em milhões de chaves RSA diferentes, sem que isso comprometa nenhuma delas. No exemplo deste capítulo ($n = 187$), se o Bob trocasse $e = 7$ por um $e$ muito maior, mantendo o mesmo $n$, a chave ficaria mais segura? Porquê?
 
 ## Referências {#sec-06-referencias .unnumbered}
 
