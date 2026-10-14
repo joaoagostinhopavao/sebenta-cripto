@@ -817,6 +817,21 @@ Tabela&nbsp;6.8: Comandos e campos do exemplo
 <li>Esconde também a semente, com um XOR com uma máscara calculada da mesma forma a partir do DB mascarado.</li>
 <li>Concatena 00, a semente mascarada e o DB mascarado: 256 bytes, lidos como um único número <span class="math inline">\(X\)</span>, que se cifra com o RSA normal, <span class="math inline">\(C = X^e \bmod n\)</span>.</li>
 </ol>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A função MGF1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A MGF1 (<em>Mask Generation Function 1</em>, definida na norma PKCS #1, RFC 8017) produz, a partir de uma entrada <span class="math inline">\(Z\)</span>, uma máscara com o comprimento que se quiser, usando apenas uma função de <em>hash</em> <span class="math inline">\(H\)</span>. Aplica <span class="math inline">\(H\)</span> a <span class="math inline">\(Z\)</span> seguido de um contador de 4 bytes, que começa em 0, e junta os resultados até ter bytes suficientes, cortando o excesso no fim (<span class="math inline">\(\Vert\)</span> indica concatenação):</p>
+<p><span class="math display">\[\text{MGF1}(Z) = H(Z \Vert 0) \;\Vert\; H(Z \Vert 1) \;\Vert\; H(Z \Vert 2) \;\Vert\; \ldots\]</span></p>
+<p>Com o SHA-256, cada chamada dá 32 bytes: a máscara de 223 bytes do DB precisa de 7 chamadas (224 bytes, dos quais se descarta o último), e a máscara de 32 bytes da semente precisa de uma só. A MGF1 não tem chave nem segredo: quem conhecer <span class="math inline">\(Z\)</span> obtém a mesma máscara, e é isso que permite ao Bob recalculá-la. O que dela se espera é que qualquer alteração de <span class="math inline">\(Z\)</span>, por mínima que seja, mude a máscara inteira de forma imprevisível, tal como acontece com o próprio <em>hash</em>.</p>
+</div>
+</div>
 <div id="fig-06-oaep" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-06-oaep-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1837,76 +1852,86 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb3-259"><a href="#cb3-259" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Esconde também a semente, com um XOR com uma máscara calculada da mesma forma a partir do DB mascarado.</span>
 <span id="cb3-260"><a href="#cb3-260" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Concatena 00, a semente mascarada e o DB mascarado: 256 bytes, lidos como um único número $X$, que se cifra com o RSA normal, $C = X^e \bmod n$.</span>
 <span id="cb3-261"><a href="#cb3-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-262"><a href="#cb3-262" aria-hidden="true" tabindex="-1"></a><span class="al">![A estrutura do RSA-OAEP com uma chave de 2048 bits e o SHA-256.](../assets/images/fig-06-oaep.png)</span>{#fig-06-oaep width=80%}</span>
-<span id="cb3-263"><a href="#cb3-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-264"><a href="#cb3-264" aria-hidden="true" tabindex="-1"></a>Para decifrar, o Bob desfaz estes passos pela ordem inversa:</span>
-<span id="cb3-265"><a href="#cb3-265" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-266"><a href="#cb3-266" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Calcula $X = C^d \bmod n$ e parte-o nas posições fixas: o byte 00, a semente mascarada (32 bytes) e o DB mascarado (223 bytes).</span>
-<span id="cb3-267"><a href="#cb3-267" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Recupera a semente: a MGF1 aplicada ao DB mascarado dá a máscara da semente, e semente = semente mascarada $\oplus$ máscara.</span>
-<span id="cb3-268"><a href="#cb3-268" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Recupera o DB: a MGF1 aplicada à semente dá a máscara do DB, e DB = DB mascarado $\oplus$ máscara.</span>
-<span id="cb3-269"><a href="#cb3-269" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Verifica o enchimento: o DB tem de começar pelo *hash* de $L$, seguido de bytes 00 e de um byte 01, e o primeiro byte de $X$ tem de ser 00. Se tudo bater certo, o que vem depois do 01 é a mensagem; caso contrário, rejeita-a.</span>
-<span id="cb3-270"><a href="#cb3-270" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-271"><a href="#cb3-271" aria-hidden="true" tabindex="-1"></a>Isto funciona porque o XOR se anula a si próprio, $(a \oplus m) \oplus m = a$, e porque a MGF1 não tem segredo nenhum: com a mesma entrada, o Bob obtém exatamente as mesmas máscaras que a Alice. A ordem é obrigatória, porque a máscara do DB só se calcula depois de recuperada a semente. Os dois XOR não protegem nada por si: quem tivesse $X$ desfazia-os da mesma forma. O que impede o Darth de chegar a $X$ é a camada RSA, porque só o Bob tem $d$.</span>
-<span id="cb3-272"><a href="#cb3-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-273"><a href="#cb3-273" aria-hidden="true" tabindex="-1"></a>O DB não foi feito para esconder nada: é enchimento com um formato público, como o *padding* de uma cifra de bloco. Completa o bloco de 223 bytes, o byte 01 marca onde começa a mensagem (cujo comprimento varia) e o resto dá redundância para a verificação do passo 4. Quem chegasse ao DB leria a mensagem, que lá está em claro: a confidencialidade vem só da camada RSA.</span>
-<span id="cb3-274"><a href="#cb3-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-275"><a href="#cb3-275" aria-hidden="true" tabindex="-1"></a>A etiqueta $L$ é opcional: não viaja dentro de $C$, é definida pelo protocolo que a Alice e o Bob usam e é quase sempre vazia. Nesse caso, o *hash* de $L$ é uma constante conhecida de todos, que não acrescenta segredo nenhum; serve apenas de redundância. O Darth conhece esse valor, mas não o consegue fazer aparecer no DB do Bob se alterar o $C$ da Alice. No RSA "à letra", essa alteração é fácil e útil: com $n = 187$ e $e = 7$, multiplicar o $C = 11$ intercetado por $2^7$, módulo 187, dá $C' = 99$, e o Bob decifra $99^{23} \bmod 187 = 176$, o dobro de 88, sem que o Darth alguma vez tenha conhecido a mensagem. Com o OAEP, o $X$ que o Bob obtém com $d$ muda de forma que o Darth não consegue prever, o DB fica baralhado depois de desfeitas as máscaras e não começa pelo valor esperado. Isto não impede o Darth de cifrar uma mensagem sua, de raiz, com a chave pública do Bob: o OAEP não diz quem enviou, e esse é o papel das assinaturas digitais. Só quando o protocolo define uma etiqueta não vazia é que $L$ faz mais do que isto: um $C$ produzido num contexto, por exemplo com $L$ = "Eleição AE 2026", deixa de ser aceite noutro. No <span class="in">`openssl`</span>, a etiqueta define-se com <span class="in">`-pkeyopt rsa_oaep_label:`</span> seguido do valor em hexadecimal, tanto ao cifrar como ao decifrar.</span>
-<span id="cb3-276"><a href="#cb3-276" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-277"><a href="#cb3-277" aria-hidden="true" tabindex="-1"></a>Como a semente é nova a cada cifragem, as máscaras também o são, e $X$ e $C$ ficam completamente diferentes de uma vez para a outra. O Darth pode cifrar "S" e "N" quantas vezes quiser, e nunca obtém o $C$ da Alice. Para **assinaturas**, a versão correspondente chama-se **RSA-PSS** (*Probabilistic Signature Scheme*).</span>
-<span id="cb3-278"><a href="#cb3-278" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-279"><a href="#cb3-279" aria-hidden="true" tabindex="-1"></a>O <span class="in">`openssl`</span> mostra o efeito: o mesmo ficheiro <span class="in">`voto.txt`</span>, que contém só "S", cifrado duas vezes com OAEP, dá dois resultados sem nada em comum:</span>
+<span id="cb3-262"><a href="#cb3-262" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb3-263"><a href="#cb3-263" aria-hidden="true" tabindex="-1"></a><span class="fu">#### A função MGF1</span></span>
+<span id="cb3-264"><a href="#cb3-264" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-265"><a href="#cb3-265" aria-hidden="true" tabindex="-1"></a>A MGF1 (*Mask Generation Function 1*, definida na norma PKCS #1, RFC 8017) produz, a partir de uma entrada $Z$, uma máscara com o comprimento que se quiser, usando apenas uma função de *hash* $H$. Aplica $H$ a $Z$ seguido de um contador de 4 bytes, que começa em 0, e junta os resultados até ter bytes suficientes, cortando o excesso no fim ($\Vert$ indica concatenação):</span>
+<span id="cb3-266"><a href="#cb3-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-267"><a href="#cb3-267" aria-hidden="true" tabindex="-1"></a>$$\text{MGF1}(Z) = H(Z \Vert 0) \;\Vert\; H(Z \Vert 1) \;\Vert\; H(Z \Vert 2) \;\Vert\; \ldots$$</span>
+<span id="cb3-268"><a href="#cb3-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-269"><a href="#cb3-269" aria-hidden="true" tabindex="-1"></a>Com o SHA-256, cada chamada dá 32 bytes: a máscara de 223 bytes do DB precisa de 7 chamadas (224 bytes, dos quais se descarta o último), e a máscara de 32 bytes da semente precisa de uma só. A MGF1 não tem chave nem segredo: quem conhecer $Z$ obtém a mesma máscara, e é isso que permite ao Bob recalculá-la. O que dela se espera é que qualquer alteração de $Z$, por mínima que seja, mude a máscara inteira de forma imprevisível, tal como acontece com o próprio *hash*.</span>
+<span id="cb3-270"><a href="#cb3-270" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-271"><a href="#cb3-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-272"><a href="#cb3-272" aria-hidden="true" tabindex="-1"></a><span class="al">![A estrutura do RSA-OAEP com uma chave de 2048 bits e o SHA-256.](../assets/images/fig-06-oaep.png)</span>{#fig-06-oaep width=80%}</span>
+<span id="cb3-273"><a href="#cb3-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-274"><a href="#cb3-274" aria-hidden="true" tabindex="-1"></a>Para decifrar, o Bob desfaz estes passos pela ordem inversa:</span>
+<span id="cb3-275"><a href="#cb3-275" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-276"><a href="#cb3-276" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Calcula $X = C^d \bmod n$ e parte-o nas posições fixas: o byte 00, a semente mascarada (32 bytes) e o DB mascarado (223 bytes).</span>
+<span id="cb3-277"><a href="#cb3-277" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Recupera a semente: a MGF1 aplicada ao DB mascarado dá a máscara da semente, e semente = semente mascarada $\oplus$ máscara.</span>
+<span id="cb3-278"><a href="#cb3-278" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Recupera o DB: a MGF1 aplicada à semente dá a máscara do DB, e DB = DB mascarado $\oplus$ máscara.</span>
+<span id="cb3-279"><a href="#cb3-279" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Verifica o enchimento: o DB tem de começar pelo *hash* de $L$, seguido de bytes 00 e de um byte 01, e o primeiro byte de $X$ tem de ser 00. Se tudo bater certo, o que vem depois do 01 é a mensagem; caso contrário, rejeita-a.</span>
 <span id="cb3-280"><a href="#cb3-280" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-281"><a href="#cb3-281" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
-<span id="cb3-282"><a href="#cb3-282" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl pkey <span class="at">-in</span> bob.pem <span class="at">-pubout</span> <span class="at">-out</span> bob_pub.pem</span>
-<span id="cb3-283"><a href="#cb3-283" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl pkeyutl <span class="at">-encrypt</span> <span class="at">-pubin</span> <span class="at">-inkey</span> bob_pub.pem <span class="dt">\</span></span>
-<span id="cb3-284"><a href="#cb3-284" aria-hidden="true" tabindex="-1"></a>      <span class="at">-pkeyopt</span> rsa_padding_mode:oaep <span class="at">-pkeyopt</span> rsa_oaep_md:sha256 <span class="dt">\</span></span>
-<span id="cb3-285"><a href="#cb3-285" aria-hidden="true" tabindex="-1"></a>      <span class="at">-in</span> voto.txt <span class="kw">|</span> <span class="ex">xxd</span> <span class="at">-p</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-c</span> 48</span>
-<span id="cb3-286"><a href="#cb3-286" aria-hidden="true" tabindex="-1"></a><span class="ex">7803e1d4fadef723e52938326ed6eeab43a7a0922a22d101</span></span>
-<span id="cb3-287"><a href="#cb3-287" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl pkeyutl <span class="at">-encrypt</span> <span class="at">-pubin</span> <span class="at">-inkey</span> bob_pub.pem <span class="dt">\</span></span>
-<span id="cb3-288"><a href="#cb3-288" aria-hidden="true" tabindex="-1"></a>      <span class="at">-pkeyopt</span> rsa_padding_mode:oaep <span class="at">-pkeyopt</span> rsa_oaep_md:sha256 <span class="dt">\</span></span>
-<span id="cb3-289"><a href="#cb3-289" aria-hidden="true" tabindex="-1"></a>      <span class="at">-in</span> voto.txt <span class="kw">|</span> <span class="ex">xxd</span> <span class="at">-p</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-c</span> 48</span>
-<span id="cb3-290"><a href="#cb3-290" aria-hidden="true" tabindex="-1"></a><span class="ex">2a682c7aca614db890b0c996708e3cb9d9fc67cae73cee1f</span></span>
-<span id="cb3-291"><a href="#cb3-291" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-292"><a href="#cb3-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-293"><a href="#cb3-293" aria-hidden="true" tabindex="-1"></a>| Comando ou opção | Significado |</span>
-<span id="cb3-294"><a href="#cb3-294" aria-hidden="true" tabindex="-1"></a>|---|---|</span>
-<span id="cb3-295"><a href="#cb3-295" aria-hidden="true" tabindex="-1"></a>| <span class="in">`pkey -in bob.pem -pubout`</span> | extrai do ficheiro da chave privada só a parte pública, $(e, n)$, e grava-a em <span class="in">`bob_pub.pem`</span> |</span>
-<span id="cb3-296"><a href="#cb3-296" aria-hidden="true" tabindex="-1"></a>| <span class="in">`pkeyutl -encrypt`</span> | cifra um ficheiro com uma chave |</span>
-<span id="cb3-297"><a href="#cb3-297" aria-hidden="true" tabindex="-1"></a>| <span class="in">`-pubin -inkey bob_pub.pem`</span> | a chave a usar é pública e está em <span class="in">`bob_pub.pem`</span> |</span>
-<span id="cb3-298"><a href="#cb3-298" aria-hidden="true" tabindex="-1"></a>| <span class="in">`-pkeyopt rsa_padding_mode:oaep`</span> | aplica o OAEP antes de cifrar |</span>
-<span id="cb3-299"><a href="#cb3-299" aria-hidden="true" tabindex="-1"></a>| <span class="in">`-pkeyopt rsa_oaep_md:sha256`</span> | o OAEP usa o SHA-256 (sem esta opção, o <span class="in">`openssl`</span> usa o SHA-1) |</span>
-<span id="cb3-300"><a href="#cb3-300" aria-hidden="true" tabindex="-1"></a>| <span class="in">`-in voto.txt`</span> | o ficheiro a cifrar |</span>
-<span id="cb3-301"><a href="#cb3-301" aria-hidden="true" tabindex="-1"></a>| <span class="in">`xxd -p`</span> \| <span class="in">`head -c 48`</span> | mostra o resultado em hexadecimal, só os primeiros 24 dos 256 bytes |</span>
-<span id="cb3-302"><a href="#cb3-302" aria-hidden="true" tabindex="-1"></a>| <span class="in">`\`</span> no fim da linha | o comando continua na linha seguinte |</span>
-<span id="cb3-303"><a href="#cb3-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-304"><a href="#cb3-304" aria-hidden="true" tabindex="-1"></a>: Comandos e opções do exemplo OAEP {#tbl-06-openssl-oaep}</span>
-<span id="cb3-305"><a href="#cb3-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-306"><a href="#cb3-306" aria-hidden="true" tabindex="-1"></a><span class="fu">## Na Prática: o RSA Transporta a Chave do AES {#sec-06-hibrido}</span></span>
-<span id="cb3-307"><a href="#cb3-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-308"><a href="#cb3-308" aria-hidden="true" tabindex="-1"></a>O RSA é **muito mais lento** do que o AES, e cada bloco tem de ser um número menor do que $n$: com 2048 bits, menos de 256 bytes. Por isso, na prática, o RSA cifra **só a chave $K$** do AES, uma vez, e os dados seguem cifrados com AES:</span>
-<span id="cb3-309"><a href="#cb3-309" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-310"><a href="#cb3-310" aria-hidden="true" tabindex="-1"></a><span class="al">![Esquema híbrido: o RSA cifra apenas a chave $K$ do AES; o AES cifra os dados.](../assets/images/fig-06-hibrido.png)</span>{#fig-06-hibrido width=100%}</span>
-<span id="cb3-311"><a href="#cb3-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-312"><a href="#cb3-312" aria-hidden="true" tabindex="-1"></a>É esta a resposta ao problema da introdução: a Alice gera uma chave $K$ aleatória, envia-a ao Bob cifrada com a chave pública dele, e a partir daí os dois usam a cifra simétrica, rápida, com uma chave que nunca viajou às claras.</span>
+<span id="cb3-281"><a href="#cb3-281" aria-hidden="true" tabindex="-1"></a>Isto funciona porque o XOR se anula a si próprio, $(a \oplus m) \oplus m = a$, e porque a MGF1 não tem segredo nenhum: com a mesma entrada, o Bob obtém exatamente as mesmas máscaras que a Alice. A ordem é obrigatória, porque a máscara do DB só se calcula depois de recuperada a semente. Os dois XOR não protegem nada por si: quem tivesse $X$ desfazia-os da mesma forma. O que impede o Darth de chegar a $X$ é a camada RSA, porque só o Bob tem $d$.</span>
+<span id="cb3-282"><a href="#cb3-282" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-283"><a href="#cb3-283" aria-hidden="true" tabindex="-1"></a>O DB não foi feito para esconder nada: é enchimento com um formato público, como o *padding* de uma cifra de bloco. Completa o bloco de 223 bytes, o byte 01 marca onde começa a mensagem (cujo comprimento varia) e o resto dá redundância para a verificação do passo 4. Quem chegasse ao DB leria a mensagem, que lá está em claro: a confidencialidade vem só da camada RSA.</span>
+<span id="cb3-284"><a href="#cb3-284" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-285"><a href="#cb3-285" aria-hidden="true" tabindex="-1"></a>A etiqueta $L$ é opcional: não viaja dentro de $C$, é definida pelo protocolo que a Alice e o Bob usam e é quase sempre vazia. Nesse caso, o *hash* de $L$ é uma constante conhecida de todos, que não acrescenta segredo nenhum; serve apenas de redundância. O Darth conhece esse valor, mas não o consegue fazer aparecer no DB do Bob se alterar o $C$ da Alice. No RSA "à letra", essa alteração é fácil e útil: com $n = 187$ e $e = 7$, multiplicar o $C = 11$ intercetado por $2^7$, módulo 187, dá $C' = 99$, e o Bob decifra $99^{23} \bmod 187 = 176$, o dobro de 88, sem que o Darth alguma vez tenha conhecido a mensagem. Com o OAEP, o $X$ que o Bob obtém com $d$ muda de forma que o Darth não consegue prever, o DB fica baralhado depois de desfeitas as máscaras e não começa pelo valor esperado. Isto não impede o Darth de cifrar uma mensagem sua, de raiz, com a chave pública do Bob: o OAEP não diz quem enviou, e esse é o papel das assinaturas digitais. Só quando o protocolo define uma etiqueta não vazia é que $L$ faz mais do que isto: um $C$ produzido num contexto, por exemplo com $L$ = "Eleição AE 2026", deixa de ser aceite noutro. No <span class="in">`openssl`</span>, a etiqueta define-se com <span class="in">`-pkeyopt rsa_oaep_label:`</span> seguido do valor em hexadecimal, tanto ao cifrar como ao decifrar.</span>
+<span id="cb3-286"><a href="#cb3-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-287"><a href="#cb3-287" aria-hidden="true" tabindex="-1"></a>Como a semente é nova a cada cifragem, as máscaras também o são, e $X$ e $C$ ficam completamente diferentes de uma vez para a outra. O Darth pode cifrar "S" e "N" quantas vezes quiser, e nunca obtém o $C$ da Alice. Para **assinaturas**, a versão correspondente chama-se **RSA-PSS** (*Probabilistic Signature Scheme*).</span>
+<span id="cb3-288"><a href="#cb3-288" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-289"><a href="#cb3-289" aria-hidden="true" tabindex="-1"></a>O <span class="in">`openssl`</span> mostra o efeito: o mesmo ficheiro <span class="in">`voto.txt`</span>, que contém só "S", cifrado duas vezes com OAEP, dá dois resultados sem nada em comum:</span>
+<span id="cb3-290"><a href="#cb3-290" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-291"><a href="#cb3-291" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb3-292"><a href="#cb3-292" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl pkey <span class="at">-in</span> bob.pem <span class="at">-pubout</span> <span class="at">-out</span> bob_pub.pem</span>
+<span id="cb3-293"><a href="#cb3-293" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl pkeyutl <span class="at">-encrypt</span> <span class="at">-pubin</span> <span class="at">-inkey</span> bob_pub.pem <span class="dt">\</span></span>
+<span id="cb3-294"><a href="#cb3-294" aria-hidden="true" tabindex="-1"></a>      <span class="at">-pkeyopt</span> rsa_padding_mode:oaep <span class="at">-pkeyopt</span> rsa_oaep_md:sha256 <span class="dt">\</span></span>
+<span id="cb3-295"><a href="#cb3-295" aria-hidden="true" tabindex="-1"></a>      <span class="at">-in</span> voto.txt <span class="kw">|</span> <span class="ex">xxd</span> <span class="at">-p</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-c</span> 48</span>
+<span id="cb3-296"><a href="#cb3-296" aria-hidden="true" tabindex="-1"></a><span class="ex">7803e1d4fadef723e52938326ed6eeab43a7a0922a22d101</span></span>
+<span id="cb3-297"><a href="#cb3-297" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl pkeyutl <span class="at">-encrypt</span> <span class="at">-pubin</span> <span class="at">-inkey</span> bob_pub.pem <span class="dt">\</span></span>
+<span id="cb3-298"><a href="#cb3-298" aria-hidden="true" tabindex="-1"></a>      <span class="at">-pkeyopt</span> rsa_padding_mode:oaep <span class="at">-pkeyopt</span> rsa_oaep_md:sha256 <span class="dt">\</span></span>
+<span id="cb3-299"><a href="#cb3-299" aria-hidden="true" tabindex="-1"></a>      <span class="at">-in</span> voto.txt <span class="kw">|</span> <span class="ex">xxd</span> <span class="at">-p</span> <span class="kw">|</span> <span class="fu">head</span> <span class="at">-c</span> 48</span>
+<span id="cb3-300"><a href="#cb3-300" aria-hidden="true" tabindex="-1"></a><span class="ex">2a682c7aca614db890b0c996708e3cb9d9fc67cae73cee1f</span></span>
+<span id="cb3-301"><a href="#cb3-301" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-302"><a href="#cb3-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-303"><a href="#cb3-303" aria-hidden="true" tabindex="-1"></a>| Comando ou opção | Significado |</span>
+<span id="cb3-304"><a href="#cb3-304" aria-hidden="true" tabindex="-1"></a>|---|---|</span>
+<span id="cb3-305"><a href="#cb3-305" aria-hidden="true" tabindex="-1"></a>| <span class="in">`pkey -in bob.pem -pubout`</span> | extrai do ficheiro da chave privada só a parte pública, $(e, n)$, e grava-a em <span class="in">`bob_pub.pem`</span> |</span>
+<span id="cb3-306"><a href="#cb3-306" aria-hidden="true" tabindex="-1"></a>| <span class="in">`pkeyutl -encrypt`</span> | cifra um ficheiro com uma chave |</span>
+<span id="cb3-307"><a href="#cb3-307" aria-hidden="true" tabindex="-1"></a>| <span class="in">`-pubin -inkey bob_pub.pem`</span> | a chave a usar é pública e está em <span class="in">`bob_pub.pem`</span> |</span>
+<span id="cb3-308"><a href="#cb3-308" aria-hidden="true" tabindex="-1"></a>| <span class="in">`-pkeyopt rsa_padding_mode:oaep`</span> | aplica o OAEP antes de cifrar |</span>
+<span id="cb3-309"><a href="#cb3-309" aria-hidden="true" tabindex="-1"></a>| <span class="in">`-pkeyopt rsa_oaep_md:sha256`</span> | o OAEP usa o SHA-256 (sem esta opção, o <span class="in">`openssl`</span> usa o SHA-1) |</span>
+<span id="cb3-310"><a href="#cb3-310" aria-hidden="true" tabindex="-1"></a>| <span class="in">`-in voto.txt`</span> | o ficheiro a cifrar |</span>
+<span id="cb3-311"><a href="#cb3-311" aria-hidden="true" tabindex="-1"></a>| <span class="in">`xxd -p`</span> \| <span class="in">`head -c 48`</span> | mostra o resultado em hexadecimal, só os primeiros 24 dos 256 bytes |</span>
+<span id="cb3-312"><a href="#cb3-312" aria-hidden="true" tabindex="-1"></a>| <span class="in">`\`</span> no fim da linha | o comando continua na linha seguinte |</span>
 <span id="cb3-313"><a href="#cb3-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-314"><a href="#cb3-314" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-06-sintese}</span></span>
+<span id="cb3-314"><a href="#cb3-314" aria-hidden="true" tabindex="-1"></a>: Comandos e opções do exemplo OAEP {#tbl-06-openssl-oaep}</span>
 <span id="cb3-315"><a href="#cb3-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-316"><a href="#cb3-316" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Cada participante tem uma **chave pública**, divulgada, e uma **chave privada**, secreta; o que uma cifra, só a outra decifra</span>
-<span id="cb3-317"><a href="#cb3-317" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Cifrar com a chave pública do **destinatário** dá confidencialidade; cifrar com a chave privada **própria** prova quem enviou; combinar as duas dá ambas</span>
-<span id="cb3-318"><a href="#cb3-318" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>O RSA e a curva elíptica servem para cifrar, assinar e trocar chaves; o Diffie-Hellman só para trocar chaves, e o DSS só para assinar</span>
-<span id="cb3-319"><a href="#cb3-319" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**RSA**: $n = p \times q$, $e$ coprimo com $\phi(n) = (p-1)(q-1)$, $d$ inverso de $e$ módulo $\phi(n)$; $C = M^e \bmod n$ e $M = C^d \bmod n$, calculados por quadrados sucessivos</span>
-<span id="cb3-320"><a href="#cb3-320" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>A segurança depende de ser impraticável **fatorizar** $n$; com $n = 187$ bastam seis divisões, por isso na prática $n$ tem 2048 a 4096 bits</span>
-<span id="cb3-321"><a href="#cb3-321" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>O *textbook* RSA é determinístico: usa-se **RSA-OAEP** para cifrar e **RSA-PSS** para assinar</span>
-<span id="cb3-322"><a href="#cb3-322" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Na prática, o RSA cifra uma chave de AES, e o AES cifra os dados</span>
+<span id="cb3-316"><a href="#cb3-316" aria-hidden="true" tabindex="-1"></a><span class="fu">## Na Prática: o RSA Transporta a Chave do AES {#sec-06-hibrido}</span></span>
+<span id="cb3-317"><a href="#cb3-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-318"><a href="#cb3-318" aria-hidden="true" tabindex="-1"></a>O RSA é **muito mais lento** do que o AES, e cada bloco tem de ser um número menor do que $n$: com 2048 bits, menos de 256 bytes. Por isso, na prática, o RSA cifra **só a chave $K$** do AES, uma vez, e os dados seguem cifrados com AES:</span>
+<span id="cb3-319"><a href="#cb3-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-320"><a href="#cb3-320" aria-hidden="true" tabindex="-1"></a><span class="al">![Esquema híbrido: o RSA cifra apenas a chave $K$ do AES; o AES cifra os dados.](../assets/images/fig-06-hibrido.png)</span>{#fig-06-hibrido width=100%}</span>
+<span id="cb3-321"><a href="#cb3-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-322"><a href="#cb3-322" aria-hidden="true" tabindex="-1"></a>É esta a resposta ao problema da introdução: a Alice gera uma chave $K$ aleatória, envia-a ao Bob cifrada com a chave pública dele, e a partir daí os dois usam a cifra simétrica, rápida, com uma chave que nunca viajou às claras.</span>
 <span id="cb3-323"><a href="#cb3-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-324"><a href="#cb3-324" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-06-reflexao}</span></span>
+<span id="cb3-324"><a href="#cb3-324" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-06-sintese}</span></span>
 <span id="cb3-325"><a href="#cb3-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-326"><a href="#cb3-326" aria-hidden="true" tabindex="-1"></a>O expoente público $e = 65\,537$ é o mesmo em milhões de chaves RSA diferentes, sem que isso comprometa nenhuma delas. No exemplo deste capítulo ($n = 187$), se o Bob trocasse $e = 7$ por um $e$ muito maior, mantendo o mesmo $n$, a chave ficaria mais segura? Porquê?</span>
-<span id="cb3-327"><a href="#cb3-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-328"><a href="#cb3-328" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-06-referencias .unnumbered}</span></span>
-<span id="cb3-329"><a href="#cb3-329" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-330"><a href="#cb3-330" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb3-331"><a href="#cb3-331" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb3-326"><a href="#cb3-326" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Cada participante tem uma **chave pública**, divulgada, e uma **chave privada**, secreta; o que uma cifra, só a outra decifra</span>
+<span id="cb3-327"><a href="#cb3-327" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Cifrar com a chave pública do **destinatário** dá confidencialidade; cifrar com a chave privada **própria** prova quem enviou; combinar as duas dá ambas</span>
+<span id="cb3-328"><a href="#cb3-328" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>O RSA e a curva elíptica servem para cifrar, assinar e trocar chaves; o Diffie-Hellman só para trocar chaves, e o DSS só para assinar</span>
+<span id="cb3-329"><a href="#cb3-329" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**RSA**: $n = p \times q$, $e$ coprimo com $\phi(n) = (p-1)(q-1)$, $d$ inverso de $e$ módulo $\phi(n)$; $C = M^e \bmod n$ e $M = C^d \bmod n$, calculados por quadrados sucessivos</span>
+<span id="cb3-330"><a href="#cb3-330" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>A segurança depende de ser impraticável **fatorizar** $n$; com $n = 187$ bastam seis divisões, por isso na prática $n$ tem 2048 a 4096 bits</span>
+<span id="cb3-331"><a href="#cb3-331" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>O *textbook* RSA é determinístico: usa-se **RSA-OAEP** para cifrar e **RSA-PSS** para assinar</span>
+<span id="cb3-332"><a href="#cb3-332" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Na prática, o RSA cifra uma chave de AES, e o AES cifra os dados</span>
+<span id="cb3-333"><a href="#cb3-333" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-334"><a href="#cb3-334" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-06-reflexao}</span></span>
+<span id="cb3-335"><a href="#cb3-335" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-336"><a href="#cb3-336" aria-hidden="true" tabindex="-1"></a>O expoente público $e = 65\,537$ é o mesmo em milhões de chaves RSA diferentes, sem que isso comprometa nenhuma delas. No exemplo deste capítulo ($n = 187$), se o Bob trocasse $e = 7$ por um $e$ muito maior, mantendo o mesmo $n$, a chave ficaria mais segura? Porquê?</span>
+<span id="cb3-337"><a href="#cb3-337" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-338"><a href="#cb3-338" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-06-referencias .unnumbered}</span></span>
+<span id="cb3-339"><a href="#cb3-339" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-340"><a href="#cb3-340" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb3-341"><a href="#cb3-341" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

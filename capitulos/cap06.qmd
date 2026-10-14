@@ -259,6 +259,16 @@ A solução é acrescentar aleatoriedade antes de cifrar. No **RSA-OAEP** (*Opti
 4. Esconde também a semente, com um XOR com uma máscara calculada da mesma forma a partir do DB mascarado.
 5. Concatena 00, a semente mascarada e o DB mascarado: 256 bytes, lidos como um único número $X$, que se cifra com o RSA normal, $C = X^e \bmod n$.
 
+::: {.callout-note}
+#### A função MGF1
+
+A MGF1 (*Mask Generation Function 1*, definida na norma PKCS #1, RFC 8017) produz, a partir de uma entrada $Z$, uma máscara com o comprimento que se quiser, usando apenas uma função de *hash* $H$. Aplica $H$ a $Z$ seguido de um contador de 4 bytes, que começa em 0, e junta os resultados até ter bytes suficientes, cortando o excesso no fim ($\Vert$ indica concatenação):
+
+$$\text{MGF1}(Z) = H(Z \Vert 0) \;\Vert\; H(Z \Vert 1) \;\Vert\; H(Z \Vert 2) \;\Vert\; \ldots$$
+
+Com o SHA-256, cada chamada dá 32 bytes: a máscara de 223 bytes do DB precisa de 7 chamadas (224 bytes, dos quais se descarta o último), e a máscara de 32 bytes da semente precisa de uma só. A MGF1 não tem chave nem segredo: quem conhecer $Z$ obtém a mesma máscara, e é isso que permite ao Bob recalculá-la. O que dela se espera é que qualquer alteração de $Z$, por mínima que seja, mude a máscara inteira de forma imprevisível, tal como acontece com o próprio *hash*.
+:::
+
 ![A estrutura do RSA-OAEP com uma chave de 2048 bits e o SHA-256.](../assets/images/fig-06-oaep.png){#fig-06-oaep width=80%}
 
 Para decifrar, o Bob desfaz estes passos pela ordem inversa:

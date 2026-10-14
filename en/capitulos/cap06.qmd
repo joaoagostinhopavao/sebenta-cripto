@@ -259,6 +259,16 @@ The solution is to add randomness before encrypting. In **RSA-OAEP** (*Optimal A
 4. She also hides the seed, with an XOR against a mask computed in the same way from the masked DB.
 5. She concatenates 00, the masked seed and the masked DB: 256 bytes, read as a single number $X$, which is encrypted with ordinary RSA, $C = X^e \bmod n$.
 
+::: {.callout-note}
+#### The MGF1 function
+
+MGF1 (*Mask Generation Function 1*, defined in the PKCS #1 standard, RFC 8017) produces, from an input $Z$, a mask of any desired length, using only a hash function $H$. It applies $H$ to $Z$ followed by a 4-byte counter starting at 0, and concatenates the results until it has enough bytes, cutting off the excess at the end ($\Vert$ denotes concatenation):
+
+$$\text{MGF1}(Z) = H(Z \Vert 0) \;\Vert\; H(Z \Vert 1) \;\Vert\; H(Z \Vert 2) \;\Vert\; \ldots$$
+
+With SHA-256, each call yields 32 bytes: the 223-byte DB mask needs 7 calls (224 bytes, the last of which is discarded), and the 32-byte seed mask needs only one. MGF1 has no key and no secret: anyone who knows $Z$ obtains the same mask, which is what allows Bob to recompute it. What is expected of it is that any change to $Z$, however small, changes the whole mask unpredictably, just as with the hash itself.
+:::
+
 ![The structure of RSA-OAEP with a 2048-bit key and SHA-256.](../assets/images/fig-06-oaep-en.png){#fig-06-oaep width=80%}
 
 To decrypt, Bob undoes these steps in reverse order:
