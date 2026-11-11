@@ -359,10 +359,10 @@ window.Quarto = {
 <p>that maps each of the <span class="math inline">\(2^n\)</span> possible input blocks to an output block, likewise of <span class="math inline">\(n\)</span> bits. Consider the case <span class="math inline">\(n=4\)</span>: each input block is a value between <code>0000</code> and <code>1111</code>, more conveniently written in <strong>hexadecimal</strong>, since a single hexadecimal digit represents exactly 4 bits. The 16 possible blocks correspond, one to one, to the digits <code>0</code> through <code>F</code>.</p>
 <p>An <strong>arbitrary permutation</strong> of these 16 values is any bijective reassignment of each input to a distinct output, with no repeats. For example, the following three permutations are all valid, and completely different from one another:</p>
 <div class="httpmsg">
-<pre><code>Entrada:               0 1 2 3 4 5 6 7 8 9 A B C D E F
-Permutação A (+5):     5 6 7 8 9 A B C D E F 0 1 2 3 4
-Permutação B (livre):  5 D 2 9 0 B 7 E 3 F 1 8 6 4 A C
-Permutação C (pares):  0 1 3 2 5 4 7 6 9 8 B A D C F E</code></pre>
+<pre><code>Input:                 0 1 2 3 4 5 6 7 8 9 A B C D E F
+Permutation A (+5):    5 6 7 8 9 A B C D E F 0 1 2 3 4
+Permutation B (free):  5 D 2 9 0 B 7 E 3 F 1 8 6 4 A C
+Permutation C (pairs): 0 1 3 2 5 4 7 6 9 8 B A D C F E</code></pre>
 </div>
 <p>Permutation A is merely a shift — the same logic as the Caesar cipher, now over hexadecimal digits instead of letters. Permutations B and C follow no simple formula: they were chosen value by value, with no pattern whatsoever, only ensuring that each input has a different output and that no output repeats.</p>
 <p><strong>How many such permutations exist, in total?</strong> For the first input (<code>0</code>), there are 16 possible outputs; once that is chosen, 15 options remain for the next input (<code>1</code>), since the output chosen for <code>0</code> cannot repeat; then 14 for input <code>2</code>; and so on, until only 1 option remains for the last input (<code>F</code>). The total is:</p>
@@ -373,7 +373,7 @@ Permutação C (pares):  0 1 3 2 5 4 7 6 9 8 B A D C F E</code></pre>
 <p>Knowing that there are <span class="math inline">\(16!\)</span> valid permutations, the number of bits <span class="math inline">\(x\)</span> needed to index that many is the key size. So <span class="math inline">\(2^x = (16!)\)</span>, which gives <span class="math inline">\(x = \log_2(16!) \approx 45\)</span> bits.</p>
 <p>The second approach gives a more direct way of answering the question of key size, which is to imagine that the key <em>is</em>, literally, the complete substitution table. For example, for Permutation A (the “+5” one), the following table is obtained:</p>
 <div class="httpmsg">
-<pre><code>Entrada  Saída (4 bits) Saída (Hex.)
+<pre><code>Input  Output (4 bits) Output (Hex.)
   0    →   0 1 0 1         (= 5)
   1    →   0 1 1 0         (= 6)
   2    →   0 1 1 1         (= 7)
@@ -1180,10 +1180,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
 <span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="in">Entrada:               0 1 2 3 4 5 6 7 8 9 A B C D E F</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="in">Permutação A (+5):     5 6 7 8 9 A B C D E F 0 1 2 3 4</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="in">Permutação B (livre):  5 D 2 9 0 B 7 E 3 F 1 8 6 4 A C</span></span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="in">Permutação C (pares):  0 1 3 2 5 4 7 6 9 8 B A D C F E</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a><span class="in">Input:                 0 1 2 3 4 5 6 7 8 9 A B C D E F</span></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a><span class="in">Permutation A (+5):    5 6 7 8 9 A B C D E F 0 1 2 3 4</span></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="in">Permutation B (free):  5 D 2 9 0 B 7 E 3 F 1 8 6 4 A C</span></span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a><span class="in">Permutation C (pairs): 0 1 3 2 5 4 7 6 9 8 B A D C F E</span></span>
 <span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
@@ -1205,7 +1205,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>::: {.httpmsg}</span>
 <span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="in">Entrada  Saída (4 bits) Saída (Hex.)</span></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="in">Input  Output (4 bits) Output (Hex.)</span></span>
 <span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="in">  0    →   0 1 0 1         (= 5)</span></span>
 <span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a><span class="in">  1    →   0 1 1 0         (= 6)</span></span>
 <span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="in">  2    →   0 1 1 1         (= 7)</span></span>

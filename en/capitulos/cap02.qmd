@@ -37,10 +37,10 @@ An **arbitrary permutation** of these 16 values is any bijective reassignment of
 
 ::: {.httpmsg}
 ```
-Entrada:               0 1 2 3 4 5 6 7 8 9 A B C D E F
-Permutação A (+5):     5 6 7 8 9 A B C D E F 0 1 2 3 4
-Permutação B (livre):  5 D 2 9 0 B 7 E 3 F 1 8 6 4 A C
-Permutação C (pares):  0 1 3 2 5 4 7 6 9 8 B A D C F E
+Input:                 0 1 2 3 4 5 6 7 8 9 A B C D E F
+Permutation A (+5):    5 6 7 8 9 A B C D E F 0 1 2 3 4
+Permutation B (free):  5 D 2 9 0 B 7 E 3 F 1 8 6 4 A C
+Permutation C (pairs): 0 1 3 2 5 4 7 6 9 8 B A D C F E
 ```
 :::
 
@@ -62,7 +62,7 @@ The second approach gives a more direct way of answering the question of key siz
 
 ::: {.httpmsg}
 ```
-Entrada  Saída (4 bits) Saída (Hex.)
+Input  Output (4 bits) Output (Hex.)
   0    →   0 1 0 1         (= 5)
   1    →   0 1 1 0         (= 6)
   2    →   0 1 1 1         (= 7)
