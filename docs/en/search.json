@@ -14,7 +14,7 @@
     "href": "index.html#structure-of-the-coursebook",
     "title": "Cryptography",
     "section": "Structure of the Coursebook",
-    "text": "Structure of the Coursebook\nThe chapters follow the structure of the module’s lectures (the last two lectures, TLS/PGP and algorithmic efficiency/PQC, are taught in the same session):\n\nClassical Cryptography — substitution, polyalphabetic and transposition ciphers\nBlock Ciphers — fundamentals, Feistel, DES and 3DES\nAES — stages and modes of operation\nStream Ciphers — RC4, Salsa20, ChaCha20 and padding\nHashing — properties, attacks, SHA, MAC and HMAC\nAsymmetric Cryptography and RSA\nDiffie-Hellman and Digital Signatures\nElliptic Curve Cryptography\nPublic Key Infrastructure (PKI)\nTLS and PGP\nAlgorithmic Efficiency and Post-Quantum Cryptography",
+    "text": "Structure of the Coursebook\nThe chapters follow the structure of the module’s lectures (the last two lectures, TLS/PGP and algorithmic efficiency/PQC, are taught in the same session):\n\nClassical Cryptography — substitution, polyalphabetic and transposition ciphers\nBlock Ciphers — fundamentals, Feistel, DES and 3DES\nAES — stages and modes of operation\nStream Ciphers — RC4, Salsa20, ChaCha20 and padding\nHashing — properties, attacks, SHA, MAC and HMAC\nAsymmetric Cryptography and RSA\nDiffie-Hellman and Digital Signatures\nElliptic Curve Cryptography\nKey Management\nPublic Key Infrastructure (PKI)\nTLS and PGP\nAlgorithmic Efficiency and Post-Quantum Cryptography",
     "crumbs": [
       "Preface"
     ]
@@ -862,291 +862,391 @@
   {
     "objectID": "capitulos/cap09.html",
     "href": "capitulos/cap09.html",
-    "title": "9  Public Key Infrastructure (PKI)",
+    "title": "9  Key Management",
     "section": "",
-    "text": "Introduction\nThe previous chapter ended with an open question: how does anyone know that a public key really belongs to whoever claims to own it? Without an answer to this question, the entire edifice of asymmetric cryptography, confidentiality, authentication, signatures, Diffie-Hellman, is exposed to a single type of attack. This chapter examines that attack in detail, and the engineering solution that became the industry standard for solving it: public key infrastructure.",
+    "text": "Introduction",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Key Management</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap09.html#sec-09-mitm",
-    "href": "capitulos/cap09.html#sec-09-mitm",
-    "title": "9  Public Key Infrastructure (PKI)",
-    "section": "9.1 The Man-in-the-Middle Attack in Detail",
-    "text": "9.1 The Man-in-the-Middle Attack in Detail\nIn a man-in-the-middle attack (MITM), an attacker positioned at any point in the network between the two parties, for example on a compromised router, intercepts and substitutes the public keys being exchanged, without either victim noticing (Stallings 2020):\n\n\n\n\n\n\nFigure 9.1: The attacker (Mallory) intercepts Alice’s and Bob’s public keys, and substitutes them with her own before forwarding them on. Each party thinks they are using the other’s public key, when in fact they are using Mallory’s public key.\n\n\n\nThe attack works because a public key, by definition, has nothing that inseparably ties it to its owner: it is just a number, and a number has no identity of its own. When Alice receives something that looks like Bob’s public key, she has, by herself, no way of confirming its origin.\nIt is worth noting that this attack breaks any public-key algorithm, it is not a weakness specific to RSA, Diffie-Hellman, or DSA. In the specific case of Diffie-Hellman (Section 7.3), the attack has a particularly insidious consequence: Mallory establishes two distinct key exchanges, one with Alice and one with Bob, and proceeds to decrypt and re-encrypt every message exchanged between them, with neither of them able to detect that the “shared” key they believe they hold is not, in fact, shared with each other, but with Mallory on both sides.",
+    "objectID": "capitulos/cap09.html#sec-09-ciclo-vida",
+    "href": "capitulos/cap09.html#sec-09-ciclo-vida",
+    "title": "9  Key Management",
+    "section": "9.1 The Life Cycle of a Key",
+    "text": "9.1 The Life Cycle of a Key",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Key Management</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap09.html#sec-09-solucao",
-    "href": "capitulos/cap09.html#sec-09-solucao",
-    "title": "9  Public Key Infrastructure (PKI)",
-    "section": "9.2 The Solution: a Trusted Entity",
-    "text": "9.2 The Solution: a Trusted Entity\nThe solution is to introduce a third party, a trusted entity, recognised in advance by both parties, that vouches for the link between an identity and a public key. If Alice and Bob both trust the same entity, each can ask it, “does this public key really belong to the other party?”, without that question having to travel over the potentially compromised channel between the two of them (Stallings 2020; Martin 2017).\nThis is exactly the function of a Public Key Infrastructure (PKI): a set of entities, processes, and standards that formally bind identities to public keys, through digital certificates. Unlike a one-off verification, a certificate is a signed object, independently verifiable and reusable by any party that trusts the entity that issued it.",
+    "objectID": "capitulos/cap09.html#sec-09-geracao",
+    "href": "capitulos/cap09.html#sec-09-geracao",
+    "title": "9  Key Management",
+    "section": "9.2 Generation and Randomness",
+    "text": "9.2 Generation and Randomness",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Key Management</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap09.html#sec-09-x509",
-    "href": "capitulos/cap09.html#sec-09-x509",
-    "title": "9  Public Key Infrastructure (PKI)",
-    "section": "9.3 The X.509 Certificate",
-    "text": "9.3 The X.509 Certificate\nThe X.509 standard, now universal on the Web, defines the structure of a public-key certificate. An X.509 certificate essentially contains the holder’s identification data and the signature of whoever certifies it (Cooper et al. 2008):\n\n\n\n\n\n\nFigure 9.2: Essential structure of an X.509 certificate: the holder’s data (identity, public key, validity period, issuer, and serial number), and the certificate authority’s signature over the hash of that data.\n\n\n\n\nIdentity (Subject): to whom the certificate belongs, typically a domain, an organisation, or a person.\nPublic key: the key that the certificate attests belongs to that identity.\nValidity: a date range outside of which the certificate is no longer considered valid.\nIssuer: the identity of the certificate authority that signed it.\nSerial number: a unique identifier for the certificate, essential for the revocation process.\nCA signature: the certificate authority (CA) signs, with its own private key, the hash of all the preceding fields: \\(\\mathrm{Sign}(sk_{CA}, H(\\text{holder data}))\\).\n\nThis last line is what turns the identification data into a verifiable statement: anyone with the CA’s public key can confirm that it really was that CA, and not some other entity, attesting to the link between that identity and that public key.",
+    "objectID": "capitulos/cap09.html#sec-09-derivacao",
+    "href": "capitulos/cap09.html#sec-09-derivacao",
+    "title": "9  Key Management",
+    "section": "9.3 Key Derivation",
+    "text": "9.3 Key Derivation",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Key Management</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap09.html#sec-09-cadeia",
-    "href": "capitulos/cap09.html#sec-09-cadeia",
-    "title": "9  Public Key Infrastructure (PKI)",
-    "section": "9.4 The Certificate Chain",
-    "text": "9.4 The Certificate Chain\nA single CA key pair directly certifying every site on the Internet would be impractical and fragile (a single point of compromise would compromise everything). Instead, trust is organised into a certificate chain: each certificate is signed by another, up to a Root CA, whose public key comes pre-installed in the operating system or browser (Stallings 2020):\n\n\n\n\n\n\nFigure 9.3: The certificate chain: the Root CA signs certificates for intermediate CAs, which in turn sign further certificates, down to the final holder of a domain. Trusting the root, already installed on the system, is enough to validate the entire chain.\n\n\n\nTrusting only the Root CAs, a relatively small number of carefully audited entities, is enough to validate any certificate issued at any point in the chain, however many intermediaries exist between the root and the final holder.",
+    "objectID": "capitulos/cap09.html#sec-09-hierarquia",
+    "href": "capitulos/cap09.html#sec-09-hierarquia",
+    "title": "9  Key Management",
+    "section": "9.4 Key Hierarchies",
+    "text": "9.4 Key Hierarchies",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Key Management</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap09.html#sec-09-verificacao",
-    "href": "capitulos/cap09.html#sec-09-verificacao",
-    "title": "9  Public Key Infrastructure (PKI)",
-    "section": "9.5 How Verification Works",
-    "text": "9.5 How Verification Works\nWhen Bob receives Alice’s certificate, he verifies it by following these steps (Stallings 2020):\n\nRead the certificate’s Issuer field, identifying which CA signed it.\nObtain that CA’s public key, \\(pk_{CA}\\) (from the CA’s own certificate, already known and trusted, or by following the chain up to a root that is).\nVerify the signature: \\(\\mathrm{Verify}(pk_{CA}, \\text{certificate data}, \\text{signature}_{CA})\\).\nIf the signature is valid, Alice’s public key is confirmed as genuine.\nAlso check the validity period, the revocation status (via a Certificate Revocation List, or the real-time Online Certificate Status Protocol, OCSP), and the certificate’s permitted use.\n\nOnly once all these steps pass does Bob have a well-founded guarantee that the public key received really is Alice’s, and not that of an interposed attacker.",
+    "objectID": "capitulos/cap09.html#sec-09-armazenamento",
+    "href": "capitulos/cap09.html#sec-09-armazenamento",
+    "title": "9  Key Management",
+    "section": "9.5 Storage and Protection",
+    "text": "9.5 Storage and Protection",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Key Management</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap09.html#sec-09-pratica",
-    "href": "capitulos/cap09.html#sec-09-pratica",
-    "title": "9  Public Key Infrastructure (PKI)",
-    "section": "9.6 In Practice: Inspecting a Certificate",
-    "text": "9.6 In Practice: Inspecting a Certificate\nAny X.509 certificate used on a public server can be inspected directly:\n$ openssl s_client -showcerts -connect www.example.com:443 &gt;&gt; cert.pem\n$ openssl x509 -in cert.pem -text -noout\nThe first command establishes a TLS connection and records the certificate chain sent by the server; the second reads the certificate and displays, in readable text, exactly the fields discussed in Section 9.3, including the holder, the issuer, the validity period, and the signature algorithm used.",
+    "objectID": "capitulos/cap09.html#sec-09-rotacao",
+    "href": "capitulos/cap09.html#sec-09-rotacao",
+    "title": "9  Key Management",
+    "section": "9.6 Rotation, Revocation and Compromise",
+    "text": "9.6 Rotation, Revocation and Compromise",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Key Management</span>"
     ]
   },
   {
     "objectID": "capitulos/cap09.html#sec-09-sintese",
     "href": "capitulos/cap09.html#sec-09-sintese",
-    "title": "9  Public Key Infrastructure (PKI)",
+    "title": "9  Key Management",
     "section": "9.7 Chapter Summary",
-    "text": "9.7 Chapter Summary\nThis chapter resolved the problem left open in the previous chapter:\n\nThe man-in-the-middle attack (MITM) breaks any public-key algorithm, substituting the exchanged keys with others controlled by the attacker, without either victim noticing\nThe solution is to introduce a shared trusted entity, capable of formally attesting to the link between an identity and a public key\nAn X.509 certificate contains the holder’s identity, their public key, a validity period, the issuer, and that issuer’s signature over a hash of all this data\nTrust is organised into a certificate chain, from the Root CA (pre-installed on the system) down to the final holder, through intermediate CAs\nVerifying a certificate requires confirming the issuing CA’s signature, the validity period, and the revocation status, confirming the signature alone is not enough",
+    "text": "9.7 Chapter Summary",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Key Management</span>"
     ]
   },
   {
     "objectID": "capitulos/cap09.html#sec-09-reflexao",
     "href": "capitulos/cap09.html#sec-09-reflexao",
-    "title": "9  Public Key Infrastructure (PKI)",
+    "title": "9  Key Management",
     "section": "9.8 Discussion Question",
-    "text": "9.8 Discussion Question\nThe certificate chain (Section 9.4) solves the problem of trusting a public key by introducing trust in a Root CA, pre-installed in the operating system or browser. This shifts the original problem (how to trust a public key?) into a slightly different one. What is that new problem, and why is trusting a handful of pre-installed Root CAs a more practicable solution than asking every Internet user to manually confirm the public key of every site they visit?",
+    "text": "9.8 Discussion Question",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Key Management</span>"
     ]
   },
   {
     "objectID": "capitulos/cap09.html#sec-09-referencias",
     "href": "capitulos/cap09.html#sec-09-referencias",
-    "title": "9  Public Key Infrastructure (PKI)",
+    "title": "9  Key Management",
     "section": "References",
-    "text": "References\n\n\nCooper, David, Stefan Santesson, Stephen Farrell, Sharon Boeyen, Russell Housley, and Tim Polk. 2008. ‘Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile’. RFC 5280. IETF.\n\n\nMartin, Keith. 2017. Everyday Cryptography. 2nd ed. Oxford University Press.\n\n\nStallings, William. 2020. Cryptography and Network Security: Principles and Practice. 8th ed. Pearson.",
+    "text": "References",
     "crumbs": [
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Key Management</span>"
     ]
   },
   {
     "objectID": "capitulos/cap10.html",
     "href": "capitulos/cap10.html",
-    "title": "10  TLS and PGP",
+    "title": "10  Public Key Infrastructure (PKI)",
     "section": "",
-    "text": "Introduction\nThis chapter shows how the tools presented throughout the book, symmetric ciphers, hash functions, MACs, RSA, Diffie-Hellman, elliptic curves and X.509 certificates, combine into two widely used real-world protocols: TLS, which protects practically all of today’s web traffic, and PGP, one of the first widely deployed cryptographic systems for electronic mail. Other schemes of practical interest, as they are incorporated into the course unit’s syllabus, will naturally find their place here.",
+    "text": "Introduction\nThe previous chapter ended with an open question: how does anyone know that a public key really belongs to whoever claims to own it? Without an answer to this question, the entire edifice of asymmetric cryptography, confidentiality, authentication, signatures, Diffie-Hellman, is exposed to a single type of attack. This chapter examines that attack in detail, and the engineering solution that became the industry standard for solving it: public key infrastructure.",
     "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS and PGP</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap10.html#sec-10-tls-objetivos",
-    "href": "capitulos/cap10.html#sec-10-tls-objetivos",
-    "title": "10  TLS and PGP",
-    "section": "10.1 TLS: Goals and Layers",
-    "text": "10.1 TLS: Goals and Layers\nTLS (Transport Layer Security), the successor to SSL, protects a network connection on three fronts: confidentiality (the data exchanged cannot be read by third parties), integrity (it cannot be altered without detection), and authentication (at least the server, typically through an X.509 certificate, proves its identity) (Stallings 2020; Rescorla 2018). The protocol is organised into two layers: the handshake protocol, which negotiates the session parameters and establishes a shared key, and the record protocol, which uses that key to encrypt and authenticate all subsequent traffic with an AEAD construction, such as AES-GCM or ChaCha20-Poly1305 (chapters 3 and 4).",
+    "objectID": "capitulos/cap10.html#sec-10-mitm",
+    "href": "capitulos/cap10.html#sec-10-mitm",
+    "title": "10  Public Key Infrastructure (PKI)",
+    "section": "10.1 The Man-in-the-Middle Attack in Detail",
+    "text": "10.1 The Man-in-the-Middle Attack in Detail\nIn a man-in-the-middle attack (MITM), an attacker positioned at any point in the network between the two parties, for example on a compromised router, intercepts and substitutes the public keys being exchanged, without either victim noticing (Stallings 2020):\n\n\n\n\n\n\nFigure 10.1: The attacker (Mallory) intercepts Alice’s and Bob’s public keys, and substitutes them with her own before forwarding them on. Each party thinks they are using the other’s public key, when in fact they are using Mallory’s public key.\n\n\n\nThe attack works because a public key, by definition, has nothing that inseparably ties it to its owner: it is just a number, and a number has no identity of its own. When Alice receives something that looks like Bob’s public key, she has, by herself, no way of confirming its origin.\nIt is worth noting that this attack breaks any public-key algorithm, it is not a weakness specific to RSA, Diffie-Hellman, or DSA. In the specific case of Diffie-Hellman (Section 7.3), the attack has a particularly insidious consequence: Mallory establishes two distinct key exchanges, one with Alice and one with Bob, and proceeds to decrypt and re-encrypt every message exchanged between them, with neither of them able to detect that the “shared” key they believe they hold is not, in fact, shared with each other, but with Mallory on both sides.",
     "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS and PGP</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap10.html#sec-10-tls-handshake",
-    "href": "capitulos/cap10.html#sec-10-tls-handshake",
-    "title": "10  TLS and PGP",
-    "section": "10.2 The TLS 1.3 Handshake",
-    "text": "10.2 The TLS 1.3 Handshake\nTLS 1.3 (Rescorla 2018) significantly simplified the handshake process relative to earlier versions, reducing it to a single round trip (1-RTT) in the general case:\n\n\n\n\n\n\nFigure 10.1: The TLS 1.3 handshake: client and server exchange a key-share value (key_share, typically ECDH over Curve25519) in the very first pair of messages; the server proves its identity with an X.509 certificate and the corresponding signature; both sides confirm they have derived the same session key before exchanging application data.\n\n\n\nThe client starts with a ClientHello, which already includes a key-share value (key_share), typically an elliptic curve point for ECDH (Section 8.5). The server responds with its own ServerHello and key_share, allowing both sides to immediately derive a common session key, exactly as in Section 8.5. The server also sends its X.509 certificate (Section 9.3) and a signature over the handshake transcript, proving that it holds the corresponding private key; both sides finish by confirming, through an authenticated Finished message, that they arrived at the same key. From this point on, all communication proceeds encrypted and authenticated by the record layer.\nOne design detail of TLS 1.3 is worth highlighting: each side’s key_share value is generated afresh, ephemerally, in every handshake, and is never reused from one session to the next. This property is called forward secrecy: even if the server’s long-term private key (the one that signs the CertificateVerify) is compromised in the future, that key never directly participated in deriving the session key, it only authenticated the ephemeral value exchanged in that specific handshake. Compromising the long-term key allows an attacker to impersonate the server from that point onward, but not to decrypt past sessions that have already ended and been discarded.",
+    "objectID": "capitulos/cap10.html#sec-10-solucao",
+    "href": "capitulos/cap10.html#sec-10-solucao",
+    "title": "10  Public Key Infrastructure (PKI)",
+    "section": "10.2 The Solution: a Trusted Entity",
+    "text": "10.2 The Solution: a Trusted Entity\nThe solution is to introduce a third party, a trusted entity, recognised in advance by both parties, that vouches for the link between an identity and a public key. If Alice and Bob both trust the same entity, each can ask it, “does this public key really belong to the other party?”, without that question having to travel over the potentially compromised channel between the two of them (Stallings 2020; Martin 2017).\nThis is exactly the function of a Public Key Infrastructure (PKI): a set of entities, processes, and standards that formally bind identities to public keys, through digital certificates. Unlike a one-off verification, a certificate is a signed object, independently verifiable and reusable by any party that trusts the entity that issued it.",
     "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS and PGP</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap10.html#sec-10-tls-cifras",
-    "href": "capitulos/cap10.html#sec-10-tls-cifras",
-    "title": "10  TLS and PGP",
-    "section": "10.3 Modern Ciphers in TLS",
-    "text": "10.3 Modern Ciphers in TLS\nA cipher suite in TLS 1.3 specifies the AEAD algorithm and the hash function used to derive keys and authenticate the handshake. The two combinations dominant in current practice have both already been presented in this book:\n\nTLS_AES_128_GCM_SHA256: AES in GCM mode (Section 3.6) with SHA-256 (Section 5.3), benefits from hardware acceleration (AES-NI) on the vast majority of modern processors.\nTLS_CHACHA20_POLY1305_SHA256: ChaCha20-Poly1305 (Section 4.5) with SHA-256, preferred on devices without hardware acceleration for AES, such as many mobile phones, for exactly the performance reason already discussed in Chapter 4.",
+    "objectID": "capitulos/cap10.html#sec-10-x509",
+    "href": "capitulos/cap10.html#sec-10-x509",
+    "title": "10  Public Key Infrastructure (PKI)",
+    "section": "10.3 The X.509 Certificate",
+    "text": "10.3 The X.509 Certificate\nThe X.509 standard, now universal on the Web, defines the structure of a public-key certificate. An X.509 certificate essentially contains the holder’s identification data and the signature of whoever certifies it (Cooper et al. 2008):\n\n\n\n\n\n\nFigure 10.2: Essential structure of an X.509 certificate: the holder’s data (identity, public key, validity period, issuer, and serial number), and the certificate authority’s signature over the hash of that data.\n\n\n\n\nIdentity (Subject): to whom the certificate belongs, typically a domain, an organisation, or a person.\nPublic key: the key that the certificate attests belongs to that identity.\nValidity: a date range outside of which the certificate is no longer considered valid.\nIssuer: the identity of the certificate authority that signed it.\nSerial number: a unique identifier for the certificate, essential for the revocation process.\nCA signature: the certificate authority (CA) signs, with its own private key, the hash of all the preceding fields: \\(\\mathrm{Sign}(sk_{CA}, H(\\text{holder data}))\\).\n\nThis last line is what turns the identification data into a verifiable statement: anyone with the CA’s public key can confirm that it really was that CA, and not some other entity, attesting to the link between that identity and that public key.",
     "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS and PGP</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap10.html#sec-10-pgp",
-    "href": "capitulos/cap10.html#sec-10-pgp",
-    "title": "10  TLS and PGP",
-    "section": "10.4 PGP: Hybrid Encryption for Electronic Mail",
-    "text": "10.4 PGP: Hybrid Encryption for Electronic Mail\nPGP (Pretty Good Privacy), and its standardised successor, OpenPGP (Callas et al. 2007), solves a different problem from TLS: protecting a message that does not follow a real-time connection, such as an email, between a sender and a recipient whose public keys are already known (Martin 2017). The construction combines symmetric and asymmetric encryption, drawing on the speed of the former and the convenience of the latter:\n\n\n\n\n\n\nFigure 10.2: PGP’s hybrid scheme: the message is signed with the sender’s private key and encrypted with a randomly generated session key; that session key, in turn, is encrypted with the recipient’s public key. Only whoever holds the corresponding private key can recover the session key, and through it, the message.\n\n\n\nOn the sender’s side: the message \\(M\\) is first signed (hashed and then encrypted with the sender’s private key, as in Section 7.4); the result is encrypted with a session key \\(K_s\\), generated at random and used only once, via a fast symmetric cipher; and that session key, in turn, is encrypted with the recipient’s public key, using RSA. What is transmitted is the pair (ciphertext, encrypted session key). On the receiver’s side, the process is reversed: the recipient’s private key decrypts \\(K_s\\), which decrypts the text, revealing the message and the signature, which is finally verified with the sender’s public key.\nA fundamental difference from the model in Chapter 9 lies in the trust model: instead of a CA hierarchy, PGP rests on a web of trust, in which each user signs the public keys of others they trust directly, and trust propagates in a decentralised fashion through this network of signatures (Stallings 2020).",
+    "objectID": "capitulos/cap10.html#sec-10-cadeia",
+    "href": "capitulos/cap10.html#sec-10-cadeia",
+    "title": "10  Public Key Infrastructure (PKI)",
+    "section": "10.4 The Certificate Chain",
+    "text": "10.4 The Certificate Chain\nA single CA key pair directly certifying every site on the Internet would be impractical and fragile (a single point of compromise would compromise everything). Instead, trust is organised into a certificate chain: each certificate is signed by another, up to a Root CA, whose public key comes pre-installed in the operating system or browser (Stallings 2020):\n\n\n\n\n\n\nFigure 10.3: The certificate chain: the Root CA signs certificates for intermediate CAs, which in turn sign further certificates, down to the final holder of a domain. Trusting the root, already installed on the system, is enough to validate the entire chain.\n\n\n\nTrusting only the Root CAs, a relatively small number of carefully audited entities, is enough to validate any certificate issued at any point in the chain, however many intermediaries exist between the root and the final holder.",
     "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS and PGP</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap10.html#sec-10-verificacao",
+    "href": "capitulos/cap10.html#sec-10-verificacao",
+    "title": "10  Public Key Infrastructure (PKI)",
+    "section": "10.5 How Verification Works",
+    "text": "10.5 How Verification Works\nWhen Bob receives Alice’s certificate, he verifies it by following these steps (Stallings 2020):\n\nRead the certificate’s Issuer field, identifying which CA signed it.\nObtain that CA’s public key, \\(pk_{CA}\\) (from the CA’s own certificate, already known and trusted, or by following the chain up to a root that is).\nVerify the signature: \\(\\mathrm{Verify}(pk_{CA}, \\text{certificate data}, \\text{signature}_{CA})\\).\nIf the signature is valid, Alice’s public key is confirmed as genuine.\nAlso check the validity period, the revocation status (via a Certificate Revocation List, or the real-time Online Certificate Status Protocol, OCSP), and the certificate’s permitted use.\n\nOnly once all these steps pass does Bob have a well-founded guarantee that the public key received really is Alice’s, and not that of an interposed attacker.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap10.html#sec-10-pratica",
+    "href": "capitulos/cap10.html#sec-10-pratica",
+    "title": "10  Public Key Infrastructure (PKI)",
+    "section": "10.6 In Practice: Inspecting a Certificate",
+    "text": "10.6 In Practice: Inspecting a Certificate\nAny X.509 certificate used on a public server can be inspected directly:\n$ openssl s_client -showcerts -connect www.example.com:443 &gt;&gt; cert.pem\n$ openssl x509 -in cert.pem -text -noout\nThe first command establishes a TLS connection and records the certificate chain sent by the server; the second reads the certificate and displays, in readable text, exactly the fields discussed in Section 9.3, including the holder, the issuer, the validity period, and the signature algorithm used.",
+    "crumbs": [
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
     ]
   },
   {
     "objectID": "capitulos/cap10.html#sec-10-sintese",
     "href": "capitulos/cap10.html#sec-10-sintese",
-    "title": "10  TLS and PGP",
-    "section": "10.5 Chapter Summary",
-    "text": "10.5 Chapter Summary\nThis chapter combined the tools from previous chapters into two real systems:\n\nTLS protects a network connection by combining a handshake, which negotiates a session key (typically via ECDH), with a record protocol, which encrypts traffic with an AEAD construction\nTLS 1.3 reduced the handshake to one round trip (1-RTT), authenticating the server through an X.509 certificate and the corresponding signature; the key-share value is generated ephemerally in each session, guaranteeing forward secrecy\nModern cipher suites use AES-GCM or ChaCha20-Poly1305, depending on whether hardware acceleration is available\nPGP protects asynchronous messages, such as email, with a hybrid cipher: the message is encrypted with a symmetric session key, and only that key is encrypted with RSA; trust is organised as a decentralised network, not a CA hierarchy",
+    "title": "10  Public Key Infrastructure (PKI)",
+    "section": "10.7 Chapter Summary",
+    "text": "10.7 Chapter Summary\nThis chapter resolved the problem left open in the previous chapter:\n\nThe man-in-the-middle attack (MITM) breaks any public-key algorithm, substituting the exchanged keys with others controlled by the attacker, without either victim noticing\nThe solution is to introduce a shared trusted entity, capable of formally attesting to the link between an identity and a public key\nAn X.509 certificate contains the holder’s identity, their public key, a validity period, the issuer, and that issuer’s signature over a hash of all this data\nTrust is organised into a certificate chain, from the Root CA (pre-installed on the system) down to the final holder, through intermediate CAs\nVerifying a certificate requires confirming the issuing CA’s signature, the validity period, and the revocation status, confirming the signature alone is not enough",
     "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS and PGP</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
     ]
   },
   {
     "objectID": "capitulos/cap10.html#sec-10-reflexao",
     "href": "capitulos/cap10.html#sec-10-reflexao",
-    "title": "10  TLS and PGP",
-    "section": "10.6 Discussion Question",
-    "text": "10.6 Discussion Question\nThe forward secrecy of TLS 1.3 (Section 10.2) guarantees that compromising the server’s long-term private key does not allow past sessions to be decrypted, because the session key never depended directly on it. PGP (Section 10.4) works quite differently: the recipient’s public key directly encrypts the session key \\(K_s\\) of each message, always using the same long-term RSA key pair. Given this, what consequence does the eventual future discovery of a recipient’s long-term private key have for PGP messages already sent in the past, and precisely how does this situation differ from the guarantee offered by TLS 1.3?",
+    "title": "10  Public Key Infrastructure (PKI)",
+    "section": "10.8 Discussion Question",
+    "text": "10.8 Discussion Question\nThe certificate chain (Section 9.4) solves the problem of trusting a public key by introducing trust in a Root CA, pre-installed in the operating system or browser. This shifts the original problem (how to trust a public key?) into a slightly different one. What is that new problem, and why is trusting a handful of pre-installed Root CAs a more practicable solution than asking every Internet user to manually confirm the public key of every site they visit?",
     "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS and PGP</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
     ]
   },
   {
     "objectID": "capitulos/cap10.html#sec-10-referencias",
     "href": "capitulos/cap10.html#sec-10-referencias",
-    "title": "10  TLS and PGP",
+    "title": "10  Public Key Infrastructure (PKI)",
     "section": "References",
-    "text": "References\n\n\nCallas, Jon, Lutz Donnerhacke, Hal Finney, David Shaw, and Rodney Thayer. 2007. ‘OpenPGP Message Format’. RFC 4880. IETF.\n\n\nMartin, Keith. 2017. Everyday Cryptography. 2nd ed. Oxford University Press.\n\n\nRescorla, Eric. 2018. ‘The Transport Layer Security (TLS) Protocol Version 1.3’. RFC 8446. IETF.\n\n\nStallings, William. 2020. Cryptography and Network Security: Principles and Practice. 8th ed. Pearson.",
+    "text": "References\n\n\nCooper, David, Stefan Santesson, Stephen Farrell, Sharon Boeyen, Russell Housley, and Tim Polk. 2008. ‘Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile’. RFC 5280. IETF.\n\n\nMartin, Keith. 2017. Everyday Cryptography. 2nd ed. Oxford University Press.\n\n\nStallings, William. 2020. Cryptography and Network Security: Principles and Practice. 8th ed. Pearson.",
     "crumbs": [
-      "<span class='chapter-number'>10</span>  <span class='chapter-title'>TLS and PGP</span>"
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>Public Key Infrastructure (PKI)</span>"
     ]
   },
   {
     "objectID": "capitulos/cap11.html",
     "href": "capitulos/cap11.html",
-    "title": "11  Algorithmic Efficiency and Post-Quantum Cryptography",
+    "title": "11  TLS and PGP",
     "section": "",
-    "text": "Introduction\nThis final chapter changes register from the previous one. Rather than showing how this book’s mechanisms combine into a concrete protocol, it asks something more fundamental, something that has run through every previous chapter without ever being formalised: what does it mean, with engineering rigour, to say that a cryptographic scheme is “secure”? And, once that question is answered, what price in efficiency is paid for that security, especially now that the threat of quantum computing forces a rethink of practically everything built up to this point?",
+    "text": "Introduction\nThis chapter shows how the tools presented throughout the book, symmetric ciphers, hash functions, MACs, RSA, Diffie-Hellman, elliptic curves and X.509 certificates, combine into two widely used real-world protocols: TLS, which protects practically all of today’s web traffic, and PGP, one of the first widely deployed cryptographic systems for electronic mail. Other schemes of practical interest, as they are incorporated into the course unit’s syllabus, will naturally find their place here.",
     "crumbs": [
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>TLS and PGP</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap11.html#sec-11-quantificar",
-    "href": "capitulos/cap11.html#sec-11-quantificar",
-    "title": "11  Algorithmic Efficiency and Post-Quantum Cryptography",
-    "section": "11.1 Quantifying Security: from Binary Concept to Measurable Science",
-    "text": "11.1 Quantifying Security: from Binary Concept to Measurable Science\nTraditional software security is typically a binary concept: an application is either secure or it is not, and the goal is to completely prevent an attacker from violating the code. Cryptography measures security in a fundamentally different way: not as an absolute property, but as the quantifiable effort required to break a scheme, turning security from a binary concept into a measurable science (Aumasson 2017).",
+    "objectID": "capitulos/cap11.html#sec-11-tls-objetivos",
+    "href": "capitulos/cap11.html#sec-11-tls-objetivos",
+    "title": "11  TLS and PGP",
+    "section": "11.1 TLS: Goals and Layers",
+    "text": "11.1 TLS: Goals and Layers\nTLS (Transport Layer Security), the successor to SSL, protects a network connection on three fronts: confidentiality (the data exchanged cannot be read by third parties), integrity (it cannot be altered without detection), and authentication (at least the server, typically through an X.509 certificate, proves its identity) (Stallings 2020; Rescorla 2018). The protocol is organised into two layers: the handshake protocol, which negotiates the session parameters and establishes a shared key, and the record protocol, which uses that key to encrypt and authenticate all subsequent traffic with an AEAD construction, such as AES-GCM or ChaCha20-Poly1305 (chapters 3 and 4).",
     "crumbs": [
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>TLS and PGP</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap11.html#sec-11-dois-caminhos",
-    "href": "capitulos/cap11.html#sec-11-dois-caminhos",
-    "title": "11  Algorithmic Efficiency and Post-Quantum Cryptography",
-    "section": "11.2 Information-Theoretic vs. Computational Security",
-    "text": "11.2 Information-Theoretic vs. Computational Security\nThere are two distinct paths to making a scheme “impossible” to break (Aumasson 2017):\n\nInformation-theoretic security: a theoretical, absolute impossibility, independent of the time, computing power, or memory available to the attacker. The only example already encountered in this book is Shannon’s One-Time Pad (Section 1.2.6): even by exhaustively testing every possible key, there are as many candidate plaintexts as there are keys, which makes it impossible to identify the correct one, even with infinite computational resources.\nComputational security: a practical, non-absolute impossibility. A scheme is computationally secure if it cannot be broken within reasonable time and with reasonable resources (memory, hardware, budget, energy), even though, in theory, an attacker with unlimited time and resources could always break it.\n\nWith the sole exception of the One-Time Pad, all of the remaining schemes presented in this book, AES, RC4, ChaCha20, SHA-256, HMAC, RSA, Diffie-Hellman, DSA, ECC, rely entirely on computational security, not information-theoretic security. This is the measure of security that is actually relevant in practice (Aumasson 2017).",
+    "objectID": "capitulos/cap11.html#sec-11-tls-handshake",
+    "href": "capitulos/cap11.html#sec-11-tls-handshake",
+    "title": "11  TLS and PGP",
+    "section": "11.2 The TLS 1.3 Handshake",
+    "text": "11.2 The TLS 1.3 Handshake\nTLS 1.3 (Rescorla 2018) significantly simplified the handshake process relative to earlier versions, reducing it to a single round trip (1-RTT) in the general case:\n\n\n\n\n\n\nFigure 11.1: The TLS 1.3 handshake: client and server exchange a key-share value (key_share, typically ECDH over Curve25519) in the very first pair of messages; the server proves its identity with an X.509 certificate and the corresponding signature; both sides confirm they have derived the same session key before exchanging application data.\n\n\n\nThe client starts with a ClientHello, which already includes a key-share value (key_share), typically an elliptic curve point for ECDH (Section 8.5). The server responds with its own ServerHello and key_share, allowing both sides to immediately derive a common session key, exactly as in Section 8.5. The server also sends its X.509 certificate (Section 9.3) and a signature over the handshake transcript, proving that it holds the corresponding private key; both sides finish by confirming, through an authenticated Finished message, that they arrived at the same key. From this point on, all communication proceeds encrypted and authenticated by the record layer.\nOne design detail of TLS 1.3 is worth highlighting: each side’s key_share value is generated afresh, ephemerally, in every handshake, and is never reused from one session to the next. This property is called forward secrecy: even if the server’s long-term private key (the one that signs the CertificateVerify) is compromised in the future, that key never directly participated in deriving the session key, it only authenticated the ephemeral value exchanged in that specific handshake. Compromising the long-term key allows an attacker to impersonate the server from that point onward, but not to decrypt past sessions that have already ended and been discarded.",
     "crumbs": [
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>TLS and PGP</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap11.html#sec-11-limites-razoaveis",
-    "href": "capitulos/cap11.html#sec-11-limites-razoaveis",
-    "title": "11  Algorithmic Efficiency and Post-Quantum Cryptography",
-    "section": "11.3 Reasonable Limits: the Symmetric Key Example",
-    "text": "11.3 Reasonable Limits: the Symmetric Key Example\nA scheme is computationally secure if it cannot be broken by brute force within limits of time and resources considered reasonable. For a 128-bit symmetric key (Section 3.2), these limits can be made concrete:\n\n\n\n\n\n\nQuantifying the unbreakable: 128 bits in numbers\n\n\n\nA 128-bit key admits \\(2^{128}\\) possible values, approximately \\(3.4 \\times 10^{38}\\). Assuming an attacker capable of testing 100 billion keys per second (\\(10^{11}\\)/s, a generous estimate even for dedicated hardware), searching the entire key space would take:\n\\[\\frac{3.4 \\times 10^{38}}{10^{11}} \\approx 3.4 \\times 10^{27} \\text{ seconds} \\approx 10^{20} \\text{ years}\\]\nA number many orders of magnitude greater than the age of the universe. The scheme is not information-theoretically secure (an attacker with enough time would always eventually find the correct key), but for any practical purpose it is computationally unbreakable.",
+    "objectID": "capitulos/cap11.html#sec-11-tls-cifras",
+    "href": "capitulos/cap11.html#sec-11-tls-cifras",
+    "title": "11  TLS and PGP",
+    "section": "11.3 Modern Ciphers in TLS",
+    "text": "11.3 Modern Ciphers in TLS\nA cipher suite in TLS 1.3 specifies the AEAD algorithm and the hash function used to derive keys and authenticate the handshake. The two combinations dominant in current practice have both already been presented in this book:\n\nTLS_AES_128_GCM_SHA256: AES in GCM mode (Section 3.6) with SHA-256 (Section 5.3), benefits from hardware acceleration (AES-NI) on the vast majority of modern processors.\nTLS_CHACHA20_POLY1305_SHA256: ChaCha20-Poly1305 (Section 4.5) with SHA-256, preferred on devices without hardware acceleration for AES, such as many mobile phones, for exactly the performance reason already discussed in Chapter 4.",
     "crumbs": [
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>TLS and PGP</span>"
     ]
   },
   {
-    "objectID": "capitulos/cap11.html#sec-11-t-epsilon",
-    "href": "capitulos/cap11.html#sec-11-t-epsilon",
-    "title": "11  Algorithmic Efficiency and Post-Quantum Cryptography",
-    "section": "11.4 The \\((t,\\varepsilon)\\) Framework",
-    "text": "11.4 The \\((t,\\varepsilon)\\) Framework\nThe formal definition of computational security, adopted as standard in the cryptography literature (Aumasson 2017), is expressed through two values:\n\n\\(t\\): the maximum number of operations an attacker is willing to perform.\n\\(\\varepsilon\\): an upper bound on that attacker’s probability of success, with \\(0 &lt; \\varepsilon &lt; 1\\).\n\nA scheme is \\((t,\\varepsilon)\\)-secure if no attacker performing at most \\(t\\) operations has a probability of success greater than \\(\\varepsilon\\). For a symmetric cipher with a 128-bit key \\(K\\), ideally secure, this pair takes the form \\((t,\\, t/2^{128})\\), for any \\(1 \\le t \\le 2^{128}\\): the probability of success grows proportionally to the fraction of the key space already tested, never faster than that.\nThree concrete scenarios illustrate the idea:\n\n\n\nTable 11.1: Probability of success of brute force against a 128-bit key, as a function of attacker effort\n\n\n\n\n\n\n\n\n\n\nScenario\nOperations (\\(t\\))\nProbability of success (\\(\\varepsilon\\))\n\n\n\n\nA single attempt\n\\(t=1\\)\n\\(\\varepsilon = 2^{-128}\\)\n\n\nTesting half the space\n\\(t=2^{64}\\)\n\\(\\varepsilon = 2^{-64}\\)\n\n\nTesting the entire space\n\\(t=2^{128}\\)\n\\(\\varepsilon = 1\\) (guaranteed success)\n\n\n\n\n\n\nIt is worth noting the distinction between a lower bound: at least \\(t\\) operations are required to compromise the scheme, the actual effort may be higher, and a real bound (tight bound): the exact effort known to break the scheme with probability \\(\\varepsilon\\) using exactly \\(t\\) operations. Brute force never stops working, sooner or later: the goal of cryptography is not to make a scheme absolutely unbreakable, but to guarantee that brute force remains the best known attack, and that its cost far exceeds any realistic benefit to an attacker.",
+    "objectID": "capitulos/cap11.html#sec-11-pgp",
+    "href": "capitulos/cap11.html#sec-11-pgp",
+    "title": "11  TLS and PGP",
+    "section": "11.4 PGP: Hybrid Encryption for Electronic Mail",
+    "text": "11.4 PGP: Hybrid Encryption for Electronic Mail\nPGP (Pretty Good Privacy), and its standardised successor, OpenPGP (Callas et al. 2007), solves a different problem from TLS: protecting a message that does not follow a real-time connection, such as an email, between a sender and a recipient whose public keys are already known (Martin 2017). The construction combines symmetric and asymmetric encryption, drawing on the speed of the former and the convenience of the latter:\n\n\n\n\n\n\nFigure 11.2: PGP’s hybrid scheme: the message is signed with the sender’s private key and encrypted with a randomly generated session key; that session key, in turn, is encrypted with the recipient’s public key. Only whoever holds the corresponding private key can recover the session key, and through it, the message.\n\n\n\nOn the sender’s side: the message \\(M\\) is first signed (hashed and then encrypted with the sender’s private key, as in Section 7.4); the result is encrypted with a session key \\(K_s\\), generated at random and used only once, via a fast symmetric cipher; and that session key, in turn, is encrypted with the recipient’s public key, using RSA. What is transmitted is the pair (ciphertext, encrypted session key). On the receiver’s side, the process is reversed: the recipient’s private key decrypts \\(K_s\\), which decrypts the text, revealing the message and the signature, which is finally verified with the sender’s public key.\nA fundamental difference from the model in Chapter 10 lies in the trust model: instead of a CA hierarchy, PGP rests on a web of trust, in which each user signs the public keys of others they trust directly, and trust propagates in a decentralised fashion through this network of signatures (Stallings 2020).",
     "crumbs": [
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
-    ]
-  },
-  {
-    "objectID": "capitulos/cap11.html#sec-11-complexidade",
-    "href": "capitulos/cap11.html#sec-11-complexidade",
-    "title": "11  Algorithmic Efficiency and Post-Quantum Cryptography",
-    "section": "11.5 Complexity Classes: Why Scale Matters",
-    "text": "11.5 Complexity Classes: Why Scale Matters\nThe \\((t,\\varepsilon)\\) framework from the previous section measures the effort of an attack for a fixed key size. But throughout this book, whenever a concrete key size was recommended, 128 bits for AES, 3072 for RSA, 256 for ECC, the real justification depended on a different question: how does the cost of an attack grow as the key size \\(n\\) increases? This is the question that computational complexity classes answer, and the terms “subexponential”, “exponential” and “polynomial”, already used in chapters 6 to 8 without a formal definition, describe precisely this growth rate (Stallings 2020; Aumasson 2017).\n\nPolynomial time, \\(O(n^k)\\) for some constant \\(k\\): the cost grows as a power of \\(n\\). Doubling \\(n\\) multiplies the cost by a fixed factor (for example, \\(2^k\\)), however large \\(k\\) may be. A problem that admits a polynomial-time algorithm is said to be tractable.\nExponential time, \\(O(c^n)\\) for some constant \\(c&gt;1\\): the cost grows explosively. Doubling \\(n\\) squares the cost. Exhaustive search over an \\(n\\)-bit key, \\(O(2^n)\\), is the paradigmatic example, and it remains exponential even after being improved by Grover’s algorithm (Section 3.5) or Pollard’s rho (Section 8.3): both reduce the constant in the exponent (\\(O(2^{n/2})\\) instead of \\(O(2^n)\\)), but neither changes complexity class.\nSubexponential time: strictly between the previous two, growing faster than any polynomial, but slower than any exponential. This is the class of the general number field sieve (Sections 6.5 and 7.2), with a characteristic form \\(L_n[\\alpha,c] = \\exp\\!\\big((c+o(1))(\\ln n)^{\\alpha}(\\ln\\ln n)^{1-\\alpha}\\big)\\), with \\(\\alpha=\\tfrac{1}{3}\\) for factorisation and for the discrete logarithm modulo a prime (Stallings 2020).\n\nThe difference in scale between these classes is what rigorously explains why RSA and classical Diffie-Hellman need keys so much larger than a symmetric cipher or ECC for the same practical security level: against a subexponential problem, increasing \\(n\\) still helps, but less and less per added bit, forcing compensation with much larger moduli. Against a purely exponential problem, such as the ECDLP (Section 8.3) or exhaustive search over a symmetric key, every added bit always doubles the attacker’s effort, so a modest growth in \\(n\\) is already enough.\nThis distinction is also what makes public-key cryptography possible in the first place, and it is worth stating explicitly: a system such as RSA (Section 6.4) or ECDH (Section 8.5) only works because the legitimate operation, encrypting, decrypting with the correct key, signing, verifying, is always polynomial (fast, practicable on any ordinary computer), whereas the corresponding attack, factoring \\(n\\), computing a discrete logarithm, solving the ECDLP, without knowing the secret, is subexponential or exponential (impracticable for sufficiently large values). This asymmetry between ease of legitimate use and difficulty of attack, and not any mysterious property of any particular algorithm, is what makes all the public-key cryptography presented in this book useful.",
-    "crumbs": [
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
-    ]
-  },
-  {
-    "objectID": "capitulos/cap11.html#sec-11-eficiencia",
-    "href": "capitulos/cap11.html#sec-11-eficiencia",
-    "title": "11  Algorithmic Efficiency and Post-Quantum Cryptography",
-    "section": "11.6 Efficiency of the Algorithms Presented in this Book",
-    "text": "11.6 Efficiency of the Algorithms Presented in this Book\nThe \\((t,\\varepsilon)\\) framework measures how much effort is required to break a scheme, but it says little about the cost of using it correctly. In practice, choosing an algorithm is always a trade-off between the desired security level and computational efficiency, key size, signature size, ciphertext size, and the speed of operations (Aumasson 2017; Stallings 2020):\n\n\n\nTable 11.2: Approximate comparison of security and efficiency of the main algorithms presented in this book (Aumasson 2017; Stallings 2020; National Institute of Standards and Technology 2024b, 2024a)\n\n\n\n\n\n\n\n\n\n\n\n\n\nAlgorithm\nFamily\nClassical security\nEffect of a quantum computer\nTypical size\nEfficiency\n\n\n\n\nAES-256\nSymmetric (Section 3.2)\n256 bits\nGrover reduces to ~128 bits (Section 3.5); still secure\nKey: 256 bits\nSpeed benchmark; accelerated by dedicated hardware (AES-NI)\n\n\nChaCha20-Poly1305\nSymmetric (Section 4.5)\n256 bits\nIdentical to AES-256\nKey: 256 bits\nAs fast as AES-256 without hardware acceleration\n\n\nRSA-3072\nClassical asymmetric (factorisation)\n128 bits\nBroken by Shor in polynomial time\nPublic key and signature: 3072 bits\nFast encryption; slow decryption and signing (large private exponent)\n\n\nECDSA P-256 / X25519\nClassical asymmetric (elliptic curve)\n128 bits\nBroken by Shor in polynomial time\nPublic key: 256 bits; signature: ~512 bits\nOrders of magnitude faster and more compact than equivalent RSA\n\n\nML-KEM-768\nPost-quantum (lattices)\n~128 bits (NIST Category 3)\nNo known efficient quantum attack\nPublic key: ~1184 bytes; ciphertext: ~1088 bytes\nNo modular exponentiation; fast operations, but much larger keys than ECC\n\n\nML-DSA-65\nPost-quantum (lattices)\n~128 bits (NIST Category 3)\nNo known efficient quantum attack\nPublic key: ~1952 bytes; signature: ~3293 bytes\nCompetitive generation and verification; signature about 6 times larger than ECDSA’s\n\n\n\n\n\n\nThe pattern that emerges from this table anticipates the next section: elliptic curve cryptography (Chapter 8) is by far the most efficient of the classical families, with small keys and signatures and fast operations. Post-quantum cryptography trades precisely that efficiency for resistance to Shor’s algorithm: its keys and signatures are typically twenty to fifty times larger than the equivalent ones in ECC, for the same classical security level, and this is the real engineering cost of the transition described in the next section.",
-    "crumbs": [
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
-    ]
-  },
-  {
-    "objectID": "capitulos/cap11.html#sec-11-pqc",
-    "href": "capitulos/cap11.html#sec-11-pqc",
-    "title": "11  Algorithmic Efficiency and Post-Quantum Cryptography",
-    "section": "11.7 Post-Quantum Cryptography: Threat and Migration",
-    "text": "11.7 Post-Quantum Cryptography: Threat and Migration\nThe entire edifice of asymmetric cryptography presented in this book, RSA, Diffie-Hellman, DSA, elliptic curve, rests on two mathematical problems: integer factorisation and the discrete logarithm (modulo a prime, or over an elliptic curve). In 1997, Peter Shor showed that a sufficiently large quantum computer solves both problems in polynomial time (Shor 1997), which would make it trivial to break any RSA, Diffie-Hellman, or ECC key, regardless of its size. Grover’s algorithm, already referred to in connection with the security of AES (Section 3.5), has a more limited effect on symmetric cryptography, halving the effective number of security bits (Grover 1996), which is resolved simply by doubling the key size (AES-256 instead of AES-128).\nThe threat from Shor’s algorithm is not, for now, practical: building a quantum computer stable and large enough to run it against keys of the size used today remains an open engineering challenge. But migration to quantum-resistant alternatives is already under way, motivated in part by the “harvest now, decrypt later” scenario: traffic encrypted today, intercepted and stored, can be decrypted retroactively as soon as a capable quantum computer exists, which is already a concern today for data that needs to remain confidential for decades.\nIn 2024, NIST completed the standardisation of the first post-quantum cryptography (PQC) standards: ML-KEM (formerly Kyber, FIPS 203 (National Institute of Standards and Technology 2024b)) for key exchange, and ML-DSA (formerly Dilithium, FIPS 204 (National Institute of Standards and Technology 2024a)) for digital signatures, both based on problems over lattices, not on factorisation or discrete logarithms, and therefore not known to be vulnerable to Shor’s algorithm. Protocols such as TLS 1.3 (Section 10.2) already support today’s hybrid schemes, which combine a classical mechanism (such as the X25519 from Section 8.6) with a post-quantum mechanism in the same handshake, so that the connection only becomes vulnerable if both mechanisms are broken, a prudent transition strategy while confidence in the new algorithms matures.",
-    "crumbs": [
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>TLS and PGP</span>"
     ]
   },
   {
     "objectID": "capitulos/cap11.html#sec-11-sintese",
     "href": "capitulos/cap11.html#sec-11-sintese",
-    "title": "11  Algorithmic Efficiency and Post-Quantum Cryptography",
-    "section": "11.8 Chapter Summary",
-    "text": "11.8 Chapter Summary\nThis chapter closed the book by quantifying the very notion of security:\n\nCryptography measures security as a quantifiable effort, not as a binary property: it turns it into a measurable science\nInformation-theoretic security is an absolute impossibility (the book’s only example is the One-Time Pad); computational security, on which all the other schemes presented rely, is only a practical impossibility\nThe \\((t,\\varepsilon)\\) framework formalises computational security: no attacker performing at most \\(t\\) operations should succeed with probability greater than \\(\\varepsilon\\)\nComplexity classes (polynomial, subexponential, exponential) describe how the cost of an attack scales with key size; it is this scaling, not the effort at a fixed size, that explains why subexponential problems (factorisation, discrete logarithm modulo a prime) require much larger keys than exponential problems (ECDLP, exhaustive search) for the same security level\nAll public-key cryptography depends on a complexity asymmetry: the legitimate operation is always polynomial, the attack without the secret is subexponential or exponential\nAn algorithm’s efficiency, key size, speed, signature size, is always a trade-off with the desired security level; elliptic curve cryptography is today the most efficient classical family\nShor’s algorithm solves factorisation and the discrete logarithm in polynomial time, making it trivial to break RSA, Diffie-Hellman, and ECC on a sufficiently large quantum computer; Grover’s algorithm only halves symmetric security\nNIST has already standardised post-quantum alternatives (ML-KEM, ML-DSA) based on lattices, with keys and signatures 20 to 50 times larger than those of ECC, and the first hybrid schemes are already in production",
+    "title": "11  TLS and PGP",
+    "section": "11.5 Chapter Summary",
+    "text": "11.5 Chapter Summary\nThis chapter combined the tools from previous chapters into two real systems:\n\nTLS protects a network connection by combining a handshake, which negotiates a session key (typically via ECDH), with a record protocol, which encrypts traffic with an AEAD construction\nTLS 1.3 reduced the handshake to one round trip (1-RTT), authenticating the server through an X.509 certificate and the corresponding signature; the key-share value is generated ephemerally in each session, guaranteeing forward secrecy\nModern cipher suites use AES-GCM or ChaCha20-Poly1305, depending on whether hardware acceleration is available\nPGP protects asynchronous messages, such as email, with a hybrid cipher: the message is encrypted with a symmetric session key, and only that key is encrypted with RSA; trust is organised as a decentralised network, not a CA hierarchy",
     "crumbs": [
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>TLS and PGP</span>"
     ]
   },
   {
     "objectID": "capitulos/cap11.html#sec-11-reflexao",
     "href": "capitulos/cap11.html#sec-11-reflexao",
-    "title": "11  Algorithmic Efficiency and Post-Quantum Cryptography",
-    "section": "11.9 Discussion Question",
-    "text": "11.9 Discussion Question\nThe “harvest now, decrypt later” scenario means that TLS traffic intercepted today may come to be decrypted in the future, once a sufficiently large quantum computer exists, even though the session key used is, today, computationally unbreakable. Given that the TLS session key derives from an ECDH exchange carried out during the handshake (Section 10.2), why does this scenario not threaten, in the same way, data encrypted with a long-term symmetric key that was previously exchanged over a secure physical channel, such as a USB drive delivered by hand?",
+    "title": "11  TLS and PGP",
+    "section": "11.6 Discussion Question",
+    "text": "11.6 Discussion Question\nThe forward secrecy of TLS 1.3 (Section 10.2) guarantees that compromising the server’s long-term private key does not allow past sessions to be decrypted, because the session key never depended directly on it. PGP (Section 10.4) works quite differently: the recipient’s public key directly encrypts the session key \\(K_s\\) of each message, always using the same long-term RSA key pair. Given this, what consequence does the eventual future discovery of a recipient’s long-term private key have for PGP messages already sent in the past, and precisely how does this situation differ from the guarantee offered by TLS 1.3?",
     "crumbs": [
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>TLS and PGP</span>"
     ]
   },
   {
     "objectID": "capitulos/cap11.html#sec-11-referencias",
     "href": "capitulos/cap11.html#sec-11-referencias",
-    "title": "11  Algorithmic Efficiency and Post-Quantum Cryptography",
+    "title": "11  TLS and PGP",
+    "section": "References",
+    "text": "References\n\n\nCallas, Jon, Lutz Donnerhacke, Hal Finney, David Shaw, and Rodney Thayer. 2007. ‘OpenPGP Message Format’. RFC 4880. IETF.\n\n\nMartin, Keith. 2017. Everyday Cryptography. 2nd ed. Oxford University Press.\n\n\nRescorla, Eric. 2018. ‘The Transport Layer Security (TLS) Protocol Version 1.3’. RFC 8446. IETF.\n\n\nStallings, William. 2020. Cryptography and Network Security: Principles and Practice. 8th ed. Pearson.",
+    "crumbs": [
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>TLS and PGP</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap12.html",
+    "href": "capitulos/cap12.html",
+    "title": "12  Algorithmic Efficiency and Post-Quantum Cryptography",
+    "section": "",
+    "text": "Introduction\nThis final chapter changes register from the previous one. Rather than showing how this book’s mechanisms combine into a concrete protocol, it asks something more fundamental, something that has run through every previous chapter without ever being formalised: what does it mean, with engineering rigour, to say that a cryptographic scheme is “secure”? And, once that question is answered, what price in efficiency is paid for that security, especially now that the threat of quantum computing forces a rethink of practically everything built up to this point?",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap12.html#sec-12-quantificar",
+    "href": "capitulos/cap12.html#sec-12-quantificar",
+    "title": "12  Algorithmic Efficiency and Post-Quantum Cryptography",
+    "section": "12.1 Quantifying Security: from Binary Concept to Measurable Science",
+    "text": "12.1 Quantifying Security: from Binary Concept to Measurable Science\nTraditional software security is typically a binary concept: an application is either secure or it is not, and the goal is to completely prevent an attacker from violating the code. Cryptography measures security in a fundamentally different way: not as an absolute property, but as the quantifiable effort required to break a scheme, turning security from a binary concept into a measurable science (Aumasson 2017).",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap12.html#sec-12-dois-caminhos",
+    "href": "capitulos/cap12.html#sec-12-dois-caminhos",
+    "title": "12  Algorithmic Efficiency and Post-Quantum Cryptography",
+    "section": "12.2 Information-Theoretic vs. Computational Security",
+    "text": "12.2 Information-Theoretic vs. Computational Security\nThere are two distinct paths to making a scheme “impossible” to break (Aumasson 2017):\n\nInformation-theoretic security: a theoretical, absolute impossibility, independent of the time, computing power, or memory available to the attacker. The only example already encountered in this book is Shannon’s One-Time Pad (Section 1.2.6): even by exhaustively testing every possible key, there are as many candidate plaintexts as there are keys, which makes it impossible to identify the correct one, even with infinite computational resources.\nComputational security: a practical, non-absolute impossibility. A scheme is computationally secure if it cannot be broken within reasonable time and with reasonable resources (memory, hardware, budget, energy), even though, in theory, an attacker with unlimited time and resources could always break it.\n\nWith the sole exception of the One-Time Pad, all of the remaining schemes presented in this book, AES, RC4, ChaCha20, SHA-256, HMAC, RSA, Diffie-Hellman, DSA, ECC, rely entirely on computational security, not information-theoretic security. This is the measure of security that is actually relevant in practice (Aumasson 2017).",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap12.html#sec-12-limites-razoaveis",
+    "href": "capitulos/cap12.html#sec-12-limites-razoaveis",
+    "title": "12  Algorithmic Efficiency and Post-Quantum Cryptography",
+    "section": "12.3 Reasonable Limits: the Symmetric Key Example",
+    "text": "12.3 Reasonable Limits: the Symmetric Key Example\nA scheme is computationally secure if it cannot be broken by brute force within limits of time and resources considered reasonable. For a 128-bit symmetric key (Section 3.2), these limits can be made concrete:\n\n\n\n\n\n\nQuantifying the unbreakable: 128 bits in numbers\n\n\n\nA 128-bit key admits \\(2^{128}\\) possible values, approximately \\(3.4 \\times 10^{38}\\). Assuming an attacker capable of testing 100 billion keys per second (\\(10^{11}\\)/s, a generous estimate even for dedicated hardware), searching the entire key space would take:\n\\[\\frac{3.4 \\times 10^{38}}{10^{11}} \\approx 3.4 \\times 10^{27} \\text{ seconds} \\approx 10^{20} \\text{ years}\\]\nA number many orders of magnitude greater than the age of the universe. The scheme is not information-theoretically secure (an attacker with enough time would always eventually find the correct key), but for any practical purpose it is computationally unbreakable.",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap12.html#sec-12-t-epsilon",
+    "href": "capitulos/cap12.html#sec-12-t-epsilon",
+    "title": "12  Algorithmic Efficiency and Post-Quantum Cryptography",
+    "section": "12.4 The \\((t,\\varepsilon)\\) Framework",
+    "text": "12.4 The \\((t,\\varepsilon)\\) Framework\nThe formal definition of computational security, adopted as standard in the cryptography literature (Aumasson 2017), is expressed through two values:\n\n\\(t\\): the maximum number of operations an attacker is willing to perform.\n\\(\\varepsilon\\): an upper bound on that attacker’s probability of success, with \\(0 &lt; \\varepsilon &lt; 1\\).\n\nA scheme is \\((t,\\varepsilon)\\)-secure if no attacker performing at most \\(t\\) operations has a probability of success greater than \\(\\varepsilon\\). For a symmetric cipher with a 128-bit key \\(K\\), ideally secure, this pair takes the form \\((t,\\, t/2^{128})\\), for any \\(1 \\le t \\le 2^{128}\\): the probability of success grows proportionally to the fraction of the key space already tested, never faster than that.\nThree concrete scenarios illustrate the idea:\n\n\n\nTable 12.1: Probability of success of brute force against a 128-bit key, as a function of attacker effort\n\n\n\n\n\n\n\n\n\n\nScenario\nOperations (\\(t\\))\nProbability of success (\\(\\varepsilon\\))\n\n\n\n\nA single attempt\n\\(t=1\\)\n\\(\\varepsilon = 2^{-128}\\)\n\n\nTesting half the space\n\\(t=2^{64}\\)\n\\(\\varepsilon = 2^{-64}\\)\n\n\nTesting the entire space\n\\(t=2^{128}\\)\n\\(\\varepsilon = 1\\) (guaranteed success)\n\n\n\n\n\n\nIt is worth noting the distinction between a lower bound: at least \\(t\\) operations are required to compromise the scheme, the actual effort may be higher, and a real bound (tight bound): the exact effort known to break the scheme with probability \\(\\varepsilon\\) using exactly \\(t\\) operations. Brute force never stops working, sooner or later: the goal of cryptography is not to make a scheme absolutely unbreakable, but to guarantee that brute force remains the best known attack, and that its cost far exceeds any realistic benefit to an attacker.",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap12.html#sec-12-complexidade",
+    "href": "capitulos/cap12.html#sec-12-complexidade",
+    "title": "12  Algorithmic Efficiency and Post-Quantum Cryptography",
+    "section": "12.5 Complexity Classes: Why Scale Matters",
+    "text": "12.5 Complexity Classes: Why Scale Matters\nThe \\((t,\\varepsilon)\\) framework from the previous section measures the effort of an attack for a fixed key size. But throughout this book, whenever a concrete key size was recommended, 128 bits for AES, 3072 for RSA, 256 for ECC, the real justification depended on a different question: how does the cost of an attack grow as the key size \\(n\\) increases? This is the question that computational complexity classes answer, and the terms “subexponential”, “exponential” and “polynomial”, already used in chapters 6 to 8 without a formal definition, describe precisely this growth rate (Stallings 2020; Aumasson 2017).\n\nPolynomial time, \\(O(n^k)\\) for some constant \\(k\\): the cost grows as a power of \\(n\\). Doubling \\(n\\) multiplies the cost by a fixed factor (for example, \\(2^k\\)), however large \\(k\\) may be. A problem that admits a polynomial-time algorithm is said to be tractable.\nExponential time, \\(O(c^n)\\) for some constant \\(c&gt;1\\): the cost grows explosively. Doubling \\(n\\) squares the cost. Exhaustive search over an \\(n\\)-bit key, \\(O(2^n)\\), is the paradigmatic example, and it remains exponential even after being improved by Grover’s algorithm (Section 3.5) or Pollard’s rho (Section 8.3): both reduce the constant in the exponent (\\(O(2^{n/2})\\) instead of \\(O(2^n)\\)), but neither changes complexity class.\nSubexponential time: strictly between the previous two, growing faster than any polynomial, but slower than any exponential. This is the class of the general number field sieve (Sections 6.5 and 7.2), with a characteristic form \\(L_n[\\alpha,c] = \\exp\\!\\big((c+o(1))(\\ln n)^{\\alpha}(\\ln\\ln n)^{1-\\alpha}\\big)\\), with \\(\\alpha=\\tfrac{1}{3}\\) for factorisation and for the discrete logarithm modulo a prime (Stallings 2020).\n\nThe difference in scale between these classes is what rigorously explains why RSA and classical Diffie-Hellman need keys so much larger than a symmetric cipher or ECC for the same practical security level: against a subexponential problem, increasing \\(n\\) still helps, but less and less per added bit, forcing compensation with much larger moduli. Against a purely exponential problem, such as the ECDLP (Section 8.3) or exhaustive search over a symmetric key, every added bit always doubles the attacker’s effort, so a modest growth in \\(n\\) is already enough.\nThis distinction is also what makes public-key cryptography possible in the first place, and it is worth stating explicitly: a system such as RSA (Section 6.4) or ECDH (Section 8.5) only works because the legitimate operation, encrypting, decrypting with the correct key, signing, verifying, is always polynomial (fast, practicable on any ordinary computer), whereas the corresponding attack, factoring \\(n\\), computing a discrete logarithm, solving the ECDLP, without knowing the secret, is subexponential or exponential (impracticable for sufficiently large values). This asymmetry between ease of legitimate use and difficulty of attack, and not any mysterious property of any particular algorithm, is what makes all the public-key cryptography presented in this book useful.",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap12.html#sec-12-eficiencia",
+    "href": "capitulos/cap12.html#sec-12-eficiencia",
+    "title": "12  Algorithmic Efficiency and Post-Quantum Cryptography",
+    "section": "12.6 Efficiency of the Algorithms Presented in this Book",
+    "text": "12.6 Efficiency of the Algorithms Presented in this Book\nThe \\((t,\\varepsilon)\\) framework measures how much effort is required to break a scheme, but it says little about the cost of using it correctly. In practice, choosing an algorithm is always a trade-off between the desired security level and computational efficiency, key size, signature size, ciphertext size, and the speed of operations (Aumasson 2017; Stallings 2020):\n\n\n\nTable 12.2: Approximate comparison of security and efficiency of the main algorithms presented in this book (Aumasson 2017; Stallings 2020; National Institute of Standards and Technology 2024b, 2024a)\n\n\n\n\n\n\n\n\n\n\n\n\n\nAlgorithm\nFamily\nClassical security\nEffect of a quantum computer\nTypical size\nEfficiency\n\n\n\n\nAES-256\nSymmetric (Section 3.2)\n256 bits\nGrover reduces to ~128 bits (Section 3.5); still secure\nKey: 256 bits\nSpeed benchmark; accelerated by dedicated hardware (AES-NI)\n\n\nChaCha20-Poly1305\nSymmetric (Section 4.5)\n256 bits\nIdentical to AES-256\nKey: 256 bits\nAs fast as AES-256 without hardware acceleration\n\n\nRSA-3072\nClassical asymmetric (factorisation)\n128 bits\nBroken by Shor in polynomial time\nPublic key and signature: 3072 bits\nFast encryption; slow decryption and signing (large private exponent)\n\n\nECDSA P-256 / X25519\nClassical asymmetric (elliptic curve)\n128 bits\nBroken by Shor in polynomial time\nPublic key: 256 bits; signature: ~512 bits\nOrders of magnitude faster and more compact than equivalent RSA\n\n\nML-KEM-768\nPost-quantum (lattices)\n~128 bits (NIST Category 3)\nNo known efficient quantum attack\nPublic key: ~1184 bytes; ciphertext: ~1088 bytes\nNo modular exponentiation; fast operations, but much larger keys than ECC\n\n\nML-DSA-65\nPost-quantum (lattices)\n~128 bits (NIST Category 3)\nNo known efficient quantum attack\nPublic key: ~1952 bytes; signature: ~3293 bytes\nCompetitive generation and verification; signature about 6 times larger than ECDSA’s\n\n\n\n\n\n\nThe pattern that emerges from this table anticipates the next section: elliptic curve cryptography (Chapter 8) is by far the most efficient of the classical families, with small keys and signatures and fast operations. Post-quantum cryptography trades precisely that efficiency for resistance to Shor’s algorithm: its keys and signatures are typically twenty to fifty times larger than the equivalent ones in ECC, for the same classical security level, and this is the real engineering cost of the transition described in the next section.",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap12.html#sec-12-pqc",
+    "href": "capitulos/cap12.html#sec-12-pqc",
+    "title": "12  Algorithmic Efficiency and Post-Quantum Cryptography",
+    "section": "12.7 Post-Quantum Cryptography: Threat and Migration",
+    "text": "12.7 Post-Quantum Cryptography: Threat and Migration\nThe entire edifice of asymmetric cryptography presented in this book, RSA, Diffie-Hellman, DSA, elliptic curve, rests on two mathematical problems: integer factorisation and the discrete logarithm (modulo a prime, or over an elliptic curve). In 1997, Peter Shor showed that a sufficiently large quantum computer solves both problems in polynomial time (Shor 1997), which would make it trivial to break any RSA, Diffie-Hellman, or ECC key, regardless of its size. Grover’s algorithm, already referred to in connection with the security of AES (Section 3.5), has a more limited effect on symmetric cryptography, halving the effective number of security bits (Grover 1996), which is resolved simply by doubling the key size (AES-256 instead of AES-128).\nThe threat from Shor’s algorithm is not, for now, practical: building a quantum computer stable and large enough to run it against keys of the size used today remains an open engineering challenge. But migration to quantum-resistant alternatives is already under way, motivated in part by the “harvest now, decrypt later” scenario: traffic encrypted today, intercepted and stored, can be decrypted retroactively as soon as a capable quantum computer exists, which is already a concern today for data that needs to remain confidential for decades.\nIn 2024, NIST completed the standardisation of the first post-quantum cryptography (PQC) standards: ML-KEM (formerly Kyber, FIPS 203 (National Institute of Standards and Technology 2024b)) for key exchange, and ML-DSA (formerly Dilithium, FIPS 204 (National Institute of Standards and Technology 2024a)) for digital signatures, both based on problems over lattices, not on factorisation or discrete logarithms, and therefore not known to be vulnerable to Shor’s algorithm. Protocols such as TLS 1.3 (Section 10.2) already support today’s hybrid schemes, which combine a classical mechanism (such as the X25519 from Section 8.6) with a post-quantum mechanism in the same handshake, so that the connection only becomes vulnerable if both mechanisms are broken, a prudent transition strategy while confidence in the new algorithms matures.",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap12.html#sec-12-sintese",
+    "href": "capitulos/cap12.html#sec-12-sintese",
+    "title": "12  Algorithmic Efficiency and Post-Quantum Cryptography",
+    "section": "12.8 Chapter Summary",
+    "text": "12.8 Chapter Summary\nThis chapter closed the book by quantifying the very notion of security:\n\nCryptography measures security as a quantifiable effort, not as a binary property: it turns it into a measurable science\nInformation-theoretic security is an absolute impossibility (the book’s only example is the One-Time Pad); computational security, on which all the other schemes presented rely, is only a practical impossibility\nThe \\((t,\\varepsilon)\\) framework formalises computational security: no attacker performing at most \\(t\\) operations should succeed with probability greater than \\(\\varepsilon\\)\nComplexity classes (polynomial, subexponential, exponential) describe how the cost of an attack scales with key size; it is this scaling, not the effort at a fixed size, that explains why subexponential problems (factorisation, discrete logarithm modulo a prime) require much larger keys than exponential problems (ECDLP, exhaustive search) for the same security level\nAll public-key cryptography depends on a complexity asymmetry: the legitimate operation is always polynomial, the attack without the secret is subexponential or exponential\nAn algorithm’s efficiency, key size, speed, signature size, is always a trade-off with the desired security level; elliptic curve cryptography is today the most efficient classical family\nShor’s algorithm solves factorisation and the discrete logarithm in polynomial time, making it trivial to break RSA, Diffie-Hellman, and ECC on a sufficiently large quantum computer; Grover’s algorithm only halves symmetric security\nNIST has already standardised post-quantum alternatives (ML-KEM, ML-DSA) based on lattices, with keys and signatures 20 to 50 times larger than those of ECC, and the first hybrid schemes are already in production",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap12.html#sec-12-reflexao",
+    "href": "capitulos/cap12.html#sec-12-reflexao",
+    "title": "12  Algorithmic Efficiency and Post-Quantum Cryptography",
+    "section": "12.9 Discussion Question",
+    "text": "12.9 Discussion Question\nThe “harvest now, decrypt later” scenario means that TLS traffic intercepted today may come to be decrypted in the future, once a sufficiently large quantum computer exists, even though the session key used is, today, computationally unbreakable. Given that the TLS session key derives from an ECDH exchange carried out during the handshake (Section 10.2), why does this scenario not threaten, in the same way, data encrypted with a long-term symmetric key that was previously exchanged over a secure physical channel, such as a USB drive delivered by hand?",
+    "crumbs": [
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+    ]
+  },
+  {
+    "objectID": "capitulos/cap12.html#sec-12-referencias",
+    "href": "capitulos/cap12.html#sec-12-referencias",
+    "title": "12  Algorithmic Efficiency and Post-Quantum Cryptography",
     "section": "References",
     "text": "References\n\n\nAumasson, Jean-Philippe. 2017. Serious Cryptography: A Practical Introduction to Modern Encryption. No Starch Press.\n\n\nGrover, Lov K. 1996. ‘A Fast Quantum Mechanical Algorithm for Database Search’. In 28th Annual ACM Symposium on Theory of Computing (STOC).\n\n\nNational Institute of Standards and Technology. 2024a. ‘Module-Lattice-Based Digital Signature Standard’. FIPS PUB 204. NIST.\n\n\n———. 2024b. ‘Module-Lattice-Based Key-Encapsulation Mechanism Standard’. FIPS PUB 203. NIST.\n\n\nShor, Peter W. 1997. ‘Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer’. SIAM Journal on Computing 26 (5): 1484–1509.\n\n\nStallings, William. 2020. Cryptography and Network Security: Principles and Practice. 8th ed. Pearson.",
     "crumbs": [
-      "<span class='chapter-number'>11</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>Algorithmic Efficiency and Post-Quantum Cryptography</span>"
     ]
   }
 ]

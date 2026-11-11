@@ -1,5 +1,5 @@
 ---
-title: "TLS and PGP"
+title: "Public Key Infrastructure (PKI)"
 author: "João Pavão"
 date: 2026-09-14
 lang: en-GB
@@ -7,51 +7,83 @@ lang: en-GB
 
 ## Introduction {#sec-10-intro .unnumbered}
 
-This chapter shows how the tools presented throughout the book, symmetric ciphers, hash functions, MACs, RSA, Diffie-Hellman, elliptic curves and X.509 certificates, combine into two widely used real-world protocols: **TLS**, which protects practically all of today's web traffic, and **PGP**, one of the first widely deployed cryptographic systems for electronic mail. Other schemes of practical interest, as they are incorporated into the course unit's syllabus, will naturally find their place here.
+The previous chapter ended with an open question: how does anyone know that a public key really belongs to whoever claims to own it? Without an answer to this question, the entire edifice of asymmetric cryptography, confidentiality, authentication, signatures, Diffie-Hellman, is exposed to a single type of attack. This chapter examines that attack in detail, and the engineering solution that became the industry standard for solving it: **public key infrastructure**.
 
-## TLS: Goals and Layers {#sec-10-tls-objetivos}
+## The Man-in-the-Middle Attack in Detail {#sec-10-mitm}
 
-**TLS** (*Transport Layer Security*), the successor to SSL, protects a network connection on three fronts: confidentiality (the data exchanged cannot be read by third parties), integrity (it cannot be altered without detection), and authentication (at least the server, typically through an X.509 certificate, proves its identity) [@Stallings2020; @RFC8446]. The protocol is organised into two layers: the **handshake protocol**, which negotiates the session parameters and establishes a shared key, and the **record protocol**, which uses that key to encrypt and authenticate all subsequent traffic with an AEAD construction, such as AES-GCM or ChaCha20-Poly1305 (chapters 3 and 4).
+In a **man-in-the-middle attack** (MITM), an attacker positioned at any point in the network between the two parties, for example on a compromised router, intercepts and substitutes the public keys being exchanged, without either victim noticing [@Stallings2020]:
 
-## The TLS 1.3 Handshake {#sec-10-tls-handshake}
+![The attacker (Mallory) intercepts Alice's and Bob's public keys, and substitutes them with her own before forwarding them on. Each party thinks they are using the other's public key, when in fact they are using Mallory's public key.](../assets/images/fig-10-mitm-en.png){#fig-10-mitm width=85%}
 
-TLS 1.3 [@RFC8446] significantly simplified the handshake process relative to earlier versions, reducing it to a single round trip (*1-RTT*) in the general case:
+The attack works because a public key, by definition, has nothing that inseparably ties it to its owner: it is just a number, and a number has no identity of its own. When Alice receives something that looks like Bob's public key, she has, by herself, no way of confirming its origin.
 
-![The TLS 1.3 handshake: client and server exchange a key-share value (*key_share*, typically ECDH over Curve25519) in the very first pair of messages; the server proves its identity with an X.509 certificate and the corresponding signature; both sides confirm they have derived the same session key before exchanging application data.](../assets/images/fig-10-tls-handshake-en.png){#fig-10-tls-handshake width=75%}
+It is worth noting that this attack **breaks any** public-key algorithm, it is not a weakness specific to RSA, Diffie-Hellman, or DSA. In the specific case of Diffie-Hellman (Section 7.3), the attack has a particularly insidious consequence: Mallory establishes **two** distinct key exchanges, one with Alice and one with Bob, and proceeds to decrypt and re-encrypt every message exchanged between them, with neither of them able to detect that the "shared" key they believe they hold is not, in fact, shared with each other, but with Mallory on both sides.
 
-The client starts with a `ClientHello`, which already includes a key-share value (*key_share*), typically an elliptic curve point for ECDH (Section 8.5). The server responds with its own `ServerHello` and *key_share*, allowing both sides to immediately derive a common session key, exactly as in Section 8.5. The server also sends its X.509 certificate (Section 9.3) and a signature over the handshake transcript, proving that it holds the corresponding private key; both sides finish by confirming, through an authenticated `Finished` message, that they arrived at the same key. From this point on, all communication proceeds encrypted and authenticated by the record layer.
+## The Solution: a Trusted Entity {#sec-10-solucao}
 
-One design detail of TLS 1.3 is worth highlighting: each side's *key_share* value is generated afresh, **ephemerally**, in every handshake, and is never reused from one session to the next. This property is called **forward secrecy**: even if the server's long-term private key (the one that signs the `CertificateVerify`) is compromised in the future, that key never directly participated in deriving the session key, it only authenticated the ephemeral value exchanged in that specific handshake. Compromising the long-term key allows an attacker to impersonate the server from that point onward, but not to decrypt past sessions that have already ended and been discarded.
+The solution is to introduce a third party, a **trusted entity**, recognised in advance by both parties, that vouches for the link between an identity and a public key. If Alice and Bob both trust the same entity, each can ask it, "does this public key really belong to the other party?", without that question having to travel over the potentially compromised channel between the two of them [@Stallings2020; @Martin2017].
 
-## Modern Ciphers in TLS {#sec-10-tls-cifras}
+This is exactly the function of a **Public Key Infrastructure** (PKI): a set of entities, processes, and standards that formally bind identities to public keys, through **digital certificates**. Unlike a one-off verification, a certificate is a signed object, independently verifiable and reusable by any party that trusts the entity that issued it.
 
-A **cipher suite** in TLS 1.3 specifies the AEAD algorithm and the hash function used to derive keys and authenticate the handshake. The two combinations dominant in current practice have both already been presented in this book:
+## The X.509 Certificate {#sec-10-x509}
 
-- `TLS_AES_128_GCM_SHA256`: AES in GCM mode (Section 3.6) with SHA-256 (Section 5.3), benefits from hardware acceleration (AES-NI) on the vast majority of modern processors.
-- `TLS_CHACHA20_POLY1305_SHA256`: ChaCha20-Poly1305 (Section 4.5) with SHA-256, preferred on devices without hardware acceleration for AES, such as many mobile phones, for exactly the performance reason already discussed in Chapter 4.
+The **X.509** standard, now universal on the Web, defines the structure of a public-key certificate. An X.509 certificate essentially contains the holder's identification data and the signature of whoever certifies it [@RFC5280]:
 
-## PGP: Hybrid Encryption for Electronic Mail {#sec-10-pgp}
+![Essential structure of an X.509 certificate: the holder's data (identity, public key, validity period, issuer, and serial number), and the certificate authority's signature over the hash of that data.](../assets/images/fig-10-x509-en.png){#fig-10-x509 width=55%}
 
-**PGP** (*Pretty Good Privacy*), and its standardised successor, OpenPGP [@RFC4880], solves a different problem from TLS: protecting a message that does not follow a real-time connection, such as an email, between a sender and a recipient whose public keys are already known [@Martin2017]. The construction combines symmetric and asymmetric encryption, drawing on the speed of the former and the convenience of the latter:
+- **Identity** (*Subject*): to whom the certificate belongs, typically a domain, an organisation, or a person.
+- **Public key**: the key that the certificate attests belongs to that identity.
+- **Validity**: a date range outside of which the certificate is no longer considered valid.
+- **Issuer**: the identity of the certificate authority that signed it.
+- **Serial number**: a unique identifier for the certificate, essential for the revocation process.
+- **CA signature**: the **certificate authority** (CA) signs, with its own private key, the hash of all the preceding fields: $\mathrm{Sign}(sk_{CA}, H(\text{holder data}))$.
 
-![PGP's hybrid scheme: the message is signed with the sender's private key and encrypted with a randomly generated session key; that session key, in turn, is encrypted with the recipient's public key. Only whoever holds the corresponding private key can recover the session key, and through it, the message.](../assets/images/fig-10-pgp-en.png){#fig-10-pgp width=100%}
+This last line is what turns the identification data into a verifiable statement: anyone with the CA's public key can confirm that it really was that CA, and not some other entity, attesting to the link between that identity and that public key.
 
-On the sender's side: the message $M$ is first signed (hashed and then encrypted with the sender's private key, as in Section 7.4); the result is encrypted with a **session key** $K_s$, generated at random and used only once, via a fast symmetric cipher; and that session key, in turn, is encrypted with the recipient's public key, using RSA. What is transmitted is the pair (ciphertext, encrypted session key). On the receiver's side, the process is reversed: the recipient's private key decrypts $K_s$, which decrypts the text, revealing the message and the signature, which is finally verified with the sender's public key.
+## The Certificate Chain {#sec-10-cadeia}
 
-A fundamental difference from the model in Chapter 9 lies in the trust model: instead of a CA hierarchy, PGP rests on a **web of trust**, in which each user signs the public keys of others they trust directly, and trust propagates in a decentralised fashion through this network of signatures [@Stallings2020].
+A single CA key pair directly certifying every site on the Internet would be impractical and fragile (a single point of compromise would compromise everything). Instead, trust is organised into a **certificate chain**: each certificate is signed by another, up to a **Root CA**, whose public key comes pre-installed in the operating system or browser [@Stallings2020]:
+
+![The certificate chain: the Root CA signs certificates for intermediate CAs, which in turn sign further certificates, down to the final holder of a domain. Trusting the root, already installed on the system, is enough to validate the entire chain.](../assets/images/fig-10-cadeia-ca-en.png){#fig-10-cadeia-ca width=85%}
+
+Trusting only the Root CAs, a relatively small number of carefully audited entities, is enough to validate any certificate issued at any point in the chain, however many intermediaries exist between the root and the final holder.
+
+## How Verification Works {#sec-10-verificacao}
+
+When Bob receives Alice's certificate, he verifies it by following these steps [@Stallings2020]:
+
+1. Read the certificate's **Issuer** field, identifying which CA signed it.
+2. Obtain that CA's public key, $pk_{CA}$ (from the CA's own certificate, already known and trusted, or by following the chain up to a root that is).
+3. Verify the signature: $\mathrm{Verify}(pk_{CA}, \text{certificate data}, \text{signature}_{CA})$.
+4. If the signature is valid, Alice's public key is confirmed as genuine.
+5. Also check the **validity period**, the **revocation** status (via a *Certificate Revocation List*, or the real-time *Online Certificate Status Protocol*, OCSP), and the certificate's **permitted use**.
+
+Only once all these steps pass does Bob have a well-founded guarantee that the public key received really is Alice's, and not that of an interposed attacker.
+
+## In Practice: Inspecting a Certificate {#sec-10-pratica}
+
+Any X.509 certificate used on a public server can be inspected directly:
+
+```bash
+$ openssl s_client -showcerts -connect www.example.com:443 >> cert.pem
+$ openssl x509 -in cert.pem -text -noout
+```
+
+The first command establishes a TLS connection and records the certificate chain sent by the server; the second reads the certificate and displays, in readable text, exactly the fields discussed in Section 9.3, including the holder, the issuer, the validity period, and the signature algorithm used.
 
 ## Chapter Summary {#sec-10-sintese}
 
-This chapter combined the tools from previous chapters into two real systems:
+This chapter resolved the problem left open in the previous chapter:
 
-1. **TLS** protects a network connection by combining a handshake, which negotiates a session key (typically via ECDH), with a record protocol, which encrypts traffic with an AEAD construction
-2. TLS 1.3 reduced the handshake to one round trip (1-RTT), authenticating the server through an X.509 certificate and the corresponding signature; the key-share value is generated ephemerally in each session, guaranteeing forward secrecy
-3. Modern cipher suites use AES-GCM or ChaCha20-Poly1305, depending on whether hardware acceleration is available
-4. **PGP** protects asynchronous messages, such as email, with a **hybrid** cipher: the message is encrypted with a symmetric session key, and only that key is encrypted with RSA; trust is organised as a decentralised network, not a CA hierarchy
+1. The **man-in-the-middle attack** (MITM) breaks any public-key algorithm, substituting the exchanged keys with others controlled by the attacker, without either victim noticing
+2. The solution is to introduce a shared **trusted entity**, capable of formally attesting to the link between an identity and a public key
+3. An **X.509 certificate** contains the holder's identity, their public key, a validity period, the issuer, and that issuer's signature over a hash of all this data
+4. Trust is organised into a **certificate chain**, from the Root CA (pre-installed on the system) down to the final holder, through intermediate CAs
+5. Verifying a certificate requires confirming the issuing CA's signature, the validity period, and the revocation status, confirming the signature alone is not enough
 
 ## Discussion Question {#sec-10-reflexao}
 
-The forward secrecy of TLS 1.3 (Section 10.2) guarantees that compromising the server's long-term private key does not allow past sessions to be decrypted, because the session key never depended directly on it. PGP (Section 10.4) works quite differently: the recipient's public key directly encrypts the session key $K_s$ of each message, always using the same long-term RSA key pair. Given this, what consequence does the eventual future discovery of a recipient's long-term private key have for PGP messages already sent in the past, and precisely how does this situation differ from the guarantee offered by TLS 1.3?
+The certificate chain (Section 9.4) solves the problem of trusting a public key by introducing trust in a Root CA, pre-installed in the operating system or browser. This shifts the original problem (how to trust a public key?) into a slightly different one. What is that new problem, and why is trusting a handful of pre-installed Root CAs a more practicable solution than asking every Internet user to manually confirm the public key of every site they visit?
 
 ## References {#sec-10-referencias .unnumbered}
 

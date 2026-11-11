@@ -9,7 +9,7 @@
 <meta name="author" content="João Pavão">
 <meta name="dcterms.date" content="2026-09-14">
 
-<title>11&nbsp; Algorithmic Efficiency and Post-Quantum Cryptography – Cryptography</title>
+<title>11&nbsp; TLS and PGP – Cryptography</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -86,6 +86,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../capitulos/cap12.html" rel="next">
 <link href="../capitulos/cap10.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -169,7 +170,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap11.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Algorithmic Efficiency and Post-Quantum Cryptography</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap11.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">TLS and PGP</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -255,19 +256,25 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap09.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Public Key Infrastructure (PKI)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Key Management</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS and PGP</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Public Key Infrastructure (PKI)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Algorithmic Efficiency and Post-Quantum Cryptography</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">TLS and PGP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Algorithmic Efficiency and Post-Quantum Cryptography</span></span></a>
   </div>
 </li>
     </ul>
@@ -281,15 +288,12 @@ window.Quarto = {
    
   <ul>
   <li><a href="#sec-11-intro" id="toc-sec-11-intro" class="nav-link active" data-scroll-target="#sec-11-intro">Introduction</a></li>
-  <li><a href="#sec-11-quantificar" id="toc-sec-11-quantificar" class="nav-link" data-scroll-target="#sec-11-quantificar"><span class="header-section-number">11.1</span> Quantifying Security: from Binary Concept to Measurable Science</a></li>
-  <li><a href="#sec-11-dois-caminhos" id="toc-sec-11-dois-caminhos" class="nav-link" data-scroll-target="#sec-11-dois-caminhos"><span class="header-section-number">11.2</span> Information-Theoretic vs.&nbsp;Computational Security</a></li>
-  <li><a href="#sec-11-limites-razoaveis" id="toc-sec-11-limites-razoaveis" class="nav-link" data-scroll-target="#sec-11-limites-razoaveis"><span class="header-section-number">11.3</span> Reasonable Limits: the Symmetric Key Example</a></li>
-  <li><a href="#sec-11-t-epsilon" id="toc-sec-11-t-epsilon" class="nav-link" data-scroll-target="#sec-11-t-epsilon"><span class="header-section-number">11.4</span> The <span class="math inline">\((t,\varepsilon)\)</span> Framework</a></li>
-  <li><a href="#sec-11-complexidade" id="toc-sec-11-complexidade" class="nav-link" data-scroll-target="#sec-11-complexidade"><span class="header-section-number">11.5</span> Complexity Classes: Why Scale Matters</a></li>
-  <li><a href="#sec-11-eficiencia" id="toc-sec-11-eficiencia" class="nav-link" data-scroll-target="#sec-11-eficiencia"><span class="header-section-number">11.6</span> Efficiency of the Algorithms Presented in this Book</a></li>
-  <li><a href="#sec-11-pqc" id="toc-sec-11-pqc" class="nav-link" data-scroll-target="#sec-11-pqc"><span class="header-section-number">11.7</span> Post-Quantum Cryptography: Threat and Migration</a></li>
-  <li><a href="#sec-11-sintese" id="toc-sec-11-sintese" class="nav-link" data-scroll-target="#sec-11-sintese"><span class="header-section-number">11.8</span> Chapter Summary</a></li>
-  <li><a href="#sec-11-reflexao" id="toc-sec-11-reflexao" class="nav-link" data-scroll-target="#sec-11-reflexao"><span class="header-section-number">11.9</span> Discussion Question</a></li>
+  <li><a href="#sec-11-tls-objetivos" id="toc-sec-11-tls-objetivos" class="nav-link" data-scroll-target="#sec-11-tls-objetivos"><span class="header-section-number">11.1</span> TLS: Goals and Layers</a></li>
+  <li><a href="#sec-11-tls-handshake" id="toc-sec-11-tls-handshake" class="nav-link" data-scroll-target="#sec-11-tls-handshake"><span class="header-section-number">11.2</span> The TLS 1.3 Handshake</a></li>
+  <li><a href="#sec-11-tls-cifras" id="toc-sec-11-tls-cifras" class="nav-link" data-scroll-target="#sec-11-tls-cifras"><span class="header-section-number">11.3</span> Modern Ciphers in TLS</a></li>
+  <li><a href="#sec-11-pgp" id="toc-sec-11-pgp" class="nav-link" data-scroll-target="#sec-11-pgp"><span class="header-section-number">11.4</span> PGP: Hybrid Encryption for Electronic Mail</a></li>
+  <li><a href="#sec-11-sintese" id="toc-sec-11-sintese" class="nav-link" data-scroll-target="#sec-11-sintese"><span class="header-section-number">11.5</span> Chapter Summary</a></li>
+  <li><a href="#sec-11-reflexao" id="toc-sec-11-reflexao" class="nav-link" data-scroll-target="#sec-11-reflexao"><span class="header-section-number">11.6</span> Discussion Question</a></li>
   <li><a href="#sec-11-referencias" id="toc-sec-11-referencias" class="nav-link" data-scroll-target="#sec-11-referencias">References</a></li>
   </ul>
 </nav>
@@ -299,7 +303,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Algorithmic Efficiency and Post-Quantum Cryptography</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">TLS and PGP</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
 </div>
 
 
@@ -330,227 +334,77 @@ window.Quarto = {
 
 <section id="sec-11-intro" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-11-intro">Introduction</h2>
-<p>This final chapter changes register from the previous one. Rather than showing how this book’s mechanisms combine into a concrete protocol, it asks something more fundamental, something that has run through every previous chapter without ever being formalised: what does it mean, with engineering rigour, to say that a cryptographic scheme is “secure”? And, once that question is answered, what price in efficiency is paid for that security, especially now that the threat of quantum computing forces a rethink of practically everything built up to this point?</p>
+<p>This chapter shows how the tools presented throughout the book, symmetric ciphers, hash functions, MACs, RSA, Diffie-Hellman, elliptic curves and X.509 certificates, combine into two widely used real-world protocols: <strong>TLS</strong>, which protects practically all of today’s web traffic, and <strong>PGP</strong>, one of the first widely deployed cryptographic systems for electronic mail. Other schemes of practical interest, as they are incorporated into the course unit’s syllabus, will naturally find their place here.</p>
 </section>
-<section id="sec-11-quantificar" class="level2" data-number="11.1">
-<h2 data-number="11.1" class="anchored" data-anchor-id="sec-11-quantificar"><span class="header-section-number">11.1</span> Quantifying Security: from Binary Concept to Measurable Science</h2>
-<p>Traditional software security is typically a binary concept: an application is either secure or it is not, and the goal is to completely prevent an attacker from violating the code. Cryptography measures security in a fundamentally different way: not as an absolute property, but as the <strong>quantifiable effort</strong> required to break a scheme, turning security from a binary concept into a measurable science <span class="citation" data-cites="Aumasson2017">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span>.</p>
+<section id="sec-11-tls-objetivos" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="sec-11-tls-objetivos"><span class="header-section-number">11.1</span> TLS: Goals and Layers</h2>
+<p><strong>TLS</strong> (<em>Transport Layer Security</em>), the successor to SSL, protects a network connection on three fronts: confidentiality (the data exchanged cannot be read by third parties), integrity (it cannot be altered without detection), and authentication (at least the server, typically through an X.509 certificate, proves its identity) <span class="citation" data-cites="Stallings2020 RFC8446">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>; <a href="cap01.html#ref-RFC8446" role="doc-biblioref">Rescorla 2018</a>)</span>. The protocol is organised into two layers: the <strong>handshake protocol</strong>, which negotiates the session parameters and establishes a shared key, and the <strong>record protocol</strong>, which uses that key to encrypt and authenticate all subsequent traffic with an AEAD construction, such as AES-GCM or ChaCha20-Poly1305 (chapters 3 and 4).</p>
 </section>
-<section id="sec-11-dois-caminhos" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="sec-11-dois-caminhos"><span class="header-section-number">11.2</span> Information-Theoretic vs.&nbsp;Computational Security</h2>
-<p>There are two distinct paths to making a scheme “impossible” to break <span class="citation" data-cites="Aumasson2017">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span>:</p>
-<ul>
-<li><strong>Information-theoretic security</strong>: a theoretical, absolute impossibility, independent of the time, computing power, or memory available to the attacker. The only example already encountered in this book is Shannon’s <strong>One-Time Pad</strong> (Section 1.2.6): even by exhaustively testing every possible key, there are as many candidate plaintexts as there are keys, which makes it impossible to identify the correct one, even with infinite computational resources.</li>
-<li><strong>Computational security</strong>: a practical, non-absolute impossibility. A scheme is computationally secure if it cannot be broken within reasonable time and with reasonable resources (memory, hardware, budget, energy), even though, in theory, an attacker with unlimited time and resources could always break it.</li>
-</ul>
-<p>With the sole exception of the One-Time Pad, <strong>all</strong> of the remaining schemes presented in this book, AES, RC4, ChaCha20, SHA-256, HMAC, RSA, Diffie-Hellman, DSA, ECC, rely entirely on computational security, not information-theoretic security. This is the measure of security that is actually relevant in practice <span class="citation" data-cites="Aumasson2017">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span>.</p>
-</section>
-<section id="sec-11-limites-razoaveis" class="level2" data-number="11.3">
-<h2 data-number="11.3" class="anchored" data-anchor-id="sec-11-limites-razoaveis"><span class="header-section-number">11.3</span> Reasonable Limits: the Symmetric Key Example</h2>
-<p>A scheme is computationally secure if it cannot be broken by brute force within limits of time and resources considered reasonable. For a 128-bit symmetric key (Section 3.2), these limits can be made concrete:</p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<section id="sec-11-tls-handshake" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="sec-11-tls-handshake"><span class="header-section-number">11.2</span> The TLS 1.3 Handshake</h2>
+<p>TLS 1.3 <span class="citation" data-cites="RFC8446">(<a href="cap01.html#ref-RFC8446" role="doc-biblioref">Rescorla 2018</a>)</span> significantly simplified the handshake process relative to earlier versions, reducing it to a single round trip (<em>1-RTT</em>) in the general case:</p>
+<div id="fig-11-tls-handshake" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-11-tls-handshake-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-11-tls-handshake-en.png" class="img-fluid figure-img" style="width:75.0%">
 </div>
-<div class="callout-title-container flex-fill">
-Quantifying the unbreakable: 128 bits in numbers
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>A 128-bit key admits <span class="math inline">\(2^{128}\)</span> possible values, approximately <span class="math inline">\(3.4 \times 10^{38}\)</span>. Assuming an attacker capable of testing 100 billion keys per second (<span class="math inline">\(10^{11}\)</span>/s, a generous estimate even for dedicated hardware), searching the entire key space would take:</p>
-<p><span class="math display">\[\frac{3.4 \times 10^{38}}{10^{11}} \approx 3.4 \times 10^{27} \text{ seconds} \approx 10^{20} \text{ years}\]</span></p>
-<p>A number many orders of magnitude greater than the age of the universe. The scheme is <strong>not</strong> information-theoretically secure (an attacker with enough time would always eventually find the correct key), but for any practical purpose it is computationally unbreakable.</p>
-</div>
-</div>
-</section>
-<section id="sec-11-t-epsilon" class="level2" data-number="11.4">
-<h2 data-number="11.4" class="anchored" data-anchor-id="sec-11-t-epsilon"><span class="header-section-number">11.4</span> The <span class="math inline">\((t,\varepsilon)\)</span> Framework</h2>
-<p>The formal definition of computational security, adopted as standard in the cryptography literature <span class="citation" data-cites="Aumasson2017">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span>, is expressed through two values:</p>
-<ul>
-<li><span class="math inline">\(t\)</span>: the <strong>maximum number of operations</strong> an attacker is willing to perform.</li>
-<li><span class="math inline">\(\varepsilon\)</span>: an upper bound on that attacker’s <strong>probability of success</strong>, with <span class="math inline">\(0 &lt; \varepsilon &lt; 1\)</span>.</li>
-</ul>
-<p>A scheme is <strong><span class="math inline">\((t,\varepsilon)\)</span>-secure</strong> if no attacker performing at most <span class="math inline">\(t\)</span> operations has a probability of success greater than <span class="math inline">\(\varepsilon\)</span>. For a symmetric cipher with a 128-bit key <span class="math inline">\(K\)</span>, ideally secure, this pair takes the form <span class="math inline">\((t,\, t/2^{128})\)</span>, for any <span class="math inline">\(1 \le t \le 2^{128}\)</span>: the probability of success grows proportionally to the fraction of the key space already tested, never faster than that.</p>
-<p>Three concrete scenarios illustrate the idea:</p>
-<div id="tbl-11-forca-bruta" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-11-forca-bruta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;11.1: Probability of success of brute force against a 128-bit key, as a function of attacker effort
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-11-tls-handshake-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.1: The TLS 1.3 handshake: client and server exchange a key-share value (<em>key_share</em>, typically ECDH over Curve25519) in the very first pair of messages; the server proves its identity with an X.509 certificate and the corresponding signature; both sides confirm they have derived the same session key before exchanging application data.
 </figcaption>
-<div aria-describedby="tbl-11-forca-bruta-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Scenario</th>
-<th>Operations (<span class="math inline">\(t\)</span>)</th>
-<th>Probability of success (<span class="math inline">\(\varepsilon\)</span>)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>A single attempt</td>
-<td><span class="math inline">\(t=1\)</span></td>
-<td><span class="math inline">\(\varepsilon = 2^{-128}\)</span></td>
-</tr>
-<tr class="even">
-<td>Testing half the space</td>
-<td><span class="math inline">\(t=2^{64}\)</span></td>
-<td><span class="math inline">\(\varepsilon = 2^{-64}\)</span></td>
-</tr>
-<tr class="odd">
-<td>Testing the entire space</td>
-<td><span class="math inline">\(t=2^{128}\)</span></td>
-<td><span class="math inline">\(\varepsilon = 1\)</span> (guaranteed success)</td>
-</tr>
-</tbody>
-</table>
-</div>
 </figure>
 </div>
-<p>It is worth noting the distinction between a <strong>lower bound</strong>: at least <span class="math inline">\(t\)</span> operations are required to compromise the scheme, the actual effort may be higher, and a <strong>real bound</strong> (<em>tight bound</em>): the exact effort known to break the scheme with probability <span class="math inline">\(\varepsilon\)</span> using exactly <span class="math inline">\(t\)</span> operations. Brute force never stops working, sooner or later: the goal of cryptography is not to make a scheme absolutely unbreakable, but to guarantee that brute force remains the <strong>best known attack</strong>, and that its cost far exceeds any realistic benefit to an attacker.</p>
+<p>The client starts with a <code>ClientHello</code>, which already includes a key-share value (<em>key_share</em>), typically an elliptic curve point for ECDH (Section 8.5). The server responds with its own <code>ServerHello</code> and <em>key_share</em>, allowing both sides to immediately derive a common session key, exactly as in Section 8.5. The server also sends its X.509 certificate (Section 9.3) and a signature over the handshake transcript, proving that it holds the corresponding private key; both sides finish by confirming, through an authenticated <code>Finished</code> message, that they arrived at the same key. From this point on, all communication proceeds encrypted and authenticated by the record layer.</p>
+<p>One design detail of TLS 1.3 is worth highlighting: each side’s <em>key_share</em> value is generated afresh, <strong>ephemerally</strong>, in every handshake, and is never reused from one session to the next. This property is called <strong>forward secrecy</strong>: even if the server’s long-term private key (the one that signs the <code>CertificateVerify</code>) is compromised in the future, that key never directly participated in deriving the session key, it only authenticated the ephemeral value exchanged in that specific handshake. Compromising the long-term key allows an attacker to impersonate the server from that point onward, but not to decrypt past sessions that have already ended and been discarded.</p>
 </section>
-<section id="sec-11-complexidade" class="level2" data-number="11.5">
-<h2 data-number="11.5" class="anchored" data-anchor-id="sec-11-complexidade"><span class="header-section-number">11.5</span> Complexity Classes: Why Scale Matters</h2>
-<p>The <span class="math inline">\((t,\varepsilon)\)</span> framework from the previous section measures the effort of an attack for a <strong>fixed key size</strong>. But throughout this book, whenever a concrete key size was recommended, 128 bits for AES, 3072 for RSA, 256 for ECC, the real justification depended on a different question: <strong>how does the cost of an attack grow</strong> as the key size <span class="math inline">\(n\)</span> increases? This is the question that <strong>computational complexity classes</strong> answer, and the terms “subexponential”, “exponential” and “polynomial”, already used in chapters 6 to 8 without a formal definition, describe precisely this growth rate <span class="citation" data-cites="Stallings2020 Aumasson2017">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>; <a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>)</span>.</p>
+<section id="sec-11-tls-cifras" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="sec-11-tls-cifras"><span class="header-section-number">11.3</span> Modern Ciphers in TLS</h2>
+<p>A <strong>cipher suite</strong> in TLS 1.3 specifies the AEAD algorithm and the hash function used to derive keys and authenticate the handshake. The two combinations dominant in current practice have both already been presented in this book:</p>
 <ul>
-<li><strong>Polynomial time</strong>, <span class="math inline">\(O(n^k)\)</span> for some constant <span class="math inline">\(k\)</span>: the cost grows as a power of <span class="math inline">\(n\)</span>. Doubling <span class="math inline">\(n\)</span> multiplies the cost by a fixed factor (for example, <span class="math inline">\(2^k\)</span>), however large <span class="math inline">\(k\)</span> may be. A problem that admits a polynomial-time algorithm is said to be <strong>tractable</strong>.</li>
-<li><strong>Exponential time</strong>, <span class="math inline">\(O(c^n)\)</span> for some constant <span class="math inline">\(c&gt;1\)</span>: the cost grows explosively. Doubling <span class="math inline">\(n\)</span> <strong>squares</strong> the cost. Exhaustive search over an <span class="math inline">\(n\)</span>-bit key, <span class="math inline">\(O(2^n)\)</span>, is the paradigmatic example, and it remains exponential even after being improved by Grover’s algorithm (Section 3.5) or Pollard’s rho (Section 8.3): both reduce the <em>constant</em> in the exponent (<span class="math inline">\(O(2^{n/2})\)</span> instead of <span class="math inline">\(O(2^n)\)</span>), but neither changes complexity class.</li>
-<li><strong>Subexponential time</strong>: strictly between the previous two, growing faster than any polynomial, but slower than any exponential. This is the class of the <em>general number field sieve</em> (Sections 6.5 and 7.2), with a characteristic form <span class="math inline">\(L_n[\alpha,c] = \exp\!\big((c+o(1))(\ln n)^{\alpha}(\ln\ln n)^{1-\alpha}\big)\)</span>, with <span class="math inline">\(\alpha=\tfrac{1}{3}\)</span> for factorisation and for the discrete logarithm modulo a prime <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>.</li>
+<li><code>TLS_AES_128_GCM_SHA256</code>: AES in GCM mode (Section 3.6) with SHA-256 (Section 5.3), benefits from hardware acceleration (AES-NI) on the vast majority of modern processors.</li>
+<li><code>TLS_CHACHA20_POLY1305_SHA256</code>: ChaCha20-Poly1305 (Section 4.5) with SHA-256, preferred on devices without hardware acceleration for AES, such as many mobile phones, for exactly the performance reason already discussed in Chapter 4.</li>
 </ul>
-<p>The difference in scale between these classes is what rigorously explains why RSA and classical Diffie-Hellman need keys so much larger than a symmetric cipher or ECC for the same practical security level: against a <strong>subexponential</strong> problem, increasing <span class="math inline">\(n\)</span> still helps, but less and less per added bit, forcing compensation with much larger moduli. Against a purely <strong>exponential</strong> problem, such as the ECDLP (Section 8.3) or exhaustive search over a symmetric key, every added bit always doubles the attacker’s effort, so a modest growth in <span class="math inline">\(n\)</span> is already enough.</p>
-<p>This distinction is also what makes public-key cryptography possible in the first place, and it is worth stating explicitly: a system such as RSA (Section 6.4) or ECDH (Section 8.5) only works because the legitimate operation, encrypting, decrypting with the correct key, signing, verifying, is always <strong>polynomial</strong> (fast, practicable on any ordinary computer), whereas the corresponding attack, factoring <span class="math inline">\(n\)</span>, computing a discrete logarithm, solving the ECDLP, without knowing the secret, is <strong>subexponential or exponential</strong> (impracticable for sufficiently large values). This asymmetry between ease of legitimate use and difficulty of attack, and not any mysterious property of any particular algorithm, is what makes all the public-key cryptography presented in this book useful.</p>
 </section>
-<section id="sec-11-eficiencia" class="level2" data-number="11.6">
-<h2 data-number="11.6" class="anchored" data-anchor-id="sec-11-eficiencia"><span class="header-section-number">11.6</span> Efficiency of the Algorithms Presented in this Book</h2>
-<p>The <span class="math inline">\((t,\varepsilon)\)</span> framework measures <em>how much effort</em> is required to break a scheme, but it says little about the cost of <strong>using</strong> it correctly. In practice, choosing an algorithm is always a trade-off between the desired security level and computational efficiency, key size, signature size, ciphertext size, and the speed of operations <span class="citation" data-cites="Aumasson2017 Stallings2020">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>; <a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>:</p>
-<div id="tbl-11-eficiencia" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-11-eficiencia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;11.2: Approximate comparison of security and efficiency of the main algorithms presented in this book <span class="citation" data-cites="Aumasson2017 Stallings2020 FIPS203 FIPS204">(<a href="cap01.html#ref-Aumasson2017" role="doc-biblioref">Aumasson 2017</a>; <a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>; <a href="cap01.html#ref-FIPS203" role="doc-biblioref">National Institute of Standards and Technology 2024b</a>, <a href="cap01.html#ref-FIPS204" role="doc-biblioref">2024a</a>)</span>
-</figcaption>
-<div aria-describedby="tbl-11-eficiencia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 16%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Algorithm</th>
-<th>Family</th>
-<th>Classical security</th>
-<th>Effect of a quantum computer</th>
-<th>Typical size</th>
-<th>Efficiency</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>AES-256</td>
-<td>Symmetric (Section 3.2)</td>
-<td>256 bits</td>
-<td>Grover reduces to ~128 bits (Section 3.5); still secure</td>
-<td>Key: 256 bits</td>
-<td>Speed benchmark; accelerated by dedicated hardware (AES-NI)</td>
-</tr>
-<tr class="even">
-<td>ChaCha20-Poly1305</td>
-<td>Symmetric (Section 4.5)</td>
-<td>256 bits</td>
-<td>Identical to AES-256</td>
-<td>Key: 256 bits</td>
-<td>As fast as AES-256 without hardware acceleration</td>
-</tr>
-<tr class="odd">
-<td>RSA-3072</td>
-<td>Classical asymmetric (factorisation)</td>
-<td>128 bits</td>
-<td>Broken by Shor in polynomial time</td>
-<td>Public key and signature: 3072 bits</td>
-<td>Fast encryption; slow decryption and signing (large private exponent)</td>
-</tr>
-<tr class="even">
-<td>ECDSA P-256 / X25519</td>
-<td>Classical asymmetric (elliptic curve)</td>
-<td>128 bits</td>
-<td>Broken by Shor in polynomial time</td>
-<td>Public key: 256 bits; signature: ~512 bits</td>
-<td>Orders of magnitude faster and more compact than equivalent RSA</td>
-</tr>
-<tr class="odd">
-<td>ML-KEM-768</td>
-<td>Post-quantum (lattices)</td>
-<td>~128 bits (NIST Category 3)</td>
-<td>No known efficient quantum attack</td>
-<td>Public key: ~1184 bytes; ciphertext: ~1088 bytes</td>
-<td>No modular exponentiation; fast operations, but much larger keys than ECC</td>
-</tr>
-<tr class="even">
-<td>ML-DSA-65</td>
-<td>Post-quantum (lattices)</td>
-<td>~128 bits (NIST Category 3)</td>
-<td>No known efficient quantum attack</td>
-<td>Public key: ~1952 bytes; signature: ~3293 bytes</td>
-<td>Competitive generation and verification; signature about 6 times larger than ECDSA’s</td>
-</tr>
-</tbody>
-</table>
+<section id="sec-11-pgp" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="sec-11-pgp"><span class="header-section-number">11.4</span> PGP: Hybrid Encryption for Electronic Mail</h2>
+<p><strong>PGP</strong> (<em>Pretty Good Privacy</em>), and its standardised successor, OpenPGP <span class="citation" data-cites="RFC4880">(<a href="cap01.html#ref-RFC4880" role="doc-biblioref">Callas et al. 2007</a>)</span>, solves a different problem from TLS: protecting a message that does not follow a real-time connection, such as an email, between a sender and a recipient whose public keys are already known <span class="citation" data-cites="Martin2017">(<a href="cap01.html#ref-Martin2017" role="doc-biblioref">Martin 2017</a>)</span>. The construction combines symmetric and asymmetric encryption, drawing on the speed of the former and the convenience of the latter:</p>
+<div id="fig-11-pgp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-11-pgp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-11-pgp-en.png" class="img-fluid figure-img" style="width:100.0%">
 </div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-11-pgp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.2: PGP’s hybrid scheme: the message is signed with the sender’s private key and encrypted with a randomly generated session key; that session key, in turn, is encrypted with the recipient’s public key. Only whoever holds the corresponding private key can recover the session key, and through it, the message.
+</figcaption>
 </figure>
 </div>
-<p>The pattern that emerges from this table anticipates the next section: elliptic curve cryptography (Chapter 8) is by far the most efficient of the classical families, with small keys and signatures and fast operations. Post-quantum cryptography trades precisely that efficiency for resistance to Shor’s algorithm: its keys and signatures are typically twenty to fifty times larger than the equivalent ones in ECC, for the same classical security level, and this is the real engineering cost of the transition described in the next section.</p>
+<p>On the sender’s side: the message <span class="math inline">\(M\)</span> is first signed (hashed and then encrypted with the sender’s private key, as in Section 7.4); the result is encrypted with a <strong>session key</strong> <span class="math inline">\(K_s\)</span>, generated at random and used only once, via a fast symmetric cipher; and that session key, in turn, is encrypted with the recipient’s public key, using RSA. What is transmitted is the pair (ciphertext, encrypted session key). On the receiver’s side, the process is reversed: the recipient’s private key decrypts <span class="math inline">\(K_s\)</span>, which decrypts the text, revealing the message and the signature, which is finally verified with the sender’s public key.</p>
+<p>A fundamental difference from the model in Chapter 10 lies in the trust model: instead of a CA hierarchy, PGP rests on a <strong>web of trust</strong>, in which each user signs the public keys of others they trust directly, and trust propagates in a decentralised fashion through this network of signatures <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>.</p>
 </section>
-<section id="sec-11-pqc" class="level2" data-number="11.7">
-<h2 data-number="11.7" class="anchored" data-anchor-id="sec-11-pqc"><span class="header-section-number">11.7</span> Post-Quantum Cryptography: Threat and Migration</h2>
-<p>The entire edifice of asymmetric cryptography presented in this book, RSA, Diffie-Hellman, DSA, elliptic curve, rests on two mathematical problems: integer factorisation and the discrete logarithm (modulo a prime, or over an elliptic curve). In 1997, Peter Shor showed that a sufficiently large quantum computer solves both problems in <strong>polynomial</strong> time <span class="citation" data-cites="Shor1997">(<a href="cap01.html#ref-Shor1997" role="doc-biblioref">Shor 1997</a>)</span>, which would make it trivial to break any RSA, Diffie-Hellman, or ECC key, regardless of its size. Grover’s algorithm, already referred to in connection with the security of AES (Section 3.5), has a more limited effect on symmetric cryptography, halving the effective number of security bits <span class="citation" data-cites="Grover1996">(<a href="cap01.html#ref-Grover1996" role="doc-biblioref">Grover 1996</a>)</span>, which is resolved simply by doubling the key size (AES-256 instead of AES-128).</p>
-<p>The threat from Shor’s algorithm is not, for now, practical: building a quantum computer stable and large enough to run it against keys of the size used today remains an open engineering challenge. But migration to quantum-resistant alternatives is already under way, motivated in part by the “<strong>harvest now, decrypt later</strong>” scenario: traffic encrypted today, intercepted and stored, can be decrypted retroactively as soon as a capable quantum computer exists, which is already a concern today for data that needs to remain confidential for decades.</p>
-<p>In 2024, NIST completed the standardisation of the first <strong>post-quantum cryptography</strong> (PQC) standards: <strong>ML-KEM</strong> (formerly Kyber, FIPS 203 <span class="citation" data-cites="FIPS203">(<a href="cap01.html#ref-FIPS203" role="doc-biblioref">National Institute of Standards and Technology 2024b</a>)</span>) for key exchange, and <strong>ML-DSA</strong> (formerly Dilithium, FIPS 204 <span class="citation" data-cites="FIPS204">(<a href="cap01.html#ref-FIPS204" role="doc-biblioref">National Institute of Standards and Technology 2024a</a>)</span>) for digital signatures, both based on problems over lattices, not on factorisation or discrete logarithms, and therefore not known to be vulnerable to Shor’s algorithm. Protocols such as TLS 1.3 (Section 10.2) already support today’s <strong>hybrid</strong> schemes, which combine a classical mechanism (such as the X25519 from Section 8.6) with a post-quantum mechanism in the same handshake, so that the connection only becomes vulnerable if <strong>both</strong> mechanisms are broken, a prudent transition strategy while confidence in the new algorithms matures.</p>
-</section>
-<section id="sec-11-sintese" class="level2" data-number="11.8">
-<h2 data-number="11.8" class="anchored" data-anchor-id="sec-11-sintese"><span class="header-section-number">11.8</span> Chapter Summary</h2>
-<p>This chapter closed the book by quantifying the very notion of security:</p>
+<section id="sec-11-sintese" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="sec-11-sintese"><span class="header-section-number">11.5</span> Chapter Summary</h2>
+<p>This chapter combined the tools from previous chapters into two real systems:</p>
 <ol type="1">
-<li>Cryptography measures security as a <strong>quantifiable effort</strong>, not as a binary property: it turns it into a measurable science</li>
-<li><strong>Information-theoretic security</strong> is an absolute impossibility (the book’s only example is the One-Time Pad); <strong>computational security</strong>, on which all the other schemes presented rely, is only a practical impossibility</li>
-<li>The <strong><span class="math inline">\((t,\varepsilon)\)</span></strong> framework formalises computational security: no attacker performing at most <span class="math inline">\(t\)</span> operations should succeed with probability greater than <span class="math inline">\(\varepsilon\)</span></li>
-<li><strong>Complexity classes</strong> (polynomial, subexponential, exponential) describe how the cost of an attack scales with key size; it is this scaling, not the effort at a fixed size, that explains why subexponential problems (factorisation, discrete logarithm modulo a prime) require much larger keys than exponential problems (ECDLP, exhaustive search) for the same security level</li>
-<li>All public-key cryptography depends on a complexity asymmetry: the legitimate operation is always polynomial, the attack without the secret is subexponential or exponential</li>
-<li>An algorithm’s efficiency, key size, speed, signature size, is always a trade-off with the desired security level; elliptic curve cryptography is today the most efficient classical family</li>
-<li>Shor’s algorithm solves factorisation and the discrete logarithm in <strong>polynomial</strong> time, making it trivial to break RSA, Diffie-Hellman, and ECC on a sufficiently large quantum computer; Grover’s algorithm only halves symmetric security</li>
-<li>NIST has already standardised <strong>post-quantum</strong> alternatives (ML-KEM, ML-DSA) based on lattices, with keys and signatures 20 to 50 times larger than those of ECC, and the first hybrid schemes are already in production</li>
+<li><strong>TLS</strong> protects a network connection by combining a handshake, which negotiates a session key (typically via ECDH), with a record protocol, which encrypts traffic with an AEAD construction</li>
+<li>TLS 1.3 reduced the handshake to one round trip (1-RTT), authenticating the server through an X.509 certificate and the corresponding signature; the key-share value is generated ephemerally in each session, guaranteeing forward secrecy</li>
+<li>Modern cipher suites use AES-GCM or ChaCha20-Poly1305, depending on whether hardware acceleration is available</li>
+<li><strong>PGP</strong> protects asynchronous messages, such as email, with a <strong>hybrid</strong> cipher: the message is encrypted with a symmetric session key, and only that key is encrypted with RSA; trust is organised as a decentralised network, not a CA hierarchy</li>
 </ol>
 </section>
-<section id="sec-11-reflexao" class="level2" data-number="11.9">
-<h2 data-number="11.9" class="anchored" data-anchor-id="sec-11-reflexao"><span class="header-section-number">11.9</span> Discussion Question</h2>
-<p>The “harvest now, decrypt later” scenario means that TLS traffic intercepted today may come to be decrypted in the future, once a sufficiently large quantum computer exists, even though the session key used is, today, computationally unbreakable. Given that the TLS session key derives from an ECDH exchange carried out during the handshake (Section 10.2), why does this scenario <strong>not</strong> threaten, in the same way, data encrypted with a long-term symmetric key that was previously exchanged over a secure physical channel, such as a USB drive delivered by hand?</p>
+<section id="sec-11-reflexao" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="sec-11-reflexao"><span class="header-section-number">11.6</span> Discussion Question</h2>
+<p>The forward secrecy of TLS 1.3 (Section 10.2) guarantees that compromising the server’s long-term private key does not allow past sessions to be decrypted, because the session key never depended directly on it. PGP (Section 10.4) works quite differently: the recipient’s public key directly encrypts the session key <span class="math inline">\(K_s\)</span> of each message, always using the same long-term RSA key pair. Given this, what consequence does the eventual future discovery of a recipient’s long-term private key have for PGP messages already sent in the past, and precisely how does this situation differ from the guarantee offered by TLS 1.3?</p>
 </section>
 <section id="sec-11-referencias" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-11-referencias">References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
-<div id="ref-Aumasson2017" class="csl-entry" role="listitem">
-Aumasson, Jean-Philippe. 2017. <em>Serious Cryptography: A Practical Introduction to Modern Encryption</em>. No Starch Press.
+<div id="ref-RFC4880" class="csl-entry" role="listitem">
+Callas, Jon, Lutz Donnerhacke, Hal Finney, David Shaw, and Rodney Thayer. 2007. <span>‘<span>OpenPGP</span> Message Format’</span>. RFC 4880. IETF.
 </div>
-<div id="ref-Grover1996" class="csl-entry" role="listitem">
-Grover, Lov K. 1996. <span>‘A Fast Quantum Mechanical Algorithm for Database Search’</span>. In <em>28th Annual ACM Symposium on Theory of Computing (STOC)</em>.
+<div id="ref-Martin2017" class="csl-entry" role="listitem">
+Martin, Keith. 2017. <em>Everyday Cryptography</em>. 2nd ed. Oxford University Press.
 </div>
-<div id="ref-FIPS204" class="csl-entry" role="listitem">
-National Institute of Standards and Technology. 2024a. <span>‘Module-Lattice-Based Digital Signature Standard’</span>. FIPS PUB 204. NIST.
-</div>
-<div id="ref-FIPS203" class="csl-entry" role="listitem">
-———. 2024b. <span>‘Module-Lattice-Based Key-Encapsulation Mechanism Standard’</span>. FIPS PUB 203. NIST.
-</div>
-<div id="ref-Shor1997" class="csl-entry" role="listitem">
-Shor, Peter W. 1997. <span>‘Polynomial-Time Algorithms for Prime Factorization and Discrete Logarithms on a Quantum Computer’</span>. <em>SIAM Journal on Computing</em> 26 (5): 1484–1509.
+<div id="ref-RFC8446" class="csl-entry" role="listitem">
+Rescorla, Eric. 2018. <span>‘The Transport Layer Security (<span>TLS</span>) Protocol Version 1.3’</span>. RFC 8446. IETF.
 </div>
 <div id="ref-Stallings2020" class="csl-entry" role="listitem">
 Stallings, William. 2020. <em>Cryptography and Network Security: Principles and Practice</em>. 8th ed. Pearson.
@@ -1177,15 +1031,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../capitulos/cap10.html" class="pagination-link" aria-label="TLS and PGP">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS and PGP</span></span>
+      <a href="../capitulos/cap10.html" class="pagination-link" aria-label="Public Key Infrastructure (PKI)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Public Key Infrastructure (PKI)</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../capitulos/cap12.html" class="pagination-link" aria-label="Algorithmic Efficiency and Post-Quantum Cryptography">
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Algorithmic Efficiency and Post-Quantum Cryptography</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Algorithmic Efficiency and Post-Quantum Cryptography"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "TLS and PGP"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "João Pavão"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-09-14</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> en-GB</span></span>
@@ -1193,114 +1050,56 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction {#sec-11-intro .unnumbered}</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>This final chapter changes register from the previous one. Rather than showing how this book's mechanisms combine into a concrete protocol, it asks something more fundamental, something that has run through every previous chapter without ever being formalised: what does it mean, with engineering rigour, to say that a cryptographic scheme is "secure"? And, once that question is answered, what price in efficiency is paid for that security, especially now that the threat of quantum computing forces a rethink of practically everything built up to this point?</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>This chapter shows how the tools presented throughout the book, symmetric ciphers, hash functions, MACs, RSA, Diffie-Hellman, elliptic curves and X.509 certificates, combine into two widely used real-world protocols: **TLS**, which protects practically all of today's web traffic, and **PGP**, one of the first widely deployed cryptographic systems for electronic mail. Other schemes of practical interest, as they are incorporated into the course unit's syllabus, will naturally find their place here.</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## Quantifying Security: from Binary Concept to Measurable Science {#sec-11-quantificar}</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## TLS: Goals and Layers {#sec-11-tls-objetivos}</span></span>
 <span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>Traditional software security is typically a binary concept: an application is either secure or it is not, and the goal is to completely prevent an attacker from violating the code. Cryptography measures security in a fundamentally different way: not as an absolute property, but as the **quantifiable effort** required to break a scheme, turning security from a binary concept into a measurable science <span class="co">[</span><span class="ot">@Aumasson2017</span><span class="co">]</span>.</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>**TLS** (*Transport Layer Security*), the successor to SSL, protects a network connection on three fronts: confidentiality (the data exchanged cannot be read by third parties), integrity (it cannot be altered without detection), and authentication (at least the server, typically through an X.509 certificate, proves its identity) [@Stallings2020; @RFC8446]. The protocol is organised into two layers: the **handshake protocol**, which negotiates the session parameters and establishes a shared key, and the **record protocol**, which uses that key to encrypt and authenticate all subsequent traffic with an AEAD construction, such as AES-GCM or ChaCha20-Poly1305 (chapters 3 and 4).</span>
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Information-Theoretic vs. Computational Security {#sec-11-dois-caminhos}</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## The TLS 1.3 Handshake {#sec-11-tls-handshake}</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>There are two distinct paths to making a scheme "impossible" to break <span class="co">[</span><span class="ot">@Aumasson2017</span><span class="co">]</span>:</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>TLS 1.3 <span class="co">[</span><span class="ot">@RFC8446</span><span class="co">]</span> significantly simplified the handshake process relative to earlier versions, reducing it to a single round trip (*1-RTT*) in the general case:</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Information-theoretic security**: a theoretical, absolute impossibility, independent of the time, computing power, or memory available to the attacker. The only example already encountered in this book is Shannon's **One-Time Pad** (Section 1.2.6): even by exhaustively testing every possible key, there are as many candidate plaintexts as there are keys, which makes it impossible to identify the correct one, even with infinite computational resources.</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Computational security**: a practical, non-absolute impossibility. A scheme is computationally secure if it cannot be broken within reasonable time and with reasonable resources (memory, hardware, budget, energy), even though, in theory, an attacker with unlimited time and resources could always break it.</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>With the sole exception of the One-Time Pad, **all** of the remaining schemes presented in this book, AES, RC4, ChaCha20, SHA-256, HMAC, RSA, Diffie-Hellman, DSA, ECC, rely entirely on computational security, not information-theoretic security. This is the measure of security that is actually relevant in practice <span class="co">[</span><span class="ot">@Aumasson2017</span><span class="co">]</span>.</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## Reasonable Limits: the Symmetric Key Example {#sec-11-limites-razoaveis}</span></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>A scheme is computationally secure if it cannot be broken by brute force within limits of time and resources considered reasonable. For a 128-bit symmetric key (Section 3.2), these limits can be made concrete:</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Quantifying the unbreakable: 128 bits in numbers</span></span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>A 128-bit key admits $2^{128}$ possible values, approximately $3.4 \times 10^{38}$. Assuming an attacker capable of testing 100 billion keys per second ($10^{11}$/s, a generous estimate even for dedicated hardware), searching the entire key space would take:</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>$$\frac{3.4 \times 10^{38}}{10^{11}} \approx 3.4 \times 10^{27} \text{ seconds} \approx 10^{20} \text{ years}$$</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>A number many orders of magnitude greater than the age of the universe. The scheme is **not** information-theoretically secure (an attacker with enough time would always eventually find the correct key), but for any practical purpose it is computationally unbreakable.</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="al">![The TLS 1.3 handshake: client and server exchange a key-share value (*key_share*, typically ECDH over Curve25519) in the very first pair of messages; the server proves its identity with an X.509 certificate and the corresponding signature; both sides confirm they have derived the same session key before exchanging application data.](../assets/images/fig-11-tls-handshake-en.png)</span>{#fig-11-tls-handshake width=75%}</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>The client starts with a <span class="in">`ClientHello`</span>, which already includes a key-share value (*key_share*), typically an elliptic curve point for ECDH (Section 8.5). The server responds with its own `ServerHello` and *key_share*, allowing both sides to immediately derive a common session key, exactly as in Section 8.5. The server also sends its X.509 certificate (Section 9.3) and a signature over the handshake transcript, proving that it holds the corresponding private key; both sides finish by confirming, through an authenticated <span class="in">`Finished`</span> message, that they arrived at the same key. From this point on, all communication proceeds encrypted and authenticated by the record layer.</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>One design detail of TLS 1.3 is worth highlighting: each side's *key_share* value is generated afresh, **ephemerally**, in every handshake, and is never reused from one session to the next. This property is called **forward secrecy**: even if the server's long-term private key (the one that signs the <span class="in">`CertificateVerify`</span>) is compromised in the future, that key never directly participated in deriving the session key, it only authenticated the ephemeral value exchanged in that specific handshake. Compromising the long-term key allows an attacker to impersonate the server from that point onward, but not to decrypt past sessions that have already ended and been discarded.</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Modern Ciphers in TLS {#sec-11-tls-cifras}</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>A **cipher suite** in TLS 1.3 specifies the AEAD algorithm and the hash function used to derive keys and authenticate the handshake. The two combinations dominant in current practice have both already been presented in this book:</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`TLS_AES_128_GCM_SHA256`</span>: AES in GCM mode (Section 3.6) with SHA-256 (Section 5.3), benefits from hardware acceleration (AES-NI) on the vast majority of modern processors.</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`TLS_CHACHA20_POLY1305_SHA256`</span>: ChaCha20-Poly1305 (Section 4.5) with SHA-256, preferred on devices without hardware acceleration for AES, such as many mobile phones, for exactly the performance reason already discussed in Chapter 4.</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## PGP: Hybrid Encryption for Electronic Mail {#sec-11-pgp}</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>**PGP** (*Pretty Good Privacy*), and its standardised successor, OpenPGP <span class="co">[</span><span class="ot">@RFC4880</span><span class="co">]</span>, solves a different problem from TLS: protecting a message that does not follow a real-time connection, such as an email, between a sender and a recipient whose public keys are already known <span class="co">[</span><span class="ot">@Martin2017</span><span class="co">]</span>. The construction combines symmetric and asymmetric encryption, drawing on the speed of the former and the convenience of the latter:</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="al">![PGP's hybrid scheme: the message is signed with the sender's private key and encrypted with a randomly generated session key; that session key, in turn, is encrypted with the recipient's public key. Only whoever holds the corresponding private key can recover the session key, and through it, the message.](../assets/images/fig-11-pgp-en.png)</span>{#fig-11-pgp width=100%}</span>
 <span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="fu">## The $(t,\varepsilon)$ Framework {#sec-11-t-epsilon}</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>On the sender's side: the message $M$ is first signed (hashed and then encrypted with the sender's private key, as in Section 7.4); the result is encrypted with a **session key** $K_s$, generated at random and used only once, via a fast symmetric cipher; and that session key, in turn, is encrypted with the recipient's public key, using RSA. What is transmitted is the pair (ciphertext, encrypted session key). On the receiver's side, the process is reversed: the recipient's private key decrypts $K_s$, which decrypts the text, revealing the message and the signature, which is finally verified with the sender's public key.</span>
 <span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>The formal definition of computational security, adopted as standard in the cryptography literature <span class="co">[</span><span class="ot">@Aumasson2017</span><span class="co">]</span>, is expressed through two values:</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>A fundamental difference from the model in Chapter 10 lies in the trust model: instead of a CA hierarchy, PGP rests on a **web of trust**, in which each user signs the public keys of others they trust directly, and trust propagates in a decentralised fashion through this network of signatures <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>.</span>
 <span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$t$: the **maximum number of operations** an attacker is willing to perform.</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\varepsilon$: an upper bound on that attacker's **probability of success**, with $0 &lt; \varepsilon &lt; 1$.</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>A scheme is **$(t,\varepsilon)$-secure** if no attacker performing at most $t$ operations has a probability of success greater than $\varepsilon$. For a symmetric cipher with a 128-bit key $K$, ideally secure, this pair takes the form $(t,\, t/2^{128})$, for any $1 \le t \le 2^{128}$: the probability of success grows proportionally to the fraction of the key space already tested, never faster than that.</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>Three concrete scenarios illustrate the idea:</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>| Scenario | Operations ($t$) | Probability of success ($\varepsilon$) |</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>|---|---|---|</span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>| A single attempt | $t=1$ | $\varepsilon = 2^{-128}$ |</span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>| Testing half the space | $t=2^{64}$ | $\varepsilon = 2^{-64}$ |</span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>| Testing the entire space | $t=2^{128}$ | $\varepsilon = 1$ (guaranteed success) |</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## Chapter Summary {#sec-11-sintese}</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>This chapter combined the tools from previous chapters into two real systems:</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>**TLS** protects a network connection by combining a handshake, which negotiates a session key (typically via ECDH), with a record protocol, which encrypts traffic with an AEAD construction</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>TLS 1.3 reduced the handshake to one round trip (1-RTT), authenticating the server through an X.509 certificate and the corresponding signature; the key-share value is generated ephemerally in each session, guaranteeing forward secrecy</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Modern cipher suites use AES-GCM or ChaCha20-Poly1305, depending on whether hardware acceleration is available</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**PGP** protects asynchronous messages, such as email, with a **hybrid** cipher: the message is encrypted with a symmetric session key, and only that key is encrypted with RSA; trust is organised as a decentralised network, not a CA hierarchy</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion Question {#sec-11-reflexao}</span></span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>The forward secrecy of TLS 1.3 (Section 10.2) guarantees that compromising the server's long-term private key does not allow past sessions to be decrypted, because the session key never depended directly on it. PGP (Section 10.4) works quite differently: the recipient's public key directly encrypts the session key $K_s$ of each message, always using the same long-term RSA key pair. Given this, what consequence does the eventual future discovery of a recipient's long-term private key have for PGP messages already sent in the past, and precisely how does this situation differ from the guarantee offered by TLS 1.3?</span>
 <span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>: Probability of success of brute force against a 128-bit key, as a function of attacker effort {#tbl-11-forca-bruta}</span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## References {#sec-11-referencias .unnumbered}</span></span>
 <span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>It is worth noting the distinction between a **lower bound**: at least $t$ operations are required to compromise the scheme, the actual effort may be higher, and a **real bound** (*tight bound*): the exact effort known to break the scheme with probability $\varepsilon$ using exactly $t$ operations. Brute force never stops working, sooner or later: the goal of cryptography is not to make a scheme absolutely unbreakable, but to guarantee that brute force remains the **best known attack**, and that its cost far exceeds any realistic benefit to an attacker.</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a><span class="fu">## Complexity Classes: Why Scale Matters {#sec-11-complexidade}</span></span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>The $(t,\varepsilon)$ framework from the previous section measures the effort of an attack for a **fixed key size**. But throughout this book, whenever a concrete key size was recommended, 128 bits for AES, 3072 for RSA, 256 for ECC, the real justification depended on a different question: **how does the cost of an attack grow** as the key size $n$ increases? This is the question that **computational complexity classes** answer, and the terms "subexponential", "exponential" and "polynomial", already used in chapters 6 to 8 without a formal definition, describe precisely this growth rate <span class="co">[</span><span class="ot">@Stallings2020; @Aumasson2017</span><span class="co">]</span>.</span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Polynomial time**, $O(n^k)$ for some constant $k$: the cost grows as a power of $n$. Doubling $n$ multiplies the cost by a fixed factor (for example, $2^k$), however large $k$ may be. A problem that admits a polynomial-time algorithm is said to be **tractable**.</span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exponential time**, $O(c^n)$ for some constant $c&gt;1$: the cost grows explosively. Doubling $n$ **squares** the cost. Exhaustive search over an $n$-bit key, $O(2^n)$, is the paradigmatic example, and it remains exponential even after being improved by Grover's algorithm (Section 3.5) or Pollard's rho (Section 8.3): both reduce the *constant* in the exponent ($O(2^{n/2})$ instead of $O(2^n)$), but neither changes complexity class.</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Subexponential time**: strictly between the previous two, growing faster than any polynomial, but slower than any exponential. This is the class of the *general number field sieve* (Sections 6.5 and 7.2), with a characteristic form $L_n<span class="co">[</span><span class="ot">\alpha,c</span><span class="co">]</span> = \exp<span class="sc">\!</span>\big((c+o(1))(\ln n)^{\alpha}(\ln\ln n)^{1-\alpha}\big)$, with $\alpha=\tfrac{1}{3}$ for factorisation and for the discrete logarithm modulo a prime <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>.</span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>The difference in scale between these classes is what rigorously explains why RSA and classical Diffie-Hellman need keys so much larger than a symmetric cipher or ECC for the same practical security level: against a **subexponential** problem, increasing $n$ still helps, but less and less per added bit, forcing compensation with much larger moduli. Against a purely **exponential** problem, such as the ECDLP (Section 8.3) or exhaustive search over a symmetric key, every added bit always doubles the attacker's effort, so a modest growth in $n$ is already enough.</span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>This distinction is also what makes public-key cryptography possible in the first place, and it is worth stating explicitly: a system such as RSA (Section 6.4) or ECDH (Section 8.5) only works because the legitimate operation, encrypting, decrypting with the correct key, signing, verifying, is always **polynomial** (fast, practicable on any ordinary computer), whereas the corresponding attack, factoring $n$, computing a discrete logarithm, solving the ECDLP, without knowing the secret, is **subexponential or exponential** (impracticable for sufficiently large values). This asymmetry between ease of legitimate use and difficulty of attack, and not any mysterious property of any particular algorithm, is what makes all the public-key cryptography presented in this book useful.</span>
-<span id="cb1-71"><a href="#cb1-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-72"><a href="#cb1-72" aria-hidden="true" tabindex="-1"></a><span class="fu">## Efficiency of the Algorithms Presented in this Book {#sec-11-eficiencia}</span></span>
-<span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>The $(t,\varepsilon)$ framework measures *how much effort* is required to break a scheme, but it says little about the cost of **using** it correctly. In practice, choosing an algorithm is always a trade-off between the desired security level and computational efficiency, key size, signature size, ciphertext size, and the speed of operations <span class="co">[</span><span class="ot">@Aumasson2017; @Stallings2020</span><span class="co">]</span>:</span>
-<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>| Algorithm | Family | Classical security | Effect of a quantum computer | Typical size | Efficiency |</span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>|---|---|---|---|---|---|</span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>| AES-256 | Symmetric (Section 3.2) | 256 bits | Grover reduces to ~128 bits (Section 3.5); still secure | Key: 256 bits | Speed benchmark; accelerated by dedicated hardware (AES-NI) |</span>
-<span id="cb1-79"><a href="#cb1-79" aria-hidden="true" tabindex="-1"></a>| ChaCha20-Poly1305 | Symmetric (Section 4.5) | 256 bits | Identical to AES-256 | Key: 256 bits | As fast as AES-256 without hardware acceleration |</span>
-<span id="cb1-80"><a href="#cb1-80" aria-hidden="true" tabindex="-1"></a>| RSA-3072 | Classical asymmetric (factorisation) | 128 bits | Broken by Shor in polynomial time | Public key and signature: 3072 bits | Fast encryption; slow decryption and signing (large private exponent) |</span>
-<span id="cb1-81"><a href="#cb1-81" aria-hidden="true" tabindex="-1"></a>| ECDSA P-256 / X25519 | Classical asymmetric (elliptic curve) | 128 bits | Broken by Shor in polynomial time | Public key: 256 bits; signature: ~512 bits | Orders of magnitude faster and more compact than equivalent RSA |</span>
-<span id="cb1-82"><a href="#cb1-82" aria-hidden="true" tabindex="-1"></a>| ML-KEM-768 | Post-quantum (lattices) | ~128 bits (NIST Category 3) | No known efficient quantum attack | Public key: ~1184 bytes; ciphertext: ~1088 bytes | No modular exponentiation; fast operations, but much larger keys than ECC |</span>
-<span id="cb1-83"><a href="#cb1-83" aria-hidden="true" tabindex="-1"></a>| ML-DSA-65 | Post-quantum (lattices) | ~128 bits (NIST Category 3) | No known efficient quantum attack | Public key: ~1952 bytes; signature: ~3293 bytes | Competitive generation and verification; signature about 6 times larger than ECDSA's |</span>
-<span id="cb1-84"><a href="#cb1-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-85"><a href="#cb1-85" aria-hidden="true" tabindex="-1"></a>: Approximate comparison of security and efficiency of the main algorithms presented in this book <span class="co">[</span><span class="ot">@Aumasson2017; @Stallings2020; @FIPS203; @FIPS204</span><span class="co">]</span> {#tbl-11-eficiencia}</span>
-<span id="cb1-86"><a href="#cb1-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-87"><a href="#cb1-87" aria-hidden="true" tabindex="-1"></a>The pattern that emerges from this table anticipates the next section: elliptic curve cryptography (Chapter 8) is by far the most efficient of the classical families, with small keys and signatures and fast operations. Post-quantum cryptography trades precisely that efficiency for resistance to Shor's algorithm: its keys and signatures are typically twenty to fifty times larger than the equivalent ones in ECC, for the same classical security level, and this is the real engineering cost of the transition described in the next section.</span>
-<span id="cb1-88"><a href="#cb1-88" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-89"><a href="#cb1-89" aria-hidden="true" tabindex="-1"></a><span class="fu">## Post-Quantum Cryptography: Threat and Migration {#sec-11-pqc}</span></span>
-<span id="cb1-90"><a href="#cb1-90" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-91"><a href="#cb1-91" aria-hidden="true" tabindex="-1"></a>The entire edifice of asymmetric cryptography presented in this book, RSA, Diffie-Hellman, DSA, elliptic curve, rests on two mathematical problems: integer factorisation and the discrete logarithm (modulo a prime, or over an elliptic curve). In 1997, Peter Shor showed that a sufficiently large quantum computer solves both problems in **polynomial** time <span class="co">[</span><span class="ot">@Shor1997</span><span class="co">]</span>, which would make it trivial to break any RSA, Diffie-Hellman, or ECC key, regardless of its size. Grover's algorithm, already referred to in connection with the security of AES (Section 3.5), has a more limited effect on symmetric cryptography, halving the effective number of security bits <span class="co">[</span><span class="ot">@Grover1996</span><span class="co">]</span>, which is resolved simply by doubling the key size (AES-256 instead of AES-128).</span>
-<span id="cb1-92"><a href="#cb1-92" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-93"><a href="#cb1-93" aria-hidden="true" tabindex="-1"></a>The threat from Shor's algorithm is not, for now, practical: building a quantum computer stable and large enough to run it against keys of the size used today remains an open engineering challenge. But migration to quantum-resistant alternatives is already under way, motivated in part by the "**harvest now, decrypt later**" scenario: traffic encrypted today, intercepted and stored, can be decrypted retroactively as soon as a capable quantum computer exists, which is already a concern today for data that needs to remain confidential for decades.</span>
-<span id="cb1-94"><a href="#cb1-94" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-95"><a href="#cb1-95" aria-hidden="true" tabindex="-1"></a>In 2024, NIST completed the standardisation of the first **post-quantum cryptography** (PQC) standards: **ML-KEM** (formerly Kyber, FIPS 203 [@FIPS203]) for key exchange, and **ML-DSA** (formerly Dilithium, FIPS 204 [@FIPS204]) for digital signatures, both based on problems over lattices, not on factorisation or discrete logarithms, and therefore not known to be vulnerable to Shor's algorithm. Protocols such as TLS 1.3 (Section 10.2) already support today's **hybrid** schemes, which combine a classical mechanism (such as the X25519 from Section 8.6) with a post-quantum mechanism in the same handshake, so that the connection only becomes vulnerable if **both** mechanisms are broken, a prudent transition strategy while confidence in the new algorithms matures.</span>
-<span id="cb1-96"><a href="#cb1-96" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-97"><a href="#cb1-97" aria-hidden="true" tabindex="-1"></a><span class="fu">## Chapter Summary {#sec-11-sintese}</span></span>
-<span id="cb1-98"><a href="#cb1-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-99"><a href="#cb1-99" aria-hidden="true" tabindex="-1"></a>This chapter closed the book by quantifying the very notion of security:</span>
-<span id="cb1-100"><a href="#cb1-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-101"><a href="#cb1-101" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Cryptography measures security as a **quantifiable effort**, not as a binary property: it turns it into a measurable science</span>
-<span id="cb1-102"><a href="#cb1-102" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>**Information-theoretic security** is an absolute impossibility (the book's only example is the One-Time Pad); **computational security**, on which all the other schemes presented rely, is only a practical impossibility</span>
-<span id="cb1-103"><a href="#cb1-103" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>The **$(t,\varepsilon)$** framework formalises computational security: no attacker performing at most $t$ operations should succeed with probability greater than $\varepsilon$</span>
-<span id="cb1-104"><a href="#cb1-104" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>**Complexity classes** (polynomial, subexponential, exponential) describe how the cost of an attack scales with key size; it is this scaling, not the effort at a fixed size, that explains why subexponential problems (factorisation, discrete logarithm modulo a prime) require much larger keys than exponential problems (ECDLP, exhaustive search) for the same security level</span>
-<span id="cb1-105"><a href="#cb1-105" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>All public-key cryptography depends on a complexity asymmetry: the legitimate operation is always polynomial, the attack without the secret is subexponential or exponential</span>
-<span id="cb1-106"><a href="#cb1-106" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>An algorithm's efficiency, key size, speed, signature size, is always a trade-off with the desired security level; elliptic curve cryptography is today the most efficient classical family</span>
-<span id="cb1-107"><a href="#cb1-107" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Shor's algorithm solves factorisation and the discrete logarithm in **polynomial** time, making it trivial to break RSA, Diffie-Hellman, and ECC on a sufficiently large quantum computer; Grover's algorithm only halves symmetric security</span>
-<span id="cb1-108"><a href="#cb1-108" aria-hidden="true" tabindex="-1"></a><span class="ss">8. </span>NIST has already standardised **post-quantum** alternatives (ML-KEM, ML-DSA) based on lattices, with keys and signatures 20 to 50 times larger than those of ECC, and the first hybrid schemes are already in production</span>
-<span id="cb1-109"><a href="#cb1-109" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-110"><a href="#cb1-110" aria-hidden="true" tabindex="-1"></a><span class="fu">## Discussion Question {#sec-11-reflexao}</span></span>
-<span id="cb1-111"><a href="#cb1-111" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-112"><a href="#cb1-112" aria-hidden="true" tabindex="-1"></a>The "harvest now, decrypt later" scenario means that TLS traffic intercepted today may come to be decrypted in the future, once a sufficiently large quantum computer exists, even though the session key used is, today, computationally unbreakable. Given that the TLS session key derives from an ECDH exchange carried out during the handshake (Section 10.2), why does this scenario **not** threaten, in the same way, data encrypted with a long-term symmetric key that was previously exchanged over a secure physical channel, such as a USB drive delivered by hand?</span>
-<span id="cb1-113"><a href="#cb1-113" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-114"><a href="#cb1-114" aria-hidden="true" tabindex="-1"></a><span class="fu">## References {#sec-11-referencias .unnumbered}</span></span>
-<span id="cb1-115"><a href="#cb1-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-116"><a href="#cb1-116" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb1-117"><a href="#cb1-117" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

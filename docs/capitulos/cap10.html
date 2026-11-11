@@ -8,7 +8,7 @@
 
 <meta name="author" content="João Pavão">
 
-<title>10&nbsp; TLS e PGP – Criptografia</title>
+<title>10&nbsp; Infraestrutura de Chave Pública (PKI) – Criptografia</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -169,7 +169,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap10.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../capitulos/cap10.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Infraestrutura de Chave Pública (PKI)</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
@@ -255,19 +255,25 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap09.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Infraestrutura de Chave Pública (PKI)</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Gestão de Chaves</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap10.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Infraestrutura de Chave Pública (PKI)</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../capitulos/cap11.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Eficiência Algorítmica e Criptografia Pós-Quântica</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">TLS e PGP</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../capitulos/cap12.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Eficiência Algorítmica e Criptografia Pós-Quântica</span></span></a>
   </div>
 </li>
     </ul>
@@ -281,12 +287,14 @@ window.Quarto = {
    
   <ul>
   <li><a href="#sec-10-intro" id="toc-sec-10-intro" class="nav-link active" data-scroll-target="#sec-10-intro">Introdução</a></li>
-  <li><a href="#sec-10-tls-objetivos" id="toc-sec-10-tls-objetivos" class="nav-link" data-scroll-target="#sec-10-tls-objetivos"><span class="header-section-number">10.1</span> TLS: Objectivos e Camadas</a></li>
-  <li><a href="#sec-10-tls-handshake" id="toc-sec-10-tls-handshake" class="nav-link" data-scroll-target="#sec-10-tls-handshake"><span class="header-section-number">10.2</span> O Handshake do TLS 1.3</a></li>
-  <li><a href="#sec-10-tls-cifras" id="toc-sec-10-tls-cifras" class="nav-link" data-scroll-target="#sec-10-tls-cifras"><span class="header-section-number">10.3</span> Cifras Modernas em TLS</a></li>
-  <li><a href="#sec-10-pgp" id="toc-sec-10-pgp" class="nav-link" data-scroll-target="#sec-10-pgp"><span class="header-section-number">10.4</span> PGP: Cifra Híbrida para Correio Electrónico</a></li>
-  <li><a href="#sec-10-sintese" id="toc-sec-10-sintese" class="nav-link" data-scroll-target="#sec-10-sintese"><span class="header-section-number">10.5</span> Síntese do Capítulo</a></li>
-  <li><a href="#sec-10-reflexao" id="toc-sec-10-reflexao" class="nav-link" data-scroll-target="#sec-10-reflexao"><span class="header-section-number">10.6</span> Para Pensar</a></li>
+  <li><a href="#sec-10-mitm" id="toc-sec-10-mitm" class="nav-link" data-scroll-target="#sec-10-mitm"><span class="header-section-number">10.1</span> O Ataque do Intermediário em Detalhe</a></li>
+  <li><a href="#sec-10-solucao" id="toc-sec-10-solucao" class="nav-link" data-scroll-target="#sec-10-solucao"><span class="header-section-number">10.2</span> A Solução: uma Entidade de Confiança</a></li>
+  <li><a href="#sec-10-x509" id="toc-sec-10-x509" class="nav-link" data-scroll-target="#sec-10-x509"><span class="header-section-number">10.3</span> O Certificado X.509</a></li>
+  <li><a href="#sec-10-cadeia" id="toc-sec-10-cadeia" class="nav-link" data-scroll-target="#sec-10-cadeia"><span class="header-section-number">10.4</span> A Cadeia de Certificação</a></li>
+  <li><a href="#sec-10-verificacao" id="toc-sec-10-verificacao" class="nav-link" data-scroll-target="#sec-10-verificacao"><span class="header-section-number">10.5</span> Como Funciona a Verificação</a></li>
+  <li><a href="#sec-10-pratica" id="toc-sec-10-pratica" class="nav-link" data-scroll-target="#sec-10-pratica"><span class="header-section-number">10.6</span> Na Prática: Inspeccionar um Certificado</a></li>
+  <li><a href="#sec-10-sintese" id="toc-sec-10-sintese" class="nav-link" data-scroll-target="#sec-10-sintese"><span class="header-section-number">10.7</span> Síntese do Capítulo</a></li>
+  <li><a href="#sec-10-reflexao" id="toc-sec-10-reflexao" class="nav-link" data-scroll-target="#sec-10-reflexao"><span class="header-section-number">10.8</span> Para Pensar</a></li>
   <li><a href="#sec-10-referencias" id="toc-sec-10-referencias" class="nav-link" data-scroll-target="#sec-10-referencias">Referências</a></li>
   </ul>
 </nav>
@@ -296,7 +304,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">TLS e PGP</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Infraestrutura de Chave Pública (PKI)</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
 </div>
 
 
@@ -327,77 +335,109 @@ window.Quarto = {
 
 <section id="sec-10-intro" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-10-intro">Introdução</h2>
-<p>Este capítulo mostra como as ferramentas apresentadas ao longo do livro, cifras simétricas, funções de <em>hash</em>, MACs, RSA, Diffie-Hellman, curva elíptica e certificados X.509, se combinam em dois protocolos reais de largo uso: o <strong>TLS</strong>, que protege praticamente todo o tráfego web actual, e o <strong>PGP</strong>, um dos primeiros sistemas de criptografia de utilização generalizada para correio electrónico. Outros esquemas de interesse prático, à medida que forem sendo incorporados no programa da UC, terão naturalmente lugar aqui.</p>
+<p>O capítulo anterior terminou com uma pergunta em aberto: como sabe alguém que uma chave pública pertence mesmo a quem diz pertencer? Sem resposta a esta pergunta, todo o edifício da criptografia assimétrica, confidencialidade, autenticação, assinaturas, Diffie-Hellman, fica exposto a um único tipo de ataque. Este capítulo examina esse ataque em detalhe, e a solução de engenharia que se tornou o padrão da indústria para o resolver: a <strong>infraestrutura de chave pública</strong>.</p>
 </section>
-<section id="sec-10-tls-objetivos" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="sec-10-tls-objetivos"><span class="header-section-number">10.1</span> TLS: Objectivos e Camadas</h2>
-<p>O <strong>TLS</strong> (<em>Transport Layer Security</em>), sucessor do SSL, protege uma ligação de rede em três frentes: confidencialidade (os dados trocados não podem ser lidos por terceiros), integridade (não podem ser alterados sem detecção) e autenticação (pelo menos o servidor, tipicamente através de um certificado X.509, prova a sua identidade) <span class="citation" data-cites="Stallings2020 RFC8446">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>; <a href="cap01.html#ref-RFC8446" role="doc-biblioref">Rescorla 2018</a>)</span>. O protocolo organiza-se em duas camadas: o <strong>protocolo de acordo</strong> (<em>handshake</em>), que negoceia os parâmetros da sessão e estabelece uma chave partilhada, e o <strong>protocolo de registo</strong> (<em>record protocol</em>), que usa essa chave para cifrar e autenticar todo o tráfego subsequente com uma construção AEAD, como o AES-GCM ou o ChaCha20-Poly1305 (capítulos 3 e 4).</p>
-</section>
-<section id="sec-10-tls-handshake" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="sec-10-tls-handshake"><span class="header-section-number">10.2</span> O Handshake do TLS 1.3</h2>
-<p>O TLS 1.3 <span class="citation" data-cites="RFC8446">(<a href="cap01.html#ref-RFC8446" role="doc-biblioref">Rescorla 2018</a>)</span> simplificou significativamente o processo de acordo em relação a versões anteriores, reduzindo-o a uma única volta de ida e volta (<em>1-RTT</em>) na generalidade dos casos:</p>
-<div id="fig-10-tls-handshake" class="quarto-float quarto-figure quarto-figure-center anchored">
+<section id="sec-10-mitm" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="sec-10-mitm"><span class="header-section-number">10.1</span> O Ataque do Intermediário em Detalhe</h2>
+<p>No <strong>ataque do intermediário</strong> (<em>man-in-the-middle</em>, MITM), um atacante posicionado em qualquer ponto da rede entre as duas partes, por exemplo num router comprometido, intercepta e substitui as chaves públicas trocadas, sem que nenhuma das vítimas se aperceba <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>:</p>
+<div id="fig-10-mitm" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-10-tls-handshake-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-10-tls-handshake.png" class="img-fluid figure-img" style="width:75.0%">
+<div aria-describedby="fig-10-mitm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-10-mitm.png" class="img-fluid figure-img" style="width:85.0%">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-10-tls-handshake-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;10.1: O handshake do TLS 1.3: cliente e servidor trocam um valor de troca de chaves (<em>key_share</em>, tipicamente ECDH sobre a Curve25519) logo no primeiro par de mensagens; o servidor prova a sua identidade com um certificado X.509 e a respectiva assinatura; ambos confirmam ter derivado a mesma chave de sessão antes de trocar dados de aplicação.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-10-mitm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.1: O atacante (Mallory) intercepta as chaves públicas de Alice e de Bob, e substitui-as pelas suas próprias antes de as reenviar. Cada um pensa estar a usar a chave pública do outro, quando na verdade está a usar a chave pública de Mallory.
 </figcaption>
 </figure>
 </div>
-<p>O cliente inicia com um <code>ClientHello</code>, que já inclui um valor de troca de chaves (<em>key_share</em>), tipicamente um ponto de curva elíptica para ECDH (Secção 8.5). O servidor responde com o seu próprio <code>ServerHello</code> e <em>key_share</em>, permitindo que ambos os lados derivem imediatamente uma chave de sessão comum, exactamente como na Secção 8.5. O servidor envia ainda o seu certificado X.509 (Secção 9.3) e uma assinatura sobre o histórico do <em>handshake</em>, provando que possui a chave privada correspondente; ambos os lados terminam confirmando, através de uma mensagem <code>Finished</code> autenticada, que chegaram à mesma chave. A partir daqui, toda a comunicação segue cifrada e autenticada pela camada de registo.</p>
-<p>Um detalhe do desenho do TLS 1.3 vale a pena assinalar: o valor <em>key_share</em> de cada lado é gerado de novo, <strong>efemeramente</strong>, em cada <em>handshake</em>, e nunca reutilizado de uma sessão para a seguinte. Esta propriedade chama-se <strong>sigilo perspectivo</strong> (<em>forward secrecy</em>): mesmo que a chave privada de longo prazo do servidor (a que assina o <code>CertificateVerify</code>) seja comprometida no futuro, essa chave nunca participou directamente na derivação da chave de sessão, apenas autenticou o valor efémero trocado nesse <em>handshake</em> específico. Comprometer a chave de longo prazo permite fazer-se passar pelo servidor daí em diante, mas não decifrar sessões passadas já terminadas e descartadas.</p>
+<p>O ataque funciona porque uma chave pública, por definição, não tem nada que a ligue de forma inseparável ao seu dono: é apenas um número, e um número não tem identidade própria. Quando Alice recebe algo que parece ser a chave pública de Bob, não tem, por si só, nenhuma forma de confirmar essa origem.</p>
+<p>Vale a pena notar que este ataque <strong>quebra qualquer</strong> algoritmo de chave pública, não é uma fraqueza do RSA, do Diffie-Hellman ou do DSA em particular. No caso específico do Diffie-Hellman (Secção 7.3), o ataque tem uma consequência particularmente insidiosa: Mallory estabelece <strong>duas</strong> trocas de chave distintas, uma com Alice e outra com Bob, e passa a decifrar e recifrar cada mensagem trocada entre eles, sem que nenhum dos dois consiga sequer detectar que a chave “comum” que pensam partilhar não é, de facto, partilhada com o outro, mas sim com Mallory de ambos os lados.</p>
 </section>
-<section id="sec-10-tls-cifras" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="sec-10-tls-cifras"><span class="header-section-number">10.3</span> Cifras Modernas em TLS</h2>
-<p>Uma <strong>cifra combinada</strong> (<em>cipher suite</em>) do TLS 1.3 especifica o algoritmo AEAD e a função de <em>hash</em> usada para derivar chaves e autenticar o <em>handshake</em>. As duas combinações dominantes na prática actual já foram ambas apresentadas neste livro:</p>
+<section id="sec-10-solucao" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="sec-10-solucao"><span class="header-section-number">10.2</span> A Solução: uma Entidade de Confiança</h2>
+<p>A solução passa por introduzir uma terceira parte, uma <strong>entidade de confiança</strong>, que ambas as partes reconheçam antecipadamente, e que testemunhe a ligação entre uma identidade e uma chave pública. Se Alice e Bob confiarem na mesma entidade, cada um pode perguntar-lhe, “esta chave pública pertence mesmo à outra parte?”, sem que essa pergunta precise de passar pelo canal, potencialmente comprometido, entre os dois <span class="citation" data-cites="Stallings2020 Martin2017">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>; <a href="cap01.html#ref-Martin2017" role="doc-biblioref">Martin 2017</a>)</span>.</p>
+<p>Esta é exactamente a função de uma <strong>infraestrutura de chave pública</strong> (<em>Public Key Infrastructure</em>, PKI): um conjunto de entidades, processos e normas que ligam formalmente identidades a chaves públicas, através de <strong>certificados digitais</strong>. Ao contrário de uma verificação pontual, o certificado é um objecto assinado, verificável de forma independente e reutilizável por qualquer parte que confie na entidade que o emitiu.</p>
+</section>
+<section id="sec-10-x509" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="sec-10-x509"><span class="header-section-number">10.3</span> O Certificado X.509</h2>
+<p>A norma <strong>X.509</strong>, hoje universal na Web, define a estrutura de um certificado de chave pública. Um certificado X.509 contém, no essencial, os dados de identificação do titular e a assinatura de quem os certifica <span class="citation" data-cites="RFC5280">(<a href="cap01.html#ref-RFC5280" role="doc-biblioref">Cooper et al. 2008</a>)</span>:</p>
+<div id="fig-10-x509" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-10-x509-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-10-x509.png" class="img-fluid figure-img" style="width:55.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-10-x509-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.2: Estrutura essencial de um certificado X.509: os dados do titular (identidade, chave pública, período de validade, emissor e número de série), e a assinatura da entidade certificadora sobre o <em>hash</em> desses dados.
+</figcaption>
+</figure>
+</div>
 <ul>
-<li><code>TLS_AES_128_GCM_SHA256</code>: AES em modo GCM (Secção 3.6) com SHA-256 (Secção 5.3), beneficia de aceleração de hardware (AES-NI) na generalidade dos processadores modernos.</li>
-<li><code>TLS_CHACHA20_POLY1305_SHA256</code>: ChaCha20-Poly1305 (Secção 4.5) com SHA-256, preferido em dispositivos sem aceleração de hardware para AES, como muitos telemóveis, exactamente pela razão de desempenho já discutida no Capítulo 4.</li>
+<li><strong>Identidade</strong> (<em>Subject</em>): a quem pertence o certificado, tipicamente um domínio, uma organização, ou uma pessoa.</li>
+<li><strong>Chave pública</strong>: a chave que o certificado atesta pertencer a essa identidade.</li>
+<li><strong>Validade</strong>: um intervalo de datas fora do qual o certificado deixa de ser considerado válido.</li>
+<li><strong>Emissor</strong> (<em>Issuer</em>): a identidade da entidade certificadora que o assinou.</li>
+<li><strong>Número de série</strong>: um identificador único do certificado, essencial para o processo de revogação.</li>
+<li><strong>Assinatura da CA</strong>: a <strong>entidade certificadora</strong> (<em>Certificate Authority</em>, CA) assina, com a sua própria chave privada, o <em>hash</em> de todos os campos anteriores: <span class="math inline">\(\mathrm{Sign}(sk_{CA}, H(\text{dados do titular}))\)</span>.</li>
 </ul>
+<p>Esta última linha é o que transforma os dados de identificação numa afirmação verificável: qualquer pessoa com a chave pública da CA consegue confirmar que foi mesmo aquela CA, e não outra entidade, a atestar a ligação entre aquela identidade e aquela chave pública.</p>
 </section>
-<section id="sec-10-pgp" class="level2" data-number="10.4">
-<h2 data-number="10.4" class="anchored" data-anchor-id="sec-10-pgp"><span class="header-section-number">10.4</span> PGP: Cifra Híbrida para Correio Electrónico</h2>
-<p>O <strong>PGP</strong> (<em>Pretty Good Privacy</em>), e o seu sucessor normalizado, o OpenPGP <span class="citation" data-cites="RFC4880">(<a href="cap01.html#ref-RFC4880" role="doc-biblioref">Callas et al. 2007</a>)</span>, resolve um problema diferente do TLS: proteger uma mensagem que não segue uma ligação em tempo real, como um correio electrónico, entre um emissor e um destinatário cujas chaves públicas já são conhecidas <span class="citation" data-cites="Martin2017">(<a href="cap01.html#ref-Martin2017" role="doc-biblioref">Martin 2017</a>)</span>. A construção combina cifra simétrica e assimétrica, aproveitando a velocidade da primeira e a conveniência da segunda:</p>
-<div id="fig-10-pgp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<section id="sec-10-cadeia" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="sec-10-cadeia"><span class="header-section-number">10.4</span> A Cadeia de Certificação</h2>
+<p>Um único par de chaves de CA a certificar directamente cada site da Internet seria impraticável e frágil (um único ponto de compromisso comprometeria tudo). Em vez disso, a confiança organiza-se numa <strong>cadeia de certificação</strong>: cada certificado é assinado por outro, até chegar a uma <strong>CA raiz</strong> (<em>Root CA</em>), cuja chave pública vem pré-instalada no sistema operativo ou no navegador <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>:</p>
+<div id="fig-10-cadeia-ca" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-10-pgp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../assets/images/fig-10-pgp.png" class="img-fluid figure-img" style="width:100.0%">
+<div aria-describedby="fig-10-cadeia-ca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../assets/images/fig-10-cadeia-ca.png" class="img-fluid figure-img" style="width:85.0%">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-10-pgp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;10.2: O esquema híbrido do PGP: a mensagem é assinada com a chave privada do emissor e cifrada com uma chave de sessão gerada ao acaso; essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário. Só quem tiver a chave privada correspondente consegue recuperar a chave de sessão, e por essa via a mensagem.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-10-cadeia-ca-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;10.3: A cadeia de certificação: a CA raiz assina certificados de CAs intermédias, que por sua vez assinam outros certificados, até chegar ao titular final de um domínio. Confiar na raiz, já instalada no sistema, basta para validar toda a cadeia.
 </figcaption>
 </figure>
 </div>
-<p>Do lado do emissor: a mensagem <span class="math inline">\(M\)</span> é primeiro assinada (<em>hash</em> mais cifra com a chave privada do emissor, tal como na Secção 7.4); o resultado é cifrado com uma <strong>chave de sessão</strong> <span class="math inline">\(K_s\)</span>, gerada ao acaso e usada uma única vez, através de uma cifra simétrica rápida; e essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário, usando RSA. O que é transmitido é o par (texto cifrado, chave de sessão cifrada). Do lado do receptor, o processo inverte-se: a chave privada do destinatário decifra <span class="math inline">\(K_s\)</span>, que decifra o texto, revelando a mensagem e a assinatura, que se verifica por fim com a chave pública do emissor.</p>
-<p>Uma diferença de fundo em relação ao modelo do Capítulo 9 é o modelo de confiança: em vez de uma hierarquia de CAs, o PGP assenta numa <strong>rede de confiança</strong> (<em>Web of Trust</em>), em que cada utilizador assina as chaves públicas de outros em quem confia directamente, e a confiança propaga-se de forma descentralizada através dessa rede de assinaturas <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>.</p>
+<p>Confiar apenas na CA raiz, um número relativamente pequeno de entidades, cuidadosamente auditadas, é suficiente para validar qualquer certificado emitido em qualquer ponto da cadeia, por mais intermediários que existam entre a raiz e o titular final.</p>
 </section>
-<section id="sec-10-sintese" class="level2" data-number="10.5">
-<h2 data-number="10.5" class="anchored" data-anchor-id="sec-10-sintese"><span class="header-section-number">10.5</span> Síntese do Capítulo</h2>
-<p>Este capítulo combinou as ferramentas dos capítulos anteriores em dois sistemas reais:</p>
+<section id="sec-10-verificacao" class="level2" data-number="10.5">
+<h2 data-number="10.5" class="anchored" data-anchor-id="sec-10-verificacao"><span class="header-section-number">10.5</span> Como Funciona a Verificação</h2>
+<p>Quando Bob recebe o certificado de Alice, verifica-o seguindo estes passos <span class="citation" data-cites="Stallings2020">(<a href="cap01.html#ref-Stallings2020" role="doc-biblioref">Stallings 2020</a>)</span>:</p>
 <ol type="1">
-<li>O <strong>TLS</strong> protege uma ligação de rede combinando um <em>handshake</em>, que negoceia uma chave de sessão (tipicamente por ECDH), com um protocolo de registo, que cifra o tráfego com uma construção AEAD</li>
-<li>O TLS 1.3 reduziu o <em>handshake</em> a uma volta (1-RTT), autenticando o servidor através de um certificado X.509 e a respectiva assinatura; o valor de troca de chaves é gerado de forma efémera em cada sessão, garantindo sigilo perspectivo</li>
-<li>As cifras combinadas modernas usam AES-GCM ou ChaCha20-Poly1305, consoante haja ou não aceleração de hardware disponível</li>
-<li>O <strong>PGP</strong> protege mensagens assíncronas, como o correio electrónico, com uma cifra <strong>híbrida</strong>: a mensagem cifra-se com uma chave de sessão simétrica, e só essa chave se cifra com RSA; a confiança organiza-se numa rede descentralizada, não numa hierarquia de CAs</li>
+<li>Lê o campo <strong>Emissor</strong> do certificado, identificando qual CA o assinou.</li>
+<li>Obtém a chave pública dessa CA, <span class="math inline">\(pk_{CA}\)</span> (a partir do certificado da própria CA, já conhecido e confiado, ou seguindo a cadeia até uma raiz que o seja).</li>
+<li>Verifica a assinatura: <span class="math inline">\(\mathrm{Verify}(pk_{CA}, \text{dados do certificado}, \text{assinatura}_{CA})\)</span>.</li>
+<li>Se a assinatura for válida, a chave pública de Alice está confirmada como genuína.</li>
+<li>Verifica ainda o <strong>período de validade</strong>, o estado de <strong>revogação</strong> (através de uma lista de revogação, <em>Certificate Revocation List</em>, ou do protocolo em tempo real <em>Online Certificate Status Protocol</em>, OCSP), e o <strong>uso permitido</strong> do certificado.</li>
+</ol>
+<p>Só depois de todos estes passos passarem é que Bob tem uma garantia fundamentada de que a chave pública recebida é mesmo de Alice, e não de um atacante interposto.</p>
+</section>
+<section id="sec-10-pratica" class="level2" data-number="10.6">
+<h2 data-number="10.6" class="anchored" data-anchor-id="sec-10-pratica"><span class="header-section-number">10.6</span> Na Prática: Inspeccionar um Certificado</h2>
+<p>Qualquer certificado X.509 usado num servidor público pode ser inspeccionado directamente:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl s_client <span class="at">-showcerts</span> <span class="at">-connect</span> www.exemplo.com:443 <span class="op">&gt;&gt;</span> cert.pem</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl x509 <span class="at">-in</span> cert.pem <span class="at">-text</span> <span class="at">-noout</span></span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O primeiro comando estabelece uma ligação TLS e regista a cadeia de certificados enviada pelo servidor; o segundo lê o certificado e apresenta, em texto legível, exactamente os campos discutidos na Secção 9.3, incluindo o titular, o emissor, o período de validade e o algoritmo de assinatura usado.</p>
+</section>
+<section id="sec-10-sintese" class="level2" data-number="10.7">
+<h2 data-number="10.7" class="anchored" data-anchor-id="sec-10-sintese"><span class="header-section-number">10.7</span> Síntese do Capítulo</h2>
+<p>Este capítulo resolveu o problema deixado em aberto no capítulo anterior:</p>
+<ol type="1">
+<li>O <strong>ataque do intermediário</strong> (MITM) quebra qualquer algoritmo de chave pública, substituindo as chaves trocadas por outras, controladas pelo atacante, sem que nenhuma das vítimas o perceba</li>
+<li>A solução é introduzir uma <strong>entidade de confiança</strong> partilhada, capaz de atestar formalmente a ligação entre uma identidade e uma chave pública</li>
+<li>Um <strong>certificado X.509</strong> contém a identidade do titular, a sua chave pública, um período de validade, o emissor, e a assinatura desse emissor sobre um <em>hash</em> de todos estes dados</li>
+<li>A confiança organiza-se numa <strong>cadeia de certificação</strong>, da CA raiz (pré-instalada no sistema) até ao titular final, através de CAs intermédias</li>
+<li>Verificar um certificado exige confirmar a assinatura da CA emissora, o período de validade, e o estado de revogação, não basta confirmar só a assinatura</li>
 </ol>
 </section>
-<section id="sec-10-reflexao" class="level2" data-number="10.6">
-<h2 data-number="10.6" class="anchored" data-anchor-id="sec-10-reflexao"><span class="header-section-number">10.6</span> Para Pensar</h2>
-<p>O sigilo perspectivo do TLS 1.3 (Secção 10.2) garante que comprometer a chave privada de longo prazo do servidor não permite decifrar sessões passadas, porque a chave de sessão nunca dependeu directamente dela. O PGP (Secção 10.4) funciona de forma bastante diferente: a chave pública do destinatário cifra directamente a chave de sessão <span class="math inline">\(K_s\)</span> de cada mensagem, usando sempre o mesmo par de chaves RSA de longo prazo. Tendo isto em conta, que consequência tem, para as mensagens PGP já enviadas no passado, a eventual futura descoberta da chave privada de longo prazo de um destinatário, e em que é que essa situação se distingue precisamente da garantia oferecida pelo TLS 1.3?</p>
+<section id="sec-10-reflexao" class="level2" data-number="10.8">
+<h2 data-number="10.8" class="anchored" data-anchor-id="sec-10-reflexao"><span class="header-section-number">10.8</span> Para Pensar</h2>
+<p>A cadeia de certificação (Secção 9.4) resolve o problema de confiar numa chave pública introduzindo confiança numa CA raiz, pré-instalada no sistema operativo ou no navegador. Isto desloca o problema original (como confiar numa chave pública?) para um problema ligeiramente diferente. Qual é esse novo problema, e porque é que confiar numa dezena de CAs raiz pré-instaladas é uma solução mais praticável do que pedir a cada utilizador da Internet que confirme manualmente a chave pública de cada site que visita?</p>
 </section>
 <section id="sec-10-referencias" class="level2 unnumbered">
 <h2 class="unnumbered anchored" data-anchor-id="sec-10-referencias">Referências</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
-<div id="ref-RFC4880" class="csl-entry" role="listitem">
-Callas, Jon, Lutz Donnerhacke, Hal Finney, David Shaw, e Rodney Thayer. 2007. <span>«<span>OpenPGP</span> Message Format»</span>. RFC 4880. IETF.
+<div id="ref-RFC5280" class="csl-entry" role="listitem">
+Cooper, David, Stefan Santesson, Stephen Farrell, Sharon Boeyen, Russell Housley, e Tim Polk. 2008. <span>«Internet <span>X.509</span> Public Key Infrastructure Certificate and Certificate Revocation List (<span>CRL</span>) Profile»</span>. RFC 5280. IETF.
 </div>
 <div id="ref-Martin2017" class="csl-entry" role="listitem">
 Martin, Keith. 2017. <em>Everyday Cryptography</em>. 2.ª ed. Oxford University Press.
-</div>
-<div id="ref-RFC8446" class="csl-entry" role="listitem">
-Rescorla, Eric. 2018. <span>«The Transport Layer Security (<span>TLS</span>) Protocol Version 1.3»</span>. RFC 8446. IETF.
 </div>
 <div id="ref-Stallings2020" class="csl-entry" role="listitem">
 Stallings, William. 2020. <em>Cryptography and Network Security: Principles and Practice</em>. 8.ª ed. Pearson.
@@ -1024,75 +1064,107 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../capitulos/cap09.html" class="pagination-link" aria-label="Infraestrutura de Chave Pública (PKI)">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Infraestrutura de Chave Pública (PKI)</span></span>
+      <a href="../capitulos/cap09.html" class="pagination-link" aria-label="Gestão de Chaves">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Gestão de Chaves</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../capitulos/cap11.html" class="pagination-link" aria-label="Eficiência Algorítmica e Criptografia Pós-Quântica">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Eficiência Algorítmica e Criptografia Pós-Quântica</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../capitulos/cap11.html" class="pagination-link" aria-label="TLS e PGP">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">TLS e PGP</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Código fonte</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "TLS e PGP"</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "João Pavão"</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-09-14</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-PT</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução {#sec-10-intro .unnumbered}</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>Este capítulo mostra como as ferramentas apresentadas ao longo do livro, cifras simétricas, funções de *hash*, MACs, RSA, Diffie-Hellman, curva elíptica e certificados X.509, se combinam em dois protocolos reais de largo uso: o **TLS**, que protege praticamente todo o tráfego web actual, e o **PGP**, um dos primeiros sistemas de criptografia de utilização generalizada para correio electrónico. Outros esquemas de interesse prático, à medida que forem sendo incorporados no programa da UC, terão naturalmente lugar aqui.</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## TLS: Objectivos e Camadas {#sec-10-tls-objetivos}</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>O **TLS** (*Transport Layer Security*), sucessor do SSL, protege uma ligação de rede em três frentes: confidencialidade (os dados trocados não podem ser lidos por terceiros), integridade (não podem ser alterados sem detecção) e autenticação (pelo menos o servidor, tipicamente através de um certificado X.509, prova a sua identidade) [@Stallings2020; @RFC8446]. O protocolo organiza-se em duas camadas: o **protocolo de acordo** (*handshake*), que negoceia os parâmetros da sessão e estabelece uma chave partilhada, e o **protocolo de registo** (*record protocol*), que usa essa chave para cifrar e autenticar todo o tráfego subsequente com uma construção AEAD, como o AES-GCM ou o ChaCha20-Poly1305 (capítulos 3 e 4).</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## O Handshake do TLS 1.3 {#sec-10-tls-handshake}</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>O TLS 1.3 <span class="co">[</span><span class="ot">@RFC8446</span><span class="co">]</span> simplificou significativamente o processo de acordo em relação a versões anteriores, reduzindo-o a uma única volta de ida e volta (*1-RTT*) na generalidade dos casos:</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="al">![O handshake do TLS 1.3: cliente e servidor trocam um valor de troca de chaves (*key_share*, tipicamente ECDH sobre a Curve25519) logo no primeiro par de mensagens; o servidor prova a sua identidade com um certificado X.509 e a respectiva assinatura; ambos confirmam ter derivado a mesma chave de sessão antes de trocar dados de aplicação.](../assets/images/fig-10-tls-handshake.png)</span>{#fig-10-tls-handshake width=75%}</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>O cliente inicia com um <span class="in">`ClientHello`</span>, que já inclui um valor de troca de chaves (*key_share*), tipicamente um ponto de curva elíptica para ECDH (Secção 8.5). O servidor responde com o seu próprio `ServerHello` e *key_share*, permitindo que ambos os lados derivem imediatamente uma chave de sessão comum, exactamente como na Secção 8.5. O servidor envia ainda o seu certificado X.509 (Secção 9.3) e uma assinatura sobre o histórico do *handshake*, provando que possui a chave privada correspondente; ambos os lados terminam confirmando, através de uma mensagem <span class="in">`Finished`</span> autenticada, que chegaram à mesma chave. A partir daqui, toda a comunicação segue cifrada e autenticada pela camada de registo.</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>Um detalhe do desenho do TLS 1.3 vale a pena assinalar: o valor *key_share* de cada lado é gerado de novo, **efemeramente**, em cada *handshake*, e nunca reutilizado de uma sessão para a seguinte. Esta propriedade chama-se **sigilo perspectivo** (*forward secrecy*): mesmo que a chave privada de longo prazo do servidor (a que assina o `CertificateVerify`) seja comprometida no futuro, essa chave nunca participou directamente na derivação da chave de sessão, apenas autenticou o valor efémero trocado nesse *handshake* específico. Comprometer a chave de longo prazo permite fazer-se passar pelo servidor daí em diante, mas não decifrar sessões passadas já terminadas e descartadas.</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cifras Modernas em TLS {#sec-10-tls-cifras}</span></span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>Uma **cifra combinada** (*cipher suite*) do TLS 1.3 especifica o algoritmo AEAD e a função de *hash* usada para derivar chaves e autenticar o *handshake*. As duas combinações dominantes na prática actual já foram ambas apresentadas neste livro:</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`TLS_AES_128_GCM_SHA256`</span>: AES em modo GCM (Secção 3.6) com SHA-256 (Secção 5.3), beneficia de aceleração de hardware (AES-NI) na generalidade dos processadores modernos.</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`TLS_CHACHA20_POLY1305_SHA256`</span>: ChaCha20-Poly1305 (Secção 4.5) com SHA-256, preferido em dispositivos sem aceleração de hardware para AES, como muitos telemóveis, exactamente pela razão de desempenho já discutida no Capítulo 4.</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## PGP: Cifra Híbrida para Correio Electrónico {#sec-10-pgp}</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>O **PGP** (*Pretty Good Privacy*), e o seu sucessor normalizado, o OpenPGP <span class="co">[</span><span class="ot">@RFC4880</span><span class="co">]</span>, resolve um problema diferente do TLS: proteger uma mensagem que não segue uma ligação em tempo real, como um correio electrónico, entre um emissor e um destinatário cujas chaves públicas já são conhecidas <span class="co">[</span><span class="ot">@Martin2017</span><span class="co">]</span>. A construção combina cifra simétrica e assimétrica, aproveitando a velocidade da primeira e a conveniência da segunda:</span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a><span class="al">![O esquema híbrido do PGP: a mensagem é assinada com a chave privada do emissor e cifrada com uma chave de sessão gerada ao acaso; essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário. Só quem tiver a chave privada correspondente consegue recuperar a chave de sessão, e por essa via a mensagem.](../assets/images/fig-10-pgp.png)</span>{#fig-10-pgp width=100%}</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>Do lado do emissor: a mensagem $M$ é primeiro assinada (*hash* mais cifra com a chave privada do emissor, tal como na Secção 7.4); o resultado é cifrado com uma **chave de sessão** $K_s$, gerada ao acaso e usada uma única vez, através de uma cifra simétrica rápida; e essa chave de sessão, por sua vez, é cifrada com a chave pública do destinatário, usando RSA. O que é transmitido é o par (texto cifrado, chave de sessão cifrada). Do lado do receptor, o processo inverte-se: a chave privada do destinatário decifra $K_s$, que decifra o texto, revelando a mensagem e a assinatura, que se verifica por fim com a chave pública do emissor.</span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>Uma diferença de fundo em relação ao modelo do Capítulo 9 é o modelo de confiança: em vez de uma hierarquia de CAs, o PGP assenta numa **rede de confiança** (*Web of Trust*), em que cada utilizador assina as chaves públicas de outros em quem confia directamente, e a confiança propaga-se de forma descentralizada através dessa rede de assinaturas <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>.</span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-10-sintese}</span></span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>Este capítulo combinou as ferramentas dos capítulos anteriores em dois sistemas reais:</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>O **TLS** protege uma ligação de rede combinando um *handshake*, que negoceia uma chave de sessão (tipicamente por ECDH), com um protocolo de registo, que cifra o tráfego com uma construção AEAD</span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>O TLS 1.3 reduziu o *handshake* a uma volta (1-RTT), autenticando o servidor através de um certificado X.509 e a respectiva assinatura; o valor de troca de chaves é gerado de forma efémera em cada sessão, garantindo sigilo perspectivo</span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>As cifras combinadas modernas usam AES-GCM ou ChaCha20-Poly1305, consoante haja ou não aceleração de hardware disponível</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>O **PGP** protege mensagens assíncronas, como o correio electrónico, com uma cifra **híbrida**: a mensagem cifra-se com uma chave de sessão simétrica, e só essa chave se cifra com RSA; a confiança organiza-se numa rede descentralizada, não numa hierarquia de CAs</span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-10-reflexao}</span></span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>O sigilo perspectivo do TLS 1.3 (Secção 10.2) garante que comprometer a chave privada de longo prazo do servidor não permite decifrar sessões passadas, porque a chave de sessão nunca dependeu directamente dela. O PGP (Secção 10.4) funciona de forma bastante diferente: a chave pública do destinatário cifra directamente a chave de sessão $K_s$ de cada mensagem, usando sempre o mesmo par de chaves RSA de longo prazo. Tendo isto em conta, que consequência tem, para as mensagens PGP já enviadas no passado, a eventual futura descoberta da chave privada de longo prazo de um destinatário, e em que é que essa situação se distingue precisamente da garantia oferecida pelo TLS 1.3?</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-10-referencias .unnumbered}</span></span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Infraestrutura de Chave Pública (PKI)"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> "João Pavão"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> 2026-09-14</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="an">lang:</span><span class="co"> pt-PT</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introdução {#sec-10-intro .unnumbered}</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>O capítulo anterior terminou com uma pergunta em aberto: como sabe alguém que uma chave pública pertence mesmo a quem diz pertencer? Sem resposta a esta pergunta, todo o edifício da criptografia assimétrica, confidencialidade, autenticação, assinaturas, Diffie-Hellman, fica exposto a um único tipo de ataque. Este capítulo examina esse ataque em detalhe, e a solução de engenharia que se tornou o padrão da indústria para o resolver: a **infraestrutura de chave pública**.</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">## O Ataque do Intermediário em Detalhe {#sec-10-mitm}</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>No **ataque do intermediário** (*man-in-the-middle*, MITM), um atacante posicionado em qualquer ponto da rede entre as duas partes, por exemplo num router comprometido, intercepta e substitui as chaves públicas trocadas, sem que nenhuma das vítimas se aperceba <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>:</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="al">![O atacante (Mallory) intercepta as chaves públicas de Alice e de Bob, e substitui-as pelas suas próprias antes de as reenviar. Cada um pensa estar a usar a chave pública do outro, quando na verdade está a usar a chave pública de Mallory.](../assets/images/fig-10-mitm.png)</span>{#fig-10-mitm width=85%}</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>O ataque funciona porque uma chave pública, por definição, não tem nada que a ligue de forma inseparável ao seu dono: é apenas um número, e um número não tem identidade própria. Quando Alice recebe algo que parece ser a chave pública de Bob, não tem, por si só, nenhuma forma de confirmar essa origem.</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>Vale a pena notar que este ataque **quebra qualquer** algoritmo de chave pública, não é uma fraqueza do RSA, do Diffie-Hellman ou do DSA em particular. No caso específico do Diffie-Hellman (Secção 7.3), o ataque tem uma consequência particularmente insidiosa: Mallory estabelece **duas** trocas de chave distintas, uma com Alice e outra com Bob, e passa a decifrar e recifrar cada mensagem trocada entre eles, sem que nenhum dos dois consiga sequer detectar que a chave "comum" que pensam partilhar não é, de facto, partilhada com o outro, mas sim com Mallory de ambos os lados.</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## A Solução: uma Entidade de Confiança {#sec-10-solucao}</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>A solução passa por introduzir uma terceira parte, uma **entidade de confiança**, que ambas as partes reconheçam antecipadamente, e que testemunhe a ligação entre uma identidade e uma chave pública. Se Alice e Bob confiarem na mesma entidade, cada um pode perguntar-lhe, "esta chave pública pertence mesmo à outra parte?", sem que essa pergunta precise de passar pelo canal, potencialmente comprometido, entre os dois <span class="co">[</span><span class="ot">@Stallings2020; @Martin2017</span><span class="co">]</span>.</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>Esta é exactamente a função de uma **infraestrutura de chave pública** (*Public Key Infrastructure*, PKI): um conjunto de entidades, processos e normas que ligam formalmente identidades a chaves públicas, através de **certificados digitais**. Ao contrário de uma verificação pontual, o certificado é um objecto assinado, verificável de forma independente e reutilizável por qualquer parte que confie na entidade que o emitiu.</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="fu">## O Certificado X.509 {#sec-10-x509}</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>A norma **X.509**, hoje universal na Web, define a estrutura de um certificado de chave pública. Um certificado X.509 contém, no essencial, os dados de identificação do titular e a assinatura de quem os certifica <span class="co">[</span><span class="ot">@RFC5280</span><span class="co">]</span>:</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="al">![Estrutura essencial de um certificado X.509: os dados do titular (identidade, chave pública, período de validade, emissor e número de série), e a assinatura da entidade certificadora sobre o *hash* desses dados.](../assets/images/fig-10-x509.png)</span>{#fig-10-x509 width=55%}</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Identidade** (*Subject*): a quem pertence o certificado, tipicamente um domínio, uma organização, ou uma pessoa.</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Chave pública**: a chave que o certificado atesta pertencer a essa identidade.</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Validade**: um intervalo de datas fora do qual o certificado deixa de ser considerado válido.</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Emissor** (*Issuer*): a identidade da entidade certificadora que o assinou.</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Número de série**: um identificador único do certificado, essencial para o processo de revogação.</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Assinatura da CA**: a **entidade certificadora** (*Certificate Authority*, CA) assina, com a sua própria chave privada, o *hash* de todos os campos anteriores: $\mathrm{Sign}(sk_{CA}, H(\text{dados do titular}))$.</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>Esta última linha é o que transforma os dados de identificação numa afirmação verificável: qualquer pessoa com a chave pública da CA consegue confirmar que foi mesmo aquela CA, e não outra entidade, a atestar a ligação entre aquela identidade e aquela chave pública.</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## A Cadeia de Certificação {#sec-10-cadeia}</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>Um único par de chaves de CA a certificar directamente cada site da Internet seria impraticável e frágil (um único ponto de compromisso comprometeria tudo). Em vez disso, a confiança organiza-se numa **cadeia de certificação**: cada certificado é assinado por outro, até chegar a uma **CA raiz** (*Root CA*), cuja chave pública vem pré-instalada no sistema operativo ou no navegador <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>:</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="al">![A cadeia de certificação: a CA raiz assina certificados de CAs intermédias, que por sua vez assinam outros certificados, até chegar ao titular final de um domínio. Confiar na raiz, já instalada no sistema, basta para validar toda a cadeia.](../assets/images/fig-10-cadeia-ca.png)</span>{#fig-10-cadeia-ca width=85%}</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>Confiar apenas na CA raiz, um número relativamente pequeno de entidades, cuidadosamente auditadas, é suficiente para validar qualquer certificado emitido em qualquer ponto da cadeia, por mais intermediários que existam entre a raiz e o titular final.</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a><span class="fu">## Como Funciona a Verificação {#sec-10-verificacao}</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>Quando Bob recebe o certificado de Alice, verifica-o seguindo estes passos <span class="co">[</span><span class="ot">@Stallings2020</span><span class="co">]</span>:</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Lê o campo **Emissor** do certificado, identificando qual CA o assinou.</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Obtém a chave pública dessa CA, $pk_{CA}$ (a partir do certificado da própria CA, já conhecido e confiado, ou seguindo a cadeia até uma raiz que o seja).</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Verifica a assinatura: $\mathrm{Verify}(pk_{CA}, \text{dados do certificado}, \text{assinatura}_{CA})$.</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Se a assinatura for válida, a chave pública de Alice está confirmada como genuína.</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Verifica ainda o **período de validade**, o estado de **revogação** (através de uma lista de revogação, *Certificate Revocation List*, ou do protocolo em tempo real *Online Certificate Status Protocol*, OCSP), e o **uso permitido** do certificado.</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>Só depois de todos estes passos passarem é que Bob tem uma garantia fundamentada de que a chave pública recebida é mesmo de Alice, e não de um atacante interposto.</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a><span class="fu">## Na Prática: Inspeccionar um Certificado {#sec-10-pratica}</span></span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>Qualquer certificado X.509 usado num servidor público pode ser inspeccionado directamente:</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="in">```bash</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl s_client <span class="at">-showcerts</span> <span class="at">-connect</span> www.exemplo.com:443 <span class="op">&gt;&gt;</span> cert.pem</span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a><span class="ex">$</span> openssl x509 <span class="at">-in</span> cert.pem <span class="at">-text</span> <span class="at">-noout</span></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>O primeiro comando estabelece uma ligação TLS e regista a cadeia de certificados enviada pelo servidor; o segundo lê o certificado e apresenta, em texto legível, exactamente os campos discutidos na Secção 9.3, incluindo o titular, o emissor, o período de validade e o algoritmo de assinatura usado.</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a><span class="fu">## Síntese do Capítulo {#sec-10-sintese}</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>Este capítulo resolveu o problema deixado em aberto no capítulo anterior:</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>O **ataque do intermediário** (MITM) quebra qualquer algoritmo de chave pública, substituindo as chaves trocadas por outras, controladas pelo atacante, sem que nenhuma das vítimas o perceba</span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>A solução é introduzir uma **entidade de confiança** partilhada, capaz de atestar formalmente a ligação entre uma identidade e uma chave pública</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Um **certificado X.509** contém a identidade do titular, a sua chave pública, um período de validade, o emissor, e a assinatura desse emissor sobre um *hash* de todos estes dados</span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>A confiança organiza-se numa **cadeia de certificação**, da CA raiz (pré-instalada no sistema) até ao titular final, através de CAs intermédias</span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Verificar um certificado exige confirmar a assinatura da CA emissora, o período de validade, e o estado de revogação, não basta confirmar só a assinatura</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="fu">## Para Pensar {#sec-10-reflexao}</span></span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>A cadeia de certificação (Secção 9.4) resolve o problema de confiar numa chave pública introduzindo confiança numa CA raiz, pré-instalada no sistema operativo ou no navegador. Isto desloca o problema original (como confiar numa chave pública?) para um problema ligeiramente diferente. Qual é esse novo problema, e porque é que confiar numa dezena de CAs raiz pré-instaladas é uma solução mais praticável do que pedir a cada utilizador da Internet que confirme manualmente a chave pública de cada site que visita?</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a><span class="fu">## Referências {#sec-10-referencias .unnumbered}</span></span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>::: {#refs}</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copiar para a área de transferência" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

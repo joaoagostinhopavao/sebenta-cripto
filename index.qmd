@@ -26,9 +26,10 @@ Os capítulos seguem a estrutura das aulas teóricas do módulo (as duas última
 6. Criptografia Assimétrica e RSA
 7. Diffie-Hellman e Assinaturas Digitais
 8. Criptografia de Curva Elíptica
-9. Infraestrutura de Chave Pública (PKI)
-10. TLS e PGP
-11. Eficiência Algorítmica e Criptografia Pós-Quântica
+9. Gestão de Chaves
+10. Infraestrutura de Chave Pública (PKI)
+11. TLS e PGP
+12. Eficiência Algorítmica e Criptografia Pós-Quântica
 
 ## Autor {.unnumbered}
 

@@ -27,9 +27,10 @@ session):
 6. Asymmetric Cryptography and RSA
 7. Diffie-Hellman and Digital Signatures
 8. Elliptic Curve Cryptography
-9. Public Key Infrastructure (PKI)
-10. TLS and PGP
-11. Algorithmic Efficiency and Post-Quantum Cryptography
+9. Key Management
+10. Public Key Infrastructure (PKI)
+11. TLS and PGP
+12. Algorithmic Efficiency and Post-Quantum Cryptography
 
 ## Author {.unnumbered}
 
