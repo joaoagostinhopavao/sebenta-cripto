@@ -33,4 +33,4 @@ session):
 
 ## Author {.unnumbered}
 
-**João Pavão** — UTAD
+**João Pavão**, course coordinator (UTAD)

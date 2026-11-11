@@ -32,4 +32,4 @@ Os capítulos seguem a estrutura das aulas teóricas do módulo (as duas última
 
 ## Autor {.unnumbered}
 
-**João Pavão** — UTAD
+**João Pavão**, regente da unidade curricular (UTAD)
